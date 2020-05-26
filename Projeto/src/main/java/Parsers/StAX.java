@@ -32,6 +32,7 @@ public class StAX {
             XMLEvent nextEvent;
             String current = null;
             boolean isTrash = false;
+
             while (reader.hasNext()) {
                 nextEvent = reader.nextEvent();
 
@@ -39,12 +40,14 @@ public class StAX {
                     StartElement startElement = nextEvent.asStartElement();
                     current = startElement.getName().getLocalPart();
                     isTrash = false;
+                    System.out.println("StartElement: " + current);
                 }
 
                 if (nextEvent.isEndElement()) {
                     EndElement endElement = nextEvent.asEndElement();
                     this.mapper.processEndElement(endElement.getName().getLocalPart());
                     isTrash = true;
+                    System.out.println("EndElement: " + endElement.getName().getLocalPart());
                 }
 
                 if (nextEvent.isCharacters()) {
@@ -56,6 +59,7 @@ public class StAX {
                             data = characters.getData();
                         }
 
+                        System.out.println("Characters: " + data);
                         this.mapper.processStartElement(current, data);
                     }
                 }
@@ -81,6 +85,7 @@ public class StAX {
             boolean isTrash = true;
 
             XMLEvent nextEvent;
+
             while (reader.hasNext()) {
                 nextEvent = reader.nextEvent();
                 if (nextEvent.isStartElement()) {

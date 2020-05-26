@@ -4,7 +4,7 @@
         <AuditFileVersion></AuditFileVersion>
         <CompanyID></CompanyID>
         <TaxRegistrationNumber></TaxRegistrationNumber>
-        <TaxAccountingBasis></TaxAccountingBasis>
+        <TaxAccountingBasis>Tipo de sistema que exportou o SAFT</TaxAccountingBasis>
         <CompanyName></CompanyName>
         <BusinessName></BusinessName>
         <CompanyAddress>
@@ -34,7 +34,7 @@
     </Header>
     <MasterFiles>
         <GeneralLedgerAccounts>
-            <TaxonomyReference></TaxonomyReference>
+            <TaxonomyReference>Categoria da conta</TaxonomyReference>
             <Account>
                 <AccountID></AccountID>
                 <AccountDescription></AccountDescription>

@@ -21,7 +21,8 @@ import java.io.IOException;
  */
 public class Run {
 
-    private static final String XMLFile = "database/SAFTP.XML";
+    private static final String XMLFile1 = "database/SAFTP.XML";
+    private static final String XMLFile2 = "database/Exemplo_Facturacao.XML";
     private static final String XSDFile = "database/SAFTP.XSD";
 
     private static final String URL = "neo4j://localhost:7687";
@@ -29,7 +30,7 @@ public class Run {
     private static final String password = "12345";
 
     public static void main(String[] args) {
-        if (validateXML(XMLFile, XSDFile)) {
+        if (validateXML(XMLFile2, XSDFile)) {
             System.out.println("Ficheiro válido!");
         } else {
             System.out.println("Ficheiro inválido!");
@@ -37,7 +38,7 @@ public class Run {
 
         Neo4j driver = new Neo4j(URL, user, password);
         StAX parser = new StAX(driver);
-        parser.processXMLToNeo4j(XMLFile);
+        parser.processXMLToNeo4j(XMLFile2);
     }
 
     public static boolean validateXML(String XMLFile, String XSDFile) {
