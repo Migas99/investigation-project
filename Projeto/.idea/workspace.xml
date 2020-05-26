@@ -2,31 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3af5b3ed-8790-4d03-90e5-fee880370349" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Exceptions/NodeException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Mappers/GraphNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Documentos/Estrutura do SAFTP.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Documentos/Estrutura do SAFTP.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Documentos/Mapeamento.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Documentos/Mapeamento.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/javaCompile/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Database/Neo4j.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Database/Neo4j.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Interface/Run.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Interface/Run.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$Labels.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$Labels.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$Relationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$Relationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Parsers/StAX.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Parsers/StAX.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Database/Neo4j.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Database/Neo4j.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Interface/Run.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Interface/Run.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Parsers/StAX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Parsers/StAX.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -44,33 +20,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Database/Neo4j.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="935">
-              <caret line="61" column="42" selection-start-line="61" selection-start-column="42" selection-end-line="61" selection-end-column="42" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#addXMLStructureNode#0;class#Neo4j#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Mappers/MapperForSAFTPT.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="8" />
+            <state relative-caret-position="752">
+              <caret line="587" column="36" selection-start-line="587" selection-start-column="36" selection-end-line="587" selection-end-column="36" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="class#Header_Childs#0;class#MapperForSAFTPT#0" />
-                <element signature="class#MasterFiles_Childs#0;class#MapperForSAFTPT#0" />
-                <element signature="class#Identities#0;class#MapperForSAFTPT#0" />
                 <element signature="method#processStartElement#0;class#MapperForSAFTPT#0" />
-                <element signature="docComment;method#processEndElement#0;class#MapperForSAFTPT#0" />
                 <element signature="method#processEndElement#0;class#MapperForSAFTPT#0" />
                 <element signature="method#processAuditFile#0;class#MapperForSAFTPT#0" />
+                <element signature="method#processAuditFileHeader#0;class#MapperForSAFTPT#0" />
                 <element signature="method#processAuditFileHeaderCompanyAddress#0;class#MapperForSAFTPT#0" />
                 <element signature="method#findNodeId#0;class#MapperForSAFTPT#0" />
                 <element signature="method#findStructureId#0;class#MapperForSAFTPT#0" />
@@ -78,19 +37,24 @@
                 <element signature="method#getHeads#0;class#MapperForSAFTPT#0" />
                 <element signature="class#Heads#0;class#MapperForSAFTPT#0" />
                 <element signature="class#XMLStructureRelationships#0;class#MapperForSAFTPT#0" />
+                <element signature="class#AuditFileEntities#0;class#MapperForSAFTPT#0" />
                 <element signature="class#AuditFileRelationships#0;class#MapperForSAFTPT#0" />
+                <element signature="class#HeaderEntities#0;class#MapperForSAFTPT#0" />
+                <element signature="class#HeaderRelationships#0;class#MapperForSAFTPT#0" />
+                <element signature="class#MasterFilesEntities#0;class#MapperForSAFTPT#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Interface/Run.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Exceptions/NodeException.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="40" column="43" selection-start-line="40" selection-start-column="43" selection-end-line="40" selection-end-column="43" />
+            <state relative-caret-position="85">
+              <caret line="5" column="43" selection-start-line="5" selection-start-column="43" selection-end-line="5" selection-end-column="43" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#95#96#0" expanded="true" />
+                <element signature="e#148#149#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -123,11 +87,12 @@
         <option value="$PROJECT_DIR$/src/main/java/Exceptions/NodeException.java" />
         <option value="$PROJECT_DIR$/src/main/java/Database/Neo4j.java" />
         <option value="$PROJECT_DIR$/src/main/java/Parsers/StAX.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Exceptions/MapException.java" />
         <option value="$PROJECT_DIR$/src/main/java/Mappers/MapperForSAFTPT.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-20" />
     <option name="width" value="1030" />
     <option name="height" value="1050" />
@@ -140,6 +105,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -209,12 +176,10 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1590456305969" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1590462271969" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
@@ -287,10 +252,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09328859" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.09328859" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -372,7 +337,7 @@
           <caret line="5" column="43" selection-start-line="5" selection-start-column="43" selection-end-line="5" selection-end-column="43" />
           <folding>
             <element signature="e#95#96#0" expanded="true" />
-            <element signature="e#116#117#0" expanded="true" />
+            <element signature="e#148#149#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -387,17 +352,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Database/Neo4j.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="935">
-          <caret line="61" column="42" selection-start-line="61" selection-start-column="42" selection-end-line="61" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#addXMLStructureNode#0;class#Neo4j#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Interface/Run.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
@@ -408,19 +362,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Mappers/MapperForSAFTPT.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Database/Neo4j.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="8" />
+        <state relative-caret-position="624">
+          <caret line="61" column="42" selection-start-line="61" selection-start-column="42" selection-end-line="61" selection-end-column="42" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="class#Header_Childs#0;class#MapperForSAFTPT#0" />
-            <element signature="class#MasterFiles_Childs#0;class#MapperForSAFTPT#0" />
-            <element signature="class#Identities#0;class#MapperForSAFTPT#0" />
+            <element signature="method#addXMLStructureNode#0;class#Neo4j#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Exceptions/MapException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="5" column="56" selection-start-line="5" selection-start-column="56" selection-end-line="5" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Mappers/MapperForSAFTPT.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="752">
+          <caret line="587" column="36" selection-start-line="587" selection-start-column="36" selection-end-line="587" selection-end-column="36" />
+          <folding>
             <element signature="method#processStartElement#0;class#MapperForSAFTPT#0" />
-            <element signature="docComment;method#processEndElement#0;class#MapperForSAFTPT#0" />
             <element signature="method#processEndElement#0;class#MapperForSAFTPT#0" />
             <element signature="method#processAuditFile#0;class#MapperForSAFTPT#0" />
+            <element signature="method#processAuditFileHeader#0;class#MapperForSAFTPT#0" />
             <element signature="method#processAuditFileHeaderCompanyAddress#0;class#MapperForSAFTPT#0" />
             <element signature="method#findNodeId#0;class#MapperForSAFTPT#0" />
             <element signature="method#findStructureId#0;class#MapperForSAFTPT#0" />
@@ -428,7 +396,11 @@
             <element signature="method#getHeads#0;class#MapperForSAFTPT#0" />
             <element signature="class#Heads#0;class#MapperForSAFTPT#0" />
             <element signature="class#XMLStructureRelationships#0;class#MapperForSAFTPT#0" />
+            <element signature="class#AuditFileEntities#0;class#MapperForSAFTPT#0" />
             <element signature="class#AuditFileRelationships#0;class#MapperForSAFTPT#0" />
+            <element signature="class#HeaderEntities#0;class#MapperForSAFTPT#0" />
+            <element signature="class#HeaderRelationships#0;class#MapperForSAFTPT#0" />
+            <element signature="class#MasterFilesEntities#0;class#MapperForSAFTPT#0" />
           </folding>
         </state>
       </provider>
