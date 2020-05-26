@@ -1,7 +1,6 @@
 package Database;
 
 import org.neo4j.driver.*;
-import org.neo4j.driver.types.Node;
 
 /**
  * @author José Miguel Ribeiro Cunha
@@ -21,22 +20,77 @@ public class Neo4j {
         this.driver = GraphDatabase.driver(url, AuthTokens.basic(user, password));
     }
 
-    public void addXMLStructureNode(String XMLElement) {
+    /**
+     * Verifica se a estrutura do XML já se encontra carregada neste grafo
+     *
+     * @return retorna se já foi carregada ou não
+     */
+    public boolean isXMLStructureLoaded() {
         try (Session session = this.driver.session()) {
-            session.writeTransaction(tx -> tx.run(""
-                    + "CREATE (" + XMLElement + ":" + XMLElement + ")"
-            ));
+            boolean answer = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (n:XMLStructure) "
+                    + "RETURN (n)"
+            ).list().isEmpty());
+
+            if (answer) {
+                return false;
+            }
+
+            return true;
         }
     }
 
+    /**
+     * Adiciona um nó do tipo estrutura, ou seja, que vai ser único
+     *
+     * @param XMLElement label do nó
+     */
+    public void addXMLStructureNode(String XMLElement) {
+        try (Session session = this.driver.session()) {
+            boolean isUnique = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (n:" + XMLElement + ") "
+                    + "RETURN n"
+            ).list().isEmpty());
+
+            if (isUnique) {
+                session.writeTransaction(tx -> tx.run(""
+                        + "CREATE (" + XMLElement + ":" + XMLElement + ":XMLStructure)"
+                ));
+            }
+        }
+    }
+
+    /**
+     * Método responsável pela criação das relações entre nós relativos à estrutura do XML
+     *
+     * @param XMLElementOne Um dos nós
+     * @param XMLElementTwo Um dos nós
+     */
     public void addXMLStructureRelationShip(String XMLElementOne, String XMLElementTwo) {
         try (Session session = this.driver.session()) {
             session.writeTransaction(tx -> tx.run(""
-                    + "CREATE (" + XMLElementOne + ")-[:CHILD_OF]->(" + XMLElementTwo + ")"
+                    + "MATCH (a:" + XMLElementOne + "),(b:" + XMLElementTwo + ")"
+                    + "CREATE (a)-[:CONTAINS]->(b)"
+                    + "CREATE (b)-[:PART_OF]->(a)"
             ));
         }
     }
 
+    /**
+     * Adiciona uma relação entre dois nós do typeof
+     *
+     * @param id id do nó que vai ser do tipo de
+     * @param target nó com o label com o tipo
+     */
+    public void addRelationshipTypeOf(long id, String target) {
+        try (Session session = this.driver.session()) {
+            session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a),(b:" + target + ")"
+                    + "WHERE ID(a) = " + id
+                    + "CREATE (a)-[:TYPE_OF]->(b)"
+            ));
+        }
+    }
 
     /**
      * Método responsável por criar um novo nó no grafo, e por devolver o seu
@@ -56,41 +110,12 @@ public class Neo4j {
         }
     }
 
-    public long addNode(){
+    public long addNode() {
         try (Session session = this.driver.session()) {
             Value answer = session.writeTransaction(tx -> tx.run(""
                     + "CREATE (n:BasicNode)"
                     + "RETURN (n)"
             ).single().get(0));
-
-            return answer.asNode().id();
-        }
-    }
-
-    /**
-     * Método que cria um novo nó, mas apenas se este for único (ou seja, se não estiver já criado
-     *
-     * @param node o nó
-     * @return o id do nó encontrado / criado
-     */
-    public long addUniqueNode(String node) {
-        try (Session session = this.driver.session()) {
-            Value answer = null;
-
-            answer = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (n:" + node + ") "
-                    + "RETURN n"
-            ).single().get('n'));
-
-            /**
-             * Se o nó não existir, criamos o nó
-             */
-            if (answer.isEmpty()) {
-                answer = session.writeTransaction(tx -> tx.run(""
-                        + "CREATE (n:" + node + ") "
-                        + "RETURN n"
-                ).single().get('n'));
-            }
 
             return answer.asNode().id();
         }

@@ -15,13 +15,16 @@ public class MapperForSAFTPT {
     private Stack<String> stack;
     private String previousHead = null;
     private String currentHead = null;
-    private LinkedList<GraphNode> graphXMLStructureNodeContainer = new LinkedList<>();
     private LinkedList<GraphNode> graphNodeContainer = new LinkedList<>();
 
     public MapperForSAFTPT(Neo4j driver) {
         this.driver = driver;
         this.heads = this.getHeads();
         this.stack = new Stack<>();
+
+        if (!this.driver.isXMLStructureLoaded()) {
+            this.loadXMLStructure();
+        }
     }
 
     public void processStartElement(String XMLElement, String value) {
@@ -47,12 +50,21 @@ public class MapperForSAFTPT {
                     this.processAuditFileHeaderCompanyAddress(XMLElement, value);
                     break;
                 case "MasterFiles":
+                    this.processAuditFileMasterFiles(XMLElement, value);
+                    break;
+                case "GeneralLedgerAccounts":
+                    this.processAuditFileMasterFilesGeneralLedgerAccounts(XMLElement, value);
+                    break;
+                case "Account":
+                    this.processAuditFileMasterFilesGeneralLedgerAccountsAccount(XMLElement, value);
                     break;
                 case "Customer":
                     break;
                 case "BillingAddress":
                     break;
-                case "Product":
+                case "ShipToAddress":
+                    break;
+                case "ProductSoftware":
                     break;
                 case "TaxTable":
                     break;
@@ -90,9 +102,8 @@ public class MapperForSAFTPT {
     private void processAuditFile(String XMLElement, String value) throws MapException {
         try {
             if ("AuditFile".equalsIgnoreCase(XMLElement)) {
-                this.graphXMLStructureNodeContainer.add(new GraphNode(this.driver.addNode(XMLElement), XMLElement));
                 this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), XMLElement, value));
-                this.driver.addRelationship(this.findNodeId(XMLElement), this.findStructureId(XMLElement), XMLStructureRelationships.TYPE_OF.toString());
+                this.driver.addRelationshipTypeOf(this.findNodeId(XMLElement), XMLElement);
             } else {
                 throw new MapException();
             }
@@ -105,12 +116,8 @@ public class MapperForSAFTPT {
             switch (XMLElement) {
 
                 case "Header":
-                    this.graphXMLStructureNodeContainer.add(new GraphNode(this.driver.addNode(XMLElement), XMLElement));
                     this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), XMLElement, value));
-
-                    this.driver.addRelationship(this.findNodeId(XMLElement), this.findStructureId(XMLElement), XMLStructureRelationships.TYPE_OF.toString());
-                    this.driver.addRelationship(this.findStructureId(this.previousHead), this.findStructureId(XMLElement), XMLStructureRelationships.HAS_CHILD.toString());
-                    //this.driver.addRelationship(this.findStructureId(XMLElement), this.findStructureId(this.previousHead), XMLStructureRelationships.CHILD_OF.toString());
+                    this.driver.addRelationshipTypeOf(this.findNodeId(XMLElement), XMLElement);
 
                     this.driver.addRelationship(this.findNodeId(this.previousHead), this.findNodeId(XMLElement), AuditFileRelationships.HAS_HEADER.toString());
 
@@ -134,27 +141,19 @@ public class MapperForSAFTPT {
                     break;
 
                 case "TaxAccountingBasis":
-                    this.graphXMLStructureNodeContainer.add(new GraphNode(this.driver.addNode(HeaderEntities.TaxAccountingBasis.toString()), HeaderEntities.TaxAccountingBasis.toString()));
                     this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), HeaderEntities.TaxAccountingBasis.toString(), value));
+                    this.driver.addRelationshipTypeOf(this.findNodeId(HeaderEntities.TaxAccountingBasis.toString()), HeaderEntities.TaxAccountingBasis.toString());
+
                     this.driver.addAttributesToNode(this.findNodeId(HeaderEntities.TaxAccountingBasis.toString()), XMLElement, value);
-
-                    this.driver.addRelationship(this.findNodeId(HeaderEntities.TaxAccountingBasis.toString()), this.findStructureId(HeaderEntities.TaxAccountingBasis.toString()), XMLStructureRelationships.TYPE_OF.toString());
-                    this.driver.addRelationship(this.findStructureId(this.currentHead), this.findStructureId(HeaderEntities.TaxAccountingBasis.toString()), XMLStructureRelationships.HAS_CHILD.toString());
-                    //this.driver.addRelationship(this.findStructureId(HeaderEntities.TaxAccountingBasis.toString()), this.findStructureId(this.currentHead), XMLStructureRelationships.CHILD_OF.toString());
-
                     this.driver.addRelationship(this.findNodeId(this.currentHead), this.findNodeId(HeaderEntities.TaxAccountingBasis.toString()), HeaderRelationships.HAS_TAX_ACCOUNTING_BASIS.toString());
 
                     break;
 
                 case "CompanyName":
-                    this.graphXMLStructureNodeContainer.add(new GraphNode(this.driver.addNode(HeaderEntities.Company.toString()), HeaderEntities.Company.toString()));
                     this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), HeaderEntities.Company.toString(), value));
+                    this.driver.addRelationshipTypeOf(this.findNodeId(HeaderEntities.Company.toString()), HeaderEntities.Company.toString());
+
                     this.driver.addAttributesToNode(this.findNodeId(HeaderEntities.Company.toString()), XMLElement, value);
-
-                    this.driver.addRelationship(this.findNodeId(HeaderEntities.Company.toString()), this.findStructureId(HeaderEntities.Company.toString()), XMLStructureRelationships.TYPE_OF.toString());
-                    this.driver.addRelationship(this.findStructureId(this.currentHead), this.findStructureId(HeaderEntities.Company.toString()), XMLStructureRelationships.HAS_CHILD.toString());
-                    //this.driver.addRelationship(this.findStructureId(HeaderEntities.Company.toString()), this.findStructureId(this.currentHead), XMLStructureRelationships.CHILD_OF.toString());
-
                     this.driver.addRelationship(this.findNodeId(this.currentHead), this.findNodeId(HeaderEntities.Company.toString()), HeaderRelationships.HAS_COMPANY.toString());
                     try {
                         this.driver.addRelationship(this.findNodeId(HeaderEntities.Company.toString()), this.findNodeId("CompanyID"), HeaderRelationships.HAS_COMPANY_ID.toString());
@@ -171,19 +170,15 @@ public class MapperForSAFTPT {
                     this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), XMLElement, value));
                     this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
 
-                    this.driver.addRelationship(this.findNodeId("CompanyName"), this.findNodeId(XMLElement), HeaderRelationships.HAS_BUSINESS_NAME.toString());
+                    this.driver.addRelationship(this.findNodeId(HeaderEntities.Company.toString()), this.findNodeId(XMLElement), HeaderRelationships.HAS_BUSINESS_NAME.toString());
 
                     break;
 
                 case "FiscalYear":
-                    this.graphXMLStructureNodeContainer.add(new GraphNode(this.driver.addNode(HeaderEntities.FiscalYear.toString()), HeaderEntities.FiscalYear.toString()));
                     this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), HeaderEntities.FiscalYear.toString(), value));
+                    this.driver.addRelationshipTypeOf(this.findNodeId(HeaderEntities.FiscalYear.toString()), HeaderEntities.FiscalYear.toString());
+
                     this.driver.addAttributesToNode(this.findNodeId(HeaderEntities.FiscalYear.toString()), XMLElement, value);
-
-                    this.driver.addRelationship(this.findNodeId(HeaderEntities.FiscalYear.toString()), this.findStructureId(HeaderEntities.FiscalYear.toString()), XMLStructureRelationships.TYPE_OF.toString());
-                    this.driver.addRelationship(this.findStructureId(this.currentHead), this.findStructureId(HeaderEntities.FiscalYear.toString()), XMLStructureRelationships.HAS_CHILD.toString());
-                    //this.driver.addRelationship(this.findStructureId(HeaderEntities.FiscalYear.toString()), this.findStructureId(this.currentHead), XMLStructureRelationships.CHILD_OF.toString());
-
                     this.driver.addRelationship(this.findNodeId(this.currentHead), this.findNodeId(HeaderEntities.FiscalYear.toString()), HeaderRelationships.HAS_FISCAL_YEAR.toString());
 
                     break;
@@ -215,27 +210,19 @@ public class MapperForSAFTPT {
                     break;
 
                 case "TaxEntity":
-                    this.graphXMLStructureNodeContainer.add(new GraphNode(this.driver.addNode(HeaderEntities.TaxEntity.toString()), HeaderEntities.TaxEntity.toString()));
                     this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), HeaderEntities.TaxEntity.toString(), value));
+                    this.driver.addRelationshipTypeOf(this.findNodeId(HeaderEntities.TaxEntity.toString()), HeaderEntities.TaxEntity.toString());
+
                     this.driver.addAttributesToNode(this.findNodeId(HeaderEntities.TaxEntity.toString()), XMLElement, value);
-
-                    this.driver.addRelationship(this.findNodeId(HeaderEntities.TaxEntity.toString()), this.findStructureId(HeaderEntities.TaxEntity.toString()), XMLStructureRelationships.TYPE_OF.toString());
-                    this.driver.addRelationship(this.findStructureId(this.currentHead), this.findStructureId(HeaderEntities.TaxEntity.toString()), XMLStructureRelationships.HAS_CHILD.toString());
-                    //this.driver.addRelationship(this.findStructureId(HeaderEntities.TaxEntity.toString()), this.findStructureId(this.currentHead), XMLStructureRelationships.CHILD_OF.toString());
-
                     this.driver.addRelationship(this.findNodeId(this.currentHead), this.findNodeId(HeaderEntities.TaxEntity.toString()), HeaderRelationships.HAS_TAX_ENTITY.toString());
-
 
                     break;
 
                 case "ProductCompanyTaxID":
-                    this.graphXMLStructureNodeContainer.add(new GraphNode(this.driver.addNode(HeaderEntities.ProductCompany.toString()), HeaderEntities.ProductCompany.toString()));
                     this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), HeaderEntities.ProductCompany.toString(), value));
-                    this.driver.addAttributesToNode(this.findNodeId(HeaderEntities.ProductCompany.toString()), XMLElement, value);
+                    this.driver.addRelationshipTypeOf(this.findNodeId(HeaderEntities.ProductCompany.toString()), HeaderEntities.ProductCompany.toString());
 
-                    this.driver.addRelationship(this.findNodeId(HeaderEntities.ProductCompany.toString()), this.findStructureId(HeaderEntities.ProductCompany.toString()), XMLStructureRelationships.TYPE_OF.toString());
-                    this.driver.addRelationship(this.findStructureId(this.currentHead), this.findStructureId(HeaderEntities.ProductCompany.toString()), XMLStructureRelationships.HAS_CHILD.toString());
-                    //this.driver.addRelationship(this.findStructureId(HeaderEntities.ProductCompany.toString()), this.findStructureId(this.currentHead), XMLStructureRelationships.CHILD_OF.toString());
+                    this.driver.addAttributesToNode(this.findNodeId(HeaderEntities.ProductCompany.toString()), XMLElement, value);
 
                     break;
 
@@ -245,21 +232,17 @@ public class MapperForSAFTPT {
                     break;
 
                 case "ProductID":
-                    this.graphXMLStructureNodeContainer.add(new GraphNode(this.driver.addNode(HeaderEntities.Product.toString()), HeaderEntities.Product.toString()));
-                    this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), HeaderEntities.Product.toString(), value));
-                    this.driver.addAttributesToNode(this.findNodeId(HeaderEntities.Product.toString()), XMLElement, value);
+                    this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), HeaderEntities.ProductSoftware.toString(), value));
+                    this.driver.addRelationshipTypeOf(this.findNodeId(HeaderEntities.ProductSoftware.toString()), HeaderEntities.ProductSoftware.toString());
 
-                    this.driver.addRelationship(this.findNodeId(HeaderEntities.Product.toString()), this.findStructureId(HeaderEntities.Product.toString()), XMLStructureRelationships.TYPE_OF.toString());
-                    this.driver.addRelationship(this.findStructureId(this.currentHead), this.findStructureId(HeaderEntities.Product.toString()), XMLStructureRelationships.HAS_CHILD.toString());
-                    //this.driver.addRelationship(this.findStructureId(HeaderEntities.Product.toString()), this.findStructureId(this.currentHead), XMLStructureRelationships.CHILD_OF.toString());
-
-                    this.driver.addRelationship(this.findNodeId(HeaderEntities.TaxEntity.toString()), this.findNodeId(HeaderEntities.Product.toString()), HeaderRelationships.HAS_PRODUCT.toString());
-                    this.driver.addRelationship(this.findNodeId(HeaderEntities.Product.toString()), this.findNodeId(HeaderEntities.ProductCompany.toString()), HeaderRelationships.HAS_PRODUCT_COMPANY.toString());
+                    this.driver.addAttributesToNode(this.findNodeId(HeaderEntities.ProductSoftware.toString()), XMLElement, value);
+                    this.driver.addRelationship(this.findNodeId(HeaderEntities.TaxEntity.toString()), this.findNodeId(HeaderEntities.ProductSoftware.toString()), HeaderRelationships.HAS_PRODUCT.toString());
+                    this.driver.addRelationship(this.findNodeId(HeaderEntities.ProductSoftware.toString()), this.findNodeId(HeaderEntities.ProductCompany.toString()), HeaderRelationships.HAS_PRODUCT_COMPANY.toString());
 
                     break;
 
                 case "ProductVersion":
-                    this.driver.addAttributesToNode(this.findNodeId(HeaderEntities.Product.toString()), XMLElement, value);
+                    this.driver.addAttributesToNode(this.findNodeId(HeaderEntities.ProductSoftware.toString()), XMLElement, value);
 
                     break;
 
@@ -269,12 +252,8 @@ public class MapperForSAFTPT {
                     break;
 
                 case "Telephone":
-                    this.graphXMLStructureNodeContainer.add(new GraphNode(this.driver.addNode(HeaderEntities.CompanyContact.toString()), HeaderEntities.CompanyContact.toString()));
                     this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), HeaderEntities.CompanyContact.toString()));
-
-                    this.driver.addRelationship(this.findNodeId(HeaderEntities.CompanyContact.toString()), this.findStructureId(HeaderEntities.CompanyContact.toString()), XMLStructureRelationships.TYPE_OF.toString());
-                    this.driver.addRelationship(this.findStructureId(HeaderEntities.Company.toString()), this.findStructureId(HeaderEntities.CompanyContact.toString()), XMLStructureRelationships.HAS_CHILD.toString());
-                    //this.driver.addRelationship(this.findStructureId(HeaderEntities.CompanyContact.toString()), this.findStructureId(HeaderEntities.Company.toString()), XMLStructureRelationships.CHILD_OF.toString());
+                    this.driver.addRelationshipTypeOf(this.findNodeId(HeaderEntities.CompanyContact.toString()), HeaderEntities.CompanyContact.toString());
 
                     this.driver.addRelationship(this.findNodeId(HeaderEntities.Company.toString()), this.findNodeId(HeaderEntities.CompanyContact.toString()), HeaderRelationships.HAS_CONTACT.toString());
 
@@ -292,12 +271,8 @@ public class MapperForSAFTPT {
                     try {
                         this.driver.addRelationship(this.findNodeId(HeaderEntities.CompanyContact.toString()), this.findNodeId(XMLElement), HeaderRelationships.HAS_FAX.toString());
                     } catch (NodeException e) {
-                        this.graphXMLStructureNodeContainer.add(new GraphNode(this.driver.addNode(HeaderEntities.CompanyContact.toString()), HeaderEntities.CompanyContact.toString()));
                         this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), HeaderEntities.CompanyContact.toString()));
-
-                        this.driver.addRelationship(this.findNodeId(HeaderEntities.CompanyContact.toString()), this.findStructureId(HeaderEntities.CompanyContact.toString()), XMLStructureRelationships.TYPE_OF.toString());
-                        this.driver.addRelationship(this.findStructureId(HeaderEntities.Company.toString()), this.findStructureId(HeaderEntities.CompanyContact.toString()), XMLStructureRelationships.HAS_CHILD.toString());
-                        //this.driver.addRelationship(this.findStructureId(HeaderEntities.CompanyContact.toString()), this.findStructureId(HeaderEntities.Company.toString()), XMLStructureRelationships.CHILD_OF.toString());
+                        this.driver.addRelationshipTypeOf(this.findNodeId(HeaderEntities.CompanyContact.toString()), HeaderEntities.CompanyContact.toString());
 
                         this.driver.addRelationship(this.findNodeId(HeaderEntities.Company.toString()), this.findNodeId(HeaderEntities.CompanyContact.toString()), HeaderRelationships.HAS_CONTACT.toString());
 
@@ -313,12 +288,8 @@ public class MapperForSAFTPT {
                     try {
                         this.driver.addRelationship(this.findNodeId(HeaderEntities.CompanyContact.toString()), this.findNodeId(XMLElement), HeaderRelationships.HAS_EMAIL.toString());
                     } catch (NodeException e) {
-                        this.graphXMLStructureNodeContainer.add(new GraphNode(this.driver.addNode(HeaderEntities.CompanyContact.toString()), HeaderEntities.CompanyContact.toString()));
                         this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), HeaderEntities.CompanyContact.toString()));
-
-                        this.driver.addRelationship(this.findNodeId(HeaderEntities.CompanyContact.toString()), this.findStructureId(HeaderEntities.CompanyContact.toString()), XMLStructureRelationships.TYPE_OF.toString());
-                        this.driver.addRelationship(this.findStructureId(HeaderEntities.Company.toString()), this.findStructureId(HeaderEntities.CompanyContact.toString()), XMLStructureRelationships.HAS_CHILD.toString());
-                        //this.driver.addRelationship(this.findStructureId(HeaderEntities.CompanyContact.toString()), this.findStructureId(HeaderEntities.Company.toString()), XMLStructureRelationships.CHILD_OF.toString());
+                        this.driver.addRelationshipTypeOf(this.findNodeId(HeaderEntities.CompanyContact.toString()), HeaderEntities.CompanyContact.toString());
 
                         this.driver.addRelationship(this.findNodeId(HeaderEntities.Company.toString()), this.findNodeId(HeaderEntities.CompanyContact.toString()), HeaderRelationships.HAS_CONTACT.toString());
 
@@ -334,15 +305,10 @@ public class MapperForSAFTPT {
                     try {
                         this.driver.addRelationship(this.findNodeId(HeaderEntities.CompanyContact.toString()), this.findNodeId(XMLElement), HeaderRelationships.HAS_WEBSITE.toString());
                     } catch (NodeException e) {
-                        this.graphXMLStructureNodeContainer.add(new GraphNode(this.driver.addNode(HeaderEntities.CompanyContact.toString()), HeaderEntities.CompanyContact.toString()));
                         this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), HeaderEntities.CompanyContact.toString()));
-
-                        this.driver.addRelationship(this.findNodeId(HeaderEntities.CompanyContact.toString()), this.findStructureId(HeaderEntities.CompanyContact.toString()), XMLStructureRelationships.TYPE_OF.toString());
-                        this.driver.addRelationship(this.findStructureId(HeaderEntities.Company.toString()), this.findStructureId(HeaderEntities.CompanyContact.toString()), XMLStructureRelationships.HAS_CHILD.toString());
-                        //this.driver.addRelationship(this.findStructureId(HeaderEntities.CompanyContact.toString()), this.findStructureId(HeaderEntities.Company.toString()), XMLStructureRelationships.CHILD_OF.toString());
+                        this.driver.addRelationshipTypeOf(this.findNodeId(HeaderEntities.CompanyContact.toString()), HeaderEntities.CompanyContact.toString());
 
                         this.driver.addRelationship(this.findNodeId(HeaderEntities.Company.toString()), this.findNodeId(HeaderEntities.CompanyContact.toString()), HeaderRelationships.HAS_CONTACT.toString());
-
 
                         this.driver.addRelationship(this.findNodeId(HeaderEntities.CompanyContact.toString()), this.findNodeId(XMLElement), HeaderRelationships.HAS_WEBSITE.toString());
                     }
@@ -362,15 +328,11 @@ public class MapperForSAFTPT {
             switch (XMLElement) {
 
                 case "CompanyAddress":
-                    this.graphXMLStructureNodeContainer.add(new GraphNode(this.driver.addNode(XMLElement), XMLElement));
-                    this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), XMLElement, value));
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), HeaderEntities.CompanyAddress.toString(), value));
+                    this.driver.addRelationshipTypeOf(this.findNodeId(HeaderEntities.CompanyAddress.toString()), HeaderEntities.CompanyAddress.toString());
 
-                    this.driver.addRelationship(this.findNodeId(XMLElement), this.findStructureId(XMLElement), XMLStructureRelationships.TYPE_OF.toString());
-                    this.driver.addRelationship(this.findStructureId(this.previousHead), this.findStructureId(XMLElement), XMLStructureRelationships.HAS_CHILD.toString());
-                    //this.driver.addRelationship(this.findStructureId(XMLElement), this.findStructureId(this.previousHead), XMLStructureRelationships.CHILD_OF.toString());
-
-                    this.driver.addRelationship(this.findNodeId(HeaderEntities.Company.toString()), this.findNodeId(XMLElement), HeaderRelationships.HAS_COMPANY_ADDRESS.toString());
+                    this.driver.addAttributesToNode(this.findNodeId(HeaderEntities.CompanyAddress.toString()), HeaderEntities.CompanyAddress.toString(), value);
+                    this.driver.addRelationship(this.findNodeId(HeaderEntities.Company.toString()), this.findNodeId(HeaderEntities.CompanyAddress.toString()), HeaderRelationships.HAS_COMPANY_ADDRESS.toString());
 
                     break;
 
@@ -434,6 +396,156 @@ public class MapperForSAFTPT {
         }
     }
 
+    private void processAuditFileMasterFiles(String XMLElement, String value) throws MapException {
+        try {
+            if ("MasterFiles".equalsIgnoreCase(XMLElement)) {
+                this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), XMLElement, value));
+                this.driver.addRelationshipTypeOf(this.findNodeId(XMLElement), XMLElement);
+
+                this.driver.addRelationship(this.findNodeId(this.previousHead), this.findNodeId(XMLElement), AuditFileRelationships.HAS_MASTER_FILES.toString());
+            } else {
+                throw new MapException();
+            }
+        } catch (NodeException e) {
+        }
+    }
+
+    private void processAuditFileMasterFilesGeneralLedgerAccounts(String XMLElement, String value) throws MapException {
+        try {
+            switch (XMLElement) {
+
+                case "GeneralLedgerAccounts":
+                    this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), MasterFilesEntities.GeneralLedgerAccounts.toString(), value));
+                    this.driver.addRelationshipTypeOf(this.findNodeId(MasterFilesEntities.GeneralLedgerAccounts.toString()), MasterFilesEntities.GeneralLedgerAccounts.toString());
+
+                    this.driver.addRelationship(this.findNodeId(this.previousHead), this.findNodeId(MasterFilesEntities.GeneralLedgerAccounts.toString()), MasterFilesRelationships.HAS_GENERAL_LEDGER_ACCOUNTS.toString());
+
+                    break;
+                case "TaxonomyReference":
+                    this.driver.addAttributesToNode(this.findNodeId(this.currentHead), XMLElement, value);
+
+                    break;
+                default:
+                    throw new MapException();
+            }
+        } catch (NodeException e) {
+        }
+    }
+
+    /**
+     * INCOMPLETO
+     *
+     * @param XMLElement
+     * @param value
+     * @throws MapException
+     */
+    private void processAuditFileMasterFilesGeneralLedgerAccountsAccount(String XMLElement, String value) throws MapException {
+        try {
+            switch (XMLElement) {
+
+                case "Account":
+                    this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), XMLElement, value));
+                    this.driver.addRelationshipTypeOf(this.findNodeId(XMLElement), XMLElement);
+
+                    this.driver.addRelationship(this.findNodeId(this.previousHead), this.findNodeId(XMLElement), MasterFilesRelationships.HAS_ACCOUNT.toString());
+
+                    break;
+
+                case "AccountID":
+                    this.driver.addAttributesToNode(this.findNodeId(this.currentHead), XMLElement, value);
+
+                    break;
+
+                case "AccountDescription":
+                    this.driver.addAttributesToNode(this.findNodeId(this.currentHead), XMLElement, value);
+
+                    break;
+
+                case "OpeningDebitBalance":
+                    break;
+
+                case "OpeningCreditBalance":
+                    break;
+
+                case "ClosingDebitBalance":
+                    break;
+
+                case "ClosingCreditBalance":
+                    break;
+
+                case "GroupingCategory":
+                    break;
+
+                case "GroupingCode":
+                    break;
+
+                case "TaxonomyCode":
+                    break;
+
+                default:
+                    throw new MapException();
+            }
+        } catch (NodeException e) {
+        }
+    }
+
+    private void processAuditFileMasterFilesCustomer(String XMLElement, String value) throws MapException {
+        try {
+            switch (XMLElement) {
+
+                case "Customer":
+                    this.graphNodeContainer.add(new GraphNode(this.driver.addNode(), XMLElement, value));
+                    this.driver.addRelationshipTypeOf(this.findNodeId(XMLElement), XMLElement);
+
+                    this.driver.addRelationship(this.findNodeId(this.previousHead), this.findNodeId(XMLElement), MasterFilesRelationships.HAS_CUSTOMER.toString());
+
+                    break;
+
+                case "CustomerID":
+                    this.driver.addAttributesToNode(this.findNodeId(this.currentHead), XMLElement, value);
+
+                    break;
+
+                case "AccountID":
+                    break;
+
+                case "CustomerTaxID":
+                    break;
+
+                case "CompanyName":
+
+
+                    break;
+
+                case "Contact":
+
+                    break;
+
+                case "Telephone":
+
+                    break;
+
+                case "Fax":
+
+                    break;
+
+                case "Email":
+
+                    break;
+
+                case "Website":
+                    break;
+
+                case "SelfBillingIndicator":
+                    break;
+
+                default:
+                    throw new MapException();
+            }
+        } catch (NodeException e) {
+        }
+    }
+
     private long findNodeId(String XMLElement) throws NodeException {
         Iterator<GraphNode> iterator = this.graphNodeContainer.iterator();
 
@@ -447,20 +559,257 @@ public class MapperForSAFTPT {
         throw new NodeException("Node '" + XMLElement + "' not found!");
     }
 
-    private long findStructureId(String XMLElement) throws NodeException {
-        Iterator<GraphNode> iterator = this.graphXMLStructureNodeContainer.iterator();
+    private void loadXMLStructure() {
+        String previousHead = null;
+        String currentHead = "AuditFile";
 
-        while (iterator.hasNext()) {
-            GraphNode node = iterator.next();
-            if (node.getXMLElement().equalsIgnoreCase(XMLElement)) {
-                return node.getId();
-            }
-        }
+        this.driver.addXMLStructureNode(currentHead);
 
-        throw new NodeException("Node '" + XMLElement + "' not found!");
+        /**
+         * HEADER
+         */
+        previousHead = currentHead;
+        currentHead = AuditFileEntities.Header.toString();
+
+        this.driver.addXMLStructureNode(currentHead);
+        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
+
+        this.driver.addXMLStructureNode(HeaderEntities.TaxAccountingBasis.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.TaxAccountingBasis.toString());
+        this.driver.addXMLStructureNode(HeaderEntities.Company.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.Company.toString());
+        this.driver.addXMLStructureNode(HeaderEntities.CompanyAddress.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.CompanyAddress.toString());
+        this.driver.addXMLStructureNode(HeaderEntities.FiscalYear.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.FiscalYear.toString());
+        this.driver.addXMLStructureNode(HeaderEntities.TaxEntity.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.TaxEntity.toString());
+        this.driver.addXMLStructureNode(HeaderEntities.ProductCompany.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.ProductCompany.toString());
+        this.driver.addXMLStructureNode(HeaderEntities.ProductSoftware.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.ProductSoftware.toString());
+        this.driver.addXMLStructureNode(HeaderEntities.CompanyContact.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.CompanyContact.toString());
+
+        currentHead = previousHead;
+        previousHead = null;
+
+        /**
+         * MASTERFILES
+         */
+
+        previousHead = currentHead;
+        currentHead = "MasterFiles";
+
+        this.driver.addXMLStructureNode(currentHead);
+        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
+
+        /**
+         * CUSTOMER
+         */
+
+        previousHead = currentHead;
+        currentHead = "Customer";
+
+        this.driver.addXMLStructureNode(currentHead);
+        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
+
+        this.driver.addXMLStructureNode(CustomerEntities.Company.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, CustomerEntities.Company.toString());
+        this.driver.addXMLStructureNode(CustomerEntities.BillingAddress.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, CustomerEntities.BillingAddress.toString());
+        this.driver.addXMLStructureNode(CustomerEntities.ShipToAddress.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, CustomerEntities.ShipToAddress.toString());
+        this.driver.addXMLStructureNode(CustomerEntities.Contacts.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, CustomerEntities.Contacts.toString());
+
+        currentHead = previousHead;
+        previousHead = "AuditFile";
+
+        /**
+         * Supplier
+         */
+
+        /**
+         * Product
+         */
+
+        previousHead = currentHead;
+        currentHead = "Product";
+
+        this.driver.addXMLStructureNode(currentHead);
+        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
+
+        this.driver.addXMLStructureNode(ProductEntities.ProductType.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, ProductEntities.ProductType.toString());
+        this.driver.addXMLStructureNode(ProductEntities.ProductGroup.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, ProductEntities.ProductGroup.toString());
+        this.driver.addXMLStructureNode(ProductEntities.CustomDetails.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, ProductEntities.CustomDetails.toString());
+
+        currentHead = previousHead;
+        previousHead = "AuditFile";
+
+        /**
+         * TaxTable
+         */
+
+        previousHead = currentHead;
+        currentHead = "TaxTable";
+
+        this.driver.addXMLStructureNode(currentHead);
+        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
+
+        previousHead = currentHead;
+        currentHead = "TaxTableEntry";
+
+        this.driver.addXMLStructureNode(currentHead);
+        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
+
+        this.driver.addXMLStructureNode(TaxTableEntities.TaxType.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, TaxTableEntities.TaxType.toString());
+        this.driver.addXMLStructureNode(TaxTableEntities.TaxCountryRegion.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, TaxTableEntities.TaxCountryRegion.toString());
+        this.driver.addXMLStructureNode(TaxTableEntities.TaxExpirationDate.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, TaxTableEntities.TaxExpirationDate.toString());
+        this.driver.addXMLStructureNode(TaxTableEntities.TaxPercentage.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, TaxTableEntities.TaxPercentage.toString());
+        this.driver.addXMLStructureNode(TaxTableEntities.TaxAmount.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, TaxTableEntities.TaxAmount.toString());
+
+        currentHead = "AuditFile";
+        previousHead = null;
+
+        /**
+         * SourceDocuments
+         */
+
+        previousHead = currentHead;
+        currentHead = "SourceDocuments";
+
+        this.driver.addXMLStructureNode(currentHead);
+        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
+
+        previousHead = currentHead;
+        currentHead = "SalesInvoices";
+
+        this.driver.addXMLStructureNode(currentHead);
+        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
+
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.Total.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Total.toString());
+
+        previousHead = currentHead;
+        currentHead = "Invoice";
+
+        this.driver.addXMLStructureNode(currentHead);
+        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
+
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.ATCUD.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.ATCUD.toString());
+
+        previousHead = currentHead;
+        currentHead = "DocumentStatus";
+
+        this.driver.addXMLStructureNode(currentHead);
+        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
+
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.SourceID.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.SourceID.toString());
+
+        currentHead = previousHead;
+        previousHead = "SalesInvoices";
+
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.Hash.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Hash.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.HashControl.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.HashControl.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.InvoiceType.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.InvoiceType.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.SpecialRegimes.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.SpecialRegimes.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.SourceID.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.SourceID.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.EACCode.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.EACCode.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.SystemEntryDate.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.SystemEntryDate.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.Transaction.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Transaction.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.Customer.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Customer.toString());
+
+
+        previousHead = currentHead;
+        currentHead = "ShipTo";
+
+        this.driver.addXMLStructureNode(currentHead);
+        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
+
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.Address.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Address.toString());
+
+        currentHead = previousHead;
+        previousHead = "SalesInvoices";
+
+        previousHead = currentHead;
+        currentHead = "ShipFrom";
+
+        this.driver.addXMLStructureNode(currentHead);
+        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
+
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.Address.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Address.toString());
+
+        currentHead = previousHead;
+        previousHead = "SalesInvoices";
+
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.MovementTime.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.MovementTime.toString());
+
+        previousHead = currentHead;
+        currentHead = "Line";
+
+        this.driver.addXMLStructureNode(currentHead);
+        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
+
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.OrderReferences.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.OrderReferences.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.Product.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Product.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.References.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.References.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.TaxTableEntry.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.TaxTableEntry.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.TaxExemption.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.TaxExemption.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.CustomsInformation.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.CustomsInformation.toString());
+
+        currentHead = previousHead;
+        previousHead = "SalesInvoices";
+
+        previousHead = currentHead;
+        currentHead = "DocumentTotals";
+
+        this.driver.addXMLStructureNode(currentHead);
+        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
+
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.Currency.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Currency.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.Settlement.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Settlement.toString());
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.Payment.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Payment.toString());
+
+        currentHead = previousHead;
+        previousHead = "SalesInvoices";
+
+        this.driver.addXMLStructureNode(SalesInvoicesEntities.WithholdingTax.toString());
+        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.WithholdingTax.toString());
     }
 
-    private void createXMLStructure() {
+    private void teste123() {
         String currentHead = null;
 
         this.driver.addXMLStructureNode("AuditFile");
@@ -559,10 +908,6 @@ public class MapperForSAFTPT {
         Payments, PaymentMethod, SourceDocumentID
     }
 
-    private enum XMLStructureRelationships {
-        TYPE_OF, CHILD_OF, HAS_CHILD
-    }
-
     private enum AuditFileEntities {
         Header, MasterFiles, GeneralLedgerEntries, SourceDocuments
     }
@@ -572,7 +917,7 @@ public class MapperForSAFTPT {
     }
 
     private enum HeaderEntities {
-        TaxAccountingBasis, Company, CompanyAddress, FiscalYear, TaxEntity, ProductCompany, Product, CompanyContact
+        TaxAccountingBasis, Company, CompanyAddress, FiscalYear, TaxEntity, ProductCompany, ProductSoftware, CompanyContact
     }
 
     private enum HeaderRelationships {
@@ -585,7 +930,43 @@ public class MapperForSAFTPT {
 
     }
 
-    private enum MasterFilesEntities{
-        GeneralLedgerAccounts, Customer, Supplier, Product, TaxTable
+    private enum MasterFilesEntities {
+        GeneralLedgerAccounts, Account, OpeningBalance, ClosingBalance, Group, TaxonomyCode, Customer, Supplier, Product, TaxTable
+    }
+
+    private enum MasterFilesRelationships {
+        HAS_GENERAL_LEDGER_ACCOUNTS, HAS_ACCOUNT, HAS_OPENING_BALANCE, HAS_CLOSING_BALANCE,
+        HAS_GROUP, HAS_TAXONOMY_CODE, HAS_CUSTOMER
+    }
+
+    private enum CustomerEntities {
+        Account, Company, BillingAddress, ShipToAddress, Contacts
+    }
+
+    private enum CustomerRelationships {
+        HAS_CUSTOMER_TAX_ID, HAS_COMPANY, HAS_BILLING_ADDRESS, HAS_SHIP_TO_ADDRESS, HAS_CONTACTS
+    }
+
+    private enum ProductEntities {
+        ProductType, ProductGroup, CustomDetails
+    }
+
+    private enum ProductRelationships {
+
+    }
+
+    private enum TaxTableEntities {
+        TaxType, TaxCountryRegion, TaxExpirationDate, TaxPercentage, TaxAmount
+    }
+
+    private enum SourceDocumentsEntities {
+
+    }
+
+    private enum SalesInvoicesEntities {
+        Total, Invoice, ATCUD, DocumentStatus, Hash, HashControl, InvoiceType, SpecialRegimes,
+        SourceID, EACCode, SystemEntryDate, Transaction, Customer, ShipTo, ShipFrom, Address,
+        MovementTime, Line, OrderReferences, Product, References, TaxTableEntry, TaxExemption,
+        CustomsInformation, DocumentTotals, Currency, Settlement, Payment, WithholdingTax
     }
 }
