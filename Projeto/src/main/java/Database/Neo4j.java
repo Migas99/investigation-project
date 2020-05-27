@@ -69,8 +69,8 @@ public class Neo4j {
     public void addXMLStructureRelationShip(String XMLElementOne, String XMLElementTwo) {
         try (Session session = this.driver.session()) {
             session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a:" + XMLElementOne + "),(b:" + XMLElementTwo + ")"
-                    + "CREATE (a)-[:CONTAINS]->(b)"
+                    + "MATCH (a:" + XMLElementOne + "),(b:" + XMLElementTwo + ") "
+                    + "CREATE (a)-[:CONTAINS]->(b) "
                     + "CREATE (b)-[:PART_OF]->(a)"
             ));
         }
@@ -79,41 +79,23 @@ public class Neo4j {
     /**
      * Adiciona uma relação entre dois nós do typeof
      *
-     * @param id id do nó que vai ser do tipo de
+     * @param id     id do nó que vai ser do tipo de
      * @param target nó com o label com o tipo
      */
     public void addRelationshipTypeOf(long id, String target) {
         try (Session session = this.driver.session()) {
             session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a),(b:" + target + ")"
-                    + "WHERE ID(a) = " + id
+                    + "MATCH (a),(b:" + target + ") "
+                    + "WHERE ID(a) = " + id + " "
                     + "CREATE (a)-[:TYPE_OF]->(b)"
             ));
         }
     }
 
-    /**
-     * Método responsável por criar um novo nó no grafo, e por devolver o seu
-     * unique ID
-     *
-     * @param label label do node
-     * @return o id único do node criado
-     */
-    public long addNode(String label) {
+    public long addNode(String XMLElement) {
         try (Session session = this.driver.session()) {
             Value answer = session.writeTransaction(tx -> tx.run(""
-                    + "CREATE (n:" + label + ":XMLStructure) "
-                    + "RETURN (n)"
-            ).single().get(0));
-
-            return answer.asNode().id();
-        }
-    }
-
-    public long addNode() {
-        try (Session session = this.driver.session()) {
-            Value answer = session.writeTransaction(tx -> tx.run(""
-                    + "CREATE (n:BasicNode)"
+                    + "CREATE (n:BasicNode { XMLElement: '" + XMLElement + "' } )"
                     + "RETURN (n)"
             ).single().get(0));
 
@@ -139,23 +121,6 @@ public class Neo4j {
     }
 
     /**
-     * Método responsável por adicionar um novo atributo a um nó
-     *
-     * @param targetNode
-     * @param parameter
-     * @param value
-     */
-    public void addAttributesToNode(String targetNode, String parameter, String value) {
-        try (Session session = this.driver.session()) {
-            session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (n) "
-                    + "WHERE ID(n) = " + targetNode + " "
-                    + "SET n." + parameter + " = '" + value + "'"
-            ));
-        }
-    }
-
-    /**
      * Método responsável pela criação de uma relação entre dois nós
      *
      * @param id1      id do primeiro nó
@@ -172,15 +137,212 @@ public class Neo4j {
         }
     }
 
-    /**
-     * Método responsável pela criação de uma relação entre dois nós
-     *
-     * @param relation relação entre os nós
-     */
-    public void addRelationship(String node1, String node2, String relation) {
+    public void addRelationshipToCompany(long id, String Company) {
         try (Session session = this.driver.session()) {
+            boolean isEmpty = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a) "
+                    + "WHERE a.CompanyName = '" + Company + "' "
+                    + "RETURN (a)"
+            ).list().isEmpty());
+
+            if (isEmpty) {
+                session.writeTransaction(tx -> tx.run(""
+                        + "MATCH (a:Company)"
+                        + "CREATE (b { CompanyName: '" + Company + "' })"
+                        + "CREATE (b)-[:TYPE_OF]->(a)"
+                ));
+            }
+
             session.writeTransaction(tx -> tx.run(""
-                    + "CREATE (" + node1 + ")-[:" + relation + "]->(" + node2 + ")"
+                    + "MATCH (a),(b) "
+                    + "WHERE ID(a) = " + id + " and b.CompanyName = '" + Company + "' "
+                    + "CREATE (a)-[:HAS_COMPANY]->(b)"
+            ));
+        }
+    }
+
+    public void addRelationshipToAccount(long id, String Account) {
+        try (Session session = this.driver.session()) {
+            boolean isEmpty = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a) "
+                    + "WHERE a.AccountID = '" + Account + "' "
+                    + "RETURN (a)"
+            ).list().isEmpty());
+
+            if (isEmpty) {
+                session.writeTransaction(tx -> tx.run(""
+                        + "MATCH (a:Account)"
+                        + "CREATE (b { AccountID: '" + Account + "' })"
+                        + "CREATE (b)-[:TYPE_OF]->(a)"
+                ));
+            }
+
+            session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a),(b) "
+                    + "WHERE ID(a) = " + id + " and b.AccountID = '" + Account + "' "
+                    + "CREATE (a)-[:HAS_ACCOUNT]->(b)"
+            ));
+        }
+    }
+
+    public void addRelationshipToCustomer(long id, String Customer) {
+        try (Session session = this.driver.session()) {
+            boolean isEmpty = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a) "
+                    + "WHERE a.CustomerID = '" + Customer + "' "
+                    + "RETURN (a)"
+            ).list().isEmpty());
+
+            if (isEmpty) {
+                session.writeTransaction(tx -> tx.run(""
+                        + "MATCH (a:Company)"
+                        + "CREATE (b { CustomerID: '" + Customer + "' })"
+                        + "CREATE (b)-[:TYPE_OF]->(a)"
+                ));
+            }
+
+            session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a),(b) "
+                    + "WHERE ID(a) = " + id + " and b.CustomerID = '" + Customer + "' "
+                    + "CREATE (a)-[:HAS_COMPANY]->(b)"
+            ));
+        }
+    }
+
+    /**
+     * INCOMPLETO
+     *
+     * @param id
+     * @param Company
+     */
+    public void addRelationshipToSupplier(long id, String Company) {
+        try (Session session = this.driver.session()) {
+            boolean isEmpty = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a) "
+                    + "WHERE a.CompanyName = " + Company + " "
+                    + "RETURN (a)"
+            ).list().isEmpty());
+
+            if (isEmpty) {
+                session.writeTransaction(tx -> tx.run(""
+                        + "MATCH (a:Company)"
+                        + "CREATE (b { CompanyName: '" + Company + "' })"
+                        + "CREATE (b)-[:TYPE_OF]->(a)"
+                ));
+            }
+
+            session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a),(b) "
+                    + "WHERE ID(a) = " + id + " and b.CompanyName = " + Company + " "
+                    + "CREATE (a)-[:HAS_COMPANY]->(b)"
+            ));
+        }
+    }
+
+    public void addRelationshipToProduct(long id, String Product) {
+        try (Session session = this.driver.session()) {
+            boolean isEmpty = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a) "
+                    + "WHERE a.ProductCode = '" + Product + "' "
+                    + "RETURN (a)"
+            ).list().isEmpty());
+
+            if (isEmpty) {
+                session.writeTransaction(tx -> tx.run(""
+                        + "MATCH (a:Company)"
+                        + "CREATE (b { ProductCode: '" + Product + "' })"
+                        + "CREATE (b)-[:TYPE_OF]->(a)"
+                ));
+            }
+
+            session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a),(b) "
+                    + "WHERE ID(a) = " + id + " and b.ProductCode = '" + Product + "' "
+                    + "CREATE (a)-[:HAS_PRODUCT]->(b)"
+            ));
+        }
+    }
+
+    /**
+     * INCOMPLETO
+     *
+     * @param id
+     * @param Company
+     */
+    public void addRelationshipToTaxTable(long id, String Company) {
+        try (Session session = this.driver.session()) {
+            boolean isEmpty = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a) "
+                    + "WHERE a.CompanyName = '" + Company + "' "
+                    + "RETURN (a)"
+            ).list().isEmpty());
+
+            if (isEmpty) {
+                session.writeTransaction(tx -> tx.run(""
+                        + "MATCH (a:Company)"
+                        + "CREATE (b { CompanyName: '" + Company + "' })"
+                        + "CREATE (b)-[:TYPE_OF]->(a)"
+                ));
+            }
+
+            session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a),(b) "
+                    + "WHERE ID(a) = " + id + " and b.CompanyName = '" + Company + "' "
+                    + "CREATE (a)-[:HAS_COMPANY]->(b)"
+            ));
+        }
+    }
+
+    public void addRelationshipToTransaction(long id, String Transaction) {
+        try (Session session = this.driver.session()) {
+            boolean isEmpty = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a) "
+                    + "WHERE a.TransactionID = " + Transaction + " "
+                    + "RETURN (a)"
+            ).list().isEmpty());
+
+            if (isEmpty) {
+                session.writeTransaction(tx -> tx.run(""
+                        + "MATCH (a:Company)"
+                        + "CREATE (b { TransactionID: '" + Transaction + "' })"
+                        + "CREATE (b)-[:TYPE_OF]->(a)"
+                ));
+            }
+
+            session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a),(b) "
+                    + "WHERE ID(a) = " + id + " and b.TransactionID = " + Transaction + " "
+                    + "CREATE (a)-[:HAS_TRANSACTION]->(b)"
+            ));
+        }
+    }
+
+    /**
+     * INCOMPLETO
+     *
+     * @param id
+     * @param Company
+     */
+    public void addRelationshipToSourceID(long id, String Company) {
+        try (Session session = this.driver.session()) {
+            boolean isEmpty = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a) "
+                    + "WHERE a.CompanyName = " + Company + " "
+                    + "RETURN (a)"
+            ).list().isEmpty());
+
+            if (isEmpty) {
+                session.writeTransaction(tx -> tx.run(""
+                        + "MATCH (a:Company)"
+                        + "CREATE (b { CompanyName: '" + Company + "' })"
+                        + "CREATE (b)-[:TYPE_OF]->(a)"
+                ));
+            }
+
+            session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a),(b) "
+                    + "WHERE ID(a) = " + id + " and b.CompanyName = " + Company + " "
+                    + "CREATE (a)-[:HAS_COMPANY]->(b)"
             ));
         }
     }
