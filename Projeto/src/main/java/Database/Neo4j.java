@@ -60,6 +60,21 @@ public class Neo4j {
         }
     }
 
+    public void addIdentityNode(String XMLElement){
+        try (Session session = this.driver.session()) {
+            boolean isUnique = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (n:" + XMLElement + ") "
+                    + "RETURN n"
+            ).list().isEmpty());
+
+            if (isUnique) {
+                session.writeTransaction(tx -> tx.run(""
+                        + "CREATE (" + XMLElement + ":" + XMLElement + ":XMLStructure)"
+                ));
+            }
+        }
+    }
+
     /**
      * Método responsável pela criação das relações entre nós relativos à estrutura do XML
      *
@@ -204,7 +219,7 @@ public class Neo4j {
             session.writeTransaction(tx -> tx.run(""
                     + "MATCH (a),(b) "
                     + "WHERE ID(a) = " + id + " and b.CustomerID = '" + Customer + "' "
-                    + "CREATE (a)-[:HAS_COMPANY]->(b)"
+                    + "CREATE (a)-[:HAS_CUSTOMER]->(b)"
             ));
         }
     }

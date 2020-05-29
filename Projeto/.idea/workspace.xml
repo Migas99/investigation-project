@@ -11,27 +11,6 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Database/Neo4j.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Database/Neo4j.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Exceptions/NodeException.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Exceptions/NodeException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Interface/Run.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Interface/Run.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$AuditFileEntities.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$AuditFileEntities.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$AuditFileRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$AuditFileRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$CustomerEntities.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$CustomerEntities.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$CustomerRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$CustomerRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$GeneralLedgerAccountsEntities.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$GeneralLedgerAccountsRelationships.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$HeaderEntities.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$HeaderEntities.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$HeaderRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$HeaderRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$Heads.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$Heads.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$MasterFilesEntities.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$MasterFilesEntities.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$MasterFilesRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$MasterFilesRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$ProductEntities.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$ProductEntities.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$ProductRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$ProductRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$SalesInvoicesEntities.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$SalesInvoicesEntities.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$SourceDocumentsEntities.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$SourceDocumentsEntities.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$TaxTableEntities.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$TaxTableEntities.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT$XMLStructureRelationships.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Exceptions/NodeException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Exceptions/NodeException.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -49,88 +28,90 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Mappers/MapperForSAFTPT.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="223">
-              <caret line="106" column="26" lean-forward="true" selection-start-line="106" selection-start-column="26" selection-end-line="106" selection-end-column="26" />
-              <folding>
-                <element signature="e#5134#5806#0" />
-                <element signature="method#processAuditFile#0;class#MapperForSAFTPT#0" />
-                <element signature="method#processAuditFileHeader#0;class#MapperForSAFTPT#0" />
-                <element signature="method#processAuditFileHeaderCompanyAddress#0;class#MapperForSAFTPT#0" />
-                <element signature="method#processAuditFileMasterFiles#0;class#MapperForSAFTPT#0" />
-                <element signature="method#processAuditFileMasterFilesGeneralLedgerAccounts#0;class#MapperForSAFTPT#0" />
-                <element signature="docComment;method#processAuditFileMasterFilesGeneralLedgerAccountsAccount#0;class#MapperForSAFTPT#0" />
-                <element signature="method#processAuditFileMasterFilesGeneralLedgerAccountsAccount#0;class#MapperForSAFTPT#0" />
-                <element signature="docComment;method#processAuditFileMasterFilesCustomer#0;class#MapperForSAFTPT#0" />
-                <element signature="method#processAuditFileMasterFilesCustomer#0;class#MapperForSAFTPT#0" />
-                <element signature="method#processAuditFileMasterFilesBillingAddress#0;class#MapperForSAFTPT#0" />
-                <element signature="docComment;method#processAuditFileMasterFilesShipToAddress#0;class#MapperForSAFTPT#0" />
-                <element signature="method#processAuditFileMasterFilesShipToAddress#0;class#MapperForSAFTPT#0" />
-                <element signature="e#37546#39886#0" />
-                <element signature="method#processAuditFileMasterFilesProductCustomsDetails#0;class#MapperForSAFTPT#0" />
-                <element signature="method#processAuditFileMasterFilesTaxTable#0;class#MapperForSAFTPT#0" />
-                <element signature="method#processAuditFileMasterFilesTaxTableTaxTableEntry#0;class#MapperForSAFTPT#0" />
-                <element signature="e#41214#54218#0" />
-                <element signature="e#42862#46676#0" />
-                <element signature="e#42668#42760#0" />
-                <element signature="e#46272#46477#0" />
-                <element signature="e#42821#42850#0" />
-                <element signature="e#42884#43011#0" />
-                <element signature="e#42988#43017#0" />
-                <element signature="e#57484#57513#0" />
-                <element signature="e#57480#63619#0" />
-                <element signature="e#51655#53734#0" />
-                <element signature="method#findNodeId#0;class#MapperForSAFTPT#0" />
-                <element signature="method#loadXMLStructure#0;class#MapperForSAFTPT#0" />
-                <element signature="docComment;method#teste123#0;class#MapperForSAFTPT#0" />
-                <element signature="method#teste123#0;class#MapperForSAFTPT#0" />
-                <element signature="method#getHeads#0;class#MapperForSAFTPT#0" />
-                <element signature="class#Heads#0;class#MapperForSAFTPT#0" />
-                <element signature="class#HeaderRelationships#0;class#MapperForSAFTPT#0" />
-                <element signature="class#GeneralLedgerAccountsRelationships#0;class#MapperForSAFTPT#0" />
-                <element signature="class#ProductEntities#0;class#MapperForSAFTPT#0" />
-                <element signature="e#63334#63401#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Database/Neo4j.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-447">
-              <caret line="137" column="5" selection-start-line="137" selection-start-column="5" selection-end-line="137" selection-end-column="5" />
-              <folding>
-                <element signature="docComment;class#Neo4j#0" />
-                <element signature="docComment;method#Neo4j#0;class#Neo4j#0" />
-                <element signature="method#Neo4j#0;class#Neo4j#0" />
-                <element signature="docComment;method#isXMLStructureLoaded#0;class#Neo4j#0" />
-                <element signature="e#732#1026#0" />
-                <element signature="docComment;method#addXMLStructureNode#0;class#Neo4j#0" />
-                <element signature="method#addXMLStructureNode#0;class#Neo4j#0" />
-                <element signature="docComment;method#addXMLStructureRelationShip#0;class#Neo4j#0" />
-                <element signature="method#addXMLStructureRelationShip#0;class#Neo4j#0" />
-                <element signature="docComment;method#addRelationshipTypeOf#0;class#Neo4j#0" />
-                <element signature="method#addRelationshipTypeOf#0;class#Neo4j#0" />
-                <element signature="method#addRelationshipToCompany#0;class#Neo4j#0" />
-                <element signature="method#addRelationshipToAccount#0;class#Neo4j#0" />
-                <element signature="method#addRelationshipToCustomer#0;class#Neo4j#0" />
-                <element signature="method#addRelationshipToTaxTable#0;class#Neo4j#0" />
-                <element signature="method#addRelationshipToTaxTable#0;class#Neo4j#0" />
-                <element signature="method#addRelationshipToTransaction#0;class#Neo4j#0" />
-                <element signature="docComment;method#close#0;class#Neo4j#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Mappers/MapperManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="11" column="28" lean-forward="true" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#processStartElement#0;class#MapperManager#0" />
+                <element signature="method#processEndElement#0;class#MapperManager#0" />
+                <element signature="method#processRootElement#0;class#MapperManager#0" />
+                <element signature="method#loadSequenceElements#0;class#MapperManager#0" />
+                <element signature="method#loadIdentitiesNodes#0;class#MapperManager#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Enums/EnumsOfEntities.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Enums/EnumsOfElements.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+              <folding>
+                <element signature="class#RootElement#0;class#EnumsOfElements#0" />
+                <element signature="class#AuditFile#0;class#EnumsOfElements#0" />
+                <element signature="class#Header#0;class#EnumsOfElements#0" />
+                <element signature="class#CompanyAddress#0;class#EnumsOfElements#0" />
+                <element signature="class#MasterFiles#0;class#EnumsOfElements#0" />
+                <element signature="class#GeneralLedgerAccounts#0;class#EnumsOfElements#0" />
+                <element signature="class#Account#0;class#EnumsOfElements#0" />
+                <element signature="class#Customer#0;class#EnumsOfElements#0" />
+                <element signature="class#BillingAddress#0;class#EnumsOfElements#0" />
+                <element signature="class#ShipToAddress#0;class#EnumsOfElements#0" />
+                <element signature="class#Supplier#0;class#EnumsOfElements#0" />
+                <element signature="class#ShipFromAddress#0;class#EnumsOfElements#0" />
+                <element signature="class#Product#0;class#EnumsOfElements#0" />
+                <element signature="class#CustomsDetails#0;class#EnumsOfElements#0" />
+                <element signature="class#TaxTable#0;class#EnumsOfElements#0" />
+                <element signature="class#TaxTableEntry#0;class#EnumsOfElements#0" />
+                <element signature="class#GeneralLedgerEntries#0;class#EnumsOfElements#0" />
+                <element signature="class#Journal#0;class#EnumsOfElements#0" />
+                <element signature="class#Transaction#0;class#EnumsOfElements#0" />
+                <element signature="class#Lines#0;class#EnumsOfElements#0" />
+                <element signature="class#CreditLine#0;class#EnumsOfElements#0" />
+                <element signature="class#DebitLine#0;class#EnumsOfElements#0" />
+                <element signature="class#SourceDocuments#0;class#EnumsOfElements#0" />
+                <element signature="class#SalesInvoices#0;class#EnumsOfElements#0" />
+                <element signature="class#Invoice#0;class#EnumsOfElements#0" />
+                <element signature="class#DocumentStatus#0;class#EnumsOfElements#0" />
+                <element signature="class#SpecialRegimes#0;class#EnumsOfElements#0" />
+                <element signature="class#ShipTo#0;class#EnumsOfElements#0" />
+                <element signature="class#ShipFrom#0;class#EnumsOfElements#0" />
+                <element signature="class#Address#0;class#EnumsOfElements#0" />
+                <element signature="class#Line#0;class#EnumsOfElements#0" />
+                <element signature="class#OrderReferences#0;class#EnumsOfElements#0" />
+                <element signature="class#References#0;class#EnumsOfElements#0" />
+                <element signature="class#ProductSerialNumber#0;class#EnumsOfElements#0" />
+                <element signature="class#Tax#0;class#EnumsOfElements#0" />
+                <element signature="class#CustomsInformation#0;class#EnumsOfElements#0" />
+                <element signature="class#DocumentTotals#0;class#EnumsOfElements#0" />
+                <element signature="class#Currency#0;class#EnumsOfElements#0" />
+                <element signature="class#Settlement#0;class#EnumsOfElements#0" />
+                <element signature="class#Payment#0;class#EnumsOfElements#0" />
+                <element signature="class#WithholdingTax#0;class#EnumsOfElements#0" />
+                <element signature="class#SequenceElements#0;class#EnumsOfElements#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Interface/Run.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
+            <state relative-caret-position="454">
+              <caret line="42" selection-start-line="42" selection-end-line="42" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -165,14 +146,19 @@
         <option value="$PROJECT_DIR$/src/main/java/Interface/Run.java" />
         <option value="$PROJECT_DIR$/src/main/java/Exceptions/NodeException.java" />
         <option value="$PROJECT_DIR$/src/main/java/Exceptions/MapException.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Database/Neo4j.java" />
         <option value="$PROJECT_DIR$/src/main/java/Mappers/MapperForSAFTPT.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Mappers/Enums.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Mappers/EnumOfEntities.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Database/Neo4j.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Mappers/EnumsOfEntities.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Mappers/EnumsOfElements.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Mappers/MapperManager.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-20" />
-    <option name="width" value="1030" />
+    <option name="width" value="1094" />
     <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -183,8 +169,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -224,6 +208,14 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Enums" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Projeto Final" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Projeto" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="Exceptions" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -254,10 +246,12 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1590610544696" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1590788751000" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
@@ -333,7 +327,7 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.29973823" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2033557" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -440,8 +434,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Database/Neo4j.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-447">
-          <caret line="137" column="5" selection-start-line="137" selection-start-column="5" selection-end-line="137" selection-end-column="5" />
+        <state relative-caret-position="199">
+          <caret line="62" column="50" selection-start-line="62" selection-start-column="50" selection-end-line="62" selection-end-column="50" />
           <folding>
             <element signature="docComment;class#Neo4j#0" />
             <element signature="docComment;method#Neo4j#0;class#Neo4j#0" />
@@ -449,7 +443,7 @@
             <element signature="docComment;method#isXMLStructureLoaded#0;class#Neo4j#0" />
             <element signature="e#732#1026#0" />
             <element signature="docComment;method#addXMLStructureNode#0;class#Neo4j#0" />
-            <element signature="method#addXMLStructureNode#0;class#Neo4j#0" />
+            <element signature="method#addIdentityNode#0;class#Neo4j#0" />
             <element signature="docComment;method#addXMLStructureRelationShip#0;class#Neo4j#0" />
             <element signature="method#addXMLStructureRelationShip#0;class#Neo4j#0" />
             <element signature="docComment;method#addRelationshipTypeOf#0;class#Neo4j#0" />
@@ -457,7 +451,6 @@
             <element signature="method#addRelationshipToCompany#0;class#Neo4j#0" />
             <element signature="method#addRelationshipToAccount#0;class#Neo4j#0" />
             <element signature="method#addRelationshipToCustomer#0;class#Neo4j#0" />
-            <element signature="method#addRelationshipToTaxTable#0;class#Neo4j#0" />
             <element signature="method#addRelationshipToTaxTable#0;class#Neo4j#0" />
             <element signature="method#addRelationshipToTransaction#0;class#Neo4j#0" />
             <element signature="docComment;method#close#0;class#Neo4j#0" />
@@ -467,56 +460,124 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Mappers/MapperForSAFTPT.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="106" column="26" lean-forward="true" selection-start-line="106" selection-start-column="26" selection-end-line="106" selection-end-column="26" />
+        <state relative-caret-position="789">
+          <caret line="174" column="93" selection-start-line="174" selection-start-column="93" selection-end-line="174" selection-end-column="93" />
           <folding>
-            <element signature="e#5134#5806#0" />
-            <element signature="method#processAuditFile#0;class#MapperForSAFTPT#0" />
-            <element signature="method#processAuditFileHeader#0;class#MapperForSAFTPT#0" />
-            <element signature="method#processAuditFileHeaderCompanyAddress#0;class#MapperForSAFTPT#0" />
-            <element signature="method#processAuditFileMasterFiles#0;class#MapperForSAFTPT#0" />
-            <element signature="method#processAuditFileMasterFilesGeneralLedgerAccounts#0;class#MapperForSAFTPT#0" />
-            <element signature="docComment;method#processAuditFileMasterFilesGeneralLedgerAccountsAccount#0;class#MapperForSAFTPT#0" />
-            <element signature="method#processAuditFileMasterFilesGeneralLedgerAccountsAccount#0;class#MapperForSAFTPT#0" />
-            <element signature="docComment;method#processAuditFileMasterFilesCustomer#0;class#MapperForSAFTPT#0" />
-            <element signature="method#processAuditFileMasterFilesCustomer#0;class#MapperForSAFTPT#0" />
-            <element signature="method#processAuditFileMasterFilesBillingAddress#0;class#MapperForSAFTPT#0" />
-            <element signature="docComment;method#processAuditFileMasterFilesShipToAddress#0;class#MapperForSAFTPT#0" />
-            <element signature="method#processAuditFileMasterFilesShipToAddress#0;class#MapperForSAFTPT#0" />
-            <element signature="e#37546#39886#0" />
-            <element signature="method#processAuditFileMasterFilesProductCustomsDetails#0;class#MapperForSAFTPT#0" />
-            <element signature="method#processAuditFileMasterFilesTaxTable#0;class#MapperForSAFTPT#0" />
-            <element signature="method#processAuditFileMasterFilesTaxTableTaxTableEntry#0;class#MapperForSAFTPT#0" />
-            <element signature="e#41214#54218#0" />
-            <element signature="e#42862#46676#0" />
-            <element signature="e#42668#42760#0" />
-            <element signature="e#46272#46477#0" />
-            <element signature="e#42821#42850#0" />
-            <element signature="e#42884#43011#0" />
-            <element signature="e#42988#43017#0" />
-            <element signature="e#57484#57513#0" />
-            <element signature="e#57480#63619#0" />
-            <element signature="e#51655#53734#0" />
-            <element signature="method#findNodeId#0;class#MapperForSAFTPT#0" />
-            <element signature="method#loadXMLStructure#0;class#MapperForSAFTPT#0" />
-            <element signature="docComment;method#teste123#0;class#MapperForSAFTPT#0" />
-            <element signature="method#teste123#0;class#MapperForSAFTPT#0" />
-            <element signature="method#getHeads#0;class#MapperForSAFTPT#0" />
-            <element signature="class#Heads#0;class#MapperForSAFTPT#0" />
-            <element signature="class#HeaderRelationships#0;class#MapperForSAFTPT#0" />
-            <element signature="class#GeneralLedgerAccountsRelationships#0;class#MapperForSAFTPT#0" />
-            <element signature="class#ProductEntities#0;class#MapperForSAFTPT#0" />
-            <element signature="e#63334#63401#0" />
+            <element signature="e#538#729#0" />
+            <element signature="e#5207#6079#0" />
+            <element signature="e#6085#6600#0" />
+            <element signature="e#6606#20341#0" />
+            <element signature="e#20347#24205#0" />
+            <element signature="e#24211#24878#0" />
+            <element signature="e#24884#26039#0" />
+            <element signature="e#26045#26074#0" />
+            <element signature="e#26045#27673#0" />
+            <element signature="e#27679#27708#0" />
+            <element signature="e#27679#33938#0" />
+            <element signature="e#33944#37659#0" />
+            <element signature="e#37665#37694#0" />
+            <element signature="e#37665#37813#0" />
+            <element signature="e#37819#40159#0" />
+            <element signature="e#40165#41251#0" />
+            <element signature="e#41257#41928#0" />
+            <element signature="e#41934#44932#0" />
+            <element signature="e#44938#45617#0" />
+            <element signature="e#45623#48648#0" />
+            <element signature="e#48654#51256#0" />
+            <element signature="e#51442#57578#0" />
+            <element signature="e#57584#60491#0" />
+            <element signature="e#60497#61967#0" />
+            <element signature="e#61973#62407#0" />
+            <element signature="e#62413#74205#0" />
+            <element signature="e#74211#74243#0" />
+            <element signature="e#74211#78476#0" />
+            <element signature="e#78482#78766#0" />
+            <element signature="e#80246#80587#0" />
+            <element signature="e#80985#81141#0" />
+            <element signature="e#81555#81640#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Interface/Run.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
+        <state relative-caret-position="454">
+          <caret line="42" selection-start-line="42" selection-end-line="42" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Enums/EnumsOfElements.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding>
+            <element signature="class#RootElement#0;class#EnumsOfElements#0" />
+            <element signature="class#AuditFile#0;class#EnumsOfElements#0" />
+            <element signature="class#Header#0;class#EnumsOfElements#0" />
+            <element signature="class#CompanyAddress#0;class#EnumsOfElements#0" />
+            <element signature="class#MasterFiles#0;class#EnumsOfElements#0" />
+            <element signature="class#GeneralLedgerAccounts#0;class#EnumsOfElements#0" />
+            <element signature="class#Account#0;class#EnumsOfElements#0" />
+            <element signature="class#Customer#0;class#EnumsOfElements#0" />
+            <element signature="class#BillingAddress#0;class#EnumsOfElements#0" />
+            <element signature="class#ShipToAddress#0;class#EnumsOfElements#0" />
+            <element signature="class#Supplier#0;class#EnumsOfElements#0" />
+            <element signature="class#ShipFromAddress#0;class#EnumsOfElements#0" />
+            <element signature="class#Product#0;class#EnumsOfElements#0" />
+            <element signature="class#CustomsDetails#0;class#EnumsOfElements#0" />
+            <element signature="class#TaxTable#0;class#EnumsOfElements#0" />
+            <element signature="class#TaxTableEntry#0;class#EnumsOfElements#0" />
+            <element signature="class#GeneralLedgerEntries#0;class#EnumsOfElements#0" />
+            <element signature="class#Journal#0;class#EnumsOfElements#0" />
+            <element signature="class#Transaction#0;class#EnumsOfElements#0" />
+            <element signature="class#Lines#0;class#EnumsOfElements#0" />
+            <element signature="class#CreditLine#0;class#EnumsOfElements#0" />
+            <element signature="class#DebitLine#0;class#EnumsOfElements#0" />
+            <element signature="class#SourceDocuments#0;class#EnumsOfElements#0" />
+            <element signature="class#SalesInvoices#0;class#EnumsOfElements#0" />
+            <element signature="class#Invoice#0;class#EnumsOfElements#0" />
+            <element signature="class#DocumentStatus#0;class#EnumsOfElements#0" />
+            <element signature="class#SpecialRegimes#0;class#EnumsOfElements#0" />
+            <element signature="class#ShipTo#0;class#EnumsOfElements#0" />
+            <element signature="class#ShipFrom#0;class#EnumsOfElements#0" />
+            <element signature="class#Address#0;class#EnumsOfElements#0" />
+            <element signature="class#Line#0;class#EnumsOfElements#0" />
+            <element signature="class#OrderReferences#0;class#EnumsOfElements#0" />
+            <element signature="class#References#0;class#EnumsOfElements#0" />
+            <element signature="class#ProductSerialNumber#0;class#EnumsOfElements#0" />
+            <element signature="class#Tax#0;class#EnumsOfElements#0" />
+            <element signature="class#CustomsInformation#0;class#EnumsOfElements#0" />
+            <element signature="class#DocumentTotals#0;class#EnumsOfElements#0" />
+            <element signature="class#Currency#0;class#EnumsOfElements#0" />
+            <element signature="class#Settlement#0;class#EnumsOfElements#0" />
+            <element signature="class#Payment#0;class#EnumsOfElements#0" />
+            <element signature="class#WithholdingTax#0;class#EnumsOfElements#0" />
+            <element signature="class#SequenceElements#0;class#EnumsOfElements#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Enums/EnumsOfEntities.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Mappers/MapperManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="28" lean-forward="true" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#processStartElement#0;class#MapperManager#0" />
+            <element signature="method#processEndElement#0;class#MapperManager#0" />
+            <element signature="method#processRootElement#0;class#MapperManager#0" />
+            <element signature="method#loadSequenceElements#0;class#MapperManager#0" />
+            <element signature="method#loadIdentitiesNodes#0;class#MapperManager#0" />
           </folding>
         </state>
       </provider>
