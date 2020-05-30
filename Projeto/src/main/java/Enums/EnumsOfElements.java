@@ -320,6 +320,7 @@ public class EnumsOfElements {
 
         public static final String DeliveryID = "DeliveryID";
         public static final String DeliveryDate = "DeliveryDate";
+        public static final String Address = "Address";
     }
 
     public enum ShipFrom {
@@ -327,6 +328,7 @@ public class EnumsOfElements {
 
         public static final String DeliveryID = "DeliveryID";
         public static final String DeliveryDate = "DeliveryDate";
+        public static final String Address = "Address";
     }
 
     public enum Address {
