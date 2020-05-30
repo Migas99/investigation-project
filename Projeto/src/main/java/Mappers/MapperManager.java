@@ -112,7 +112,7 @@ public class MapperManager {
 
         } else {
 
-            throw new MapException();
+            throw new MapException(this.manageSequenceElements.get(count));
 
         }
     }
@@ -184,7 +184,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(this.manageSequenceElements.get(count));
         }
     }
 
@@ -261,7 +261,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(XMLElement);
             }
 
         } else {
@@ -279,7 +279,7 @@ public class MapperManager {
 
             } else {
 
-                throw new MapException();
+                throw new MapException(this.manageSequenceElements.get(count));
 
             }
 
@@ -312,7 +312,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -393,7 +393,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(this.manageSequenceElements.get(count));
         }
 
     }
@@ -407,7 +407,7 @@ public class MapperManager {
 
             } else {
 
-                throw new MapException();
+                throw new MapException(XMLElement);
 
             }
 
@@ -426,7 +426,7 @@ public class MapperManager {
 
             } else {
 
-                throw new MapException();
+                throw new MapException(this.manageSequenceElements.get(count));
 
             }
 
@@ -466,7 +466,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
     }
 
@@ -507,7 +507,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(XMLElement);
             }
 
         } else {
@@ -541,7 +541,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(this.manageSequenceElements.get(count));
             }
 
         }
@@ -584,7 +584,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(XMLElement);
             }
 
         } else {
@@ -618,7 +618,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(this.manageSequenceElements.get(count));
             }
 
         }
@@ -647,7 +647,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(XMLElement);
             }
 
         } else {
@@ -665,7 +665,7 @@ public class MapperManager {
 
             } else {
 
-                throw new MapException();
+                throw new MapException(this.manageSequenceElements.get(count));
 
             }
 
@@ -684,7 +684,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
 
         }
 
@@ -705,7 +705,7 @@ public class MapperManager {
 
         } else {
 
-            throw new MapException();
+            throw new MapException(this.manageSequenceElements.get(count));
 
         }
 
@@ -737,7 +737,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -758,7 +758,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(XMLElement);
             }
 
         } else {
@@ -777,7 +777,7 @@ public class MapperManager {
 
             } else {
 
-                throw new MapException();
+                throw new MapException(this.manageSequenceElements.get(count));
 
             }
 
@@ -798,7 +798,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(XMLElement);
             }
 
         } else {
@@ -817,7 +817,7 @@ public class MapperManager {
 
             } else {
 
-                throw new MapException();
+                throw new MapException(this.manageSequenceElements.get(count));
 
             }
 
@@ -862,7 +862,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(XMLElement);
             }
 
         } else {
@@ -881,7 +881,7 @@ public class MapperManager {
 
             } else {
 
-                throw new MapException();
+                throw new MapException(this.manageSequenceElements.get(count));
 
             }
 
@@ -920,7 +920,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(this.manageSequenceElements.get(count));
         }
 
     }
@@ -945,7 +945,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -970,7 +970,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -1036,7 +1036,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(this.manageSequenceElements.get(count));
         }
 
     }
@@ -1057,7 +1057,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(XMLElement);
             }
 
         } else {
@@ -1076,7 +1076,7 @@ public class MapperManager {
 
             } else {
 
-                throw new MapException();
+                throw new MapException(this.manageSequenceElements.get(count));
 
             }
 
@@ -1133,7 +1133,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(XMLElement);
             }
 
         } else {
@@ -1236,7 +1236,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(this.manageSequenceElements.get(count));
             }
 
         }
@@ -1263,7 +1263,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -1282,7 +1282,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -1300,7 +1300,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(XMLElement);
             }
 
         } else {
@@ -1318,7 +1318,7 @@ public class MapperManager {
 
             } else {
 
-                throw new MapException();
+                throw new MapException(this.manageSequenceElements.get(count));
 
             }
 
@@ -1339,7 +1339,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(XMLElement);
             }
 
         } else {
@@ -1357,7 +1357,7 @@ public class MapperManager {
 
             } else {
 
-                throw new MapException();
+                throw new MapException(this.manageSequenceElements.get(count));
 
             }
 
@@ -1414,7 +1414,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(XMLElement);
             }
 
         } else {
@@ -1487,7 +1487,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(this.manageSequenceElements.get(count));
             }
 
         }
@@ -1505,7 +1505,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -1521,7 +1521,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -1533,7 +1533,7 @@ public class MapperManager {
 
         } else {
 
-            throw new MapException();
+            throw new MapException(XMLElement);
 
         }
 
@@ -1559,7 +1559,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -1575,7 +1575,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -1596,7 +1596,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(XMLElement);
             }
 
         } else {
@@ -1643,7 +1643,7 @@ public class MapperManager {
                     break;
 
                 default:
-                    throw new MapException();
+                    throw new MapException(this.manageSequenceElements.get(count));
             }
 
         }
@@ -1664,7 +1664,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -1686,7 +1686,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -1705,7 +1705,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -1724,7 +1724,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -1755,7 +1755,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -1786,7 +1786,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -1817,7 +1817,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
@@ -1848,7 +1848,7 @@ public class MapperManager {
                 break;
 
             default:
-                throw new MapException();
+                throw new MapException(XMLElement);
         }
 
     }
