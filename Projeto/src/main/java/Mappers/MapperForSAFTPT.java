@@ -20,12 +20,12 @@ public class MapperForSAFTPT {
 
     public MapperForSAFTPT(Neo4j driver) {
         this.driver = driver;
-        this.heads = this.getHeads();
+        //this.heads = this.getHeads();
         this.headsCheck = new LinkedList<>();
-        this.loadXMLStructure();
+        //this.loadXMLStructure();
     }
 
-    public void processStartElement(String XMLElement, String value) {
+    /*public void processStartElement(String XMLElement, String value) {
 
         if (this.heads.contains(XMLElement)) {
             this.headsCheck.add(XMLElement);
@@ -492,9 +492,7 @@ public class MapperForSAFTPT {
         }
     }
 
-    /**
-     * INCOMPLETO
-     */
+
     private void processAuditFileMasterFilesGeneralLedgerAccountsAccount(String XMLElement, String value) throws MapException {
         try {
             switch (XMLElement) {
@@ -545,9 +543,7 @@ public class MapperForSAFTPT {
         }
     }
 
-    /**
-     * INCOMPLETO
-     */
+
     private void processAuditFileMasterFilesCustomer(String XMLElement, String value) throws MapException {
         try {
             switch (XMLElement) {
@@ -729,9 +725,7 @@ public class MapperForSAFTPT {
         }
     }
 
-    /**
-     * INCOMPLETO
-     */
+
     private void processAuditFileMasterFilesShipToAddress(String XMLElement, String value) throws MapException {
     }
 
@@ -955,10 +949,6 @@ public class MapperForSAFTPT {
         }
     }
 
-    /**
-     * INCOMPLETO
-     * O INVOICETYPE NÃO É ATRIBUTO, É NODE
-     */
     private void processAuditFileSourceDocumentsSalesInvoicesInvoice(String XMLElement, String value) throws MapException {
         try {
             switch (XMLElement) {
@@ -1033,16 +1023,10 @@ public class MapperForSAFTPT {
         }
     }
 
-    /**
-     * INCOMPLETO
-     */
     private void processAuditFileSourceDocumentsSalesInvoicesInvoiceDocumentStatus(String XMLElement, String value) throws MapException {
 
     }
 
-    /**
-     * INCOMPLETO
-     */
     private void processAuditFileSourceDocumentsSalesInvoicesInvoiceLine(String XMLElement, String value) throws MapException {
         try {
             switch (XMLElement) {
@@ -1155,9 +1139,6 @@ public class MapperForSAFTPT {
         }
     }
 
-    /**
-     * INCOMPLETO
-     */
     private void processAuditFileSourceDocumentsSalesInvoicesInvoiceLineTax(String XMLElement, String value) throws MapException {
         try {
             switch (XMLElement) {
@@ -1261,327 +1242,9 @@ public class MapperForSAFTPT {
         }
 
         throw new NodeException("Node '" + XMLElement + "' not found!");
-    }
+    }*/
 
-    private void loadXMLStructure() {
-        String previousHead = null;
-        String currentHead = "AuditFile";
-
-        this.driver.addXMLStructureNode(currentHead);
-
-        /**
-         * HEADER
-         */
-        previousHead = currentHead;
-        currentHead = AuditFileEntities.Header.toString();
-
-        this.driver.addXMLStructureNode(currentHead);
-        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
-
-        this.driver.addXMLStructureNode(HeaderEntities.TaxAccountingBasis.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.TaxAccountingBasis.toString());
-        this.driver.addXMLStructureNode(HeaderEntities.Company.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.Company.toString());
-        this.driver.addXMLStructureNode(AddressEntities.CompanyAddress.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, AddressEntities.CompanyAddress.toString());
-        this.driver.addXMLStructureNode(HeaderEntities.FiscalYear.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.FiscalYear.toString());
-        this.driver.addXMLStructureNode(HeaderEntities.TaxEntity.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.TaxEntity.toString());
-        this.driver.addXMLStructureNode(HeaderEntities.ProductCompany.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.ProductCompany.toString());
-        this.driver.addXMLStructureNode(HeaderEntities.ProductSoftware.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.ProductSoftware.toString());
-        this.driver.addXMLStructureNode(HeaderEntities.CompanyContact.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, HeaderEntities.CompanyContact.toString());
-
-        currentHead = previousHead;
-        previousHead = null;
-
-        /**
-         * MASTERFILES
-         */
-
-        previousHead = currentHead;
-        currentHead = "MasterFiles";
-
-        this.driver.addXMLStructureNode(currentHead);
-        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
-
-        /**
-         * CUSTOMER
-         */
-
-        previousHead = currentHead;
-        currentHead = "Customer";
-
-        this.driver.addXMLStructureNode(currentHead);
-        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
-
-        this.driver.addXMLStructureNode(CustomerEntities.Company.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, CustomerEntities.Company.toString());
-        this.driver.addXMLStructureNode(CustomerEntities.BillingAddress.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, CustomerEntities.BillingAddress.toString());
-        this.driver.addXMLStructureNode(CustomerEntities.ShipToAddress.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, CustomerEntities.ShipToAddress.toString());
-        this.driver.addXMLStructureNode(CustomerEntities.Contacts.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, CustomerEntities.Contacts.toString());
-
-        currentHead = previousHead;
-        previousHead = "AuditFile";
-
-        /**
-         * Supplier
-         */
-
-        /**
-         * Product
-         */
-
-        previousHead = currentHead;
-        currentHead = "Product";
-
-        this.driver.addXMLStructureNode(currentHead);
-        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
-
-        this.driver.addXMLStructureNode(ProductEntities.ProductType.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, ProductEntities.ProductType.toString());
-        this.driver.addXMLStructureNode(ProductEntities.ProductGroup.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, ProductEntities.ProductGroup.toString());
-        this.driver.addXMLStructureNode(ProductEntities.CustomDetails.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, ProductEntities.CustomDetails.toString());
-
-        currentHead = previousHead;
-        previousHead = "AuditFile";
-
-        /**
-         * TaxTable
-         */
-
-        previousHead = currentHead;
-        currentHead = "TaxTable";
-
-        this.driver.addXMLStructureNode(currentHead);
-        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
-
-        previousHead = currentHead;
-        currentHead = "TaxTableEntry";
-
-        this.driver.addXMLStructureNode(currentHead);
-        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
-
-        this.driver.addXMLStructureNode(TaxTableEntities.TaxExpirationDate.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, TaxTableEntities.TaxExpirationDate.toString());
-
-        currentHead = "AuditFile";
-        previousHead = null;
-
-        /**
-         * SourceDocuments
-         */
-
-        previousHead = currentHead;
-        currentHead = "SourceDocuments";
-
-        this.driver.addXMLStructureNode(currentHead);
-        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
-
-        previousHead = currentHead;
-        currentHead = "SalesInvoices";
-
-        this.driver.addXMLStructureNode(currentHead);
-        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
-
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.Total.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Total.toString());
-
-        previousHead = currentHead;
-        currentHead = "Invoice";
-
-        this.driver.addXMLStructureNode(currentHead);
-        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
-
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.ATCUD.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.ATCUD.toString());
-
-        previousHead = currentHead;
-        currentHead = "DocumentStatus";
-
-        this.driver.addXMLStructureNode(currentHead);
-        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
-
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.SourceID.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.SourceID.toString());
-
-        currentHead = previousHead;
-        previousHead = "SalesInvoices";
-
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.Hash.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Hash.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.HashControl.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.HashControl.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.InvoiceType.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.InvoiceType.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.SpecialRegimes.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.SpecialRegimes.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.SourceID.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.SourceID.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.EACCode.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.EACCode.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.Transaction.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Transaction.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.Customer.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Customer.toString());
-
-
-        previousHead = currentHead;
-        currentHead = "ShipTo";
-
-        this.driver.addXMLStructureNode(currentHead);
-        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
-
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.Address.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Address.toString());
-
-        currentHead = previousHead;
-        previousHead = "SalesInvoices";
-
-        previousHead = currentHead;
-        currentHead = "ShipFrom";
-
-        this.driver.addXMLStructureNode(currentHead);
-        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
-
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.Address.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Address.toString());
-
-        currentHead = previousHead;
-        previousHead = "SalesInvoices";
-
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.MovementTime.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.MovementTime.toString());
-
-        previousHead = currentHead;
-        currentHead = "Line";
-
-        this.driver.addXMLStructureNode(currentHead);
-        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
-
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.OrderReferences.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.OrderReferences.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.Product.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Product.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.References.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.References.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.Tax.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Tax.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.TaxExemption.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.TaxExemption.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.CustomsInformation.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.CustomsInformation.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.Amount.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Amount.toString());
-
-        currentHead = previousHead;
-        previousHead = "SalesInvoices";
-
-        previousHead = currentHead;
-        currentHead = "DocumentTotals";
-
-        this.driver.addXMLStructureNode(currentHead);
-        this.driver.addXMLStructureRelationShip(previousHead, currentHead);
-
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.Currency.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Currency.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.Settlement.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Settlement.toString());
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.Payment.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.Payment.toString());
-
-        currentHead = previousHead;
-        previousHead = "SalesInvoices";
-
-        this.driver.addXMLStructureNode(SalesInvoicesEntities.WithholdingTax.toString());
-        this.driver.addXMLStructureRelationShip(currentHead, SalesInvoicesEntities.WithholdingTax.toString());
-    }
-
-    /**
-     * Não utilizado
-     */
-    private void teste123() {
-        String currentHead = null;
-
-        this.driver.addXMLStructureNode("AuditFile");
-        currentHead = "AuditFile";
-
-        this.driver.addXMLStructureNode("Header");
-        this.driver.addXMLStructureRelationShip(currentHead, "Header");
-        currentHead = "Header";
-
-        this.driver.addXMLStructureNode("AuditFileVersion");
-        this.driver.addXMLStructureRelationShip(currentHead, "AuditFileVersion");
-        this.driver.addXMLStructureNode("CompanyId");
-        this.driver.addXMLStructureRelationShip(currentHead, "CompanyId");
-        this.driver.addXMLStructureNode("TaxRegistrationNumber");
-        this.driver.addXMLStructureRelationShip(currentHead, "TaxRegistrationNumber");
-        this.driver.addXMLStructureNode("TaxAccountingBasis");
-        this.driver.addXMLStructureRelationShip(currentHead, "TaxAccountingBasis");
-        this.driver.addXMLStructureNode("CompanyName");
-        this.driver.addXMLStructureRelationShip(currentHead, "CompanyName");
-        this.driver.addXMLStructureNode("BusinessName");
-        this.driver.addXMLStructureRelationShip(currentHead, "BusinessName");
-        this.driver.addXMLStructureNode("FiscalYear");
-        this.driver.addXMLStructureRelationShip(currentHead, "FiscalYear");
-        this.driver.addXMLStructureNode("StartDate");
-        this.driver.addXMLStructureRelationShip(currentHead, "StartDate");
-        this.driver.addXMLStructureNode("EndDate");
-        this.driver.addXMLStructureRelationShip(currentHead, "EndDate");
-        this.driver.addXMLStructureNode("CurrencyCode");
-        this.driver.addXMLStructureRelationShip(currentHead, "CurrencyCode");
-        this.driver.addXMLStructureNode("DateCreated");
-        this.driver.addXMLStructureRelationShip(currentHead, "DateCreated");
-        this.driver.addXMLStructureNode("TaxEntity");
-        this.driver.addXMLStructureRelationShip(currentHead, "TaxEntity");
-        this.driver.addXMLStructureNode("ProductCompanyTaxID");
-        this.driver.addXMLStructureRelationShip(currentHead, "ProductCompanyTaxID");
-        this.driver.addXMLStructureNode("SoftwareCertificateNumber");
-        this.driver.addXMLStructureRelationShip(currentHead, "SoftwareCertificateNumber");
-        this.driver.addXMLStructureNode("ProductID");
-        this.driver.addXMLStructureRelationShip(currentHead, "ProductID");
-        this.driver.addXMLStructureNode("ProductVersion");
-        this.driver.addXMLStructureRelationShip(currentHead, "ProductVersion");
-        this.driver.addXMLStructureNode("HeaderComment");
-        this.driver.addXMLStructureRelationShip(currentHead, "HeaderComment");
-        this.driver.addXMLStructureNode("Telephone");
-        this.driver.addXMLStructureRelationShip(currentHead, "Telephone");
-        this.driver.addXMLStructureNode("Fax");
-        this.driver.addXMLStructureRelationShip(currentHead, "Fax");
-        this.driver.addXMLStructureNode("Email");
-        this.driver.addXMLStructureRelationShip(currentHead, "Email");
-        this.driver.addXMLStructureNode("Website");
-        this.driver.addXMLStructureRelationShip(currentHead, "Website");
-
-        this.driver.addXMLStructureNode("CompanyAddress");
-        this.driver.addXMLStructureRelationShip(currentHead, "CompanyAddress");
-        currentHead = "CompanyAddress";
-
-        this.driver.addXMLStructureNode("BuildingNumber");
-        this.driver.addXMLStructureRelationShip(currentHead, "BuildingNumber");
-        this.driver.addXMLStructureNode("StreetName");
-        this.driver.addXMLStructureRelationShip(currentHead, "StreetName");
-        this.driver.addXMLStructureNode("AddressDetail");
-        this.driver.addXMLStructureRelationShip(currentHead, "AddressDetail");
-        this.driver.addXMLStructureNode("City");
-        this.driver.addXMLStructureRelationShip(currentHead, "City");
-        this.driver.addXMLStructureNode("PostalCode");
-        this.driver.addXMLStructureRelationShip(currentHead, "PostalCode");
-        this.driver.addXMLStructureNode("Region");
-        this.driver.addXMLStructureRelationShip(currentHead, "Region");
-        this.driver.addXMLStructureNode("Country");
-        this.driver.addXMLStructureRelationShip(currentHead, "Country");
-    }
-
-    private LinkedList<String> getHeads() {
+    /*private LinkedList<String> getHeads() {
         Heads[] headsEnum = Heads.values();
         LinkedList<String> heads = new LinkedList<>();
 
@@ -1699,5 +1362,5 @@ public class MapperForSAFTPT {
     private enum SalesInvoicesRelationships {
         HAS_TOTAL, HAS_INVOICE, HAS_LINE, HAS_AMOUNT, HAS_DEBIT_AMOUNT, HAS_CREDIT_AMOUNT, HAS_SETTLEMENT_AMOUNT, HAS_TAX, HAS_TAX_TYPE,
         HAS_TAX_COUNTRY_REGION, HAS_TAX_PERCENTAGE, HAS_TAX_AMOUNT, HAS_DOCUMENT_TOTALS
-    }
+    } */
 }

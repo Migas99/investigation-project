@@ -17,6 +17,10 @@ public class GraphNode {
         this.value = null;
     }
 
+    public GraphNode(String XMLElement) {
+        this.XMLElement = XMLElement;
+    }
+
     public long getId() {
         return id;
     }
