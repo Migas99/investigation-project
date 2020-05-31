@@ -30,7 +30,7 @@ public class Run {
     private static final String password = "12345";
 
     public static void main(String[] args) {
-        if (validateXML(XMLFile2, XSDFile)) {
+        if (validateXML(XMLFile1, XSDFile)) {
             System.out.println("Ficheiro válido!");
         } else {
             System.out.println("Ficheiro inválido!");
@@ -38,7 +38,7 @@ public class Run {
 
         Neo4j driver = new Neo4j(URL, user, password);
         StAX parser = new StAX(driver);
-        parser.processXMLToNeo4j(XMLFile2);
+        parser.processXMLToNeo4j(XMLFile1);
     }
 
     public static boolean validateXML(String XMLFile, String XSDFile) {

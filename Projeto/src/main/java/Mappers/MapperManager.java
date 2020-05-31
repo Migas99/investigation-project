@@ -37,7 +37,6 @@ public class MapperManager {
             }
 
             int count = 0;
-
             this.processRootElement(XMLElement, value, count);
 
         } catch (MapException | NodeException e) {
@@ -105,7 +104,6 @@ public class MapperManager {
 
             } else {
 
-                count++;
                 this.processAuditFileChildren(XMLElement, value, count);
 
             }
@@ -119,6 +117,8 @@ public class MapperManager {
 
     private void processAuditFileChildren(String XMLElement, String value, int count) throws MapException, NodeException {
 
+        count++;
+
         switch (this.manageSequenceElements.get(count)) {
 
             case EnumsOfElements.AuditFile.Header:
@@ -131,7 +131,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     this.processHeaderChildren(XMLElement, value, count);
 
                 }
@@ -145,7 +144,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     this.processMasterFilesChildren(XMLElement, value, count);
 
                 }
@@ -162,7 +160,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     this.processGeneralLedgerEntriesChildren(XMLElement, value, count);
 
                 }
@@ -176,7 +173,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     this.processSourceDocumentsChildren(XMLElement, value, count);
 
                 }
@@ -266,6 +262,8 @@ public class MapperManager {
 
         } else {
 
+            count++;
+
             if (EnumsOfElements.Header.CompanyAddress.equalsIgnoreCase(this.manageSequenceElements.get(count))) {
 
                 if (EnumsOfElements.Header.CompanyAddress.equals(XMLElement)) {
@@ -319,6 +317,8 @@ public class MapperManager {
 
     private void processMasterFilesChildren(String XMLElement, String value, int count) throws MapException, NodeException {
 
+        count++;
+
         switch (this.manageSequenceElements.get(count)) {
 
             case EnumsOfElements.MasterFiles.GeneralLedgerAccounts:
@@ -328,7 +328,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     this.processGeneralLedgerAccountsChildren(XMLElement, value, count);
 
                 }
@@ -342,7 +341,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     this.processCustomerChildren(XMLElement, value, count);
 
                 }
@@ -357,7 +355,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     this.processSupplierChildren(XMLElement, value, count);
 
                 }
@@ -371,7 +368,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     this.processProductChildren(XMLElement, value, count);
 
                 }
@@ -385,7 +381,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     this.processTaxTableChildren(XMLElement, value, count);
 
                 }
@@ -412,6 +407,8 @@ public class MapperManager {
             }
 
         } else {
+
+            count++;
 
             if (EnumsOfElements.GeneralLedgerAccounts.Account.equals(this.manageSequenceElements.get(count))) {
 
@@ -512,6 +509,8 @@ public class MapperManager {
 
         } else {
 
+            count++;
+
             switch (this.manageSequenceElements.get(count)) {
 
                 case EnumsOfElements.Customer.BillingAddress:
@@ -589,6 +588,8 @@ public class MapperManager {
 
         } else {
 
+            count++;
+
             switch (this.manageSequenceElements.get(count)) {
 
                 case EnumsOfElements.Supplier.BillingAddress:
@@ -652,6 +653,8 @@ public class MapperManager {
 
         } else {
 
+            count++;
+
             if (EnumsOfElements.Product.CustomsDetails.equalsIgnoreCase(this.manageSequenceElements.get(count))) {
 
                 if (EnumsOfElements.Product.CustomsDetails.equalsIgnoreCase(XMLElement)) {
@@ -691,6 +694,8 @@ public class MapperManager {
     }
 
     private void processTaxTableChildren(String XMLElement, String value, int count) throws MapException, NodeException {
+
+        count++;
 
         if (EnumsOfElements.TaxTable.TaxTableEntry.equalsIgnoreCase(this.manageSequenceElements.get(count))) {
 
@@ -763,6 +768,8 @@ public class MapperManager {
 
         } else {
 
+            count++;
+
             if (EnumsOfElements.GeneralLedgerEntries.Journal.equalsIgnoreCase(this.manageSequenceElements.get(count))) {
 
                 if (EnumsOfElements.GeneralLedgerEntries.Journal.equalsIgnoreCase(XMLElement)) {
@@ -770,7 +777,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     this.processJournalChildren(XMLElement, value, count);
 
                 }
@@ -803,6 +809,8 @@ public class MapperManager {
 
         } else {
 
+            count++;
+
             if (EnumsOfElements.Journal.Transaction.equalsIgnoreCase(this.manageSequenceElements.get(count))) {
 
                 if (EnumsOfElements.Journal.Transaction.equalsIgnoreCase(XMLElement)) {
@@ -810,7 +818,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     this.processTransactionChildren(XMLElement, value, count);
 
                 }
@@ -867,6 +874,8 @@ public class MapperManager {
 
         } else {
 
+            count++;
+
             if (EnumsOfElements.Transaction.Lines.equalsIgnoreCase(this.manageSequenceElements.get(count))) {
 
                 if (EnumsOfElements.Transaction.Lines.equalsIgnoreCase(XMLElement)) {
@@ -874,7 +883,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     this.processLinesChildren(XMLElement, value, count);
 
                 }
@@ -890,6 +898,8 @@ public class MapperManager {
     }
 
     private void processLinesChildren(String XMLElement, String value, int count) throws MapException, NodeException {
+
+        count++;
 
         switch (this.manageSequenceElements.get(count)) {
 
@@ -977,6 +987,8 @@ public class MapperManager {
 
     private void processSourceDocumentsChildren(String XMLElement, String value, int count) throws MapException, NodeException {
 
+        count++;
+
         switch (this.manageSequenceElements.get(count)) {
 
             case EnumsOfElements.SourceDocuments.SalesInvoices:
@@ -986,7 +998,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     this.processSalesInvoicesChildren(XMLElement, value, count);
 
                 }
@@ -1000,7 +1011,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     //this.processMovementOfGoodsChildren(XMLElement, value, count);
 
                 }
@@ -1014,7 +1024,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     //this.processWorkingDocumentsChildren(XMLElement, value, count);
 
                 }
@@ -1028,7 +1037,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     //this.processPaymentsChildren(XMLElement, value, count);
 
                 }
@@ -1062,6 +1070,8 @@ public class MapperManager {
 
         } else {
 
+            count++;
+
             if (EnumsOfElements.SalesInvoices.Invoice.equalsIgnoreCase(this.manageSequenceElements.get(count))) {
 
                 if (EnumsOfElements.SalesInvoices.Invoice.equalsIgnoreCase(XMLElement)) {
@@ -1069,7 +1079,6 @@ public class MapperManager {
 
                 } else {
 
-                    count++;
                     this.processInvoiceChildren(XMLElement, value, count);
 
                 }
@@ -1138,6 +1147,8 @@ public class MapperManager {
 
         } else {
 
+            count++;
+
             switch (this.manageSequenceElements.get(count)) {
 
                 case EnumsOfElements.Invoice.DocumentStatus:
@@ -1173,7 +1184,6 @@ public class MapperManager {
 
                     } else {
 
-                        count++;
                         this.processShipToChildren(XMLElement, value, count);
 
                     }
@@ -1187,7 +1197,6 @@ public class MapperManager {
 
                     } else {
 
-                        count++;
                         this.processShipFromChildren(XMLElement, value, count);
 
                     }
@@ -1201,7 +1210,6 @@ public class MapperManager {
 
                     } else {
 
-                        count++;
                         this.processLineChildren(XMLElement, value, count);
 
                     }
@@ -1215,7 +1223,6 @@ public class MapperManager {
 
                     } else {
 
-                        count++;
                         this.processDocumentTotalsChildren(XMLElement, value, count);
 
                     }
@@ -1305,6 +1312,8 @@ public class MapperManager {
 
         } else {
 
+            count++;
+
             if (EnumsOfElements.ShipTo.Address.equalsIgnoreCase(this.manageSequenceElements.get(count))) {
 
                 if (EnumsOfElements.ShipTo.Address.equalsIgnoreCase(XMLElement)) {
@@ -1343,6 +1352,8 @@ public class MapperManager {
             }
 
         } else {
+
+            count++;
 
             if (EnumsOfElements.ShipFrom.Address.equalsIgnoreCase(this.manageSequenceElements.get(count))) {
 
@@ -1418,6 +1429,8 @@ public class MapperManager {
             }
 
         } else {
+
+            count++;
 
             switch (this.manageSequenceElements.get(count)) {
 
@@ -1600,6 +1613,8 @@ public class MapperManager {
             }
 
         } else {
+
+            count++;
 
             switch (this.manageSequenceElements.get(count)) {
 

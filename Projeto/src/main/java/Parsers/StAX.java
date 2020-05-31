@@ -2,6 +2,7 @@ package Parsers;
 
 import Database.Neo4j;
 import Mappers.MapperForSAFTPT;
+import Mappers.MapperManager;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,11 +18,13 @@ import javax.xml.stream.events.*;
 public class StAX {
 
     private final Neo4j driver;
-    private final MapperForSAFTPT mapper;
+    //private final MapperForSAFTPT mapper;
+    private final MapperManager mapper;
 
     public StAX(Neo4j driver) {
         this.driver = driver;
-        this.mapper = new MapperForSAFTPT(this.driver);
+        //this.mapper = new MapperForSAFTPT(this.driver);
+        this.mapper = new MapperManager(this.driver);
     }
 
     public void processXMLToNeo4j(String XMLFileName) {
