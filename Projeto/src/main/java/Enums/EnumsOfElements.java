@@ -238,6 +238,7 @@ public class EnumsOfElements {
 
         public static final String RecordID = "RecordID";
         public static final String AccountID = "AccountID";
+        public static final String SourceDocumentID = "SourceDocumentID";
         public static final String SystemEntryDate = "SystemEntryDate";
         public static final String Description = "Description";
         public static final String CreditAmount = "CreditAmount";
@@ -248,6 +249,7 @@ public class EnumsOfElements {
 
         public static final String RecordID = "RecordID";
         public static final String AccountID = "AccountID";
+        public static final String SourceDocumentID = "SourceDocumentID";
         public static final String SystemEntryDate = "SystemEntryDate";
         public static final String Description = "Description";
         public static final String DebitAmount = "DebitAmount";

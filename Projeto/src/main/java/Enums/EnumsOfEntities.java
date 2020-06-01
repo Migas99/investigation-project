@@ -15,8 +15,18 @@ public class EnumsOfEntities {
         GeneralLedgerEntries,
         Journal,
         Transaction,
+        Lines,
+        CreditLine,
+        DebitLine,
         SalesInvoices,
-        Invoices,
+        Invoice,
+
+        MovementOfGoods,
+
+        WorkingDocuments,
+
+        Payments,
+
         Address,
         Contacts
     }
@@ -34,6 +44,20 @@ public class EnumsOfEntities {
         public final static String Supplier = "Supplier";
         public final static String TaxTable = "TaxTable";
         public final static String GeneralLedgerEntries = "GeneralLedgerEntries";
+        public final static String Journal = "Journal";
+        public final static String Transaction = "Transaction";
+        public final static String Lines = "Lines";
+        public final static String CreditLine = "CreditLine";
+        public final static String DebitLine = "DebitLine";
+        public final static String SalesInvoices = "SalesInvoices";
+        public static final String Invoice = "Invoice";
+
+
+        public final static String MovementOfGoods = "MovementOfGoods";
+
+        public static final String WorkingDocuments = "WorkingDocuments";
+
+        public static final String Payments = "Payments";
 
         public final static String Address = "Address";
         public final static String Contacts = "Contacts";
@@ -130,6 +154,75 @@ public class EnumsOfEntities {
         public final static String HAS_TAX_EXPIRATION_DATE = "HAS_TAX_EXPIRATION_DATE";
         public final static String HAS_TAX_PERCENTAGE = "HAS_TAX_PERCENTAGE";
         public final static String HAS_TAX_AMOUNT = "HAS_TAX_AMOUNT";
+    }
+
+    public enum GeneralLedgerEntriesRelationships {
+        ELEMENT;
+
+        public final static String HAS_TOTAL_DEBIT = "HAS_TOTAL_DEBIT";
+        public final static String HAS_TOTAL_CREDIT = "HAS_TOTAL_CREDIT";
+        public final static String HAS_JOURNAL = "HAS_JOURNAL";
+    }
+
+    public enum JournalRelationships {
+        ELEMENT;
+
+        public final static String HAS_TRANSACTION = "HAS_TRANSACTION";
+    }
+
+    public enum TransactionRelationships {
+        ELEMENT;
+
+        public final static String HAS_PERIOD = "HAS_PERIOD";
+        public final static String HAS_TRANSACTION_DATE = "HAS_TRANSACTION_DATE";
+        public final static String HAS_DOC_ARCHIVAL_NUMBER = "HAS_DOC_ARCHIVAL_NUMBER";
+        public final static String HAS_TRANSACTION_TYPE = "HAS_TRANSACTION_TYPE";
+        public final static String HAS_GL_POSTING_DATE = "HAS_GL_POSTING_DATE";
+        public final static String HAS_LINES = "HAS_LINES";
+    }
+
+    public enum LinesRelationships {
+        ELEMENT;
+
+        public final static String HAS_CREDIT_LINE = "HAS_CREDIT_LINE";
+        public final static String HAS_DEBIT_LINE = "HAS_DEBIT_LINE";
+    }
+
+    public enum CreditLineRelationships {
+        ELEMENT;
+
+        public final static String HAS_SYSTEM_ENTRY_DATE = "HAS_SYSTEM_ENTRY_DATE";
+        public final static String HAS_CREDIT_AMOUNT = "HAS_CREDIT_AMOUNT";
+    }
+
+    public enum DebitLineRelationships {
+        ELEMENT;
+
+        public final static String HAS_SYSTEM_ENTRY_DATE = "HAS_SYSTEM_ENTRY_DATE";
+        public final static String HAS_DEBIT_AMOUNT = "HAS_DEBIT_AMOUNT";
+    }
+
+    public enum SalesInvoicesRelationships {
+        ELEMENT;
+
+        public static final String HAS_TOTAL_DEBIT = "HAS_TOTAL_DEBIT";
+        public static final String HAS_TOTAL_CREDIT = "HAS_TOTAL_CREDIT";
+        public static final String HAS_INVOICE = "HAS_INVOICE";
+    }
+
+    public enum InvoiceRelationships {
+        ELEMENT;
+
+        public static final String HAS_ATCUD = "HAS_ATCUD";
+        public static final String HAS_HASH = "HAS_HASH";
+        public static final String HAS_HASH_CONTROL = "HAS_HASH_CONTROL";
+        public static final String HAS_PERIOD = "HAS_PERIOD";
+        public static final String HAS_INVOICE_DATE = "HAS_INVOICE_DATE";
+        public static final String HAS_INVOICE_TYPE = "HAS_INVOICE_TYPE";
+        public static final String HAS_EAC_Code = "HAS_EAC_Code";
+        public static final String HAS_SYSTEM_ENTRY_DATE = "HAS_SYSTEM_ENTRY_DATE";
+        public static final String HAS_MOVEMENT_END_TIME = "HAS_MOVEMENT_END_TIME";
+        public static final String HAS_MOVEMENT_START_TIME = "HAS_MOVEMENT_START_TIME";
     }
 
     public enum AddressRelationships {
