@@ -143,4 +143,14 @@ public class EnumsOfEntities {
         public final static String HAS_COUNTRY = "HAS_COUNTRY";
     }
 
+    public enum OtherRelationships {
+        ELEMENT;
+
+        public final static String TYPE_OF = "TYPE_OF";
+        public final static String HAS_COMPANY = "HAS_COMPANY";
+        public final static String HAS_ACCOUNT = "HAS_ACCOUNT";
+        public final static String HAS_CUSTOMER = "HAS_CUSTOMER";
+        public final static String HAS_SUPPLIER = "HAS_SUPPLIER";
+        public final static String HAS_PRODUCT = "HAS_PRODUCT";
+    }
 }

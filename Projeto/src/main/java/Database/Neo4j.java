@@ -1,5 +1,6 @@
 package Database;
 
+import Enums.EnumsOfEntities;
 import org.neo4j.driver.*;
 
 /**
@@ -28,7 +29,7 @@ public class Neo4j {
     public boolean areIdentityNodesLoaded() {
         try (Session session = this.driver.session()) {
             boolean answer = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (n:XMLStructure) "
+                    + "MATCH (n:Identity) "
                     + "RETURN (n)"
             ).list().isEmpty());
 
@@ -40,16 +41,21 @@ public class Neo4j {
         }
     }
 
+    /**
+     * Método responsável por adicionar à base de dados um identity node
+     *
+     * @param XMLElement tipo do nó
+     */
     public void addIdentityNode(String XMLElement) {
         try (Session session = this.driver.session()) {
             boolean isUnique = session.writeTransaction(tx -> tx.run(""
                     + "MATCH (n:" + XMLElement + ") "
-                    + "RETURN n"
+                    + "RETURN (n)"
             ).list().isEmpty());
 
             if (isUnique) {
                 session.writeTransaction(tx -> tx.run(""
-                        + "CREATE (" + XMLElement + ":" + XMLElement + ":Identity)"
+                        + "CREATE (n:" + XMLElement + ":Identity)"
                 ));
             }
         }
@@ -71,10 +77,31 @@ public class Neo4j {
         }
     }
 
-    public long addNode(String XMLElement) {
+    /**
+     * Método que adiciona um novo nó à base de dados
+     *
+     * @return o id do novo nó
+     */
+    public long addNode() {
         try (Session session = this.driver.session()) {
             return session.writeTransaction(tx -> tx.run(""
-                    + "CREATE (n { Element: '" + XMLElement + "' } )"
+                    + "CREATE (n)"
+                    + "RETURN (n)"
+            ).single().get(0).asNode().id());
+        }
+    }
+
+    /**
+     * Método que adiciona um novo nó à base de dados, com a propriedade passado como argumento
+     *
+     * @param attribute propriedade
+     * @param value     valor da propriedade
+     * @return o id do novo nó
+     */
+    public long addNode(String attribute, String value) {
+        try (Session session = this.driver.session()) {
+            return session.writeTransaction(tx -> tx.run(""
+                    + "CREATE (n { " + attribute + ": '" + value + "' } )"
                     + "RETURN (n)"
             ).single().get(0).asNode().id());
         }
@@ -83,16 +110,16 @@ public class Neo4j {
     /**
      * Método responsável por adicionar um novo atributo a um nó
      *
-     * @param id
-     * @param parameter
-     * @param value
+     * @param id        do nó
+     * @param attribute atributo
+     * @param value     valor do atributo
      */
-    public void addAttributesToNode(long id, String parameter, String value) {
+    public void addPropertyToNode(long id, String attribute, String value) {
         try (Session session = this.driver.session()) {
             session.writeTransaction(tx -> tx.run(""
                     + "MATCH (n) "
                     + "WHERE ID(n) = " + id + " "
-                    + "SET n." + parameter + " = '" + value + "'"
+                    + "SET n." + attribute + " = '" + value + "'"
             ));
         }
     }
@@ -117,23 +144,22 @@ public class Neo4j {
     public void addRelationshipToCompany(long id, String CompanyName) {
         try (Session session = this.driver.session()) {
             boolean isEmpty = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a) "
+                    + "MATCH (a)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(b:" + EnumsOfEntities.Entities.Company + ") "
                     + "WHERE a.CompanyName = '" + CompanyName + "' "
                     + "RETURN (a)"
             ).list().isEmpty());
 
             if (isEmpty) {
                 session.writeTransaction(tx -> tx.run(""
-                        + "MATCH (a:Company)"
-                        + "CREATE (b { CompanyName: '" + CompanyName + "' })"
-                        + "CREATE (b)-[:TYPE_OF]->(a)"
+                        + "MATCH (a:" + EnumsOfEntities.Entities.Company + ")"
+                        + "CREATE (b { CompanyName: '" + CompanyName + "' })-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(a)"
                 ));
             }
 
             session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a),(b) "
+                    + "MATCH (a), (b)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(c:" + EnumsOfEntities.Entities.Company + ") "
                     + "WHERE ID(a) = " + id + " and b.CompanyName = '" + CompanyName + "' "
-                    + "CREATE (a)-[:HAS_COMPANY]->(b)"
+                    + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_COMPANY + "]->(b)"
             ));
         }
     }
@@ -141,101 +167,91 @@ public class Neo4j {
     public void addRelationshipToAccount(long id, String AccountID) {
         try (Session session = this.driver.session()) {
             boolean isEmpty = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a) "
+                    + "MATCH (a)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(b:" + EnumsOfEntities.Entities.Account + ") "
                     + "WHERE a.AccountID = '" + AccountID + "' "
                     + "RETURN (a)"
             ).list().isEmpty());
 
             if (isEmpty) {
                 session.writeTransaction(tx -> tx.run(""
-                        + "MATCH (a:Account)"
-                        + "CREATE (b { AccountID: '" + AccountID + "' })"
-                        + "CREATE (b)-[:TYPE_OF]->(a)"
+                        + "MATCH (a:" + EnumsOfEntities.Entities.Account + ")"
+                        + "CREATE (b { AccountID: '" + AccountID + "' })-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(a)"
                 ));
             }
 
             session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a),(b) "
+                    + "MATCH (a), (b)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(c:" + EnumsOfEntities.Entities.Account + ") "
                     + "WHERE ID(a) = " + id + " and b.AccountID = '" + AccountID + "' "
-                    + "CREATE (a)-[:HAS_ACCOUNT]->(b)"
+                    + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_ACCOUNT + "]->(b)"
             ));
         }
     }
 
-    public void addRelationshipToCustomer(long id, String Customer) {
+    public void addRelationshipToCustomer(long id, String CustomerID) {
         try (Session session = this.driver.session()) {
             boolean isEmpty = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a) "
-                    + "WHERE a.CustomerID = '" + Customer + "' "
+                    + "MATCH (a)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(b:" + EnumsOfEntities.Entities.Customer + ") "
+                    + "WHERE a.CustomerID = '" + CustomerID + "' "
                     + "RETURN (a)"
             ).list().isEmpty());
 
             if (isEmpty) {
                 session.writeTransaction(tx -> tx.run(""
-                        + "MATCH (a:Company)"
-                        + "CREATE (b { CustomerID: '" + Customer + "' })"
-                        + "CREATE (b)-[:TYPE_OF]->(a)"
+                        + "MATCH (a:" + EnumsOfEntities.Entities.Customer + ") "
+                        + "CREATE (b { CustomerID: '" + CustomerID + "' })-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(a)"
                 ));
             }
 
             session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a),(b) "
-                    + "WHERE ID(a) = " + id + " and b.CustomerID = '" + Customer + "' "
-                    + "CREATE (a)-[:HAS_CUSTOMER]->(b)"
+                    + "MATCH (a), (b)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(c:" + EnumsOfEntities.Entities.Customer + ") "
+                    + "WHERE ID(a) = " + id + " and b.CustomerID = '" + CustomerID + "' "
+                    + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_CUSTOMER + "]->(b)"
             ));
         }
     }
 
-    /**
-     * INCOMPLETO
-     *
-     * @param id
-     * @param CompanyName
-     */
-    public void addRelationshipToSupplier(long id, String CompanyName) {
+    public void addRelationshipToSupplier(long id, String SupplierID) {
         try (Session session = this.driver.session()) {
             boolean isEmpty = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a) "
-                    + "WHERE a.CompanyName = " + CompanyName + " "
+                    + "MATCH (a)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(b:" + EnumsOfEntities.Entities.Supplier + ") "
+                    + "WHERE a.SupplierID = '" + SupplierID + "' "
                     + "RETURN (a)"
             ).list().isEmpty());
 
             if (isEmpty) {
                 session.writeTransaction(tx -> tx.run(""
-                        + "MATCH (a:Company)"
-                        + "CREATE (b { CompanyName: '" + CompanyName + "' })"
-                        + "CREATE (b)-[:TYPE_OF]->(a)"
+                        + "MATCH (a:" + EnumsOfEntities.Entities.Supplier + ") "
+                        + "CREATE (b { SupplierID: '" + SupplierID + "' })-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(a)"
                 ));
             }
 
             session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a),(b) "
-                    + "WHERE ID(a) = " + id + " and b.CompanyName = " + CompanyName + " "
-                    + "CREATE (a)-[:HAS_COMPANY]->(b)"
+                    + "MATCH (a), (b)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(c:" + EnumsOfEntities.Entities.Supplier + ") "
+                    + "WHERE ID(a) = " + id + " and b.SupplierID = '" + SupplierID + "' "
+                    + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_SUPPLIER + "]->(b)"
             ));
         }
     }
 
-    public void addRelationshipToProduct(long id, String Product) {
+    public void addRelationshipToProduct(long id, String ProductCode) {
         try (Session session = this.driver.session()) {
             boolean isEmpty = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a) "
-                    + "WHERE a.ProductCode = '" + Product + "' "
+                    + "MATCH (a)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(b:" + EnumsOfEntities.Entities.Product + ") "
+                    + "WHERE a.ProductCode = '" + ProductCode + "' "
                     + "RETURN (a)"
             ).list().isEmpty());
 
             if (isEmpty) {
                 session.writeTransaction(tx -> tx.run(""
-                        + "MATCH (a:Company)"
-                        + "CREATE (b { ProductCode: '" + Product + "' })"
-                        + "CREATE (b)-[:TYPE_OF]->(a)"
+                        + "MATCH (a:" + EnumsOfEntities.Entities.Product + ") "
+                        + "CREATE (b { ProductCode: '" + ProductCode + "' })-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(a)"
                 ));
             }
 
             session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a),(b) "
-                    + "WHERE ID(a) = " + id + " and b.ProductCode = '" + Product + "' "
-                    + "CREATE (a)-[:HAS_PRODUCT]->(b)"
+                    + "MATCH (a), (b)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(c:" + EnumsOfEntities.Entities.Product + ") "
+                    + "WHERE ID(a) = " + id + " and b.ProductCode = '" + ProductCode + "' "
+                    + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_PRODUCT + "]->(b)"
             ));
         }
     }
@@ -270,6 +286,12 @@ public class Neo4j {
         }
     }
 
+    /**
+     * INCOMPLETO
+     *
+     * @param id
+     * @param Company
+     */
     public void addRelationshipToTransaction(long id, String Transaction) {
         try (Session session = this.driver.session()) {
             boolean isEmpty = session.writeTransaction(tx -> tx.run(""

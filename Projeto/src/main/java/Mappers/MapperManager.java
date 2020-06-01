@@ -136,9 +136,14 @@ public class MapperManager {
         throw new NodeException("Node '" + XMLElement + "' not found!");
     }
 
-    private long addNode(String XMLElement) {
+    private long addNode() {
         this.manageSequenceElements.getLast().incrementChildren();
-        return this.driver.addNode(XMLElement);
+        return this.driver.addNode();
+    }
+
+    private long addNode(String attribute, String value) {
+        this.manageSequenceElements.getLast().incrementChildren();
+        return this.driver.addNode(attribute, value);
     }
 
     private void processRootElement(String XMLElement, String value, int count) throws MapException, NodeException {
@@ -171,7 +176,7 @@ public class MapperManager {
 
                 if (EnumsOfElements.AuditFile.Header.equalsIgnoreCase(XMLElement)) {
                     //Criamos o nó do tipo FileInformation
-                    this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.FileInformation), EnumsOfEntities.Entities.FileInformation, value));
+                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.FileInformation, value));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.FileInformation), EnumsOfEntities.Entities.FileInformation);
 
                 } else {
@@ -199,7 +204,7 @@ public class MapperManager {
 
                 if (EnumsOfElements.AuditFile.GeneralLedgerEntries.equalsIgnoreCase(XMLElement)) {
                     //Criamos o nó do tipo GeneralLedgerEntries
-                    this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.GeneralLedgerEntries), EnumsOfEntities.Entities.GeneralLedgerEntries, value));
+                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.GeneralLedgerEntries, value));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.GeneralLedgerEntries), EnumsOfEntities.Entities.GeneralLedgerEntries);
 
                 } else {
@@ -236,34 +241,25 @@ public class MapperManager {
 
                 case EnumsOfElements.Header.AuditFileVersion:
                     //Adicionamos como atributo ao nó FileInformation
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.FileInformation), XMLElement, value);
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.FileInformation), XMLElement, value);
 
                     break;
 
                 case EnumsOfElements.Header.CompanyID:
-                    //Criamos um novo nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Atribuimos um atributo do tipo CompanyID e com o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    //Criamos um nó com o atributo CompanyID e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     break;
 
                 case EnumsOfElements.Header.TaxRegistrationNumber:
-                    //Criamos um novo nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Atribuimos um atributo do tipo TaxRegistrationNumber e com o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    //Criamos um nó com o atributo TaxRegistrationNumber e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     break;
 
                 case EnumsOfElements.Header.TaxAccountingBasis:
-                    //Criamos um novo nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Atribuimos um atributo do tipo TaxRegistrationNumber e com o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    //Criamos um nó com o atributo TaxAccountingBasis e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     //Adicionamos uma relação com o FileInformation
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), this.findNodeId(XMLElement), EnumsOfEntities.FileInformationRelationships.HAS_TAX_ACCOUNTING_BASIS);
@@ -271,17 +267,14 @@ public class MapperManager {
                     break;
 
                 case EnumsOfElements.Header.CompanyName:
-                    //Criamos o nó do tipo Company
-                    this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Company), EnumsOfEntities.Entities.Company, value));
+                    //Criamos o nó do tipo Company com o atributo CompanyName e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), EnumsOfEntities.Entities.Company, value));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Company), EnumsOfEntities.Entities.Company);
-
-                    //Adicionamos agora como atributo o valor
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Company), XMLElement, value);
 
                     //Criamos agora uma relação com o FileInformation
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), this.findNodeId(EnumsOfEntities.Entities.Company), EnumsOfEntities.FileInformationRelationships.HAS_COMPANY);
 
-                    //Criamos agora uma relação com nó que contêm o id da empresa
+                    //Criamos agora uma relação com nó previamente criado que contêm o id da empresa
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Company), this.findNodeId(EnumsOfElements.Header.CompanyID), EnumsOfEntities.CompanyRelationships.HAS_COMPANY_ID);
 
                     //Criamos outra relação com o nó que contêm o número de identificação fiscal da empresa
@@ -290,11 +283,8 @@ public class MapperManager {
                     break;
 
                 case EnumsOfElements.Header.BussinessName:
-                    //Criamos um novo nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Atribuimos um atributo do tipo BussinessName e com o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    //Criamos o nó com o atributo BussinessName e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     //Criamos uma relação com a empresa
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Company), this.findNodeId(XMLElement), EnumsOfEntities.CompanyRelationships.HAS_BUSINESS_NAME);
@@ -302,12 +292,9 @@ public class MapperManager {
                     break;
 
                 case EnumsOfElements.Header.FiscalYear:
-                    //Criamos o nó do tipo FiscalYear
-                    this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.FiscalYear), EnumsOfEntities.Entities.FiscalYear, value));
+                    //Criamos o nó do tipo FiscalYear com o atributo FiscalYear e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), EnumsOfEntities.Entities.FiscalYear, value));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.FiscalYear), EnumsOfEntities.Entities.FiscalYear);
-
-                    //Adicionamos agora como atributo o valor
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.FiscalYear), XMLElement, value);
 
                     //Criamos agora uma relação com o FileInformation
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), this.findNodeId(EnumsOfEntities.Entities.FiscalYear), EnumsOfEntities.FileInformationRelationships.HAS_FISCAL_YEAR);
@@ -315,23 +302,17 @@ public class MapperManager {
                     break;
 
                 case EnumsOfElements.Header.StartDate:
-                    //Criamos um novo nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
+                    //Criamos um novo nó com o atributo StartDate e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
-                    //Atribuimos um atributo do tipo StartDate e com o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
-
-                    //Criamos uma relação com o ano fiscal
+                    //Criamos uma relação com o nó FiscalYear
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FiscalYear), this.findNodeId(XMLElement), EnumsOfEntities.FiscalYearRelationships.HAS_START_DATE);
 
                     break;
 
                 case EnumsOfElements.Header.EndDate:
-                    //Criamos um novo nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Atribuimos um atributo do tipo EndDate e com o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    //Criamos um novo nó com o atributo EndDate e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     //Criamos uma relação com o ano fiscal
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FiscalYear), this.findNodeId(XMLElement), EnumsOfEntities.FiscalYearRelationships.HAS_END_DATE);
@@ -339,11 +320,8 @@ public class MapperManager {
                     break;
 
                 case EnumsOfElements.Header.CurrencyCode:
-                    //Criamos um novo nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Atribuimos um atributo do tipo CurrencyCode e com o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    //Criamos um novo nó com o atributo CurrencyCode e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     //Adicionamos uma relação com o FileInformation
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), this.findNodeId(XMLElement), EnumsOfEntities.FileInformationRelationships.HAS_CURRENCY_CODE);
@@ -351,11 +329,8 @@ public class MapperManager {
                     break;
 
                 case EnumsOfElements.Header.DateCreated:
-                    //Criamos um novo nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Atribuimos um atributo do tipo DateCreated e com o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    //Criamos um novo nó com o atributo DateCreated e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     //Adicionamos uma relação com o FileInformation
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), this.findNodeId(XMLElement), EnumsOfEntities.FileInformationRelationships.HAS_DATE_CREATED);
@@ -363,11 +338,8 @@ public class MapperManager {
                     break;
 
                 case EnumsOfElements.Header.TaxEntity:
-                    //Criamos um novo nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Atribuimos um atributo do tipo TaxEntity e com o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    //Criamos um novo nó com o atributo TaxEntity e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     //Adicionamos uma relação com o FileInformation
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), this.findNodeId(XMLElement), EnumsOfEntities.FileInformationRelationships.HAS_TAX_ENTITY);
@@ -375,27 +347,21 @@ public class MapperManager {
                     break;
 
                 case EnumsOfElements.Header.ProductCompanyTaxID:
-                    //Criamos um novo nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Atribuimos um atributo do tipo ProductCompanyTaxID e com o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    //Criamos um novo nó com o atributo ProductCompanyTaxID e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     break;
 
                 case EnumsOfElements.Header.SoftwareCertificateNumber:
                     //Adicionamos como atributo ao nó que contêm o ProductCompanyTaxID
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfElements.Header.ProductCompanyTaxID), XMLElement, value);
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Header.ProductCompanyTaxID), XMLElement, value);
 
                     break;
 
                 case EnumsOfElements.Header.ProductID:
-                    //Criamos o nó do tipo Product
-                    this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Product), EnumsOfEntities.Entities.Product, value));
+                    //Criamos um novo nó do tipo Product com o atributo ProductID e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), EnumsOfEntities.Entities.Product, value));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Product), EnumsOfEntities.Entities.Product);
-
-                    //Adicionamos agora como atributo o valor
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Product), XMLElement, value);
 
                     //Criamos agora uma relação com o FileInformation
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), this.findNodeId(EnumsOfEntities.Entities.Product), EnumsOfEntities.FileInformationRelationships.HAS_PRODUCT);
@@ -407,29 +373,26 @@ public class MapperManager {
 
                 case EnumsOfElements.Header.ProductVersion:
                     //Adicionamos como atributo ao nó Product
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Product), XMLElement, value);
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Product), XMLElement, value);
 
                     break;
 
                 case EnumsOfElements.Header.HeaderComment:
                     //Adicionamos como atributo ao nó FileInformation
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.FileInformation), XMLElement, value);
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.FileInformation), XMLElement, value);
 
                     break;
 
                 case EnumsOfElements.Header.Telephone:
                     //Criamos o nó do tipo Contacts
-                    this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts));
+                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Contacts));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts);
 
                     //Adicionamos uma relação deste nó com a empresa
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Company), this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.CompanyRelationships.HAS_CONTACTS);
 
                     //Criamos agora o nó do Telephone
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     //Adicionamos a relação entre o nó do Telephone com o Contacts
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Contacts), this.findNodeId(XMLElement), EnumsOfEntities.ContactsRelationships.HAS_TELEPHONE);
@@ -438,10 +401,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Header.Fax:
                     //Criamos agora o nó do Fax
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     try {
 
@@ -452,7 +412,7 @@ public class MapperManager {
                         //Caso dê errado, significa que o nó do tipo contacts ainda não foi criado
 
                         //Criamos o nó do tipo Contacts
-                        this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Contacts));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts);
 
                         //Adicionamos uma relação deste nó com a empresa
@@ -466,10 +426,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Header.Email:
                     //Criamos agora o nó do Email
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     try {
 
@@ -480,7 +437,7 @@ public class MapperManager {
                         //Caso dê errado, significa que o nó do tipo contacts ainda não foi criado
 
                         //Criamos o nó do tipo Contacts
-                        this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Contacts));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts);
 
                         //Adicionamos uma relação deste nó com a empresa
@@ -494,10 +451,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Header.Website:
                     //Criamos agora o nó do Website
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     try {
 
@@ -508,7 +462,7 @@ public class MapperManager {
                         //Caso dê errado, significa que o nó do tipo contacts ainda não foi criado
 
                         //Criamos o nó do tipo Contacts
-                        this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Contacts));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts);
 
                         //Adicionamos uma relação deste nó com a empresa
@@ -532,7 +486,7 @@ public class MapperManager {
 
                 if (EnumsOfElements.Header.CompanyAddress.equals(XMLElement)) {
                     //Criamos o nó do tipo Address
-                    this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Address), EnumsOfEntities.Entities.Address, value));
+                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Address, value));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Address), EnumsOfEntities.Entities.Address);
 
                     //Criamos agora uma relação com a empresa
@@ -559,10 +513,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.BuildingNumber:
                 //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_BUILDING_NUMBER);
@@ -571,10 +522,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.StreetName:
                 //Criamos agora o nó do StreetName
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_STREET_NAME);
@@ -583,16 +531,13 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.AddressDetail:
                 //Adicionamos como atributo ao nó Address
-                this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Address), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Address), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.CompanyAddress.City:
                 //Criamos agora o nó do City
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_CITY);
@@ -601,10 +546,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.PostalCode:
                 //Criamos agora o nó do PostalCode
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_POSTAL_CODE);
@@ -613,10 +555,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.Region:
                 //Criamos agora o nó do Region
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_REGION);
@@ -624,11 +563,8 @@ public class MapperManager {
                 break;
 
             case EnumsOfElements.CompanyAddress.Country:
-                //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                //Criamos agora o nó do Country
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_COUNTRY);
@@ -651,7 +587,7 @@ public class MapperManager {
 
                 if (EnumsOfElements.MasterFiles.GeneralLedgerAccounts.equalsIgnoreCase(XMLElement)) {
                     //Criamos o nó do tipo GeneralLedgerAccounts
-                    this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.GeneralLedgerAccounts), EnumsOfEntities.Entities.GeneralLedgerAccounts, value));
+                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.GeneralLedgerAccounts, value));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.GeneralLedgerAccounts), EnumsOfEntities.Entities.GeneralLedgerAccounts);
 
                 } else {
@@ -666,7 +602,7 @@ public class MapperManager {
 
                 if (EnumsOfElements.MasterFiles.Customer.equalsIgnoreCase(XMLElement)) {
                     //Criamos o nó do tipo Customer
-                    this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Customer), EnumsOfEntities.Entities.Customer, value));
+                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Customer, value));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Customer), EnumsOfEntities.Entities.Customer);
 
                 } else {
@@ -682,7 +618,7 @@ public class MapperManager {
 
                 if (EnumsOfElements.MasterFiles.Supplier.equalsIgnoreCase(XMLElement)) {
                     //Criamos o nó do tipo Supplier
-                    this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Supplier), EnumsOfEntities.Entities.Supplier, value));
+                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Supplier, value));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Supplier), EnumsOfEntities.Entities.Supplier);
 
                 } else {
@@ -697,7 +633,7 @@ public class MapperManager {
 
                 if (EnumsOfElements.MasterFiles.Product.equalsIgnoreCase(XMLElement)) {
                     //Criamos o nó do tipo Product
-                    this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Product), EnumsOfEntities.Entities.Product, value));
+                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Product, value));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Product), EnumsOfEntities.Entities.Product);
 
 
@@ -734,7 +670,7 @@ public class MapperManager {
 
             if (EnumsOfElements.GeneralLedgerAccounts.TaxonomyReference.equalsIgnoreCase(XMLElement)) {
                 //Adicionamos como atributo ao GeneralLedgerAccounts
-                this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.GeneralLedgerAccounts), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.GeneralLedgerAccounts), XMLElement, value);
 
             } else {
 
@@ -750,7 +686,7 @@ public class MapperManager {
 
                 if (EnumsOfElements.GeneralLedgerAccounts.Account.equalsIgnoreCase(XMLElement)) {
                     //Criamos o nó do tipo Account
-                    this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Account), EnumsOfEntities.Entities.Account, value));
+                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Account, value));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Account), EnumsOfEntities.Entities.Account);
 
                     //Adicionamos uma relação com o GeneralLedgerAccounts
@@ -778,22 +714,19 @@ public class MapperManager {
 
             case EnumsOfElements.Account.AccountID:
                 //Adicionamos como atributo ao nó Account
-                this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Account), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Account), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.Account.AccountDescription:
                 //Adicionamos como atributo ao nó Account
-                this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Account), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Account), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.Account.OpeningDebitBalance:
                 //Criamos agora o nó do OpeningDebitBalance
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Account
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Account), this.findNodeId(XMLElement), EnumsOfEntities.AccountRelationships.HAS_OPENING_DEBIT_BALANCE);
@@ -802,10 +735,7 @@ public class MapperManager {
 
             case EnumsOfElements.Account.OpeningCreditBalance:
                 //Criamos agora o nó do OpeningCreditBalance
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Account
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Account), this.findNodeId(XMLElement), EnumsOfEntities.AccountRelationships.HAS_OPENING_CREDIT_BALANCE);
@@ -814,10 +744,7 @@ public class MapperManager {
 
             case EnumsOfElements.Account.ClosingDebitBalance:
                 //Criamos agora o nó do ClosingDebitBalance
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Account
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Account), this.findNodeId(XMLElement), EnumsOfEntities.AccountRelationships.HAS_CLOSING_DEBIT_BALANCE);
@@ -826,10 +753,7 @@ public class MapperManager {
 
             case EnumsOfElements.Account.ClosingCreditBalance:
                 //Criamos agora o nó do ClosingCreditBalance
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Account
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Account), this.findNodeId(XMLElement), EnumsOfEntities.AccountRelationships.HAS_CLOSING_CREDIT_BALANCE);
@@ -838,10 +762,7 @@ public class MapperManager {
 
             case EnumsOfElements.Account.GroupingCategory:
                 //Criamos agora o nó do GroupingCategory
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Account
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Account), this.findNodeId(XMLElement), EnumsOfEntities.AccountRelationships.HAS_GROUPING_CATEGORY);
@@ -850,10 +771,7 @@ public class MapperManager {
 
             case EnumsOfElements.Account.GroupingCode:
                 //Criamos agora o nó do GroupingCode
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Account
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Account), this.findNodeId(XMLElement), EnumsOfEntities.AccountRelationships.HAS_GROUPING_CODE);
@@ -862,10 +780,7 @@ public class MapperManager {
 
             case EnumsOfElements.Account.TaxonomyCode:
                 //Criamos agora o nó do TaxonomyCode
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Account
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Account), this.findNodeId(XMLElement), EnumsOfEntities.AccountRelationships.HAS_TAXONOMY_CODE);
@@ -885,7 +800,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Customer.CustomerID:
                     //Adicionamos como atributo ao nó customer
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Customer), XMLElement, value);
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Customer), XMLElement, value);
 
                     break;
 
@@ -897,10 +812,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Customer.CustomerTaxID:
                     //Criamos agora o nó do CustomerTaxID
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     //Adicionamos a relação entre o nó criado com o Customer
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Customer), this.findNodeId(XMLElement), EnumsOfEntities.CustomerRelationships.HAS_CUSTOMER_TAX_ID);
@@ -914,24 +826,18 @@ public class MapperManager {
                     break;
 
                 case EnumsOfElements.Customer.Contact:
-                    //Criamos o nó do tipo Contacts
-                    this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts));
+                    //Criamos o nó do tipo Contacts com o atributo Contact e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), EnumsOfEntities.Entities.Contacts));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts);
 
                     //Adicionamos uma relação deste nó com o Customer
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Customer), this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.CustomerRelationships.HAS_CONTACTS);
 
-                    //Adicionamos como atributo ao nó Contacts o Contact
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Contacts), XMLElement, value);
-
                     break;
 
                 case EnumsOfElements.Customer.Telephone:
                     //Criamos o nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     try {
 
@@ -941,7 +847,7 @@ public class MapperManager {
                     } catch (NodeException e) {
                         //Caso dê errado, significa que o nó do tipo contacts ainda não foi criado
                         //Criamos o nó do tipo Contacts
-                        this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Contacts));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts);
 
                         //Adicionamos uma relação deste nó com o customer
@@ -955,10 +861,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Customer.Fax:
                     //Criamos o nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     try {
 
@@ -968,7 +871,7 @@ public class MapperManager {
                     } catch (NodeException e) {
                         //Caso dê errado, significa que o nó do tipo contacts ainda não foi criado
                         //Criamos o nó do tipo Contacts
-                        this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Contacts));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts);
 
                         //Adicionamos uma relação deste nó com o customer
@@ -982,10 +885,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Customer.Email:
                     //Criamos o nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     try {
 
@@ -995,7 +895,7 @@ public class MapperManager {
                     } catch (NodeException e) {
                         //Caso dê errado, significa que o nó do tipo contacts ainda não foi criado
                         //Criamos o nó do tipo Contacts
-                        this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Contacts));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts);
 
                         //Adicionamos uma relação deste nó com o customer
@@ -1009,10 +909,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Customer.Website:
                     //Criamos o nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     try {
 
@@ -1022,7 +919,7 @@ public class MapperManager {
                     } catch (NodeException e) {
                         //Caso dê errado, significa que o nó do tipo contacts ainda não foi criado
                         //Criamos o nó do tipo Contacts
-                        this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Contacts));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts);
 
                         //Adicionamos uma relação deste nó com o customer
@@ -1036,7 +933,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Customer.SelfBillingIndicator:
                     //Adicionamos como atributo ao nó customer
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Customer), XMLElement, value);
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Customer), XMLElement, value);
 
                     break;
 
@@ -1054,7 +951,7 @@ public class MapperManager {
 
                     if (EnumsOfElements.Customer.BillingAddress.equalsIgnoreCase(XMLElement)) {
                         //Criamos o nó do tipo Address
-                        this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), EnumsOfEntities.Entities.Address, value));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Address, value));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Address), EnumsOfEntities.Entities.Address);
 
                         //Criamos agora uma relação com o Customer
@@ -1072,7 +969,7 @@ public class MapperManager {
 
                     if (EnumsOfElements.Customer.ShipToAddress.equalsIgnoreCase(XMLElement)) {
                         //Criamos o nó do tipo Address
-                        this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), EnumsOfEntities.Entities.Address, value));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Address, value));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Address), EnumsOfEntities.Entities.Address);
 
                         //Criamos agora uma relação com o Customer
@@ -1101,7 +998,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Supplier.SupplierID:
                     //Adicionamos como atributo ao nó supplier
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Supplier), XMLElement, value);
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Supplier), XMLElement, value);
 
                     break;
 
@@ -1113,10 +1010,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Supplier.SupplierTaxID:
                     //Criamos agora o nó do SupplierTaxID
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     //Adicionamos a relação entre o nó criado com o Supplier
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Supplier), this.findNodeId(XMLElement), EnumsOfEntities.SupplierRelationships.HAS_SUPPLIER_TAX_ID);
@@ -1130,24 +1024,18 @@ public class MapperManager {
                     break;
 
                 case EnumsOfElements.Supplier.Contact:
-                    //Criamos o nó do tipo Contacts
-                    this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts));
+                    //Criamos o nó do tipo Contacts com o atributo Contact e o seu valor
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), EnumsOfEntities.Entities.Contacts));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts);
 
                     //Adicionamos uma relação deste nó com o Supplier
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Supplier), this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.SupplierRelationships.HAS_CONTACTS);
 
-                    //Adicionamos como atributo ao nó Contacts o Contact
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Contacts), XMLElement, value);
-
                     break;
 
                 case EnumsOfElements.Supplier.Telephone:
                     //Criamos o nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     try {
 
@@ -1157,7 +1045,7 @@ public class MapperManager {
                     } catch (NodeException e) {
                         //Caso dê errado, significa que o nó do tipo contacts ainda não foi criado
                         //Criamos o nó do tipo Contacts
-                        this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Contacts));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts);
 
                         //Adicionamos uma relação deste nó com o Supplier
@@ -1171,10 +1059,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Supplier.Fax:
                     //Criamos o nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     try {
 
@@ -1184,7 +1069,7 @@ public class MapperManager {
                     } catch (NodeException e) {
                         //Caso dê errado, significa que o nó do tipo contacts ainda não foi criado
                         //Criamos o nó do tipo Contacts
-                        this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Contacts));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts);
 
                         //Adicionamos uma relação deste nó com o Supplier
@@ -1198,10 +1083,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Supplier.Email:
                     //Criamos o nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     try {
 
@@ -1211,7 +1093,7 @@ public class MapperManager {
                     } catch (NodeException e) {
                         //Caso dê errado, significa que o nó do tipo contacts ainda não foi criado
                         //Criamos o nó do tipo Contacts
-                        this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Contacts));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts);
 
                         //Adicionamos uma relação deste nó com o Supplier
@@ -1225,10 +1107,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Supplier.Website:
                     //Criamos o nó
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     try {
 
@@ -1238,7 +1117,7 @@ public class MapperManager {
                     } catch (NodeException e) {
                         //Caso dê errado, significa que o nó do tipo contacts ainda não foi criado
                         //Criamos o nó do tipo Contacts
-                        this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Contacts));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Contacts), EnumsOfEntities.Entities.Contacts);
 
                         //Adicionamos uma relação deste nó com o Supplier
@@ -1252,7 +1131,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Supplier.SelfBillingIndicator:
                     //Adicionamos como atributo ao nó supplier
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Supplier), XMLElement, value);
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Supplier), XMLElement, value);
 
                     break;
 
@@ -1270,7 +1149,7 @@ public class MapperManager {
 
                     if (EnumsOfElements.Supplier.BillingAddress.equalsIgnoreCase(XMLElement)) {
                         //Criamos o nó do tipo Address
-                        this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), EnumsOfEntities.Entities.Address, value));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Address, value));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Address), EnumsOfEntities.Entities.Address);
 
                         //Criamos agora uma relação com o supplier
@@ -1288,7 +1167,7 @@ public class MapperManager {
 
                     if (EnumsOfElements.Supplier.ShipFromAddress.equalsIgnoreCase(XMLElement)) {
                         //Criamos o nó do tipo Address
-                        this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), EnumsOfEntities.Entities.Address, value));
+                        this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Address, value));
                         this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Address), EnumsOfEntities.Entities.Address);
 
                         //Criamos agora uma relação com o supplier
@@ -1318,10 +1197,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Product.ProductType:
                     //Criamos agora o nó do ProductType
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     //Adicionamos a relação entre o nó criado com o Product
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Product), this.findNodeId(XMLElement), EnumsOfEntities.ProductRelationships.HAS_PRODUCT_TYPE);
@@ -1330,16 +1206,13 @@ public class MapperManager {
 
                 case EnumsOfElements.Product.ProductCode:
                     //Adicionamos como atributo ao nó product
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Product), XMLElement, value);
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Product), XMLElement, value);
 
                     break;
 
                 case EnumsOfElements.Product.ProductGroup:
                     //Criamos agora o nó do ProductGroup
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     //Adicionamos a relação entre o nó criado com o Product
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Product), this.findNodeId(XMLElement), EnumsOfEntities.ProductRelationships.HAS_PRODUCT_GROUP);
@@ -1348,16 +1221,13 @@ public class MapperManager {
 
                 case EnumsOfElements.Product.ProductDescription:
                     //Adicionamos como atributo ao nó product
-                    this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Product), XMLElement, value);
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Product), XMLElement, value);
 
                     break;
 
                 case EnumsOfElements.Product.ProductNumberCode:
                     //Criamos agora o nó do ProductNumberCode
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                    //Adicionamos a este como atributo e o seu valor
-                    this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                     //Adicionamos a relação entre o nó criado com o Product
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Product), this.findNodeId(XMLElement), EnumsOfEntities.ProductRelationships.HAS_PRODUCT_NUMBER_CODE);
@@ -1376,7 +1246,7 @@ public class MapperManager {
 
                 if (EnumsOfElements.Product.CustomsDetails.equalsIgnoreCase(XMLElement)) {
                     //Criamos agora o nó do CustomsDetails
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
+                    this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
 
                 } else {
 
@@ -1400,13 +1270,13 @@ public class MapperManager {
 
             case EnumsOfElements.CustomsDetails.CNCode:
                 //Adicionamos como atributo ao CustomsDetails
-                this.driver.addAttributesToNode(this.findNodeId(EnumsOfElements.Product.CustomsDetails), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Product.CustomsDetails), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.CustomsDetails.UNNumber:
                 //Adicionamos como atributo ao CustomsDetails
-                this.driver.addAttributesToNode(this.findNodeId(EnumsOfElements.Product.CustomsDetails), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Product.CustomsDetails), XMLElement, value);
 
                 break;
 
@@ -1425,7 +1295,7 @@ public class MapperManager {
 
             if (EnumsOfElements.TaxTable.TaxTableEntry.equalsIgnoreCase(XMLElement)) {
                 //Criamos o nó do tipo TaxTable
-                this.nodesContainer.add(new GraphNode(this.addNode(EnumsOfEntities.Entities.TaxTable), EnumsOfEntities.Entities.TaxTable, value));
+                this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.TaxTable, value));
                 this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.TaxTable), EnumsOfEntities.Entities.TaxTable);
 
             } else {
@@ -1448,10 +1318,7 @@ public class MapperManager {
 
             case EnumsOfElements.TaxTableEntry.TaxType:
                 //Criamos agora o nó do TaxType
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a TaxTable
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.TaxTable), this.findNodeId(XMLElement), EnumsOfEntities.TaxTableRelationships.HAS_TAX_TYPE);
@@ -1460,10 +1327,7 @@ public class MapperManager {
 
             case EnumsOfElements.TaxTableEntry.TaxCountryRegion:
                 //Criamos agora o nó do TaxCountryRegion
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a TaxTable
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.TaxTable), this.findNodeId(XMLElement), EnumsOfEntities.TaxTableRelationships.HAS_TAX_COUNTRY_REGION);
@@ -1472,22 +1336,19 @@ public class MapperManager {
 
             case EnumsOfElements.TaxTableEntry.TaxCode:
                 //Adicionamos como atributo
-                this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.TaxTable), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.TaxTable), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.TaxTableEntry.Description:
                 //Adicionamos como atributo
-                this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.TaxTable), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.TaxTable), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.TaxTableEntry.TaxExpirationDate:
                 //Criamos agora o nó do TaxExpirationDate
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a TaxTable
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.TaxTable), this.findNodeId(XMLElement), EnumsOfEntities.TaxTableRelationships.HAS_TAX_EXPIRATION_DATE);
@@ -1496,10 +1357,7 @@ public class MapperManager {
 
             case EnumsOfElements.TaxTableEntry.TaxPercentage:
                 //Criamos agora o nó do TaxPercentage
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a TaxTable
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.TaxTable), this.findNodeId(XMLElement), EnumsOfEntities.TaxTableRelationships.HAS_TAX_PERCENTAGE);
@@ -1508,10 +1366,7 @@ public class MapperManager {
 
             case EnumsOfElements.TaxTableEntry.TaxAmount:
                 //Criamos agora o nó do TaxAmount
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a TaxTable
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.TaxTable), this.findNodeId(XMLElement), EnumsOfEntities.TaxTableRelationships.HAS_TAX_AMOUNT);
@@ -2527,10 +2382,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.BuildingNumber:
                 //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_BUILDING_NUMBER);
@@ -2539,10 +2391,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.StreetName:
                 //Criamos agora o nó do StreetName
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_STREET_NAME);
@@ -2551,16 +2400,13 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.AddressDetail:
                 //Adicionamos como atributo ao nó Address
-                this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Address), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Address), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.CompanyAddress.City:
                 //Criamos agora o nó do City
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_CITY);
@@ -2569,10 +2415,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.PostalCode:
                 //Criamos agora o nó do PostalCode
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_POSTAL_CODE);
@@ -2581,10 +2424,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.Region:
                 //Criamos agora o nó do Region
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_REGION);
@@ -2593,10 +2433,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.Country:
                 //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_COUNTRY);
@@ -2614,10 +2451,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.BuildingNumber:
                 //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_BUILDING_NUMBER);
@@ -2626,10 +2460,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.StreetName:
                 //Criamos agora o nó do StreetName
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_STREET_NAME);
@@ -2638,16 +2469,13 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.AddressDetail:
                 //Adicionamos como atributo ao nó Address
-                this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Address), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Address), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.CompanyAddress.City:
                 //Criamos agora o nó do City
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_CITY);
@@ -2656,10 +2484,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.PostalCode:
                 //Criamos agora o nó do PostalCode
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_POSTAL_CODE);
@@ -2668,10 +2493,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.Region:
                 //Criamos agora o nó do Region
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_REGION);
@@ -2680,10 +2502,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.Country:
                 //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_COUNTRY);
@@ -2702,10 +2521,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.BuildingNumber:
                 //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_BUILDING_NUMBER);
@@ -2714,10 +2530,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.StreetName:
                 //Criamos agora o nó do StreetName
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_STREET_NAME);
@@ -2726,16 +2539,13 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.AddressDetail:
                 //Adicionamos como atributo ao nó Address
-                this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Address), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Address), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.CompanyAddress.City:
                 //Criamos agora o nó do City
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_CITY);
@@ -2744,10 +2554,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.PostalCode:
                 //Criamos agora o nó do PostalCode
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_POSTAL_CODE);
@@ -2756,10 +2563,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.Region:
                 //Criamos agora o nó do Region
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_REGION);
@@ -2768,10 +2572,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.Country:
                 //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_COUNTRY);
@@ -2790,10 +2591,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.BuildingNumber:
                 //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_BUILDING_NUMBER);
@@ -2802,10 +2600,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.StreetName:
                 //Criamos agora o nó do StreetName
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_STREET_NAME);
@@ -2814,16 +2609,13 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.AddressDetail:
                 //Adicionamos como atributo ao nó Address
-                this.driver.addAttributesToNode(this.findNodeId(EnumsOfEntities.Entities.Address), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Address), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.CompanyAddress.City:
                 //Criamos agora o nó do City
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_CITY);
@@ -2832,10 +2624,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.PostalCode:
                 //Criamos agora o nó do PostalCode
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_POSTAL_CODE);
@@ -2844,10 +2633,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.Region:
                 //Criamos agora o nó do Region
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_REGION);
@@ -2856,10 +2642,7 @@ public class MapperManager {
 
             case EnumsOfElements.CompanyAddress.Country:
                 //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement), XMLElement, value));
-
-                //Adicionamos a este como atributo e o seu valor
-                this.driver.addAttributesToNode(this.findNodeId(XMLElement), XMLElement, value);
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação entre o nó criado com a Address
                 this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_COUNTRY);
