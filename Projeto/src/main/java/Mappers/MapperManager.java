@@ -5,6 +5,7 @@ import Enums.EnumsOfElements;
 import Enums.EnumsOfEntities;
 import Exceptions.MapException;
 import Exceptions.NodeException;
+import Models.TaxTable;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -19,6 +20,7 @@ public class MapperManager {
     private final LinkedList<String> sequenceElements;
     private final LinkedList<ManageSequence> manageSequenceElements;
     private final LinkedList<GraphNode> nodesContainer;
+    private TaxTable table;
 
     public MapperManager(Neo4j driver) {
         this.driver = driver;
@@ -1356,20 +1358,14 @@ public class MapperManager {
                 break;
 
             case EnumsOfElements.TaxTableEntry.TaxPercentage:
-                //Criamos agora o nó do TaxPercentage
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
-
-                //Adicionamos a relação entre o nó criado com a TaxTable
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.TaxTable), this.findNodeId(XMLElement), EnumsOfEntities.TaxTableRelationships.HAS_TAX_PERCENTAGE);
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.TaxTable), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.TaxTableEntry.TaxAmount:
-                //Criamos agora o nó do TaxAmount
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
-
-                //Adicionamos a relação entre o nó criado com a TaxTable
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.TaxTable), this.findNodeId(XMLElement), EnumsOfEntities.TaxTableRelationships.HAS_TAX_AMOUNT);
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.TaxTable), XMLElement, value);
 
                 break;
 
@@ -1587,12 +1583,11 @@ public class MapperManager {
             if (EnumsOfElements.Transaction.Lines.equalsIgnoreCase(this.manageSequenceElements.get(count).getXMLElement())) {
 
                 if (EnumsOfElements.Transaction.Lines.equalsIgnoreCase(XMLElement)) {
-                    //Criamos o nó do tipo Lines
-                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Lines, value));
-                    this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Lines), EnumsOfEntities.Entities.Lines);
+                    //Criamos o nó
+                    this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
 
                     //Adicionamos uma relação deste com a Transaction
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Transaction), this.findNodeId(EnumsOfEntities.Entities.Lines), EnumsOfEntities.TransactionRelationships.HAS_LINES);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Transaction), this.findNodeId(XMLElement), EnumsOfEntities.TransactionRelationships.HAS_LINES);
 
                 } else {
 
@@ -1619,12 +1614,11 @@ public class MapperManager {
             case EnumsOfElements.Lines.CreditLine:
 
                 if (EnumsOfElements.Lines.CreditLine.equalsIgnoreCase(XMLElement)) {
-                    //Criamos o nó do tipo CreditLine
-                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.CreditLine, value));
-                    this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.CreditLine), EnumsOfEntities.Entities.CreditLine);
+                    //Criamos o nó
+                    this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
 
                     //Adicionamos uma relação deste com o Lines
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Lines), this.findNodeId(EnumsOfEntities.Entities.CreditLine), EnumsOfEntities.LinesRelationships.HAS_CREDIT_LINE);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Transaction.Lines), this.findNodeId(XMLElement), EnumsOfEntities.LinesRelationships.HAS_CREDIT_LINE);
 
                 } else {
 
@@ -1637,12 +1631,11 @@ public class MapperManager {
             case EnumsOfElements.Lines.DebitLine:
 
                 if (EnumsOfElements.Lines.DebitLine.equalsIgnoreCase(XMLElement)) {
-                    //Criamos o nó do tipo DebitLine
-                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.CreditLine, value));
-                    this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.CreditLine), EnumsOfEntities.Entities.CreditLine);
+                    //Criamos o nó
+                    this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
 
                     //Adicionamos uma relação deste com o Lines
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Lines), this.findNodeId(EnumsOfEntities.Entities.CreditLine), EnumsOfEntities.LinesRelationships.HAS_DEBIT_LINE);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Transaction.Lines), this.findNodeId(XMLElement), EnumsOfEntities.LinesRelationships.HAS_DEBIT_LINE);
 
                 } else {
 
@@ -1664,13 +1657,13 @@ public class MapperManager {
 
             case EnumsOfElements.CreditLine.RecordID:
                 //Adicionamos como propriedade do nó CreditLine
-                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.CreditLine), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Lines.CreditLine), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.CreditLine.AccountID:
                 //Adicionamos uma relação entre o CreditLine e uma account
-                this.driver.addRelationshipToAccount(this.findNodeId(EnumsOfEntities.Entities.CreditLine), value);
+                this.driver.addRelationshipToAccount(this.findNodeId(EnumsOfElements.Lines.CreditLine), value);
 
                 break;
 
@@ -1683,13 +1676,13 @@ public class MapperManager {
                 this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação deste com o nó CreditLine
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.CreditLine), this.findNodeId(XMLElement), EnumsOfEntities.CreditLineRelationships.HAS_SYSTEM_ENTRY_DATE);
+                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Lines.CreditLine), this.findNodeId(XMLElement), EnumsOfEntities.CreditLineRelationships.HAS_SYSTEM_ENTRY_DATE);
 
                 break;
 
             case EnumsOfElements.CreditLine.Description:
                 //Adicionamos como propriedade do nó CreditLine
-                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.CreditLine), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Lines.CreditLine), XMLElement, value);
 
                 break;
 
@@ -1698,7 +1691,7 @@ public class MapperManager {
                 this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação deste com o nó CreditLine
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.CreditLine), this.findNodeId(XMLElement), EnumsOfEntities.CreditLineRelationships.HAS_CREDIT_AMOUNT);
+                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Lines.CreditLine), this.findNodeId(XMLElement), EnumsOfEntities.CreditLineRelationships.HAS_CREDIT_AMOUNT);
 
                 break;
 
@@ -1714,13 +1707,13 @@ public class MapperManager {
 
             case EnumsOfElements.DebitLine.RecordID:
                 //Adicionamos como propriedade do nó DebitLine
-                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.DebitLine), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Lines.DebitLine), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.DebitLine.AccountID:
                 //Adicionamos uma relação entre o DebitLine e uma account
-                this.driver.addRelationshipToAccount(this.findNodeId(EnumsOfEntities.Entities.DebitLine), value);
+                this.driver.addRelationshipToAccount(this.findNodeId(EnumsOfElements.Lines.DebitLine), value);
 
                 break;
 
@@ -1733,13 +1726,13 @@ public class MapperManager {
                 this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação deste com o nó DebitLine
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.DebitLine), this.findNodeId(XMLElement), EnumsOfEntities.DebitLineRelationships.HAS_SYSTEM_ENTRY_DATE);
+                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Lines.DebitLine), this.findNodeId(XMLElement), EnumsOfEntities.DebitLineRelationships.HAS_SYSTEM_ENTRY_DATE);
 
                 break;
 
             case EnumsOfElements.DebitLine.Description:
                 //Adicionamos como propriedade do nó DebitLine
-                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.DebitLine), XMLElement, value);
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Lines.DebitLine), XMLElement, value);
 
                 break;
 
@@ -1748,7 +1741,7 @@ public class MapperManager {
                 this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
 
                 //Adicionamos a relação deste com o nó DebitLine
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.DebitLine), this.findNodeId(XMLElement), EnumsOfEntities.DebitLineRelationships.HAS_DEBIT_AMOUNT);
+                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Lines.DebitLine), this.findNodeId(XMLElement), EnumsOfEntities.DebitLineRelationships.HAS_DEBIT_AMOUNT);
 
                 break;
 
@@ -2030,7 +2023,11 @@ public class MapperManager {
                 case EnumsOfElements.Invoice.DocumentStatus:
 
                     if (EnumsOfElements.Invoice.DocumentStatus.equalsIgnoreCase(XMLElement)) {
-                        //Processar o elemento
+                        //Criamos um novo nó
+                        this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
+
+                        //Adicionamos a relação deste com o nó Invoice
+                        this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Invoice), this.findNodeId(XMLElement), EnumsOfEntities.InvoiceRelationships.HAS_DOCUMENT_STATUS);
 
                     } else {
 
@@ -2043,7 +2040,11 @@ public class MapperManager {
                 case EnumsOfElements.Invoice.SpecialRegimes:
 
                     if (EnumsOfElements.Invoice.SpecialRegimes.equalsIgnoreCase(XMLElement)) {
-                        //Processar o elemento
+                        //Criamos um novo nó
+                        this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
+
+                        //Adicionamos a relação deste com o nó Invoice
+                        this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Invoice), this.findNodeId(XMLElement), EnumsOfEntities.InvoiceRelationships.HAS_SPECIAL_REGIMES);
 
                     } else {
 
@@ -2056,7 +2057,11 @@ public class MapperManager {
                 case EnumsOfElements.Invoice.ShipTo:
 
                     if (EnumsOfElements.Invoice.ShipTo.equalsIgnoreCase(XMLElement)) {
-                        //Processar o elemento
+                        //Criamos um novo nó
+                        this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
+
+                        //Adicionamos a relação deste com o nó Invoice
+                        this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Invoice), this.findNodeId(XMLElement), EnumsOfEntities.InvoiceRelationships.HAS_SHIP_TO);
 
                     } else {
 
@@ -2069,7 +2074,11 @@ public class MapperManager {
                 case EnumsOfElements.Invoice.ShipFrom:
 
                     if (EnumsOfElements.Invoice.ShipFrom.equalsIgnoreCase(XMLElement)) {
-                        //Processar o elemento
+                        //Criamos um novo nó
+                        this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
+
+                        //Adicionamos a relação deste com o nó Invoice
+                        this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Invoice), this.findNodeId(XMLElement), EnumsOfEntities.InvoiceRelationships.HAS_SHIP_FROM);
 
                     } else {
 
@@ -2082,7 +2091,11 @@ public class MapperManager {
                 case EnumsOfElements.Invoice.Line:
 
                     if (EnumsOfElements.Invoice.Line.equalsIgnoreCase(XMLElement)) {
-                        //Processar o elemento
+                        //Criamos um novo nó
+                        this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
+
+                        //Adicionamos a relação deste com o nó Invoice
+                        this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Invoice), this.findNodeId(XMLElement), EnumsOfEntities.InvoiceRelationships.HAS_LINE);
 
                     } else {
 
@@ -2095,7 +2108,11 @@ public class MapperManager {
                 case EnumsOfElements.Invoice.DocumentTotals:
 
                     if (EnumsOfElements.Invoice.DocumentTotals.equalsIgnoreCase(XMLElement)) {
-                        //Processar o elemento
+                        //Criamos um novo nó
+                        this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
+
+                        //Adicionamos a relação deste com o nó Invoice
+                        this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Invoice), this.findNodeId(XMLElement), EnumsOfEntities.InvoiceRelationships.HAS_DOCUMENT_TOTALS);
 
                     } else {
 
@@ -2108,7 +2125,11 @@ public class MapperManager {
                 case EnumsOfElements.Invoice.WithholdingTax:
 
                     if (EnumsOfElements.Invoice.WithholdingTax.equalsIgnoreCase(XMLElement)) {
-                        //Processar o elemento
+                        //Criamos um novo nó
+                        this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
+
+                        //Adicionamos a relação deste com o nó Invoice
+                        this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Invoice), this.findNodeId(XMLElement), EnumsOfEntities.InvoiceRelationships.HAS_WITHHOLDING_TAX);
 
                     } else {
 
@@ -2131,18 +2152,39 @@ public class MapperManager {
         switch (XMLElement) {
 
             case EnumsOfElements.DocumentStatus.InvoiceStatus:
+                //Adicionamos como propriedade ao nó DocumentStatus
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.DocumentStatus), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.DocumentStatus.InvoiceStatusDate:
+                //Adicionamos como propriedade ao nó DocumentStatus
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.DocumentStatus), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.DocumentStatus.Reason:
+                //Criamos um novo nó
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                //Adicionamos a relação deste com o nó DocumentStatus
+                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.DocumentStatus), this.findNodeId(XMLElement), EnumsOfEntities.DocumentStatusRelationships.HAS_REASON);
+
                 break;
 
             case EnumsOfElements.DocumentStatus.SourceID:
+                //Adicionamos uma relação com o Source
+                this.driver.addRelationshipToSourceID(this.findNodeId(EnumsOfElements.Invoice.DocumentStatus), value);
+
                 break;
 
             case EnumsOfElements.DocumentStatus.SourceBilling:
+                //Criamos um novo nó
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                //Adicionamos a relação deste com o nó DocumentStatus
+                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.DocumentStatus), this.findNodeId(XMLElement), EnumsOfEntities.DocumentStatusRelationships.HAS_SOURCE_BILLING);
+
                 break;
 
             default:
@@ -2156,12 +2198,21 @@ public class MapperManager {
         switch (XMLElement) {
 
             case EnumsOfElements.SpecialRegimes.SelfBillingIndicator:
+                //Adicionamos como propriedade ao nó SpecialRegimes
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.SpecialRegimes), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.SpecialRegimes.CashVATSchemeIndicator:
+                //Adicionamos como propriedade ao nó SpecialRegimes
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.SpecialRegimes), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.SpecialRegimes.ThirdPartiesBillingIndicator:
+                //Adicionamos como propriedade ao nó SpecialRegimes
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.SpecialRegimes), XMLElement, value);
+
                 break;
 
             default:
@@ -2177,9 +2228,15 @@ public class MapperManager {
             switch (XMLElement) {
 
                 case EnumsOfElements.ShipTo.DeliveryID:
+                    //Adicionamos uma nova propriedade ao nó ShipTo
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.ShipTo), XMLElement, value);
+
                     break;
 
                 case EnumsOfElements.ShipTo.DeliveryDate:
+                    //Adicionamos uma nova propriedade ao nó ShipTo
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.ShipTo), XMLElement, value);
+
                     break;
 
                 default:
@@ -2193,7 +2250,12 @@ public class MapperManager {
             if (EnumsOfElements.ShipTo.Address.equalsIgnoreCase(this.manageSequenceElements.get(count).getXMLElement())) {
 
                 if (EnumsOfElements.ShipTo.Address.equalsIgnoreCase(XMLElement)) {
-                    //Processar o elemento
+                    //Criamos o nó do tipo Address
+                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Address, value));
+                    this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Address), EnumsOfEntities.Entities.Address);
+
+                    //Criamos agora uma relação com o ShipTo
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.ShipTo), this.findNodeId(EnumsOfEntities.Entities.Address), EnumsOfEntities.ShipToRelationships.HAS_ADDRESS);
 
                 } else {
 
@@ -2218,9 +2280,15 @@ public class MapperManager {
             switch (XMLElement) {
 
                 case EnumsOfElements.ShipFrom.DeliveryID:
+                    //Adicionamos uma nova propriedade ao nó ShipFrom
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.ShipFrom), XMLElement, value);
+
                     break;
 
                 case EnumsOfElements.ShipFrom.DeliveryDate:
+                    //Adicionamos uma nova propriedade ao nó ShipFrom
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.ShipFrom), XMLElement, value);
+
                     break;
 
                 default:
@@ -2234,7 +2302,12 @@ public class MapperManager {
             if (EnumsOfElements.ShipFrom.Address.equalsIgnoreCase(this.manageSequenceElements.get(count).getXMLElement())) {
 
                 if (EnumsOfElements.ShipFrom.Address.equalsIgnoreCase(XMLElement)) {
-                    //Processar o elemento
+                    //Criamos o nó do tipo Address
+                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Address, value));
+                    this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Address), EnumsOfEntities.Entities.Address);
+
+                    //Criamos agora uma relação com o ShipFrom
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.ShipFrom), this.findNodeId(EnumsOfEntities.Entities.Address), EnumsOfEntities.ShipFromRelationships.HAS_ADDRESS);
 
                 } else {
 
@@ -2259,45 +2332,119 @@ public class MapperManager {
             switch (XMLElement) {
 
                 case EnumsOfElements.Line.LineNumber:
+                    //Adicionamos como atributo ao nó Line
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.Line), XMLElement, value);
+
                     break;
 
                 case EnumsOfElements.Line.ProductCode:
+                    //Adicionamos uma relação com um Product
+                    this.driver.addRelationshipToProduct(this.findNodeId(EnumsOfEntities.Entities.Invoice), value);
+
                     break;
 
                 case EnumsOfElements.Line.ProductDescription:
+                    //Não é necessário processar
+
                     break;
 
                 case EnumsOfElements.Line.Quantity:
+                    //Possivelmente deveria ser atributo de uma relação
+
+                    //Criamos um novo nó
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                    //Adicionamos a relação deste com o nó Line
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.Line), this.findNodeId(XMLElement), EnumsOfEntities.LineRelationships.HAS_QUANTITY);
+
                     break;
 
                 case EnumsOfElements.Line.UnitOfMeasure:
+                    //Possivelmente deveria ser atributo de uma relação
+
+                    //Criamos um novo nó
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                    //Adicionamos a relação deste com o nó Line
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.Line), this.findNodeId(XMLElement), EnumsOfEntities.LineRelationships.HAS_UNIT_OF_MEASURE);
+
                     break;
 
                 case EnumsOfElements.Line.UnitPrice:
+                    //Possivelmente deveria ser atributo de uma relação
+
+                    //Criamos um novo nó
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                    //Adicionamos a relação deste com o nó Line
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.Line), this.findNodeId(XMLElement), EnumsOfEntities.LineRelationships.HAS_UNIT_PRICE);
+
                     break;
 
                 case EnumsOfElements.Line.TaxBase:
+                    //Criamos um novo nó
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                    //Adicionamos a relação deste com o nó Line
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.Line), this.findNodeId(XMLElement), EnumsOfEntities.LineRelationships.HAS_TAX_BASE);
+
                     break;
 
                 case EnumsOfElements.Line.TaxPointDate:
+                    //Criamos um novo nó
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                    //Adicionamos a relação deste com o nó Line
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.Line), this.findNodeId(XMLElement), EnumsOfEntities.LineRelationships.HAS_TAX_POINT_DATE);
+
                     break;
 
                 case EnumsOfElements.Line.Description:
+                    //Adicionamos como atributo ao nó Line
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.Line), XMLElement, value);
+
                     break;
 
                 case EnumsOfElements.Line.DebitAmount:
+                    //Criamos um novo nó
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                    //Adicionamos a relação deste com o nó Line
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.Line), this.findNodeId(XMLElement), EnumsOfEntities.LineRelationships.HAS_DEBIT_AMOUNT);
+
                     break;
 
                 case EnumsOfElements.Line.CreditAmount:
+                    //Criamos um novo nó
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                    //Adicionamos a relação deste com o nó Line
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.Line), this.findNodeId(XMLElement), EnumsOfEntities.LineRelationships.HAS_CREDIT_AMOUNT);
+
                     break;
 
                 case EnumsOfElements.Line.TaxExemptionReason:
+                    //Criamos um novo nó
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                    //Adicionamos a relação deste com o nó Line
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.Line), this.findNodeId(XMLElement), EnumsOfEntities.LineRelationships.HAS_TAX_EXEMPTION);
+
                     break;
 
                 case EnumsOfElements.Line.TaxExemptionCode:
+                    //Adicionamos como atributo ao nó TaxExemption
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Line.TaxExemptionReason), XMLElement, value);
+
                     break;
 
                 case EnumsOfElements.Line.SettlementAmount:
+                    //Criamos um novo nó
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                    //Adicionamos a relação deste com o nó Line
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.Line), this.findNodeId(XMLElement), EnumsOfEntities.LineRelationships.HAS_SETTLEMENT_AMOUNT);
+
                     break;
 
                 default:
@@ -2313,7 +2460,11 @@ public class MapperManager {
                 case EnumsOfElements.Line.OrderReferences:
 
                     if (EnumsOfElements.Line.OrderReferences.equalsIgnoreCase(XMLElement)) {
-                        //Processa o elemento
+                        //Criamos um novo nó
+                        this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
+
+                        //Adicionamos a relação deste com o nó Line
+                        this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.Line), this.findNodeId(XMLElement), EnumsOfEntities.LineRelationships.HAS_ORDER_REFERENCES);
 
                     } else {
 
@@ -2326,7 +2477,11 @@ public class MapperManager {
                 case EnumsOfElements.Line.References:
 
                     if (EnumsOfElements.Line.References.equalsIgnoreCase(XMLElement)) {
-                        //Processa o elemento
+                        //Criamos um novo nó
+                        this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
+
+                        //Adicionamos a relação deste com o nó Line
+                        this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.Line), this.findNodeId(XMLElement), EnumsOfEntities.LineRelationships.HAS_REFERENCES);
 
                     } else {
 
@@ -2339,7 +2494,11 @@ public class MapperManager {
                 case EnumsOfElements.Line.ProductSerialNumber:
 
                     if (EnumsOfElements.Line.ProductSerialNumber.equalsIgnoreCase(XMLElement)) {
-                        //Processa o elemento
+                        //Criamos um novo nó
+                        this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
+
+                        //Adicionamos a relação deste com o nó Line
+                        this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.Line), this.findNodeId(XMLElement), EnumsOfEntities.LineRelationships.HAS_PRODUCT_SERIAL_NUMBER);
 
                     } else {
 
@@ -2352,7 +2511,8 @@ public class MapperManager {
                 case EnumsOfElements.Line.Tax:
 
                     if (EnumsOfElements.Line.Tax.equalsIgnoreCase(XMLElement)) {
-                        //Processa o elemento
+                        //Criamos uma nova instância
+                        this.table = new TaxTable();
 
                     } else {
 
@@ -2365,7 +2525,11 @@ public class MapperManager {
                 case EnumsOfElements.Line.CustomsInformation:
 
                     if (EnumsOfElements.Line.CustomsInformation.equalsIgnoreCase(XMLElement)) {
-                        //Processa o elemento
+                        //Criamos um novo nó
+                        this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
+
+                        //Adicionamos a relação deste com o nó Line
+                        this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.Line), this.findNodeId(XMLElement), EnumsOfEntities.LineRelationships.HAS_CUSTOMS_INFORMATION);
 
                     } else {
 
@@ -2388,9 +2552,15 @@ public class MapperManager {
         switch (XMLElement) {
 
             case EnumsOfElements.OrderReferences.OriginatingON:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Line.OrderReferences), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.OrderReferences.OrderDate:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Line.OrderReferences), XMLElement, value);
+
                 break;
 
             default:
@@ -2404,9 +2574,15 @@ public class MapperManager {
         switch (XMLElement) {
 
             case EnumsOfElements.References.Reference:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Line.References), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.References.Reason:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Line.References), XMLElement, value);
+
                 break;
 
             default:
@@ -2418,7 +2594,8 @@ public class MapperManager {
     private void processProductSerialNumberChildren(String XMLElement, String value) throws MapException, NodeException {
 
         if (EnumsOfElements.ProductSerialNumber.SerialNumber.equalsIgnoreCase(XMLElement)) {
-            //Processar o elemento
+            //Adicionamos como atributo
+            this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Line.ProductSerialNumber), XMLElement, value);
 
         } else {
 
@@ -2433,18 +2610,39 @@ public class MapperManager {
         switch (XMLElement) {
 
             case EnumsOfElements.Tax.TaxType:
+                //Definimos os valores
+                this.table.setTaxType(value);
+
                 break;
 
             case EnumsOfElements.Tax.TaxCountryRegion:
+                //Definimos os valores
+                this.table.setTaxCountryRegion(value);
+
                 break;
 
             case EnumsOfElements.Tax.TaxCode:
+                //Definimos os valores
+                this.table.setTaxCode(value);
+
                 break;
 
             case EnumsOfElements.Tax.TaxPercentage:
+                //Definimos os valores
+                this.table.setTaxPercentage(value);
+
+                //Temos todos os atributos necessários, definimos a relação
+                this.driver.addRelationshipToTaxTable(this.findNodeId(EnumsOfElements.Invoice.Line), this.table);
+
                 break;
 
             case EnumsOfElements.Tax.TaxAmount:
+                //Definimos os valores
+                this.table.setTaxAmount(value);
+
+                //Temos todos os atributos necessários, definimos a relação
+                this.driver.addRelationshipToTaxTable(this.findNodeId(EnumsOfElements.Invoice.Line), this.table);
+
                 break;
 
             default:
@@ -2458,9 +2656,15 @@ public class MapperManager {
         switch (XMLElement) {
 
             case EnumsOfElements.CustomsInformation.ARCNo:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Line.CustomsInformation), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.CustomsInformation.IECAmount:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Line.CustomsInformation), XMLElement, value);
+
                 break;
 
             default:
@@ -2476,12 +2680,27 @@ public class MapperManager {
             switch (XMLElement) {
 
                 case EnumsOfElements.DocumentTotals.TaxPayable:
+                    //Adicionamos como atributo do nó DocumentTotals
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.DocumentTotals), XMLElement, value);
+
                     break;
 
                 case EnumsOfElements.DocumentTotals.NetTotal:
+                    //Criamos um novo nó
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                    //Adicionamos uma relação com o nó DocumentTotals
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.DocumentTotals), this.findNodeId(XMLElement), EnumsOfEntities.DocumentTotalsRelationships.HAS_NET_TOTAL);
+
                     break;
 
                 case EnumsOfElements.DocumentTotals.GrossTotal:
+                    //Criamos um novo nó
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                    //Adicionamos uma relação com o nó DocumentTotals
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.DocumentTotals), this.findNodeId(XMLElement), EnumsOfEntities.DocumentTotalsRelationships.HAS_GROSS_TOTAL);
+
                     break;
 
                 default:
@@ -2497,7 +2716,11 @@ public class MapperManager {
                 case EnumsOfElements.DocumentTotals.Currency:
 
                     if (EnumsOfElements.DocumentTotals.Currency.equalsIgnoreCase(XMLElement)) {
-                        //Processa o elemento
+                        //Criamos um novo nó
+                        this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
+
+                        //Adicionamos uma relação com o nó DocumentTotals
+                        this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.DocumentTotals), this.findNodeId(XMLElement), EnumsOfEntities.DocumentTotalsRelationships.HAS_CURRENCY);
 
                     } else {
 
@@ -2510,7 +2733,11 @@ public class MapperManager {
                 case EnumsOfElements.DocumentTotals.Settlement:
 
                     if (EnumsOfElements.DocumentTotals.Settlement.equalsIgnoreCase(XMLElement)) {
-                        //Processa o elemento
+                        //Criamos um novo nó
+                        this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
+
+                        //Adicionamos uma relação com o nó DocumentTotals
+                        this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.DocumentTotals), this.findNodeId(XMLElement), EnumsOfEntities.DocumentTotalsRelationships.HAS_SETTLEMENT);
 
                     } else {
 
@@ -2523,7 +2750,11 @@ public class MapperManager {
                 case EnumsOfElements.DocumentTotals.Payment:
 
                     if (EnumsOfElements.DocumentTotals.Payment.equalsIgnoreCase(XMLElement)) {
-                        //Processa o elemento
+                        //Criamos um novo nó
+                        this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement, value));
+
+                        //Adicionamos uma relação com o nó DocumentTotals
+                        this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.DocumentTotals), this.findNodeId(XMLElement), EnumsOfEntities.DocumentTotalsRelationships.HAS_PAYMENT);
 
                     } else {
 
@@ -2546,12 +2777,21 @@ public class MapperManager {
         switch (XMLElement) {
 
             case EnumsOfElements.Currency.CurrencyCode:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.DocumentTotals.Currency), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.Currency.CurrencyAmount:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.DocumentTotals.Currency), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.Currency.ExchangeRate:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.DocumentTotals.Currency), XMLElement, value);
+
                 break;
 
             default:
@@ -2565,15 +2805,27 @@ public class MapperManager {
         switch (XMLElement) {
 
             case EnumsOfElements.Settlement.SettlementDiscount:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.DocumentTotals.Settlement), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.Settlement.SettlementAmount:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.DocumentTotals.Settlement), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.Settlement.SettlementDate:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.DocumentTotals.Settlement), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.Settlement.PaymentTerms:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.DocumentTotals.Settlement), XMLElement, value);
+
                 break;
 
             default:
@@ -2587,12 +2839,21 @@ public class MapperManager {
         switch (XMLElement) {
 
             case EnumsOfElements.Payment.PaymentMechanism:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.DocumentTotals.Payment), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.Payment.PaymentAmount:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.DocumentTotals.Payment), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.Payment.PaymentDate:
+                //Adicionamos como atributo
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.DocumentTotals.Payment), XMLElement, value);
+
                 break;
 
             default:
@@ -2606,12 +2867,27 @@ public class MapperManager {
         switch (XMLElement) {
 
             case EnumsOfElements.WithholdingTax.WithholdingTaxType:
+                //Criamos um novo nó
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                //Adicionamos uma relação com o nó WithholdingTax
+                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.WithholdingTax), this.findNodeId(XMLElement), EnumsOfEntities.WithholdingTaxRelationships.HAS_WITHHOLDING_TAX_TYPE);
+
                 break;
 
             case EnumsOfElements.WithholdingTax.WithholdingTaxDescription:
+                //Adicionamos como atributo do nó WithholdingTax
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.WithholdingTax), XMLElement, value);
+
                 break;
 
             case EnumsOfElements.WithholdingTax.WithholdingTaxAmount:
+                //Criamos um novo nó
+                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement, value));
+
+                //Adicionamos uma relação com o nó WithholdingTax
+                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.WithholdingTax), this.findNodeId(XMLElement), EnumsOfEntities.WithholdingTaxRelationships.HAS_WITHHOLDING_TAX_AMOUNT);
+
                 break;
 
             default:

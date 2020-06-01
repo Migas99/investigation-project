@@ -1,6 +1,7 @@
 package Database;
 
 import Enums.EnumsOfEntities;
+import Models.TaxTable;
 import org.neo4j.driver.*;
 
 /**
@@ -141,6 +142,10 @@ public class Neo4j {
         }
     }
 
+    public void updateRelationshipProperty(long id1, long id2, String property, String value) {
+
+    }
+
     public void addRelationshipToCompany(long id, String CompanyName) {
         try (Session session = this.driver.session()) {
             boolean isEmpty = session.writeTransaction(tx -> tx.run(""
@@ -256,92 +261,57 @@ public class Neo4j {
         }
     }
 
-    /**
-     * INCOMPLETO
-     *
-     * @param id
-     * @param Company
-     */
-    public void addRelationshipToTaxTable(long id, String Company) {
+    public void addRelationshipToTaxTable(long id, TaxTable table) {
         try (Session session = this.driver.session()) {
-            boolean isEmpty = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a) "
-                    + "WHERE a.CompanyName = '" + Company + "' "
+            long tableID = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(b:" + EnumsOfEntities.Entities.TaxTable + "), "
+                    + "(a)-[:" + EnumsOfEntities.TaxTableRelationships.HAS_TAX_TYPE + "]->(b), "
+                    + "(a)-[:" + EnumsOfEntities.TaxTableRelationships.HAS_TAX_COUNTRY_REGION + "]->(c), "
+                    + "a)-[:" + EnumsOfEntities.TaxTableRelationships.HAS_TAX_EXPIRATION_DATE + "]->(d) "
+                    + "WHERE a.TaxCode = '" + table.getTaxCode() + "' and a.Description = '" + table.getDescription() + " and "
+                    + "(a.TaxPercentage = '" + table.getTaxPercentage() + "' or a.TaxAmount = '" + table.getTaxAmount() + "') and "
+                    + "b.TaxType = '" + table.getTaxType() + "' and "
+                    + "c.TaxCountryRegion = '" + table.getTaxCountryRegion() + "' and "
+                    + "d.TaxExpirationDate = '" + table.getTaxExpirationDate() + "' "
                     + "RETURN (a)"
-            ).list().isEmpty());
-
-            if (isEmpty) {
-                session.writeTransaction(tx -> tx.run(""
-                        + "MATCH (a:Company)"
-                        + "CREATE (b { CompanyName: '" + Company + "' })"
-                        + "CREATE (b)-[:TYPE_OF]->(a)"
-                ));
-            }
+            ).single().get(0).asNode().id());
 
             session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a),(b) "
-                    + "WHERE ID(a) = " + id + " and b.CompanyName = '" + Company + "' "
-                    + "CREATE (a)-[:HAS_COMPANY]->(b)"
+                    + "MATCH (a), (b)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(c:" + EnumsOfEntities.Entities.TaxTable + ") "
+                    + "WHERE ID(a) = " + id + " and ID(a) = '" + tableID + "' "
+                    + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_TAX_TABLE + "]->(b)"
             ));
         }
     }
 
-    /**
-     * INCOMPLETO
-     *
-     * @param id
-     * @param Company
-     */
-    public void addRelationshipToTransaction(long id, String Transaction) {
+    public void addRelationshipToTransaction(long id, String TransactionID) {
         try (Session session = this.driver.session()) {
-            boolean isEmpty = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a) "
-                    + "WHERE a.TransactionID = " + Transaction + " "
-                    + "RETURN (a)"
-            ).list().isEmpty());
-
-            if (isEmpty) {
-                session.writeTransaction(tx -> tx.run(""
-                        + "MATCH (a:Company)"
-                        + "CREATE (b { TransactionID: '" + Transaction + "' })"
-                        + "CREATE (b)-[:TYPE_OF]->(a)"
-                ));
-            }
-
             session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a),(b) "
-                    + "WHERE ID(a) = " + id + " and b.TransactionID = " + Transaction + " "
-                    + "CREATE (a)-[:HAS_TRANSACTION]->(b)"
+                    + "MATCH (a), (b)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(c:" + EnumsOfEntities.Entities.Transaction + ")  "
+                    + "WHERE ID(a) = " + id + " and b.TransactionID = " + TransactionID + " "
+                    + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_TRANSACTION + "]->(b)"
             ));
         }
     }
 
-    /**
-     * INCOMPLETO
-     *
-     * @param id
-     * @param Company
-     */
-    public void addRelationshipToSourceID(long id, String Company) {
+    public void addRelationshipToSourceID(long id, String SourceID) {
         try (Session session = this.driver.session()) {
             boolean isEmpty = session.writeTransaction(tx -> tx.run(""
                     + "MATCH (a) "
-                    + "WHERE a.CompanyName = " + Company + " "
+                    + "WHERE a.SourceID = " + SourceID + " "
                     + "RETURN (a)"
             ).list().isEmpty());
 
             if (isEmpty) {
                 session.writeTransaction(tx -> tx.run(""
-                        + "MATCH (a:Company)"
-                        + "CREATE (b { CompanyName: '" + Company + "' })"
-                        + "CREATE (b)-[:TYPE_OF]->(a)"
+                        + "CREATE (a { SourceID: '" + SourceID + "' })"
                 ));
             }
 
             session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a),(b) "
-                    + "WHERE ID(a) = " + id + " and b.CompanyName = " + Company + " "
-                    + "CREATE (a)-[:HAS_COMPANY]->(b)"
+                    + "MATCH (a), (b) "
+                    + "WHERE ID(a) = " + id + " and b.SourceID = " + SourceID + " "
+                    + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_SOURCE + "]->(b)"
             ));
         }
     }
