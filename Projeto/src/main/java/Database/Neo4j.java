@@ -99,6 +99,38 @@ public class Neo4j {
      * @param value     valor da propriedade
      * @return o id do novo nó
      */
+    public long addNode(String attribute, int value) {
+        try (Session session = this.driver.session()) {
+            return session.writeTransaction(tx -> tx.run(""
+                    + "CREATE (n { " + attribute + ": " + value + " } )"
+                    + "RETURN (n)"
+            ).single().get(0).asNode().id());
+        }
+    }
+
+    /**
+     * Método que adiciona um novo nó à base de dados, com a propriedade passado como argumento
+     *
+     * @param attribute propriedade
+     * @param value     valor da propriedade
+     * @return o id do novo nó
+     */
+    public long addNode(String attribute, double value) {
+        try (Session session = this.driver.session()) {
+            return session.writeTransaction(tx -> tx.run(""
+                    + "CREATE (n { " + attribute + ": " + value + " } )"
+                    + "RETURN (n)"
+            ).single().get(0).asNode().id());
+        }
+    }
+
+    /**
+     * Método que adiciona um novo nó à base de dados, com a propriedade passado como argumento
+     *
+     * @param attribute propriedade
+     * @param value     valor da propriedade
+     * @return o id do novo nó
+     */
     public long addNode(String attribute, String value) {
         try (Session session = this.driver.session()) {
             return session.writeTransaction(tx -> tx.run(""
@@ -121,6 +153,40 @@ public class Neo4j {
                     + "MATCH (n) "
                     + "WHERE ID(n) = " + id + " "
                     + "SET n." + attribute + " = '" + value + "'"
+            ));
+        }
+    }
+
+    /**
+     * Método responsável por adicionar um novo atributo a um nó
+     *
+     * @param id        do nó
+     * @param attribute atributo
+     * @param value     valor do atributo
+     */
+    public void addPropertyToNode(long id, String attribute, int value) {
+        try (Session session = this.driver.session()) {
+            session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (n) "
+                    + "WHERE ID(n) = " + id + " "
+                    + "SET n." + attribute + " = " + value + " "
+            ));
+        }
+    }
+
+    /**
+     * Método responsável por adicionar um novo atributo a um nó
+     *
+     * @param id        do nó
+     * @param attribute atributo
+     * @param value     valor do atributo
+     */
+    public void addPropertyToNode(long id, String attribute, double value) {
+        try (Session session = this.driver.session()) {
+            session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (n) "
+                    + "WHERE ID(n) = " + id + " "
+                    + "SET n." + attribute + " = " + value + " "
             ));
         }
     }

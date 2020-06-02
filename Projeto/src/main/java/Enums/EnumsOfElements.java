@@ -322,6 +322,8 @@ public class EnumsOfElements {
 
         public static final String DeliveryID = "DeliveryID";
         public static final String DeliveryDate = "DeliveryDate";
+        public static final String WarehouseID = "WarehouseID";
+        public static final String LocationID = "LocationID";
         public static final String Address = "Address";
     }
 
@@ -330,6 +332,8 @@ public class EnumsOfElements {
 
         public static final String DeliveryID = "DeliveryID";
         public static final String DeliveryDate = "DeliveryDate";
+        public static final String WarehouseID = "WarehouseID";
+        public static final String LocationID = "LocationID";
         public static final String Address = "Address";
     }
 

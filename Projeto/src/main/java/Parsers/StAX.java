@@ -1,12 +1,10 @@
 package Parsers;
 
 import Database.Neo4j;
-import Mappers.MapperForSAFTPT;
 import Mappers.MapperManager;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.LinkedList;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;

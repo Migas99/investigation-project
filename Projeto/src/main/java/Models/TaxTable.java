@@ -7,8 +7,8 @@ public class TaxTable {
     private String TaxCode;
     private String Description;
     private String TaxExpirationDate;
-    private String TaxPercentage = "-1";
-    private String TaxAmount = "-1";
+    private double TaxPercentage = -99;
+    private double TaxAmount = -99;
 
     public String getTaxType() {
         return TaxType;
@@ -50,19 +50,19 @@ public class TaxTable {
         TaxExpirationDate = taxExpirationDate;
     }
 
-    public String getTaxPercentage() {
+    public double getTaxPercentage() {
         return TaxPercentage;
     }
 
-    public void setTaxPercentage(String taxPercentage) {
+    public void setTaxPercentage(double taxPercentage) {
         TaxPercentage = taxPercentage;
     }
 
-    public String getTaxAmount() {
+    public double getTaxAmount() {
         return TaxAmount;
     }
 
-    public void setTaxAmount(String taxAmount) {
+    public void setTaxAmount(double taxAmount) {
         TaxAmount = taxAmount;
     }
 }
