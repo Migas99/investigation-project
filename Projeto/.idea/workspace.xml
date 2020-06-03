@@ -12,48 +12,25 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Database/Neo4j.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Database/Neo4j.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$Address.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$Address.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$CreditLine.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$CreditLine.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$Currency.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$Currency.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$CustomsInformation.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$CustomsInformation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$DebitLine.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$DebitLine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$DocumentStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$DocumentStatus.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$DocumentTotals.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$DocumentTotals.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$Invoice.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$Invoice.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$Line.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$Line.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$OrderReferences.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$OrderReferences.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$Payment.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$Payment.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$ProductSerialNumber.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$ProductSerialNumber.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$References.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$References.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$SalesInvoices.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$SalesInvoices.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$SequenceElements.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$SequenceElements.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$Settlement.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$Settlement.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$ShipFrom.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$ShipFrom.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$ShipTo.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$ShipTo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$SourceDocuments.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$SourceDocuments.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$SpecialRegimes.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$SpecialRegimes.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$Tax.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$Tax.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$WithholdingTax.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfElements$WithholdingTax.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$AccountRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$AccountRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$AddressRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$AddressRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$CompanyRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$CompanyRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$ContactsRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$ContactsRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$CustomerRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$CustomerRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$Entities.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$Entities.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$EntitiesValues.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$EntitiesValues.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$FileInformationRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$FileInformationRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$FiscalYearRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$FiscalYearRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$GeneralLedgerAccountsRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$GeneralLedgerAccountsRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$OtherRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$OtherRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$ProductRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$ProductRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$SupplierRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$SupplierRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$TaxTableRelationships.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities$TaxTableRelationships.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Enums/EnumsOfEntities.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Exceptions/MapException.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Exceptions/MapException.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/GraphNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/GraphNode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperForSAFTPT.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Mappers/MapperManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Parsers/StAX.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Parsers/StAX.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Parsers/StAX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Parsers/StAX.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Models/TaxTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Models/TaxTable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Interface/Interface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Interface/Interface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Interface/Run.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Interface/Run.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -74,8 +51,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Interface/Run.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="23" column="64" selection-start-line="23" selection-start-column="64" selection-end-line="23" selection-end-column="64" />
+            <state relative-caret-position="182">
+              <caret line="25" column="68" lean-forward="true" selection-start-line="25" selection-start-column="68" selection-end-line="25" selection-end-column="68" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#validateXML#0;class#Run#0" />
@@ -84,12 +61,59 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Database/Neo4j.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="970">
+              <caret line="346" column="76" selection-start-line="346" selection-start-column="76" selection-end-line="346" selection-end-column="76" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="docComment;class#Neo4j#0" />
+                <element signature="docComment;method#Neo4j#0;class#Neo4j#0" />
+                <element signature="method#Neo4j#0;class#Neo4j#0" />
+                <element signature="docComment;method#areIdentityNodesLoaded#0;class#Neo4j#0" />
+                <element signature="method#areIdentityNodesLoaded#0;class#Neo4j#0" />
+                <element signature="docComment;method#addIdentityNode#0;class#Neo4j#0" />
+                <element signature="method#addIdentityNode#0;class#Neo4j#0" />
+                <element signature="docComment;method#addRelationshipTypeOf#0;class#Neo4j#0" />
+                <element signature="method#addRelationshipTypeOf#0;class#Neo4j#0" />
+                <element signature="docComment;method#addNode#0;class#Neo4j#0" />
+                <element signature="method#addNode#0;class#Neo4j#0" />
+                <element signature="docComment;method#addNode#1;class#Neo4j#0" />
+                <element signature="method#addNode#1;class#Neo4j#0" />
+                <element signature="docComment;method#addNode#2;class#Neo4j#0" />
+                <element signature="method#addNode#2;class#Neo4j#0" />
+                <element signature="docComment;method#addNode#3;class#Neo4j#0" />
+                <element signature="method#addNode#3;class#Neo4j#0" />
+                <element signature="docComment;method#addPropertyToNode#0;class#Neo4j#0" />
+                <element signature="method#addPropertyToNode#0;class#Neo4j#0" />
+                <element signature="docComment;method#addPropertyToNode#1;class#Neo4j#0" />
+                <element signature="method#addPropertyToNode#1;class#Neo4j#0" />
+                <element signature="docComment;method#addPropertyToNode#2;class#Neo4j#0" />
+                <element signature="method#addPropertyToNode#2;class#Neo4j#0" />
+                <element signature="docComment;method#addRelationship#0;class#Neo4j#0" />
+                <element signature="method#addRelationship#0;class#Neo4j#0" />
+                <element signature="method#addRelationshipToCompany#0;class#Neo4j#0" />
+                <element signature="method#addRelationshipToAccount#0;class#Neo4j#0" />
+                <element signature="method#addRelationshipToCustomer#0;class#Neo4j#0" />
+                <element signature="method#addRelationshipToSupplier#0;class#Neo4j#0" />
+                <element signature="method#addRelationshipToProduct#0;class#Neo4j#0" />
+                <element signature="method#addRelationshipToTaxTable#0;class#Neo4j#0" />
+                <element signature="method#addRelationshipToTransaction#0;class#Neo4j#0" />
+                <element signature="method#addRelationshipToSourceID#0;class#Neo4j#0" />
+                <element signature="docComment;method#close#0;class#Neo4j#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Mappers/MapperManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+            <state relative-caret-position="254">
+              <caret line="1722" column="60" lean-forward="true" selection-start-line="1722" selection-start-column="60" selection-end-line="1722" selection-end-column="60" />
               <folding>
+                <element signature="imports" expanded="true" />
                 <element signature="docComment;class#MapperManager#0" />
                 <element signature="e#591#921#0" />
                 <element signature="e#927#1092#0" />
@@ -103,47 +127,47 @@
                 <element signature="e#3565#3894#0" />
                 <element signature="e#3565#4329#0" />
                 <element signature="e#4335#4470#0" />
-                <element signature="e#4476#4657#0" />
-                <element signature="e#4667#4848#0" />
-                <element signature="e#4663#5270#0" />
-                <element signature="e#5276#7625#0" />
-                <element signature="e#7631#23816#0" />
-                <element signature="e#23822#27265#0" />
-                <element signature="e#27271#30479#0" />
-                <element signature="e#30485#32192#0" />
-                <element signature="e#32198#36508#0" />
-                <element signature="e#36514#47509#0" />
-                <element signature="e#47515#58525#0" />
-                <element signature="e#58531#61622#0" />
-                <element signature="e#61628#62397#0" />
-                <element signature="e#62403#63291#0" />
-                <element signature="e#63297#66040#0" />
-                <element signature="e#66046#68993#0" />
-                <element signature="e#68999#70955#0" />
-                <element signature="e#70961#76376#0" />
-                <element signature="e#76382#78016#0" />
-                <element signature="e#78022#80230#0" />
-                <element signature="e#80236#82423#0" />
-                <element signature="e#82429#85543#0" />
-                <element signature="e#85549#88376#0" />
-                <element signature="e#88382#100359#0" />
-                <element signature="e#100365#102401#0" />
-                <element signature="e#102407#103509#0" />
-                <element signature="e#103515#105425#0" />
-                <element signature="e#105431#107365#0" />
-                <element signature="e#107371#116921#0" />
-                <element signature="e#116927#117666#0" />
-                <element signature="e#117672#118379#0" />
-                <element signature="e#118385#118842#0" />
-                <element signature="e#118848#120267#0" />
-                <element signature="e#120273#121019#0" />
-                <element signature="e#121025#125100#0" />
-                <element signature="e#125106#126083#0" />
-                <element signature="e#126089#127343#0" />
-                <element signature="e#127349#128321#0" />
-                <element signature="e#128327#129865#0" />
-                <element signature="e#140238#143681#0" />
+                <element signature="e#4476#4654#0" />
+                <element signature="e#4660#4841#0" />
+                <element signature="e#4847#5028#0" />
+                <element signature="e#5034#5641#0" />
+                <element signature="e#5647#7982#0" />
+                <element signature="e#7988#24098#0" />
+                <element signature="e#24104#27505#0" />
+                <element signature="e#27511#30691#0" />
+                <element signature="e#30697#32397#0" />
+                <element signature="e#32403#36745#0" />
+                <element signature="e#36751#47701#0" />
+                <element signature="e#47707#58670#0" />
+                <element signature="e#58676#61739#0" />
+                <element signature="e#61745#62514#0" />
+                <element signature="e#62520#63401#0" />
+                <element signature="e#63407#66161#0" />
+                <element signature="e#66167#69142#0" />
+                <element signature="e#69148#71097#0" />
+                <element signature="e#71103#76493#0" />
+                <element signature="e#76499#78119#0" />
+                <element signature="e#82536#85622#0" />
+                <element signature="e#85628#88483#0" />
+                <element signature="e#88489#100364#0" />
+                <element signature="e#100370#102392#0" />
+                <element signature="e#102398#103551#0" />
+                <element signature="e#103557#105795#0" />
+                <element signature="e#105801#108063#0" />
+                <element signature="e#108069#117641#0" />
+                <element signature="e#117647#118386#0" />
+                <element signature="e#118392#119099#0" />
+                <element signature="e#119105#119562#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Interface/Interface.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
             </state>
           </provider>
         </entry>
@@ -175,23 +199,24 @@
         <option value="$PROJECT_DIR$/src/main/java/Mappers/EnumOfEntities.java" />
         <option value="$PROJECT_DIR$/src/main/java/Mappers/EnumsOfEntities.java" />
         <option value="$PROJECT_DIR$/src/main/java/Mappers/EnumsOfElements.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Interface/Run.java" />
         <option value="$PROJECT_DIR$/src/main/java/Mappers/MapperForSAFTPT.java" />
         <option value="$PROJECT_DIR$/src/main/java/Mappers/ManageSequence.java" />
         <option value="$PROJECT_DIR$/src/main/java/Exceptions/MapException.java" />
         <option value="$PROJECT_DIR$/src/main/java/Enums/EnumsOfEntities.java" />
         <option value="$PROJECT_DIR$/src/main/java/Parsers/StAX.java" />
         <option value="$PROJECT_DIR$/src/main/java/Mappers/GraphNode.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Database/Neo4j.java" />
         <option value="$PROJECT_DIR$/src/main/java/Enums/EnumsOfElements.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Interface/Interface.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Interface/Run.java" />
         <option value="$PROJECT_DIR$/src/main/java/Models/TaxTable.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Database/Neo4j.java" />
         <option value="$PROJECT_DIR$/src/main/java/Mappers/MapperManager.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-20" />
-    <option name="width" value="959" />
+    <option name="width" value="960" />
     <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -202,6 +227,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -287,12 +314,10 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1591093573068" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1591206115457" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
@@ -368,7 +393,7 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1785235" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1785235" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -423,13 +448,6 @@
             <element signature="e#95#96#0" expanded="true" />
             <element signature="e#148#149#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Interface/Interface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -513,61 +531,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Database/Neo4j.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="93" lean-forward="true" selection-start-line="93" selection-end-line="93" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="docComment;class#Neo4j#0" />
-            <element signature="docComment;method#Neo4j#0;class#Neo4j#0" />
-            <element signature="method#Neo4j#0;class#Neo4j#0" />
-            <element signature="docComment;method#areIdentityNodesLoaded#0;class#Neo4j#0" />
-            <element signature="method#areIdentityNodesLoaded#0;class#Neo4j#0" />
-            <element signature="docComment;method#addIdentityNode#0;class#Neo4j#0" />
-            <element signature="method#addIdentityNode#0;class#Neo4j#0" />
-            <element signature="docComment;method#addRelationshipTypeOf#0;class#Neo4j#0" />
-            <element signature="method#addRelationshipTypeOf#0;class#Neo4j#0" />
-            <element signature="docComment;method#addNode#0;class#Neo4j#0" />
-            <element signature="method#addNode#0;class#Neo4j#0" />
-            <element signature="docComment;method#addNode#1;class#Neo4j#0" />
-            <element signature="method#addNode#1;class#Neo4j#0" />
-            <element signature="docComment;method#addNode#1;class#Neo4j#0" />
-            <element signature="method#addNode#1;class#Neo4j#0" />
-            <element signature="docComment;method#addNode#2;class#Neo4j#0" />
-            <element signature="method#addNode#2;class#Neo4j#0" />
-            <element signature="docComment;method#addPropertyToNode#0;class#Neo4j#0" />
-            <element signature="method#addPropertyToNode#0;class#Neo4j#0" />
-            <element signature="docComment;method#addPropertyToNode#1;class#Neo4j#0" />
-            <element signature="method#addPropertyToNode#1;class#Neo4j#0" />
-            <element signature="docComment;method#addPropertyToNode#1;class#Neo4j#0" />
-            <element signature="method#addPropertyToNode#1;class#Neo4j#0" />
-            <element signature="docComment;method#addRelationship#0;class#Neo4j#0" />
-            <element signature="method#addRelationship#0;class#Neo4j#0" />
-            <element signature="method#addRelationshipToCompany#0;class#Neo4j#0" />
-            <element signature="method#addRelationshipToAccount#0;class#Neo4j#0" />
-            <element signature="method#addRelationshipToCustomer#0;class#Neo4j#0" />
-            <element signature="method#addRelationshipToSupplier#0;class#Neo4j#0" />
-            <element signature="method#addRelationshipToProduct#0;class#Neo4j#0" />
-            <element signature="method#addRelationshipToTaxTable#0;class#Neo4j#0" />
-            <element signature="method#addRelationshipToTransaction#0;class#Neo4j#0" />
-            <element signature="method#addRelationshipToSourceID#0;class#Neo4j#0" />
-            <element signature="docComment;method#close#0;class#Neo4j#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Interface/Run.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="23" column="64" selection-start-line="23" selection-start-column="64" selection-end-line="23" selection-end-column="64" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#validateXML#0;class#Run#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Enums/EnumsOfElements.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="497">
@@ -620,16 +583,79 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Models/TaxTable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="57" column="34" selection-start-line="57" selection-start-column="34" selection-end-line="57" selection-end-column="34" />
+        <state relative-caret-position="105">
+          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Interface/Interface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Database/Neo4j.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="970">
+          <caret line="346" column="76" selection-start-line="346" selection-start-column="76" selection-end-line="346" selection-end-column="76" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="docComment;class#Neo4j#0" />
+            <element signature="docComment;method#Neo4j#0;class#Neo4j#0" />
+            <element signature="method#Neo4j#0;class#Neo4j#0" />
+            <element signature="docComment;method#areIdentityNodesLoaded#0;class#Neo4j#0" />
+            <element signature="method#areIdentityNodesLoaded#0;class#Neo4j#0" />
+            <element signature="docComment;method#addIdentityNode#0;class#Neo4j#0" />
+            <element signature="method#addIdentityNode#0;class#Neo4j#0" />
+            <element signature="docComment;method#addRelationshipTypeOf#0;class#Neo4j#0" />
+            <element signature="method#addRelationshipTypeOf#0;class#Neo4j#0" />
+            <element signature="docComment;method#addNode#0;class#Neo4j#0" />
+            <element signature="method#addNode#0;class#Neo4j#0" />
+            <element signature="docComment;method#addNode#1;class#Neo4j#0" />
+            <element signature="method#addNode#1;class#Neo4j#0" />
+            <element signature="docComment;method#addNode#2;class#Neo4j#0" />
+            <element signature="method#addNode#2;class#Neo4j#0" />
+            <element signature="docComment;method#addNode#3;class#Neo4j#0" />
+            <element signature="method#addNode#3;class#Neo4j#0" />
+            <element signature="docComment;method#addPropertyToNode#0;class#Neo4j#0" />
+            <element signature="method#addPropertyToNode#0;class#Neo4j#0" />
+            <element signature="docComment;method#addPropertyToNode#1;class#Neo4j#0" />
+            <element signature="method#addPropertyToNode#1;class#Neo4j#0" />
+            <element signature="docComment;method#addPropertyToNode#2;class#Neo4j#0" />
+            <element signature="method#addPropertyToNode#2;class#Neo4j#0" />
+            <element signature="docComment;method#addRelationship#0;class#Neo4j#0" />
+            <element signature="method#addRelationship#0;class#Neo4j#0" />
+            <element signature="method#addRelationshipToCompany#0;class#Neo4j#0" />
+            <element signature="method#addRelationshipToAccount#0;class#Neo4j#0" />
+            <element signature="method#addRelationshipToCustomer#0;class#Neo4j#0" />
+            <element signature="method#addRelationshipToSupplier#0;class#Neo4j#0" />
+            <element signature="method#addRelationshipToProduct#0;class#Neo4j#0" />
+            <element signature="method#addRelationshipToTaxTable#0;class#Neo4j#0" />
+            <element signature="method#addRelationshipToTransaction#0;class#Neo4j#0" />
+            <element signature="method#addRelationshipToSourceID#0;class#Neo4j#0" />
+            <element signature="docComment;method#close#0;class#Neo4j#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Interface/Run.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="25" column="68" lean-forward="true" selection-start-line="25" selection-start-column="68" selection-end-line="25" selection-end-column="68" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#validateXML#0;class#Run#0" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Mappers/MapperManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+        <state relative-caret-position="254">
+          <caret line="1722" column="60" lean-forward="true" selection-start-line="1722" selection-start-column="60" selection-end-line="1722" selection-end-column="60" />
           <folding>
+            <element signature="imports" expanded="true" />
             <element signature="docComment;class#MapperManager#0" />
             <element signature="e#591#921#0" />
             <element signature="e#927#1092#0" />
@@ -643,46 +669,37 @@
             <element signature="e#3565#3894#0" />
             <element signature="e#3565#4329#0" />
             <element signature="e#4335#4470#0" />
-            <element signature="e#4476#4657#0" />
-            <element signature="e#4667#4848#0" />
-            <element signature="e#4663#5270#0" />
-            <element signature="e#5276#7625#0" />
-            <element signature="e#7631#23816#0" />
-            <element signature="e#23822#27265#0" />
-            <element signature="e#27271#30479#0" />
-            <element signature="e#30485#32192#0" />
-            <element signature="e#32198#36508#0" />
-            <element signature="e#36514#47509#0" />
-            <element signature="e#47515#58525#0" />
-            <element signature="e#58531#61622#0" />
-            <element signature="e#61628#62397#0" />
-            <element signature="e#62403#63291#0" />
-            <element signature="e#63297#66040#0" />
-            <element signature="e#66046#68993#0" />
-            <element signature="e#68999#70955#0" />
-            <element signature="e#70961#76376#0" />
-            <element signature="e#76382#78016#0" />
-            <element signature="e#78022#80230#0" />
-            <element signature="e#80236#82423#0" />
-            <element signature="e#82429#85543#0" />
-            <element signature="e#85549#88376#0" />
-            <element signature="e#88382#100359#0" />
-            <element signature="e#100365#102401#0" />
-            <element signature="e#102407#103509#0" />
-            <element signature="e#103515#105425#0" />
-            <element signature="e#105431#107365#0" />
-            <element signature="e#107371#116921#0" />
-            <element signature="e#116927#117666#0" />
-            <element signature="e#117672#118379#0" />
-            <element signature="e#118385#118842#0" />
-            <element signature="e#118848#120267#0" />
-            <element signature="e#120273#121019#0" />
-            <element signature="e#121025#125100#0" />
-            <element signature="e#125106#126083#0" />
-            <element signature="e#126089#127343#0" />
-            <element signature="e#127349#128321#0" />
-            <element signature="e#128327#129865#0" />
-            <element signature="e#140238#143681#0" />
+            <element signature="e#4476#4654#0" />
+            <element signature="e#4660#4841#0" />
+            <element signature="e#4847#5028#0" />
+            <element signature="e#5034#5641#0" />
+            <element signature="e#5647#7982#0" />
+            <element signature="e#7988#24098#0" />
+            <element signature="e#24104#27505#0" />
+            <element signature="e#27511#30691#0" />
+            <element signature="e#30697#32397#0" />
+            <element signature="e#32403#36745#0" />
+            <element signature="e#36751#47701#0" />
+            <element signature="e#47707#58670#0" />
+            <element signature="e#58676#61739#0" />
+            <element signature="e#61745#62514#0" />
+            <element signature="e#62520#63401#0" />
+            <element signature="e#63407#66161#0" />
+            <element signature="e#66167#69142#0" />
+            <element signature="e#69148#71097#0" />
+            <element signature="e#71103#76493#0" />
+            <element signature="e#76499#78119#0" />
+            <element signature="e#82536#85622#0" />
+            <element signature="e#85628#88483#0" />
+            <element signature="e#88489#100364#0" />
+            <element signature="e#100370#102392#0" />
+            <element signature="e#102398#103551#0" />
+            <element signature="e#103557#105795#0" />
+            <element signature="e#105801#108063#0" />
+            <element signature="e#108069#117641#0" />
+            <element signature="e#117647#118386#0" />
+            <element signature="e#118392#119099#0" />
+            <element signature="e#119105#119562#0" />
           </folding>
         </state>
       </provider>

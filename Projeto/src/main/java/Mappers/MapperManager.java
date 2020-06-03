@@ -83,17 +83,6 @@ public class MapperManager {
                     remove--;
                 }
 
-
-                /*boolean found = false;
-
-                while (!found && !this.nodesContainer.isEmpty()) {
-                    if (this.nodesContainer.getLast().getXMLElement().equalsIgnoreCase(XMLElement)) {
-                        found = true;
-                    }
-
-                    this.nodesContainer.removeLast();
-                }*/
-
             }
         }
     }
@@ -1678,8 +1667,12 @@ public class MapperManager {
                 break;
 
             case EnumsOfElements.CreditLine.SourceDocumentID:
-                //Ainda não decidi como processar
-                throw new MapException(XMLElement);
+                //Ainda não decidi como processar bem, visto que aparentemente isto indica o InvoiceNo
+
+                //Adicionamos como propriedade do nó CreditLine
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Lines.CreditLine), XMLElement, value);
+
+                break;
 
             case EnumsOfElements.CreditLine.SystemEntryDate:
                 //Criamos um novo nó com a propriedade  e o seu valor
@@ -1728,8 +1721,12 @@ public class MapperManager {
                 break;
 
             case EnumsOfElements.DebitLine.SourceDocumentID:
-                //Ainda não decidi como processar
-                throw new MapException(XMLElement);
+                //Ainda não decidi como processar bem, visto que aparentemente isto indica o InvoiceNo
+
+                //Adicionamos como propriedade do nó CreditLine
+                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Lines.DebitLine), XMLElement, value);
+
+                break;
 
             case EnumsOfElements.DebitLine.SystemEntryDate:
                 //Criamos um novo nó com a propriedade  e o seu valor
@@ -2992,212 +2989,4 @@ public class MapperManager {
 
     }
 
-    /*private void processBillingAddressChildren(String XMLElement, String value) throws MapException, NodeException {
-
-        switch (XMLElement) {
-
-            case EnumsOfElements.CompanyAddress.BuildingNumber:
-                //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_BUILDING_NUMBER);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.StreetName:
-                //Criamos agora o nó do StreetName
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_STREET_NAME);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.AddressDetail:
-                //Adicionamos como atributo ao nó Address
-                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Address), XMLElement, value);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.City:
-                //Criamos agora o nó do City
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_CITY);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.PostalCode:
-                //Criamos agora o nó do PostalCode
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_POSTAL_CODE);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.Region:
-                //Criamos agora o nó do Region
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_REGION);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.Country:
-                //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_COUNTRY);
-
-                break;
-
-            default:
-                throw new MapException(XMLElement);
-        }
-    }
-
-    private void processShipToAddressChildren(String XMLElement, String value) throws MapException, NodeException {
-
-        switch (XMLElement) {
-
-            case EnumsOfElements.CompanyAddress.BuildingNumber:
-                //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_BUILDING_NUMBER);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.StreetName:
-                //Criamos agora o nó do StreetName
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_STREET_NAME);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.AddressDetail:
-                //Adicionamos como atributo ao nó Address
-                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Address), XMLElement, value);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.City:
-                //Criamos agora o nó do City
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_CITY);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.PostalCode:
-                //Criamos agora o nó do PostalCode
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_POSTAL_CODE);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.Region:
-                //Criamos agora o nó do Region
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_REGION);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.Country:
-                //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_COUNTRY);
-
-                break;
-
-            default:
-                throw new MapException(XMLElement);
-        }
-
-    }
-
-    private void processShipFromAddressChildren(String XMLElement, String value) throws MapException, NodeException {
-
-        switch (XMLElement) {
-
-            case EnumsOfElements.CompanyAddress.BuildingNumber:
-                //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_BUILDING_NUMBER);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.StreetName:
-                //Criamos agora o nó do StreetName
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_STREET_NAME);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.AddressDetail:
-                //Adicionamos como atributo ao nó Address
-                this.driver.addPropertyToNode(this.findNodeId(EnumsOfEntities.Entities.Address), XMLElement, value);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.City:
-                //Criamos agora o nó do City
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_CITY);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.PostalCode:
-                //Criamos agora o nó do PostalCode
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_POSTAL_CODE);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.Region:
-                //Criamos agora o nó do Region
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_REGION);
-
-                break;
-
-            case EnumsOfElements.CompanyAddress.Country:
-                //Criamos agora o nó do BuildingNumber
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
-
-                //Adicionamos a relação entre o nó criado com a Address
-                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Address), this.findNodeId(XMLElement), EnumsOfEntities.AddressRelationships.HAS_COUNTRY);
-
-                break;
-
-            default:
-                throw new MapException(XMLElement);
-        }
-
-    } */
 }

@@ -147,23 +147,6 @@ public class Neo4j {
      * @param attribute atributo
      * @param value     valor do atributo
      */
-    public void addPropertyToNode(long id, String attribute, String value) {
-        try (Session session = this.driver.session()) {
-            session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (n) "
-                    + "WHERE ID(n) = " + id + " "
-                    + "SET n." + attribute + " = '" + value + "'"
-            ));
-        }
-    }
-
-    /**
-     * Método responsável por adicionar um novo atributo a um nó
-     *
-     * @param id        do nó
-     * @param attribute atributo
-     * @param value     valor do atributo
-     */
     public void addPropertyToNode(long id, String attribute, int value) {
         try (Session session = this.driver.session()) {
             session.writeTransaction(tx -> tx.run(""
@@ -192,6 +175,23 @@ public class Neo4j {
     }
 
     /**
+     * Método responsável por adicionar um novo atributo a um nó
+     *
+     * @param id        do nó
+     * @param attribute atributo
+     * @param value     valor do atributo
+     */
+    public void addPropertyToNode(long id, String attribute, String value) {
+        try (Session session = this.driver.session()) {
+            session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (n) "
+                    + "WHERE ID(n) = " + id + " "
+                    + "SET n." + attribute + " = '" + value + "'"
+            ));
+        }
+    }
+
+    /**
      * Método responsável pela criação de uma relação entre dois nós
      *
      * @param id1      id do primeiro nó
@@ -206,10 +206,6 @@ public class Neo4j {
                     + "CREATE (n)-[:" + relation + "]->(p)"
             ));
         }
-    }
-
-    public void updateRelationshipProperty(long id1, long id2, String property, String value) {
-
     }
 
     public void addRelationshipToCompany(long id, String CompanyName) {
@@ -330,15 +326,13 @@ public class Neo4j {
     public void addRelationshipToTaxTable(long id, TaxTable table) {
         try (Session session = this.driver.session()) {
             long tableID = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(b:" + EnumsOfEntities.Entities.TaxTable + "), "
+                    + "MATCH (a)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(z:" + EnumsOfEntities.Entities.TaxTable + "), "
                     + "(a)-[:" + EnumsOfEntities.TaxTableRelationships.HAS_TAX_TYPE + "]->(b), "
-                    + "(a)-[:" + EnumsOfEntities.TaxTableRelationships.HAS_TAX_COUNTRY_REGION + "]->(c), "
-                    + "a)-[:" + EnumsOfEntities.TaxTableRelationships.HAS_TAX_EXPIRATION_DATE + "]->(d) "
-                    + "WHERE a.TaxCode = '" + table.getTaxCode() + "' and a.Description = '" + table.getDescription() + " and "
-                    + "(a.TaxPercentage = '" + table.getTaxPercentage() + "' or a.TaxAmount = '" + table.getTaxAmount() + "') and "
+                    + "(a)-[:" + EnumsOfEntities.TaxTableRelationships.HAS_TAX_COUNTRY_REGION + "]->(c) "
+                    + "WHERE a.TaxCode = '" + table.getTaxCode() + "' and "
+                    + "(a.TaxPercentage = " + table.getTaxPercentage() + " or a.TaxAmount = " + table.getTaxAmount() + ") and "
                     + "b.TaxType = '" + table.getTaxType() + "' and "
-                    + "c.TaxCountryRegion = '" + table.getTaxCountryRegion() + "' and "
-                    + "d.TaxExpirationDate = '" + table.getTaxExpirationDate() + "' "
+                    + "c.TaxCountryRegion = '" + table.getTaxCountryRegion() + "' "
                     + "RETURN (a)"
             ).single().get(0).asNode().id());
 
@@ -354,7 +348,7 @@ public class Neo4j {
         try (Session session = this.driver.session()) {
             session.writeTransaction(tx -> tx.run(""
                     + "MATCH (a), (b)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(c:" + EnumsOfEntities.Entities.Transaction + ")  "
-                    + "WHERE ID(a) = " + id + " and b.TransactionID = " + TransactionID + " "
+                    + "WHERE ID(a) = " + id + " and b.TransactionID = '" + TransactionID + "' "
                     + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_TRANSACTION + "]->(b)"
             ));
         }
@@ -364,7 +358,7 @@ public class Neo4j {
         try (Session session = this.driver.session()) {
             boolean isEmpty = session.writeTransaction(tx -> tx.run(""
                     + "MATCH (a) "
-                    + "WHERE a.SourceID = " + SourceID + " "
+                    + "WHERE a.SourceID = '" + SourceID + "' "
                     + "RETURN (a)"
             ).list().isEmpty());
 
@@ -376,7 +370,7 @@ public class Neo4j {
 
             session.writeTransaction(tx -> tx.run(""
                     + "MATCH (a), (b) "
-                    + "WHERE ID(a) = " + id + " and b.SourceID = " + SourceID + " "
+                    + "WHERE ID(a) = " + id + " and b.SourceID = '" + SourceID + "' "
                     + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_SOURCE + "]->(b)"
             ));
         }

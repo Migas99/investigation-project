@@ -23,6 +23,8 @@ public class Run {
 
     private static final String XMLFile1 = "database/SAFTP.XML";
     private static final String XMLFile2 = "database/Exemplo_Facturacao.XML";
+    private static final String XMLFile3 = "database/SAFT_DEMO.XML";
+
     private static final String XSDFile = "database/SAFTP.XSD";
 
     private static final String URL = "neo4j://localhost:7687";
@@ -30,7 +32,7 @@ public class Run {
     private static final String password = "12345";
 
     public static void main(String[] args) {
-        if (validateXML(XMLFile1, XSDFile)) {
+        if (validateXML(XMLFile3, XSDFile)) {
             System.out.println("Ficheiro válido!");
         } else {
             System.out.println("Ficheiro inválido!");
@@ -38,7 +40,7 @@ public class Run {
 
         Neo4j driver = new Neo4j(URL, user, password);
         StAX parser = new StAX(driver);
-        parser.processXMLToNeo4j(XMLFile1);
+        parser.processXMLToNeo4j(XMLFile3);
     }
 
     public static boolean validateXML(String XMLFile, String XSDFile) {
