@@ -2,11 +2,13 @@ package Exceptions;
 
 public class NodeException extends Throwable {
 
-    public NodeException(){
-        System.err.println("Node not found!\n");
+    private String element;
+
+    public NodeException(String element){
+        this.element = element;
     }
 
-    public NodeException(String msg){
-        System.err.println(msg);
+    public void getError(){
+        System.err.println("Node '" + this.element + "' not found!");
     }
 }

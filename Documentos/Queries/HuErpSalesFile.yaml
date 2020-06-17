@@ -1,0 +1,2300 @@
+HuErpSalesInvoice: !!com.colbi.legacy.configuration.json.Entity
+  fields:
+    row_key:
+      destination: {}
+      name: row_key
+      source:
+        all:
+          fields:
+          - &id001 {source: fixed, value: '|'}
+          - {field: tax_id, source: self}
+          - {field: invoice_number, source: self}
+          - {field: invoice_issue_date, source: self}
+          function: concatSeparator
+          order: -1000
+          source: computed
+          type: string
+    idx_id:
+      destination:
+        mysql:
+          field: arbiter_key
+          meta: {data_type: bigint(20)}
+          table_indexes: {}
+      name: idx_id
+      source:
+        all:
+          fields: []
+          name: '#id'
+          order: 0
+          source: index
+          type: string
+    mysql_row_key:
+      destination:
+        mysql:
+          field: row_key
+          meta: {}
+          table_indexes: {}
+      name: mysql_row_key
+      source:
+        all:
+          fields:
+          - *id001
+          - {field: tax_id, source: self}
+          - {field: invoice_number, source: self}
+          - {field: invoice_issue_date, source: self}
+          - {field: colbi.import_id, source: parameters}
+          function: md5ConcatSeparator
+          order: -1000
+          source: computed
+          type: string
+    header_import_id:
+      destination:
+        mysql:
+          field: import_id
+          meta: {}
+          table_indexes: {}
+      name: header_import_id
+      source:
+        all:
+          fields: []
+          name: colbi.import_id
+          order: 0
+          source: parameters
+          type: string
+    tax_entity:
+      destination:
+        mysql:
+          meta: {}
+          table_indexes: {}
+      name: tax_entity
+      source:
+        all:
+          fields: []
+          name: colbi.tax_entity
+          order: 0
+          source: parameters
+          type: string
+    tax_id:
+      destination:
+        mysql:
+          meta: {VARCHAR(50)}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "taxpayer_id"
+            -
+              source: "self"
+              field: "taxpayer_id_1"
+            -
+              source: "self"
+              field: "taxpayer_id_2"
+            -
+              source: "self"
+              field: "taxpayer_id_3"
+            -
+              source: "self"
+              field: "taxpayer_id_4"
+          function: "extractTaxRegistrationNumberHu"
+          source: computed
+          order: -3000
+          type: string
+    supplier_name:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: supplier_name
+      source:
+        all:
+          fields: []
+          name: COMP_NAME
+          order: 0
+          source: root
+          type: string
+    supplier_vat_number:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: supplier_vat_number
+      source:
+        all:
+          fields: []
+          name: COMP_TAXREGISTRATIONNUMBER
+          order: -500
+          source: root
+          type: string
+    supplier_vat_number_1:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: supplier_vat_number_1
+      source:
+        all:
+          fields: []
+          name: COMP_TAXREGISTRATIONNUMBER_1
+          order: -500
+          source: root
+          type: string
+    supplier_vat_number_temp:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "supplier_vat_number"
+          function: "extractSupplierVatNumber"
+          source: computed
+          type: string
+    city:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: city
+      source:
+        all:
+          fields: []
+          name: COMP_CITY
+          order: 0
+          source: root
+          type: string
+    country_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: country_code
+      source:
+        all:
+          fields: []
+          name: COMP_COUNTRY
+          order: 0
+          source: root
+          type: string
+    tcode:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: TCODE
+      source:
+        all:
+          fields: []
+          name: TCODE
+          order: 0
+          source: root
+          type: string
+    region:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: region
+      source:
+        all:
+          fields: []
+          name: COMP_REGION
+          order: 0
+          source: root
+          type: string
+    postal_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: postal_code
+      source:
+        all:
+          fields: []
+          name: COMP_POSTALCODE
+          order: 0
+          source: root
+          type: string
+    street_name:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: street_name
+      source:
+        all:
+          fields: []
+          name: COMP_STREET
+          order: 0
+          source: root
+          type: string
+    number:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: number
+      source:
+        all:
+          fields: []
+          name: COMP_NUMBER
+          order: 0
+          source: root
+          type: string
+    building:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: building
+      source:
+        all:
+          fields: []
+          name: COMP_BUILDING
+          order: 0
+          source: root
+          type: string
+    floor:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: floor
+      source:
+        all:
+          fields: []
+          name: COMP_FLOOR
+          order: 0
+          source: root
+          type: string
+    door:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: door
+      source:
+        all:
+          fields: []
+          name: COMP_ROOM
+          order: 0
+          source: root
+          type: string
+    customer_id:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: customer_id
+      source:
+        HuErpSales.H1_1.0:
+          fields: []
+          name: CUSTOMERID
+          order: 0
+          source: root
+          type: string
+        HuErpSales.H2_1.0:
+          fields: []
+          name: LIFNR
+          order: 0
+          source: root
+          type: string
+    document_country_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: document_country_code
+      source:
+        all:
+          fields: []
+          name: LAND1
+          order: 0
+          source: root
+          type: string
+    customer_name:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: customer_name
+      source:
+        all:
+          fields: []
+          name: NAME
+          order: 0
+          source: root
+          type: string
+    customer_city:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: customer_city
+      source:
+        all:
+          fields: []
+          name: CITY
+          order: 0
+          source: root
+          type: string
+    customer_postal_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: customer_postal_code
+      source:
+        all:
+          fields: []
+          name: POSTALCODE
+          order: 0
+          source: root
+          type: string
+    customer_region:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(50)}
+          table_indexes: {}
+      name: customer_region
+      source:
+        all:
+          fields: []
+          name: REGION
+          order: 0
+          source: root
+          type: string
+    taxpayer_id_1:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: taxpayer_id_1
+      source:
+        all:
+          fields: []
+          name: TAXREGISTRATIONNUMBER_1
+          order: 0
+          source: root
+          type: string
+    taxpayer_id_3:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: taxpayer_id_3
+      source:
+        all:
+          fields: []
+          name: TAXREGISTRATIONNUMBER_2
+          order: 0
+          source: root
+          type: string
+    taxpayer_id_4:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: taxpayer_id_4
+      source:
+        all:
+          fields: []
+          name: TAXREGISTRATIONNUMBER_3
+          order: 0
+          source: root
+          type: string
+    taxpayer_id:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: taxpayer_id
+      source:
+        all:
+          fields: []
+          name: TAXREGISTRATIONNUMBER
+          order: -500
+          source: root
+          type: string
+    customer_street_name:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(50)}
+          table_indexes: {}
+      name: customer_street_name
+      source:
+        all:
+          fields: []
+          name: STREET
+          order: 0
+          source: root
+          type: string
+    customer_number:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(50)}
+          table_indexes: {}
+      name: customer_number
+      source:
+        all:
+          fields: []
+          name: NUMBER
+          order: 0
+          source: root
+          type: string
+    customer_building:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(50)}
+          table_indexes: {}
+      name: customer_building
+      source:
+        all:
+          fields: []
+          name: BUILDING
+          order: 0
+          source: root
+          type: string
+    customer_floor:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(50)}
+          table_indexes: {}
+      name: customer_floor
+      source:
+        all:
+          fields: []
+          name: FLOOR
+          order: 0
+          source: root
+          type: string
+    customer_country_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: customer_country_code
+      source:
+        all:
+          fields: []
+          name: COUNTRY
+          order: 0
+          source: root
+          type: string
+    customer_door:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(50)}
+          table_indexes: {}
+      name: customer_door
+      source:
+        all:
+          fields: []
+          name: ROOM
+          order: 0
+          source: root
+          type: string
+    invoice_number_temp:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: invoice_number_temp
+      source:
+        all:
+          fields: []
+          name: VBELN
+          order: -4000
+          source: root
+          type: string
+    invoice_number:
+        destination:
+          mysql:
+            meta: {data_type: VARCHAR(255)}
+        source:
+          all:
+            fields:
+              -
+                source: "self"
+                field: "invoice_number_temp"
+            order: -3700
+            function: "removeFirstZeros"
+            source: computed
+            type: string
+    invoice_issue_date:
+      destination:
+        mysql:
+          meta: {data_type: date}
+          table_indexes: {}
+      name: invoice_issue_date
+      source:
+        all:
+          fields: []
+          name: INVOICEDATE
+          order: -3000
+          source: root
+          type: date
+    period:
+      destination:
+        mysql:
+          meta: {data_type: INT(11)}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "invoice_issue_date"
+          function: extractMonthByDate
+          source: computed
+          type: integer
+    year:
+      destination:
+        mysql:
+          meta: {data_type: INT(11)}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "invoice_issue_date"
+          function: extractYearByDate
+          source: computed
+          type: integer
+    currency_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: currency_code
+      source:
+        all:
+          fields: []
+          name: INVOICECURRENCY
+          order: -100
+          source: root
+          type: string
+    exchange_rate:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: exchange_rate
+      source:
+        all:
+          fields: []
+          name: EXCHANGERATE
+          order: -100
+          source: root
+          type: string
+    taxpayer_id_2:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: taxpayer_id_2
+      source:
+        all:
+          fields: []
+          name: VBRK_STCEG
+          order: 0
+          source: root
+          type: string
+    invoice_delivery_date:
+      destination:
+        mysql:
+          meta: {data_type: date}
+          table_indexes: {}
+      name: invoice_delivery_date
+      source:
+        all:
+          fields: []
+          name: INVOICEDELIVERY
+          order: 0
+          source: root
+          type: date
+    customer_county_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+      source:
+        HuErpSales.H1_1.0:
+          fields: []
+          name: COUNTY
+          order: 0
+          source: root
+          type: string
+        HuErpSales.H2_1.0:
+          fields:
+            -
+              source: "self"
+              field: "taxpayer_id"
+          function: "extractCountyCodeHu"
+          source: computed
+          type: decimal
+    county_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+      source:
+        HuErpSales.H1_1.0:
+          fields:
+            -
+              source: "self"
+              field: "supplier_vat_number"
+          function: "extractCountyCodeHu"
+          source: computed
+          type: decimal
+        HuErpSales.H2_1.0:
+          fields:
+            -
+              source: "self"
+              field: "supplier_vat_number_1"
+          function: "extractCountyCodeHu"
+          source: computed
+          type: decimal
+    payment_method:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: payment_method
+      source:
+        all:
+          fields: []
+          name: PAYMENTMETHOD
+          order: 0
+          source: root
+          type: string
+    invoice_accounting_delivery_date:
+      destination:
+        mysql:
+          meta: {data_type: date}
+          table_indexes: {}
+      name: invoice_accounting_delivery_date
+      source:
+        all:
+          fields: []
+          name: BUDAT
+          order: 0
+          source: root
+          type: date
+    invoice_delivery_period_start:
+      destination:
+        mysql:
+          meta: {data_type: date}
+          table_indexes: {}
+      name: invoice_delivery_period_start
+      source:
+        all:
+          fields: []
+          name: START
+          order: 0
+          source: root
+          type: date
+    invoice_delivery_period_end:
+      destination:
+        mysql:
+          meta: {data_type: date}
+          table_indexes: {}
+      name: invoice_delivery_period_end
+      source:
+        all:
+          fields: []
+          name: END
+          order: 0
+          source: root
+          type: date
+    electronic_invoice_hash:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: electronic_invoice_hash
+      source:
+        all:
+          fields: []
+          name: INVOICE_HASH
+          order: 0
+          source: root
+          type: string
+    last_modification_document_temp:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: last_modification_document_temp
+      source:
+        all:
+          fields: []
+          name: LASTMODIFICATION
+          order: 0
+          source: root
+          type: string
+    last_modification_document:
+        destination:
+          mysql:
+            meta: {data_type: VARCHAR(255)}
+        source:
+          all:
+            fields:
+              -
+                source: "self"
+                field: "last_modification_document_temp"
+            function: "removeFirstZeros"
+            source: computed
+            type: string
+    original_document_temp:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: original_document_temp
+      source:
+        all:
+          fields: []
+          name: ORIGINALINVOICE
+          order: 0
+          source: root
+          type: string
+    original_document:
+        destination:
+          mysql:
+            meta: {data_type: VARCHAR(255)}
+        source:
+          all:
+            fields:
+              -
+                source: "self"
+                field: "original_document_temp"
+            function: "removeFirstZeros"
+            source: computed
+            type: string
+    invoice_type:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: invoice_type
+      source:
+        all:
+          fields: []
+          name: INVOICETYPE
+          order: 0
+          source: root
+          type: string
+    document_net_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: document_net_amount
+      source:
+        all:
+          fields: []
+          name: PR00_KWERT
+          order: 0
+          source: root
+          type: decimal
+    tax_base_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: tax_base_amount
+      source:
+        HuErpSales.H1_1.0:
+          fields: []
+          name: MWST_KAWRT
+          order: 0
+          source: root
+          type: decimal
+        HuErpSales.H2_1.0:
+          fields:
+            -
+              source: "self"
+              field: "lines_lines"
+          function: "sumLineNetAmountHu"
+          source: computed
+          order: 0
+          type: decimal
+    tax_base_amount_huf:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        HuErpSales.H1_1.0:
+          fields:
+            -
+              source: "self"
+              field: "lines_lines"
+          function: "sumTaxBaseAmountHufHuH1"
+          source: computed
+          type: decimal
+        HuErpSales.H2_1.0:
+          fields:
+            -
+              source: "self"
+              field: "lines_lines"
+          function: "sumLineNetAmountHufHu"
+          source: computed
+          order: 0
+          type: decimal
+    tax_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: tax_amount
+      source:
+        all:
+          fields: []
+          name: MWST_KWERT
+          order: 0
+          source: root
+          type: decimal
+    discount_base_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: discount_base_amount
+      source:
+        all:
+          fields: []
+          name: SKTO_KAWRT
+          order: 0
+          source: root
+          type: decimal
+    discount_percentage_temp:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: discount_percentage_temp
+      source:
+        all:
+          fields: []
+          name: SKTO_KWERT
+          order: -700
+          source: root
+          type: string
+    discount_percentage:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "discount_percentage_temp"
+          function: "absPercentageHu"
+          source: computed
+          type: decimal
+    vat_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "lines_lines"
+          function: "sumVatAmountHu"
+          source: computed
+          order: -100
+          type: decimal
+    vat_amount_huf:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "lines_lines"
+          function: "sumVatAmountHufHu"
+          source: computed
+          type: decimal
+    line_net_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "lines_lines"
+          function: "sumLineNetAmountHu"
+          source: computed
+          order: 0
+          type: decimal
+    line_net_amount_huf:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "lines_lines"
+          function: "sumLineNetAmountHufHu"
+          source: computed
+          type: decimal
+    gross_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "vat_amount"
+            -
+              source: "self"
+              field: "line_net_amount"
+          function: "sumGrossAmountHu"
+          source: computed
+          order: 0
+          type: decimal
+    gross_amount_huf:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "gross_amount"
+            -
+              source: "self"
+              field: "exchange_rate"
+            -
+              source: "self"
+              field: "currency_code"
+          function: "converteEurToHuf"
+          source: computed
+          type: decimal
+    payment_date:
+      destination:
+        mysql:
+          meta: {data_type: date}
+          table_indexes: {}
+      name: payment_date
+      source:
+        all:
+          fields: []
+          name: PAYMENTDATE
+          order: 0
+          source: root
+          type: date
+    invoice_destination_country:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: invoice_destination_country
+      source:
+        all:
+          fields: []
+          name: LAND
+          order: 0
+          source: root
+          type: string
+    lines_lines:
+      destination: {}
+      name: lines_lines
+      source:
+        all:
+          fields: []
+          name: Lines.Line
+          order: 0
+          source: root
+          type: array:entity:HuErpSalesInvoiceLine
+    number_of_lines:
+      destination:
+        mysql:
+          meta: {}
+          table_indexes: {}
+      name: number_of_lines
+      source:
+        all:
+          fields:
+          - {field: lines_lines, source: self}
+          function: countArray
+          order: 0
+          source: computed
+          type: integer
+  name: HuErpSalesInvoice
+  storage:
+    file:
+      meta: {}
+      table_indexes: {}
+      table_name: hu_erp_sales_invoices
+    hive:
+      key: row_key
+      master_table_name: hu_erp_sales_invoices_raw
+      merge:
+        entity_merge: '1'
+        ignoreMerge: '0'
+        table_name: hu_erp_sales_invoices
+      table_name: hu_erp_#{colbi.fiscal_year}_#{colbi.project_id}_sales_invoices
+    mysql:
+      meta: {upload: global_after_mapping}
+      table_indexes:
+        row_key:
+          fields: [row_key]
+        tax_entity:
+          fields: [tax_entity]
+        final_version:
+          fields: [final_version]
+        import_id:
+          fields: [import_id]
+        merge_key:
+          fields: [merge_key]
+      table_name: hu_erp_#{colbi.fiscal_year}_#{colbi.project_id}_sales_invoices
+HuErpSalesInvoiceLine: !!com.colbi.legacy.configuration.json.Entity
+  fields:
+    row_key:
+      destination: {}
+      name: row_key
+      source:
+        all:
+          fields:
+          - &id001 {source: fixed, value: '|'}
+          - {field: row_key, source: parent}
+          - {source: array_index}
+          function: concatSeparator
+          order: -1000
+          source: computed
+          type: string
+    idx_id:
+      destination:
+        mysql:
+          field: arbiter_key
+          meta: {data_type: bigint(20)}
+          table_indexes: {}
+      name: idx_id
+      source:
+        all:
+          fields: []
+          name: '#id'
+          order: 0
+          source: index
+          type: string
+    mysql_row_key:
+      destination:
+        mysql:
+          field: row_key
+          meta: {}
+          table_indexes: {}
+      name: mysql_row_key
+      source:
+        all:
+          fields:
+          - *id001
+          - {field: row_key, source: self}
+          - {field: colbi.import_id, source: parameters}
+          function: md5ConcatSeparator
+          order: -1000
+          source: computed
+          type: string
+    mysql_parent_row_key:
+      destination:
+        mysql:
+          field: hu_erp_sales_invoice_id
+          meta: {}
+          table_indexes: {}
+      name: mysql_parent_row_key
+      source:
+        all:
+          fields: []
+          name: mysql_row_key
+          order: 0
+          source: parent
+          type: string
+    header_import_id:
+      destination:
+        mysql:
+          field: import_id
+          meta: {}
+          table_indexes: {}
+      name: header_import_id
+      source:
+        all:
+          fields: []
+          name: colbi.import_id
+          order: 0
+          source: parameters
+          type: string
+    tax_entity:
+      destination:
+        mysql:
+          meta: {}
+          table_indexes: {}
+      name: tax_entity
+      source:
+        all:
+          fields: []
+          name: colbi.tax_entity
+          order: 0
+          source: parameters
+          type: string
+    invoice_number_temp:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: invoice_number_temp
+      source:
+        all:
+          fields: []
+          name: VBELN
+          order: -1100
+          source: root
+          type: string
+    invoice_number:
+        destination:
+          mysql:
+            meta: {data_type: VARCHAR(255)}
+        source:
+          all:
+            fields:
+              -
+                source: "self"
+                field: "invoice_number_temp"
+            order: -1000
+            function: "removeFirstZeros"
+            source: computed
+            type: string
+    line_number_temp:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: line_number_temp
+      source:
+        all:
+          fields: []
+          name: LINENUMBER
+          order: 0
+          source: root
+          type: string
+    line_number:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "line_number_temp"
+          function: "removeFirstZeros"
+          source: computed
+          type: string
+    product_code_value_temp:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: product_code_value_temp
+      source:
+        all:
+          fields: []
+          name: MATNR
+          order: 0
+          source: root
+          type: string
+    product_code_value:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "product_code_value_temp"
+          function: "removeFirstZeros"
+          source: computed
+          type: string
+    product_type:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: product_type
+      source:
+        all:
+          fields: []
+          name: MTART
+          order: 0
+          source: root
+          type: string
+    quantity:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: quantity
+      source:
+        all:
+          fields: []
+          name: FKIMG
+          order: 0
+          source: root
+          type: decimal
+    advance_indicator:
+      destination:
+        mysql:
+          meta: {data_type: tinyint(1)}
+          table_indexes: {}
+      name: advance_indicator
+      source:
+        all:
+          fields: []
+          name: RULE
+          order: 0
+          source: root
+          type: string
+    unit_of_measure:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(50)}
+          table_indexes: {}
+      name: unit_of_measure
+      source:
+        all:
+          fields: []
+          name: UNIT
+          order: 0
+          source: root
+          type: string
+    unit_price_1:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 3)'}
+          table_indexes: {}
+      name: unit_price_1
+      source:
+        all:
+          fields: []
+          name: PR00_KBETR
+          order: -500
+          source: root
+          type: decimal
+    line_net_amount_1:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: line_net_amount_1
+      source:
+        HuErpSales.H1_1.0:
+          name: PR00_KWERT
+          order: -500
+          source: root
+          type: decimal
+        HuErpSales.H2_1.0:
+          name: WRBTR
+          order: -500
+          source: root
+          type: decimal
+    line_tax_percentage:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: line_tax_percentage
+      source:
+        HuErpSales.H1_1.0:
+          fields: []
+          name: MWST_KBETR
+          order: 0
+          source: root
+          type: decimal
+        HuErpSales.H2_1.0:
+          fields: []
+          name: MSATZ
+          order: 0
+          source: root
+          type: decimal
+    line_tax_base_amount_temp:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: line_tax_base_amount_temp
+      source:
+        all:
+          fields: []
+          name: MWST_KAWRT
+          order: -500
+          source: root
+          type: decimal
+    line_tax_base_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "line_tax_base_amount_temp"
+            -
+              source: "self"
+              field: "line_net_amount"
+          function: "fillTaxBaseAmountHu"
+          source: computed
+          type: decimal
+    line_tax_base_amount_huf:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "line_tax_base_amount"
+            -
+              source: "self"
+              field: "exchange__rate"
+            -
+              source: "self"
+              field: "currency__code"
+          function: converteEurToHuf
+          source: computed
+          type: decimal
+    line_tax_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: line_tax_amount
+      source:
+        HuErpSales.H1_1.0:
+          fields: []
+          name: MWST_KWERT
+          order: -100
+          source: root
+          type: decimal
+        HuErpSales.H2_1.0:
+          fields: []
+          name: WMWST
+          order: -100
+          source: root
+          type: decimal
+    line_tax_amount_huf:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "line_tax_amount"
+            -
+              source: "self"
+              field: "exchange__rate"
+            -
+              source: "self"
+              field: "currency__code"
+          function: converteEurToHuf
+          source: computed
+          type: decimal
+    line_tax_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: line_tax_code
+      source:
+        HuErpSales.H1_1.0:
+          fields: []
+          name: MWST_MWSK1
+          order: 0
+          source: root
+          type: string
+        HuErpSales.H2_1.0:
+          fields: []
+          name: MWSKZ
+          order: 0
+          source: root
+          type: string
+    line_discount_percentage_temp:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: line_discount_percentage_temp
+      source:
+        all:
+          fields: []
+          name: SKTO_KBETR
+          order: -700
+          source: root
+          type: string
+    line_discount_percentage:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "line_discount_percentage_temp"
+          function: "absPercentageHu"
+          source: computed
+          type: decimal
+    line_discount_base_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: line_discount_base_amount
+      source:
+        all:
+          fields: []
+          name: SKTO_KAWRT
+          order: 0
+          source: root
+          type: decimal
+    original_item_temp:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: original_item_temp
+      source:
+        all:
+          fields: []
+          name: ORIGINAL_ITEM
+          order: 0
+          source: root
+          type: string
+    original_item:
+        destination:
+          mysql:
+            meta: {data_type: VARCHAR(255)}
+        source:
+          all:
+            fields:
+              -
+                source: "self"
+                field: "original_item_temp"
+            function: "removeFirstZeros"
+            source: computed
+            type: string
+    line_discount_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: line_discount_amount
+      source:
+        all:
+          fields: []
+          name: SKTO_KWERT
+          order: -500
+          source: root
+          type: decimal
+    line_description:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: line_description
+      source:
+        all:
+          fields: []
+          name: ARKTX
+          order: 0
+          source: root
+          type: string
+    line_delivery_date:
+      destination:
+        mysql:
+          meta: {data_type: date}
+          table_indexes: {}
+      name: line_delivery_date
+      source:
+        all:
+          fields: []
+          name: INVOICEDELIVERY
+          order: 0
+          source: root
+          type: date
+    product_fee_paper_rate:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: product_fee_paper_rate
+      source:
+        all:
+          fields: []
+          name: ZDH1_KBETR
+          order: 0
+          source: root
+          type: decimal
+    product_fee_paper_base:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: product_fee_paper_base
+      source:
+        all:
+          fields: []
+          name: ZDH1_KAWRT
+          order: 0
+          source: root
+          type: decimal
+    product_fee_paper_value:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: product_fee_paper_value
+      source:
+        all:
+          fields: []
+          name: ZDH1_KWERT
+          order: 0
+          source: root
+          type: decimal
+    product_fee_paper_tax_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: product_fee_paper_tax_code
+      source:
+        all:
+          fields: []
+          name: ZDH1_MWSK1
+          order: 0
+          source: root
+          type: string
+    product_fee_metal_rate:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: ZDH5_KBETR
+      source:
+        all:
+          fields: []
+          name: ZDH5_KBETR
+          order: 0
+          source: root
+          type: decimal
+    product_fee_metal_base:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: product_fee_metal_base
+      source:
+        all:
+          fields: []
+          name: ZDH5_KAWRT
+          order: 0
+          source: root
+          type: decimal
+    product_fee_metal_value:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: product_fee_metal_value
+      source:
+        all:
+          fields: []
+          name: ZDH5_KWERT
+          order: 0
+          source: root
+          type: decimal
+    product_fee_metal_tax_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: product_fee_metal_tax_code
+      source:
+        all:
+          fields: []
+          name: ZDH5_MWSK1
+          order: 0
+          source: root
+          type: string
+    product_fee_wood_rate:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: product_fee_wood_rate
+      source:
+        all:
+          fields: []
+          name: ZDH6_KBETR
+          order: 0
+          source: root
+          type: decimal
+    product_fee_wood_base:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: product_fee_wood_base
+      source:
+        all:
+          fields: []
+          name: ZDH6_KAWRT
+          order: 0
+          source: root
+          type: decimal
+    product_fee_wood_value:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: product_fee_wood_value
+      source:
+        all:
+          fields: []
+          name: ZDH6_KWERT
+          order: 0
+          source: root
+          type: decimal
+    product_fee_wood_tax_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: product_fee_wood_tax_code
+      source:
+        all:
+          fields: []
+          name: ZDH6_MWSK1
+          order: 0
+          source: root
+          type: string
+    product_fee_plastic_rate:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: product_fee_plastic_rate
+      source:
+        all:
+          fields: []
+          name: ZDH7_KBETR
+          order: 0
+          source: root
+          type: decimal
+    product_fee_plastic_base:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: product_fee_plastic_base
+      source:
+        all:
+          fields: []
+          name: ZDH7_KAWRT
+          order: 0
+          source: root
+          type: decimal
+    product_fee_plastic_value:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: product_fee_plastic_value
+      source:
+        all:
+          fields: []
+          name: ZDH7_KWERT
+          order: 0
+          source: root
+          type: decimal
+    product_fee_plastic_tax_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: product_fee_plastic_tax_code
+      source:
+        all:
+          fields: []
+          name: ZDH7_MWSK1
+          order: 0
+          source: root
+          type: string
+    currency__code:
+      source:
+        all:
+          name: currency_code
+          order: -100
+          source: parent
+    currency_code:
+      source:
+        all:
+          name: currency_code
+          order: -100
+          source: parent
+    exchange__rate:
+      source:
+        all:
+          name: exchange_rate
+          order: -100
+          source: parent
+    line_net_amount_2:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: line_net_amount_2
+      source:
+        all:
+          fields: []
+          name: ZPRP_KWERT
+          order: -500
+          source: root
+          type: decimal
+    unit_price_2:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: unit_price_2
+      source:
+        all:
+          fields: []
+          name: ZPRP_KBETR
+          order: -500
+          source: root
+          type: decimal
+    freight_unit_price:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: freight_unit_price
+      source:
+        all:
+          fields: []
+          name: ZF00_KBETR
+          order: -500
+          source: root
+          type: decimal
+    freight_line_tax_base_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: freight_line_tax_base_amount
+      source:
+        all:
+          fields: []
+          name: ZF00_KAWRT
+          order: 0
+          source: root
+          type: decimal
+    freight_line_net_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: freight_line_net_amount
+      source:
+        all:
+          fields: []
+          name: ZF00_KWERT
+          order: -500
+          source: root
+          type: decimal
+    freight_line_tax_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: freight_line_tax_code
+      source:
+        all:
+          fields: []
+          name: ZF00_MWSK1
+          order: 0
+          source: root
+          type: string
+    bonus_quantity_unit_price:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: bonus_quantity_unit_price
+      source:
+        all:
+          fields: []
+          name: ZB01_KBETR
+          order: 0
+          source: root
+          type: decimal
+    bonus_quantity_line_discount_base_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: bonus_quantity_line_discount_base_amount
+      source:
+        all:
+          fields: []
+          name: ZB01_KAWRT
+          order: 0
+          source: root
+          type: decimal
+    bonus_quantity_line_net_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: bonus_quantity_line_net_amount
+      source:
+        all:
+          fields: []
+          name: ZB01_KWERT
+          order: -500
+          source: root
+          type: decimal
+    bonus_quantity_line_tax_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: bonus_quantity_line_tax_code
+      source:
+        all:
+          fields: []
+          name: ZB01_MWSK1
+          order: 0
+          source: root
+          type: string
+    ZB02_KBETR_unit_price:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: ZB02_KBETR_unit_price
+      source:
+        all:
+          fields: []
+          name: ZB02_KBETR
+          order: 0
+          source: root
+          type: decimal
+    ZB02_KAWRT_line_discount_base_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: ZB02_KAWRT_line_discount_base_amount
+      source:
+        all:
+          fields: []
+          name: ZB02_KAWRT
+          order: 0
+          source: root
+          type: decimal
+    ZB02_KWERT_line_net_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: ZB02_KWERT_line_net_amount
+      source:
+        all:
+          fields: []
+          name: ZB02_KWERT
+          order: -500
+          source: root
+          type: decimal
+    ZB02_MWSK1_line_tax_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: ZB02_MWSK1_line_tax_code
+      source:
+        all:
+          fields: []
+          name: ZB02_MWSK1
+          order: 0
+          source: root
+          type: string
+    percentage_bonus_quantity_unit_price:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: percentage_bonus_quantity_unit_price
+      source:
+        all:
+          fields: []
+          name: ZB03_KBETR
+          order: 0
+          source: root
+          type: decimal
+    percentage_bonus_quantity_line_discount_base_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: percentage_bonus_quantity_line_discount_base_amount
+      source:
+        all:
+          fields: []
+          name: ZB03_KAWRT
+          order: 0
+          source: root
+          type: decimal
+    percentage_bonus_quantity_line_net_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: percentage_bonus_quantity_line_net_amount
+      source:
+        all:
+          fields: []
+          name: ZB03_KWERT
+          order: -500
+          source: root
+          type: decimal
+    percentage_bonus_quantity_line_tax_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: percentage_bonus_quantity_line_tax_code
+      source:
+        all:
+          fields: []
+          name: ZB03_MWSK1
+          order: 0
+          source: root
+          type: string
+    percentage_bonus_value_unit_price:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: percentage_bonus_value_unit_price
+      source:
+        all:
+          fields: []
+          name: ZB04_KBETR
+          order: 0
+          source: root
+          type: decimal
+    percentage_bonus_value_line_discount_base_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: percentage_bonus_value_line_discount_base_amount
+      source:
+        all:
+          fields: []
+          name: ZB04_KAWRT
+          order: 0
+          source: root
+          type: decimal
+    percentage_bonus_value_line_net_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: percentage_bonus_value_line_net_amount
+      source:
+        all:
+          fields: []
+          name: ZB04_KWERT
+          order: -500
+          source: root
+          type: decimal
+    percentage_bonus_value_line_tax_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: percentage_bonus_value_line_tax_code
+      source:
+        all:
+          fields: []
+          name: ZB04_MWSK1
+          order: 0
+          source: root
+          type: string
+    percentage_discount_unit_price:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: percentage_discount_unit_price
+      source:
+        all:
+          fields: []
+          name: R100_KBETR
+          order: -500
+          source: root
+          type: decimal
+    percentage_discount_line_discount_base_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: percentage_discount_line_discount_base_amount
+      source:
+        all:
+          fields: []
+          name: R100_KAWRT
+          order: 0
+          source: root
+          type: decimal
+    percentage_discount_line_net_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+          table_indexes: {}
+      name: percentage_discount_line_net_amount
+      source:
+        all:
+          fields: []
+          name: R100_KWERT
+          order: -500
+          source: root
+          type: decimal
+    percentage_discount_line_tax_code:
+      destination:
+        mysql:
+          meta: {data_type: VARCHAR(255)}
+          table_indexes: {}
+      name: percentage_discount_line_tax_code
+      source:
+        all:
+          fields: []
+          name: R100_MWSK1
+          order: 0
+          source: root
+          type: string
+    discount_value:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "line_discount_amount"
+            -
+              source: "self"
+              field: "bonus_quantity_line_net_amount"
+            -
+              source: "self"
+              field: "ZB02_KWERT_line_net_amount"
+            -
+              source: "self"
+              field: "percentage_bonus_quantity_line_net_amount"
+            -
+              source: "self"
+              field: "percentage_bonus_value_line_net_amount"
+            -
+              source: "self"
+              field: "percentage_discount_line_net_amount"
+          function: "sumDiscountValueHu"
+          source: computed
+          type: decimal
+    discount_rate:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "line_discount_percentage_temp"
+            -
+              source: "self"
+              field: "percentage_discount_unit_price"
+          function: "sumDiscountRateHu"
+          source: computed
+          type: decimal
+    line_net_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        HuErpSales.H1_1.0:
+          fields:
+            -
+              source: "self"
+              field: "line_net_amount_1"
+            -
+              source: "self"
+              field: "line_net_amount_2"
+            -
+              source: "self"
+              field: "freight_line_net_amount"
+          function: "sumUnitPriceandLineNetAmountHu"
+          source: computed
+          order: -300
+          type: decimal
+        HuErpSales.H2_1.0:
+          fields:
+            -
+              source: "self"
+              field: "line_net_amount_1"
+            -
+              source: "self"
+              field: "line_net_amount_2"
+          function: "getFilledField"
+          source: computed
+          order: -300
+          type: decimal
+    line_net_amount_huf:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "line_net_amount"
+            -
+              source: "self"
+              field: "exchange__rate"
+            -
+              source: "self"
+              field: "currency__code"
+          function: converteEurToHuf
+          source: computed
+          type: decimal
+    unit_price:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        HuErpSales.H1_1.0:
+          fields:
+            -
+              source: "self"
+              field: "unit_price_1"
+            -
+              source: "self"
+              field: "unit_price_2"
+            -
+              source: "self"
+              field: "freight_unit_price"
+          function: "sumUnitPriceandLineNetAmountHu"
+          source: computed
+          type: decimal
+        HuErpSales.H2_1.0:
+          fields:
+            -
+              source: "self"
+              field: "unit_price_1"
+            -
+              source: "self"
+              field: "unit_price_2"
+          function: "getFilledField"
+          source: computed
+          type: decimal
+    gross_amount:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        HuErpSales.H1_1.0:
+          fields:
+            -
+              source: "self"
+              field: "line_tax_amount"
+            -
+              source: "self"
+              field: "line_net_amount"
+          function: "sumGrossAmountHu"
+          source: computed
+          order: -100
+          type: decimal
+        HuErpSales.H2_1.0:
+          name: RMWWR
+          order: -100
+          source: root
+          type: decimal
+    gross_amount_huf:
+      destination:
+        mysql:
+          meta: {data_type: 'DECIMAL(20, 2)'}
+      source:
+        all:
+          fields:
+            -
+              source: "self"
+              field: "gross_amount"
+            -
+              source: "self"
+              field: "exchange__rate"
+            -
+              source: "self"
+              field: "currency__code"
+          function: converteEurToHuf
+          source: computed
+          type: decimal
+  name: HuErpSalesInvoiceLine
+  storage:
+    file:
+      meta: {}
+      table_indexes: {}
+      table_name: hu_erp_sales_invoice_lines
+    hive:
+      key: row_key
+      master_table_name: hu_erp_sales_invoice_line_raw
+      merge:
+        entity_merge: '0'
+        ignoreMerge: '0'
+        type: foreign_key
+        foreign_key: hu_erp_sales_invoice_id
+        table_name: hu_erp_sales_invoice_lines
+      table_name: hu_erp_#{colbi.fiscal_year}_#{colbi.project_id}_sales_invoice_lines
+    mysql:
+      meta: {upload: global_after_mapping}
+      table_indexes:
+        row_key:
+          fields: [row_key]
+        tax_entity:
+          fields: [tax_entity]
+        final_version:
+          fields: [final_version]
+        import_id:
+          fields: [import_id]
+        merge_key:
+          fields: [merge_key]
+      table_name: hu_erp_#{colbi.fiscal_year}_#{colbi.project_id}_sales_invoice_lines
+      

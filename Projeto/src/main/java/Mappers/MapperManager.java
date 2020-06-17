@@ -50,14 +50,14 @@ public class MapperManager {
             int count = 0;
             this.processRootElement(XMLElement, value, count);
 
-        } catch (MapException | NodeException | IndexOutOfBoundsException e) {
-
-            if (e instanceof IndexOutOfBoundsException) {
-                System.err.println("\nElement not mapped found!\nElement: " + XMLElement + "\n.");
-            } else {
-                System.err.println(e.getMessage());
-            }
-
+        } catch (MapException e) {
+            e.getError();
+            System.exit(1);
+        } catch (NodeException e) {
+            e.getError();
+            System.exit(1);
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("\nElement not mapped found!\nElement: " + XMLElement + "\n.");
             System.exit(1);
         }
     }
@@ -124,7 +124,7 @@ public class MapperManager {
             }
         }
 
-        throw new NodeException("Node '" + XMLElement + "' not found!");
+        throw new NodeException(XMLElement);
     }
 
     private long addNode() {

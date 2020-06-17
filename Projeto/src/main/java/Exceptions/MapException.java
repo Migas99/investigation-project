@@ -2,7 +2,13 @@ package Exceptions;
 
 public class MapException extends Throwable {
 
+    private String element;
+
     public MapException(String element) {
-        System.err.println("\nElement not mapped found!\nElement: " + element + "\n.");
+        this.element = element;
+    }
+
+    public void getError(){
+        System.err.println("\nElement not mapped found!\nElement: " + this.element + "\n.");
     }
 }

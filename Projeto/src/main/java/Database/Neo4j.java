@@ -22,6 +22,10 @@ public class Neo4j {
         this.driver = GraphDatabase.driver(url, AuthTokens.basic(user, password));
     }
 
+    public Neo4j(Driver driver) {
+        this.driver = driver;
+    }
+
     /**
      * Verifica se a estrutura do XML já se encontra carregada neste grafo
      *

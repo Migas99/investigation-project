@@ -18,11 +18,11 @@ public class EnumsOfEntities {
         SalesInvoices,
         Invoice,
 
-        MovementOfGoods,
+        /*MovementOfGoods,
 
         WorkingDocuments,
 
-        Payments,
+        Payments,*/
 
         Address,
         Contacts

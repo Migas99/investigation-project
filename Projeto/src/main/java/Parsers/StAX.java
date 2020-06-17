@@ -3,8 +3,11 @@ package Parsers;
 import Database.Neo4j;
 import Mappers.MapperManager;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
+import javax.swing.*;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -17,10 +20,21 @@ public class StAX {
 
     private final Neo4j driver;
     private final MapperManager mapper;
+    private final JTextArea displayOutput;
+    private double percentage;
 
     public StAX(Neo4j driver) {
         this.driver = driver;
         this.mapper = new MapperManager(this.driver);
+        this.displayOutput = null;
+        this.percentage = 0;
+    }
+
+    public StAX(Neo4j driver, JTextArea displayOutput) {
+        this.driver = driver;
+        this.mapper = new MapperManager(this.driver);
+        this.displayOutput = displayOutput;
+        this.percentage = 0;
     }
 
     public void processXMLToNeo4j(String XMLFileName) {
@@ -39,14 +53,16 @@ public class StAX {
                     StartElement startElement = nextEvent.asStartElement();
                     current = startElement.getName().getLocalPart();
                     isTrash = false;
-                    System.out.println("StartElement: " + current);
+                    this.setPercentageDone(current, XMLFileName);
+                    //System.out.println("StartElement: " + current);
                 }
 
                 if (nextEvent.isEndElement()) {
                     EndElement endElement = nextEvent.asEndElement();
                     this.mapper.processEndElement(endElement.getName().getLocalPart());
                     isTrash = true;
-                    System.out.println("EndElement: " + endElement.getName().getLocalPart());
+                    this.setPercentageDone(current, XMLFileName);
+                    //System.out.println("EndElement: " + endElement.getName().getLocalPart());
                 }
 
                 if (nextEvent.isCharacters()) {
@@ -58,8 +74,9 @@ public class StAX {
                             data = characters.getData();
                         }
 
-                        System.out.println("Characters: " + data);
+                        //System.out.println("Characters: " + data);
                         this.mapper.processStartElement(current, data);
+                        this.setPercentageDone(current, XMLFileName);
                     }
                 }
             }
@@ -68,6 +85,20 @@ public class StAX {
         } catch (FileNotFoundException | XMLStreamException e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    private double getSizeOfFile(String XMLFile) {
+        return new File(XMLFile).length();
+    }
+
+    private double getSizeOfString(String info) {
+        return info.getBytes(StandardCharsets.UTF_8).length;
+    }
+
+    private void setPercentageDone(String info, String file) {
+        double percentageDone = ((this.getSizeOfString(info) / this.getSizeOfFile(file)) * 100);
+        this.percentage = this.percentage + percentageDone;
+        this.displayOutput.setText("Importing SAF-T to database ... " + (int)this.percentage + "%");
     }
 }
 
