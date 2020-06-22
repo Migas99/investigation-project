@@ -329,7 +329,7 @@ public class Neo4j {
 
     public void addRelationshipToTaxTable(long id, TaxTable table) {
         try (Session session = this.driver.session()) {
-            long tableID = session.writeTransaction(tx -> tx.run(""
+            Record result = session.writeTransaction(tx -> tx.run(""
                     + "MATCH (a)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(z:" + EnumsOfEntities.Entities.TaxTable + "), "
                     + "(a)-[:" + EnumsOfEntities.TaxTableRelationships.HAS_TAX_TYPE + "]->(b), "
                     + "(a)-[:" + EnumsOfEntities.TaxTableRelationships.HAS_TAX_COUNTRY_REGION + "]->(c) "
@@ -338,11 +338,15 @@ public class Neo4j {
                     + "b.TaxType = '" + table.getTaxType() + "' and "
                     + "c.TaxCountryRegion = '" + table.getTaxCountryRegion() + "' "
                     + "RETURN (a)"
-            ).single().get(0).asNode().id());
+            ).single());
+
+            long tableId = result.get("a").asNode().id();
 
             session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a), (b)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(c:" + EnumsOfEntities.Entities.TaxTable + ") "
-                    + "WHERE ID(a) = " + id + " and ID(a) = '" + tableID + "' "
+                    + "MATCH (a), (b)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(c:" + EnumsOfEntities.Entities.TaxTable + ")"
+                    + " "
+                    + "WHERE ID(a) = " + id + " AND ID(b) = " + tableId
+                    + " "
                     + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_TAX_TABLE + "]->(b)"
             ));
         }

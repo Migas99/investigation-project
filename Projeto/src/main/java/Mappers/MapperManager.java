@@ -2704,7 +2704,10 @@ public class MapperManager {
 
                 case EnumsOfElements.DocumentTotals.TaxPayable:
                     //Adicionamos como atributo do nó DocumentTotals
-                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.DocumentTotals), XMLElement, Double.valueOf(value));
+                    //this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.DocumentTotals), XMLElement, Double.valueOf(value));
+
+                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, Double.valueOf(value)), XMLElement));
+                    this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.DocumentTotals), this.findNodeId(XMLElement), EnumsOfEntities.DocumentTotalsRelationships.HAS_TAX_PAYABLE);
 
                     break;
 
@@ -2718,12 +2721,13 @@ public class MapperManager {
                     break;
 
                 case EnumsOfElements.DocumentTotals.GrossTotal:
-                    //Criamos um novo nó
+                    //Adicionamos como atributo do nó DocumentTotals
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.DocumentTotals), XMLElement, Double.valueOf(value));
+
+                   /*
                     this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, Double.valueOf(value)), XMLElement));
-
-                    //Adicionamos uma relação com o nó DocumentTotals
                     this.driver.addRelationship(this.findNodeId(EnumsOfElements.Invoice.DocumentTotals), this.findNodeId(XMLElement), EnumsOfEntities.DocumentTotalsRelationships.HAS_GROSS_TOTAL);
-
+*/
                     break;
 
                 default:

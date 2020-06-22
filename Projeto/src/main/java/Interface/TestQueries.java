@@ -1,12 +1,15 @@
 package Interface;
 
-import Database.Neo4j;
 import org.neo4j.driver.*;
 import org.neo4j.driver.types.Node;
-import org.neo4j.driver.types.Relationship;
 
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.neo4j.driver.Values.NULL;
 
 public class TestQueries {
 
@@ -15,10 +18,28 @@ public class TestQueries {
     private static final String user = "neo4j";
     private static final String password = "12345";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
 
         driver = GraphDatabase.driver(URL, AuthTokens.basic(user, password));
-        areThereNegativeAmountsInGeneralLedger();
+        areAllCustomersCompanyNameIdentified();
+        areAllInvoicesAssociatedWithCustomers();
+
+        Iterator<String> it = obtainListOfDaysWithoutSales();
+        System.out.println("Não foram realizadas vendas nos seguintes dias:");
+        while (it.hasNext()) {
+            System.out.println("Dia: " + it.next());
+        }
+
+        Iterator<LinkedList<String>> iterator = obtainListOfNetTotalAndTaxPayableByTaxCode();
+        while (iterator.hasNext()) {
+            Iterator<String> secondIterator = iterator.next().iterator();
+            while (secondIterator.hasNext()) {
+                System.out.print(secondIterator.next());
+            }
+
+            System.out.println("");
+        }
+
         driver.close();
     }
 
@@ -32,81 +53,71 @@ public class TestQueries {
 
     private static boolean areAllCustomersCompanyNameIdentified() {
         try (Session session = driver.session()) {
-            List<Record> companies = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a)-[:TYPE_OF]->(b:Customer), (a)-[r:HAS_COMPANY]->(c)"
+            List<Record> customersID = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a)-[:TYPE_OF]->(b:Customer), (a)-[:HAS_COMPANY]->(c)"
                     + " "
-                    //+ "WHERE c.CompanyName = ''"
+                    + "WHERE a.CustomerID = '' OR a.CustomerID = NULL OR c.CompanyName = '' OR c.CompanyName = NULL"
                     + " "
-                    + "RETURN (a),(c)"
+                    + "RETURN a.CustomerID"
             ).list());
 
-            for (int i = 0; i < companies.size(); i++) {
-                Node firstNode = companies.get(i).get("a").asNode();
-                Node secondNode = companies.get(i).get("c").asNode();
-
-                System.out.println(firstNode.get("CustomerID"));
-                System.out.println(secondNode.get("CompanyName"));
+            if (customersID.isEmpty()) {
+                System.out.println("They're all identified");
+                return true;
             }
 
-            /*if(companies.size() > 0){
-                return false;
-            }*/
+            Iterator<Record> iterator = customersID.iterator();
+            while (iterator.hasNext()) {
+                System.out.println(iterator.next().values().get(0));
+            }
 
-            return true;
+            return false;
         }
     }
 
     private static boolean areAllSuppliersCompanyNameIdentified() {
         try (Session session = driver.session()) {
-            List<Record> companies = session.writeTransaction(tx -> tx.run(""
+            List<Record> suppliersID = session.writeTransaction(tx -> tx.run(""
                     + "MATCH (a)-[:TYPE_OF]->(b:Supplier), (a)-[r:HAS_COMPANY]->(c)"
                     + " "
-                    + "WHERE c.CompanyName = ''"
+                    + "WHERE a.SupplierID = '' OR a.SupplierID = NULL OR c.CompanyName = '' OR c.CompanyName = NULL"
                     + " "
-                    + "RETURN (a),(c)"
+                    + "RETURN a.SupplierID"
             ).list());
 
-            for (int i = 0; i < companies.size(); i++) {
-                Node firstNode = companies.get(i).get("a").asNode();
-                Node secondNode = companies.get(i).get("c").asNode();
-
-                System.out.println(firstNode.get("SupplierID"));
-                System.out.println(secondNode.get("CompanyName"));
+            if (suppliersID.isEmpty()) {
+                System.out.println("They're all identified");
+                return true;
             }
 
-            if (companies.size() > 0) {
-                return false;
+            Iterator<Record> iterator = suppliersID.iterator();
+            while (iterator.hasNext()) {
+                System.out.println(iterator.next().values().get(0));
             }
 
-            return true;
+            return false;
         }
     }
 
     private static boolean areAllInvoicesAssociatedWithCustomers() {
         try (Session session = driver.session()) {
-            List<Record> companies = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a)-[:TYPE_OF]->(b:Invoice), (a)-[:HAS_CUSTOMER]->(c), (c)-[:TYPE_OF]->(d:Customer), (c)-[r:HAS_COMPANY]->(e)"
+            List<Record> invoicesNo = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a)-[:TYPE_OF]->(b:Invoice)"
                     + " "
-                    //+ "WHERE e.CompanyName = ''"
+                    + "WHERE NOT EXISTS( (a)-[:HAS_CUSTOMER]->() )"
                     + " "
-                    + "RETURN (a),(c),(e)"
+                    + "RETURN a.InvoiceNo"
             ).list());
 
-            for (int i = 0; i < companies.size(); i++) {
-                Node firstNode = companies.get(i).get("a").asNode();
-                Node secondNode = companies.get(i).get("c").asNode();
-                Node thirdNode = companies.get(i).get("e").asNode();
-
-                String value = thirdNode.get(" ").asString();
-
-                System.out.println(firstNode.get("InvoiceNo"));
-                System.out.println(secondNode.get("CustomerID"));
-                System.out.println(thirdNode.get("CompanyName"));
+            if (invoicesNo.isEmpty()) {
+                System.out.println("They're all identified");
+                return true;
             }
 
-            /*if(companies.size() > 0){
-                return false;
-            }*/
+            Iterator<Record> iterator = invoicesNo.iterator();
+            while (iterator.hasNext()) {
+                System.out.println(iterator.next().values().get(0));
+            }
 
             return true;
         }
@@ -144,34 +155,72 @@ public class TestQueries {
         }
     }
 
-    private static void obtainListOfDaysWithoutSales() {
+    private static Iterator<String> obtainListOfDaysWithoutSales() {
         try (Session session = driver.session()) {
-            List<Record> results = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a)-[:TYPE_OF]->(b:Transaction), (a)-[:HAS_TRANSACTION_DATE]->(c)"
+            Record fiscalYearDates = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a)-[:TYPE_OF]->(b:FiscalYear), (a)-[:HAS_START_DATE]->(c), (a)-[:HAS_END_DATE]->(d)"
                     + " "
-                    + "RETURN (a),(c)"
+                    + "RETURN c.StartDate, d.EndDate"
+            ).single());
+
+            String startDate = fiscalYearDates.values().get(0).asString();
+            String endDate = fiscalYearDates.values().get(1).asString();
+
+            List<Record> daysWithSalesQuery = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a)-[:TYPE_OF]->(b:Invoice), (a)-[:HAS_INVOICE_DATE]->(c)"
+                    + " "
+                    + "RETURN c.InvoiceDate"
             ).list());
 
-            for (int i = 0; i < results.size(); i++) {
-                Node firstNode = results.get(i).get("a").asNode();
-                Node secondNode = results.get(i).get("c").asNode();
-
-                System.out.println(firstNode.get("TransactionID").asString());
-                System.out.println(secondNode.get("DebitAmount"));
+            LinkedList<String> daysWithSales = new LinkedList<>();
+            Iterator<Record> iterator = daysWithSalesQuery.iterator();
+            while (iterator.hasNext()) {
+                daysWithSales.add(iterator.next().values().get(0).asString());
             }
+
+            LinkedList<String> daysWithoutSales = new LinkedList<>();
+            String currentDate = startDate;
+
+            while (!currentDate.equalsIgnoreCase(endDate)) {
+
+                if (!daysWithSales.contains(currentDate)) {
+                    daysWithoutSales.add(currentDate);
+                }
+
+                currentDate = LocalDate.parse(currentDate).plusDays(1).toString();
+            }
+
+            return daysWithoutSales.iterator();
         }
     }
 
-    /*protected class processQuery {
+    private static Iterator<LinkedList<String>> obtainListOfNetTotalAndTaxPayableByTaxCode() {
+        try (Session session = driver.session()) {
+            List<Record> results = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a)-[:TYPE_OF]->(b:TaxTable), (c)-[:TYPE_OF]->(d:Invoice), "
+                    + "(c)-[:HAS_LINE]->(e), (e)-[:HAS_TAX_TABLE]->(a), (c)-[:HAS_DOCUMENT_TOTALS]->(f), "
+                    + "(f)-[:HAS_TAX_PAYABLE]-(g), (f)-[:HAS_NET_TOTAL]-(h)"
+                    + " "
+                    + "RETURN a.TaxCode, SUM(g.TaxPayable), SUM(h.TaxAmount)"
+            ).list());
 
-        private String transactionID;
-        private
+            Iterator<Record> queryIterator = results.iterator();
+            LinkedList<LinkedList<String>> answer = new LinkedList<>();
 
-        protected processQuery(){
+            while (queryIterator.hasNext()) {
 
+                Iterator<Value> queryIteratorOfValues = queryIterator.next().values().iterator();
+                LinkedList<String> row = new LinkedList<>();
+                while (queryIteratorOfValues.hasNext()) {
+                    row.add(queryIteratorOfValues.next().asString());
+                }
+
+                answer.add(row);
+
+            }
+
+            return answer.iterator();
         }
+    }
 
-
-
-    }*/
 }

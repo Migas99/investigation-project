@@ -209,7 +209,7 @@ public class Interface extends JFrame {
                     };
 
                     connectToDatabase.setEnabled(false);
-                    displayOutput.setText("Testing connection to database ...");
+                    displayOutput.setText("CustomObjectTest connection to database ...");
                     process.execute();
                 }
             });

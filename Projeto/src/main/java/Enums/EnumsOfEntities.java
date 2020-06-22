@@ -270,6 +270,7 @@ public class EnumsOfEntities {
     public enum DocumentTotalsRelationships {
         ELEMENT;
 
+        public static final String HAS_TAX_PAYABLE = "HAS_TAX_PAYABLE";
         public static final String HAS_NET_TOTAL = "HAS_NET_TOTAL";
         public static final String HAS_GROSS_TOTAL = "HAS_GROSS_TOTAL";
         public static final String HAS_CURRENCY = "HAS_CURRENCY";
