@@ -20,21 +20,10 @@ public class StAX {
 
     private final Neo4j driver;
     private final MapperManager mapper;
-    private final JTextArea displayOutput;
-    private double percentage;
 
     public StAX(Neo4j driver) {
         this.driver = driver;
         this.mapper = new MapperManager(this.driver);
-        this.displayOutput = null;
-        this.percentage = 0;
-    }
-
-    public StAX(Neo4j driver, JTextArea displayOutput) {
-        this.driver = driver;
-        this.mapper = new MapperManager(this.driver);
-        this.displayOutput = displayOutput;
-        this.percentage = 0;
     }
 
     public void processXMLToNeo4j(String XMLFileName) {
@@ -53,7 +42,6 @@ public class StAX {
                     StartElement startElement = nextEvent.asStartElement();
                     current = startElement.getName().getLocalPart();
                     isTrash = false;
-                    this.setPercentageDone(current, XMLFileName);
                     //System.out.println("StartElement: " + current);
                 }
 
@@ -61,7 +49,6 @@ public class StAX {
                     EndElement endElement = nextEvent.asEndElement();
                     this.mapper.processEndElement(endElement.getName().getLocalPart());
                     isTrash = true;
-                    this.setPercentageDone(current, XMLFileName);
                     //System.out.println("EndElement: " + endElement.getName().getLocalPart());
                 }
 
@@ -76,7 +63,6 @@ public class StAX {
 
                         //System.out.println("Characters: " + data);
                         this.mapper.processStartElement(current, data);
-                        this.setPercentageDone(current, XMLFileName);
                     }
                 }
             }
@@ -87,18 +73,5 @@ public class StAX {
         }
     }
 
-    private double getSizeOfFile(String XMLFile) {
-        return new File(XMLFile).length();
-    }
-
-    private double getSizeOfString(String info) {
-        return info.getBytes(StandardCharsets.UTF_8).length;
-    }
-
-    private void setPercentageDone(String info, String file) {
-        double percentageDone = ((this.getSizeOfString(info) / this.getSizeOfFile(file)) * 100);
-        this.percentage = this.percentage + percentageDone;
-        this.displayOutput.setText("Importing SAF-T to database ... " + (int)this.percentage + "%");
-    }
 }
 

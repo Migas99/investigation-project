@@ -1,6 +1,7 @@
 package Interface;
 
 import Database.Neo4j;
+import Parsers.SAX;
 import Parsers.StAX;
 import org.xml.sax.SAXException;
 
@@ -39,6 +40,8 @@ public class Run {
             Neo4j driver = new Neo4j(URL, user, password);
             StAX parser = new StAX(driver);
             parser.processXMLToNeo4j(XMLFile4);
+            /*SAX parser = new SAX(driver);
+            parser.read(XMLFile4);*/
         } else {
             System.out.println("Ficheiro inválido!");
         }
