@@ -35,16 +35,16 @@ public class Run {
     private static final String password = "12345";
 
     public static void main(String[] args) {
-        if (validateXML(XMLFile4, XSDFile)) {
+        //if (validateXML(XMLFile4, XSDFile)) {
             System.out.println("Ficheiro válido!");
             Neo4j driver = new Neo4j(URL, user, password);
             StAX parser = new StAX(driver);
-            parser.processXMLToNeo4j(XMLFile4);
+            parser.processXMLToNeo4j(XMLFile5);
             /*SAX parser = new SAX(driver);
             parser.read(XMLFile4);*/
-        } else {
-            System.out.println("Ficheiro inválido!");
-        }
+        //} else {
+          //  System.out.println("Ficheiro inválido!");
+        //}
     }
 
     public static boolean validateXML(String XMLFile, String XSDFile) {
@@ -55,7 +55,6 @@ public class Run {
 
             Validator validator = schema.newValidator();
             validator.validate(new StAXSource(reader));
-
         } catch (IOException | SAXException | XMLStreamException e) {
             System.out.println(e.getMessage());
             return false;

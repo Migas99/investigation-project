@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static org.neo4j.driver.Values.NULL;
 
@@ -18,164 +19,271 @@ public class TestQueries {
     private static final String user = "neo4j";
     private static final String password = "12345";
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) {
 
         driver = GraphDatabase.driver(URL, AuthTokens.basic(user, password));
-        areAllCustomersCompanyNameIdentified();
-        areAllInvoicesAssociatedWithCustomers();
-
-        Iterator<String> it = obtainListOfDaysWithoutSales();
-        System.out.println("Não foram realizadas vendas nos seguintes dias:");
-        while (it.hasNext()) {
-            System.out.println("Dia: " + it.next());
-        }
-
-        Iterator<LinkedList<String>> iterator = obtainListOfNetTotalAndTaxPayableByTaxCode();
+        Iterator<String> iterator = obtainListOfDaysWithoutSales();
         while (iterator.hasNext()) {
-            Iterator<String> secondIterator = iterator.next().iterator();
-            while (secondIterator.hasNext()) {
-                System.out.print(secondIterator.next());
-            }
-
-            System.out.println("");
+            System.out.println(iterator.next().toString());
         }
 
         driver.close();
     }
 
-    private boolean areAllEntitiesIdentified() {
-        if (areAllCustomersCompanyNameIdentified() && areAllSuppliersCompanyNameIdentified() && areAllInvoicesAssociatedWithCustomers()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private static boolean areAllCustomersCompanyNameIdentified() {
+    private static Iterator<Map<String, Object>> obtainListOfCustomersNotIdentified() {
         try (Session session = driver.session()) {
-            List<Record> customersID = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a)-[:TYPE_OF]->(b:Customer), (a)-[:HAS_COMPANY]->(c)"
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(customer)-[:TYPE_OF]->(entity:Customer), "
+                    + "(customer)-[:HAS_COMPANY]->(company)"
                     + " "
-                    + "WHERE a.CustomerID = '' OR a.CustomerID = NULL OR c.CompanyName = '' OR c.CompanyName = NULL"
+                    + "WHERE "
+                    + "customer.CustomerID = ''"
+                    + " OR "
+                    + "customer.CustomerID = NULL"
+                    + " OR "
+                    + "company.CompanyName = ''"
+                    + " OR "
+                    + "company.CompanyName = NULL"
                     + " "
-                    + "RETURN a.CustomerID"
+                    + "RETURN "
+                    + "customer.CustomerID AS Customer, "
+                    + "company.CompanyName AS Company"
+                    + " "
+                    + "ORDER BY customer.CustomerID"
             ).list());
 
-            if (customersID.isEmpty()) {
-                System.out.println("They're all identified");
-                return true;
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
             }
 
-            Iterator<Record> iterator = customersID.iterator();
-            while (iterator.hasNext()) {
-                System.out.println(iterator.next().values().get(0));
-            }
-
-            return false;
-        }
-    }
-
-    private static boolean areAllSuppliersCompanyNameIdentified() {
-        try (Session session = driver.session()) {
-            List<Record> suppliersID = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a)-[:TYPE_OF]->(b:Supplier), (a)-[r:HAS_COMPANY]->(c)"
-                    + " "
-                    + "WHERE a.SupplierID = '' OR a.SupplierID = NULL OR c.CompanyName = '' OR c.CompanyName = NULL"
-                    + " "
-                    + "RETURN a.SupplierID"
-            ).list());
-
-            if (suppliersID.isEmpty()) {
-                System.out.println("They're all identified");
-                return true;
-            }
-
-            Iterator<Record> iterator = suppliersID.iterator();
-            while (iterator.hasNext()) {
-                System.out.println(iterator.next().values().get(0));
-            }
-
-            return false;
+            return results.iterator();
         }
     }
 
-    private static boolean areAllInvoicesAssociatedWithCustomers() {
+    private static Iterator<Map<String, Object>> obtainListOfSuppliersNotIdentified() {
         try (Session session = driver.session()) {
-            List<Record> invoicesNo = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a)-[:TYPE_OF]->(b:Invoice)"
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(supplier)-[:TYPE_OF]->(entity:Supplier), "
+                    + "(supplier)-[:HAS_COMPANY]->(company)"
                     + " "
-                    + "WHERE NOT EXISTS( (a)-[:HAS_CUSTOMER]->() )"
+                    + "WHERE "
+                    + "supplier.SupplierID = ''"
+                    + " OR "
+                    + "supplier.SupplierID = NULL"
+                    + " OR "
+                    + "company.CompanyName = ''"
+                    + " OR "
+                    + "company.CompanyName = NULL"
                     + " "
-                    + "RETURN a.InvoiceNo"
+                    + "RETURN "
+                    + "supplier.SupplierID AS Supplier, "
+                    + "company.CompanyName AS Company"
+                    + " "
+                    + "ORDER BY supplier.SupplierID"
             ).list());
 
-            if (invoicesNo.isEmpty()) {
-                System.out.println("They're all identified");
-                return true;
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
             }
 
-            Iterator<Record> iterator = invoicesNo.iterator();
-            while (iterator.hasNext()) {
-                System.out.println(iterator.next().values().get(0));
-            }
-
-            return true;
+            return results.iterator();
         }
     }
 
-    private static void areThereNegativeAmountsInGeneralLedger() {
+    private static Iterator<String> obtainListOfInvoicesNotAssociatedWithCustomers() {
         try (Session session = driver.session()) {
-            List<Record> results = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a)-[:TYPE_OF]->(b:Transaction), (a)-[:HAS_LINES]->(c), (c)-[:HAS_DEBIT_LINE]->(d), "
-                    + "(c)-[:HAS_CREDIT_LINE]->(e), (d)-[:HAS_DEBIT_AMOUNT]->(f), (e)-[:HAS_CREDIT_AMOUNT]->(g)"
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(invoice)-[:TYPE_OF]->(entity:Invoice), "
+                    + "(invoice)-[:HAS_PERIOD]->(period)"
                     + " "
-                    + "WHERE f.DebitAmount < 0 OR g.CreditAmount < 0"
+                    + "WHERE "
+                    + "NOT EXISTS( (invoice)-[:HAS_CUSTOMER]->() )"
                     + " "
-                    + "RETURN (a),(d),(f),(g)"
+                    + "RETURN "
+                    + "invoice.InvoiceNo AS Invoice"
+                    + " "
+                    + "ORDER BY period.Period"
             ).list());
 
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<String> results = new LinkedList<>();
 
-            for (int i = 0; i < results.size(); i++) {
-                Node firstNode = results.get(i).get("a").asNode();
-                Node fourthNode = results.get(i).get("d").asNode();
-                Node secondNode = results.get(i).get("f").asNode();
-                Node thirdNode = results.get(i).get("g").asNode();
-
-                System.out.println(firstNode.get("TransactionID").asString());
-                System.out.println(fourthNode.get("RecordID").asString());
-                System.out.println(secondNode.get("DebitAmount"));
-                System.out.println(thirdNode.get("CreditAmount"));
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap().get("Invoice").toString());
             }
 
-            /*if(companies.size() > 0){
-                return false;
+            return results.iterator();
+        }
+    }
+
+    private static Iterator<Map<String, Object>> obtainListOfNegativeAmountsInGeneralLedger() {
+        /*try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(transaction)-[:TYPE_OF]->(b:Transaction), "
+                    + "(transaction)-[:HAS_LINES]->(lines), "
+                    + "(lines)-[:HAS_DEBIT_LINE]->(debitLine), "
+                    + "(lines)-[:HAS_CREDIT_LINE]->(creditLine), "
+                    + "(debitLine)-[:HAS_DEBIT_AMOUNT]->(debitAmount), "
+                    + "(creditLine)-[:HAS_CREDIT_AMOUNT]->(creditAmount)"
+                    + " "
+                    + "WHERE "
+                    + "debitAmount.DebitAmount < 0"
+                    + " OR "
+                    + "creditAmount.CreditAmount < 0"
+                    + " "
+                    + "RETURN "
+                    + "transaction.TransactionID AS Transaction, "
+                    + "debitLine.RecordID AS DebitLineRecordID, "
+                    + "debitAmount.DebitAmount AS DebitAmount, "
+                    + "creditLine.RecordID AS CreditLineRecordID ,"
+                    + "creditAmount.CreditAmount AS CreditAmount"
+                    + " "
+                    + "ORDER BY transaction.TransactionID"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
             }*/
 
-            //return true;
+        LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+        results.addAll(obtainListOfCreditLinesWithNegativeAmounts());
+        results.addAll(obtainListOfDebitLinesWithNegativeAmounts());
+
+        return results.iterator();
+        //}
+
+    }
+
+    private static LinkedList<Map<String, Object>> obtainListOfCreditLinesWithNegativeAmounts() {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(transaction)-[:TYPE_OF]->(b:Transaction), "
+                    + "(transaction)-[:HAS_LINES]->(lines), "
+                    + "(lines)-[:HAS_CREDIT_LINE]->(creditLine), "
+                    + "(creditLine)-[:HAS_CREDIT_AMOUNT]->(creditAmount)"
+                    + " "
+                    + "WHERE "
+                    + "creditAmount.CreditAmount < 0"
+                    + " "
+                    + "RETURN "
+                    + "transaction.TransactionID AS Transaction, "
+                    + "creditLine.RecordID AS RecordID ,"
+                    + "creditAmount.CreditAmount AS CreditAmount"
+                    + " "
+                    + "ORDER BY transaction.TransactionID"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
+        }
+    }
+
+
+    private static LinkedList<Map<String, Object>> obtainListOfDebitLinesWithNegativeAmounts() {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(transaction)-[:TYPE_OF]->(b:Transaction), "
+                    + "(transaction)-[:HAS_LINES]->(lines), "
+                    + "(lines)-[:HAS_DEBIT_LINE]->(debitLine), "
+                    + "(debitLine)-[:HAS_DEBIT_AMOUNT]->(debitAmount)"
+                    + " "
+                    + "WHERE "
+                    + "debitAmount.DebitAmount < 0"
+                    + " "
+                    + "RETURN "
+                    + "transaction.TransactionID AS Transaction, "
+                    + "debitLine.RecordID AS RecordID, "
+                    + "debitAmount.DebitAmount AS DebitAmount"
+                    + " "
+                    + "ORDER BY transaction.TransactionID"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
         }
     }
 
     private static Iterator<String> obtainListOfDaysWithoutSales() {
         try (Session session = driver.session()) {
             Record fiscalYearDates = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a)-[:TYPE_OF]->(b:FiscalYear), (a)-[:HAS_START_DATE]->(c), (a)-[:HAS_END_DATE]->(d)"
+                    + "MATCH "
+                    + "(fiscalYear)-[:TYPE_OF]->(entity:FiscalYear), "
+                    + "(fiscalYear)-[:HAS_START_DATE]->(startDate), "
+                    + "(fiscalYear)-[:HAS_END_DATE]->(endDate)"
                     + " "
-                    + "RETURN c.StartDate, d.EndDate"
+                    + "RETURN startDate.StartDate AS StartDate, endDate.EndDate AS EndDate"
             ).single());
 
-            String startDate = fiscalYearDates.values().get(0).asString();
-            String endDate = fiscalYearDates.values().get(1).asString();
+            String startDate = fiscalYearDates.asMap().get("StartDate").toString();
+            String endDate = fiscalYearDates.asMap().get("EndDate").toString();
 
             List<Record> daysWithSalesQuery = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a)-[:TYPE_OF]->(b:Invoice), (a)-[:HAS_INVOICE_DATE]->(c)"
+                    + "MATCH "
+                    + "(invoice)-[:TYPE_OF]->(entity:Invoice), "
+                    + "(invoice)-[:HAS_INVOICE_DATE]->(invoiceDate)"
                     + " "
-                    + "RETURN c.InvoiceDate"
+                    + "RETURN "
+                    + "invoice.InvoiceNo AS InvoiceNo, "
+                    + "invoiceDate.InvoiceDate AS InvoiceDate"
+                    + " "
+                    + "ORDER BY invoiceDate.InvoiceDate"
+            ).list());
+
+            //Ainda não faço ideia de como o fazer apenas usando a query
+            List<Record> daysWithoutSalesQuery = session.writeTransaction(tx -> tx.run(""
+                    + "CALL {"
+                    + " "
+                    + "MATCH "
+                    + "(fiscalYear)-[:TYPE_OF]->(a:FiscalYear), "
+                    + "(fiscalYear)-[:HAS_START_DATE]->(startDate), "
+                    + "(fiscalYear)-[:HAS_END_DATE]->(endDate)"
+                    + " "
+                    + "RETURN "
+                    + "date(startDate.StartDate) AS start, "
+                    + "date(endDate.EndDate) AS end"
+                    + " "
+                    + "}"
+                    + " "
+                    + "MATCH (invoice)-[:TYPE_OF]->(entity:Invoice), (invoice)-[:HAS_INVOICE_DATE]->(invoiceDate)"
+                    + " "
+                    + "RETURN invoice.InvoiceNo AS InvoiceNo, invoiceDate.InvoiceDate AS InvoiceDate"
+                    + " "
+                    + "ORDER BY invoiceDate.InvoiceDate"
             ).list());
 
             LinkedList<String> daysWithSales = new LinkedList<>();
             Iterator<Record> iterator = daysWithSalesQuery.iterator();
+
             while (iterator.hasNext()) {
-                daysWithSales.add(iterator.next().values().get(0).asString());
+                daysWithSales.add(iterator.next().asMap().get("InvoiceDate").toString());
             }
 
             LinkedList<String> daysWithoutSales = new LinkedList<>();
@@ -194,33 +302,62 @@ public class TestQueries {
         }
     }
 
-    private static Iterator<LinkedList<String>> obtainListOfNetTotalAndTaxPayableByTaxCode() {
+    private static Iterator<Map<String, Object>> obtainListOfNetTotalAndTaxPayableByTaxCode() {
         try (Session session = driver.session()) {
-            List<Record> results = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a)-[:TYPE_OF]->(b:TaxTable), (c)-[:TYPE_OF]->(d:Invoice), "
-                    + "(c)-[:HAS_LINE]->(e), (e)-[:HAS_TAX_TABLE]->(a), (c)-[:HAS_DOCUMENT_TOTALS]->(f), "
-                    + "(f)-[:HAS_TAX_PAYABLE]-(g), (f)-[:HAS_NET_TOTAL]-(h)"
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(taxTable)-[:TYPE_OF]->(b:TaxTable), "
+                    + "(invoice)-[:TYPE_OF]->(d:Invoice), "
+                    + "(invoice)-[:HAS_LINE]->(line), "
+                    + "(line)-[:HAS_TAX_TABLE]->(taxTable), "
+                    + "(invoice)-[:HAS_DOCUMENT_TOTALS]->(documentTotals), "
+                    + "(documentTotals)-[:HAS_TAX_PAYABLE]-(taxPayable), "
+                    + "(documentTotals)-[:HAS_NET_TOTAL]-(taxAmount)"
                     + " "
-                    + "RETURN a.TaxCode, SUM(g.TaxPayable), SUM(h.TaxAmount)"
+                    + "RETURN "
+                    + "taxTable.TaxCode AS TaxCode, "
+                    + "SUM(taxPayable.TaxPayable) AS TotalTaxPayable, "
+                    + "SUM(taxAmount.TaxAmount) AS TotalTaxAmount"
+                    + " "
+                    + "ORDER BY taxTable.TaxCode"
             ).list());
 
-            Iterator<Record> queryIterator = results.iterator();
-            LinkedList<LinkedList<String>> answer = new LinkedList<>();
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
 
             while (queryIterator.hasNext()) {
-
-                Iterator<Value> queryIteratorOfValues = queryIterator.next().values().iterator();
-                LinkedList<String> row = new LinkedList<>();
-                while (queryIteratorOfValues.hasNext()) {
-                    row.add(queryIteratorOfValues.next().asString());
-                }
-
-                answer.add(row);
-
+                results.add(queryIterator.next().asMap());
             }
 
-            return answer.iterator();
+            return results.iterator();
         }
     }
 
+    private static Iterator<Map<String, Object>> obtainListOfSalesByPeriod() {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(invoice)-[:TYPE_OF]->(b:Invoice), "
+                    + "(invoice)-[:HAS_PERIOD]->(period), "
+                    + "(invoice)-[:HAS_DOCUMENT_TOTALS]->(documentTotals), "
+                    + "(documentTotals)-[:HAS_NET_TOTAL]->(netTotal)"
+                    + " "
+                    + "RETURN "
+                    + "DISTINCT(period.Period) AS Period, "
+                    + "SUM(documentTotals.GrossTotal) AS TotalSalesWithoutTax, "
+                    + "SUM(netTotal.NetTotal) AS TotalSalesWithTax"
+                    + " "
+                    + "ORDER BY period.Period"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results.iterator();
+        }
+    }
 }
