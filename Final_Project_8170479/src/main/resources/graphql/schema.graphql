@@ -1,0 +1,42 @@
+type Query {
+
+
+    getListOfCustomersNotIdentified: [CustomersNotIdentified]
+    getListOfSuppliersNotIdentified: [SuppliersNotIdentified]
+    getListOfInvoicesNotAssociatedWithCustomers: [String]
+    getListOfNegativeAmountsInGeneralLedger: [NegativeAmountsInGeneralLedger]
+    getListOfDaysWithoutSales: [String]
+    getListOfNetTotalAndTaxPayableByTaxCode: [NetTotalAndTaxPayableByTaxCode]
+    getListOfSalesByPeriod: [SalesByPeriod]
+}
+
+
+
+type CustomersNotIdentified {
+    Customer: String
+    Company: String
+}
+
+type SuppliersNotIdentified {
+    Supplier: String
+    Company: String
+}
+
+type NegativeAmountsInGeneralLedger {
+    Transaction: String
+    RecordID: String
+    CreditAmount: Float
+    DebitAmount: Float
+}
+
+type NetTotalAndTaxPayableByTaxCode {
+    TaxCode: String
+    TotalTaxPayable: Float
+    TotalTaxAmount: Float
+}
+
+type SalesByPeriod {
+    Period: Int
+    TotalSalesWithoutTax: Float
+    TotalSalesWithTax: Float
+}
