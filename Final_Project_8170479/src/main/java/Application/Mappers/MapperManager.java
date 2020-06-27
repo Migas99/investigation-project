@@ -37,6 +37,7 @@ public class MapperManager {
     private final LinkedList<Map<String, Long>> customers;
     private final LinkedList<Map<String, Long>> suppliers;
     private final LinkedList<Map<String, Long>> products;
+    private Map<String,Object> taxTable;
     private final LinkedList<Map<String, Long>> transactions;
     private final LinkedList<Map<String, Long>> invoices;
     private final LinkedList<Map<String, Long>> sources;
@@ -2961,6 +2962,8 @@ public class MapperManager {
                 case EnumsOfElements.Line.Tax:
 
                     if (EnumsOfElements.Line.Tax.equalsIgnoreCase(XMLElement)) {
+                        this.taxTable = new HashMap<>();
+
                         //Criamos um novo nó
                         this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement));
 
@@ -3063,12 +3066,16 @@ public class MapperManager {
         switch (XMLElement) {
 
             case EnumsOfElements.Tax.TaxType:
+                this.taxTable.put(XMLElement, value);
+
                 //Adicionamos como atributo
                 this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Line.Tax), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.Tax.TaxCountryRegion:
+                this.taxTable.put(XMLElement, value);
+
                 //Criamos um novo nó
                 this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
 
@@ -3078,12 +3085,17 @@ public class MapperManager {
                 break;
 
             case EnumsOfElements.Tax.TaxCode:
+                this.taxTable.put(XMLElement, value);
+
                 //Adicionamos como atributo
                 this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Line.Tax), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.Tax.TaxPercentage:
+                this.taxTable.put(XMLElement, value);
+                //this.driver.addRelationshipToTaxTable(this.findNodeId(EnumsOfElements.Invoice.Line), this.taxTable);
+
                 //Criamos um novo nó
                 this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, Double.valueOf(value)), XMLElement));
 
@@ -3093,6 +3105,9 @@ public class MapperManager {
                 break;
 
             case EnumsOfElements.Tax.TaxAmount:
+                this.taxTable.put(XMLElement, value);
+                //this.driver.addRelationshipToTaxTable(this.findNodeId(EnumsOfElements.Invoice.Line), this.taxTable);
+
                 //Criamos um novo nó
                 this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, Double.valueOf(value)), XMLElement));
 

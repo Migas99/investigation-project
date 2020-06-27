@@ -4,6 +4,8 @@ import Application.Enums.EnumsOfEntities;
 import Application.Models.TaxTable;
 import org.neo4j.driver.*;
 
+import java.util.Map;
+
 /**
  * @author José Miguel Ribeiro Cunha
  */
@@ -247,6 +249,40 @@ public class Neo4jMapperHelper {
                     + "MATCH (a), (b)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(c:" + EnumsOfEntities.Entities.Product + ") "
                     + "WHERE ID(a) = " + nodeId + " and ID(b) = " + productNodeId + " "
                     + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_PRODUCT + "]->(b)"
+            ));
+        }
+    }
+
+    public void addRelationshipToTaxTable(long nodeId, Map<String, Object> taxTable) {
+        try (Session session = this.driver.session()) {
+
+            if (!taxTable.containsKey("TaxPercentage")) {
+                taxTable.put("TaxPercentage", (double) -99);
+            }
+
+            if (!taxTable.containsKey("TaxAmount")) {
+                taxTable.put("TaxAmount", (double) -99);
+            }
+
+            Record result = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(z:" + EnumsOfEntities.Entities.TaxTable + "), "
+                    + "(a)-[:" + EnumsOfEntities.TaxTableRelationships.HAS_TAX_TYPE + "]->(b), "
+                    + "(a)-[:" + EnumsOfEntities.TaxTableRelationships.HAS_TAX_COUNTRY_REGION + "]->(c) "
+                    + "WHERE a.TaxCode = '" + taxTable.get("TaxCode") + "' and "
+                    + "(a.TaxPercentage = " + taxTable.get("TaxPercentage") + " or a.TaxAmount = " + taxTable.get("TaxAmount") + ") and "
+                    + "b.TaxType = '" + taxTable.get("TaxType") + "' and "
+                    + "c.TaxCountryRegion = '" + taxTable.get("TaxCountryRegion") + "' "
+                    + "RETURN (a)"
+            ).single());
+
+            long tableId = result.get("a").asNode().id();
+
+            session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a), (b)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(c:" + EnumsOfEntities.Entities.TaxTable + ")"
+                    + " "
+                    + "WHERE ID(a) = " + nodeId + " AND ID(b) = " + tableId
+                    + " "
+                    + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_TAX_TABLE + "]->(b)"
             ));
         }
     }

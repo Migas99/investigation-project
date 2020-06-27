@@ -1,5 +1,12 @@
 type Query {
+    getAllAccounts: [Account]
+    getAccountById(id: ID): Account
 
+    getAllCustomers: [Customer]
+    getCustomerById(id: ID): Customer
+
+    getAllSuppliers: [Supplier]
+    getSupplierById(id: ID): Supplier
 
     getListOfCustomersNotIdentified: [CustomersNotIdentified]
     getListOfSuppliersNotIdentified: [SuppliersNotIdentified]
@@ -10,7 +17,257 @@ type Query {
     getListOfSalesByPeriod: [SalesByPeriod]
 }
 
+type Account {
+    AccountID: String
+    AccountDescription: String
+    OpeningDebitBalance: Float
+    OpeningCreditBalance: Float
+    ClosingDebitBalance: Float
+    ClosingCreditBalance: Float
+    GroupingCategory: String
+    GroupingCode: String
+    TaxonomyCode: Int
+}
 
+type Customer {
+    CustomerID: String
+    AccountID: String
+    CustomerTaxID: String
+    CompanyName: String
+    Contact: String
+    BillingAddress: Address
+    ShipToAddress: Address
+    Telephone: String
+    Fax: String
+    Email: String
+    Website: String
+    SelfBillingIndicator: Int
+}
+
+type Supplier {
+    SupplierID: String
+    AccountID: String
+    SupplierTaxID: String
+    CompanyName: String
+    Contact: String
+    BillingAddress: Address
+    ShipFromAddress: Address
+    Telephone: String
+    Fax: String
+    Email: String
+    Website: String
+    SelfBillingIndicator: Int
+}
+
+type Product {
+    ProductType: String
+    ProductCode: String
+    ProductGroup: String
+    ProductDescription: String
+    ProductNumberCode: String
+    CustomsDetails: [CustomsDetails]
+}
+
+type CustomsDetails {
+    CNCode: String
+    UNNumber: String
+}
+
+type GeneralLedgerEntries {
+    NumberOfEntries: Int
+    TotalDebit: Float
+    TotalCredit: Float
+    Journal: [Journal]
+}
+
+type Journal {
+    JournalID: String
+    Description: String
+    Transaction: [Transaction]
+}
+
+type Transaction {
+    TransactionID: String
+    Period: Int
+    TransactionDate: String
+    SourceID: String
+    Description: String
+    DocArchivalNumber: String
+    TransactionType: String
+    GLPostingDate: String
+    CustomerID: String
+    SupplierID: String
+    Lines: Lines
+}
+
+type Lines {
+    DebitLine: [DebitLine]
+    CreditLine: [CreditLine]
+}
+
+type DebitLine {
+    RecordID: String
+    AccountID: String
+    SourceDocumentID: String
+    SystemEntryDate: String
+    Description: String
+    DebitAmount: String
+}
+
+type CreditLine {
+    RecordID: String
+    AccountID: String
+    SourceDocumentID: String
+    SystemEntryDate: String
+    Description: String
+    CreditAmount: String
+}
+
+type SalesInvoices {
+    NumberOfEntries: Int
+    TotalDebit: Float
+    TotalCredit: Float
+    Invoice: [Invoice]
+}
+
+type Invoice {
+    InvoiceNo: String
+    ATCUD: String
+    DocumentStatus: DocumentStatus
+    Hash: String
+    HashControl: String
+    Period: Int
+    InvoiceDate: String
+    InvoiceType: String
+    SpecialRegimes: SpecialRegimes
+    SourceID: String
+    EACCode: String
+    SystemEntryDate: String
+    TransactionID: String
+    CustomerID: String
+    ShipTo: Ship
+    ShipFrom: Ship
+    MovementEndTime: String
+    MovementStartTime: String
+    Line: [Line]
+    DocumentTotals: DocumentTotals
+    WithholdingTax: [WithholdingTax]
+}
+
+type DocumentStatus {
+    InvoiceStatus: String
+    InvoiceStatusDate: String
+    Reason: String
+    SourceID: String
+    SourceBilling: String
+}
+
+type SpecialRegimes {
+    SelfBillingIndicator: Int
+    CashVATSchemeIndicator: Int
+    ThirdPartiesBillingIndicator: Int
+}
+
+type Line {
+    LineNumber: Int
+    OrderReferences: [OrderReferences]
+    ProductCode: String
+    ProductDescription: String
+    Quantity: Float
+    UnitOfMeasure: String
+    UnitPrice: Float
+    TaxBase: Float
+    TaxPointDate: Float
+    References: [References]
+    Description: String
+    ProductSerialNumber: [ProductSerialNumber]
+    DebitAmount: Float
+    CreditAmount: Float
+    Tax: [Tax]
+    TaxExemptionReason: String
+    TaxExemptionCode: String
+    SettlementAmount: Float
+    CustomsInformation: CustomsInformation
+}
+
+type OrderReferences {
+    OriginatingON: String
+    OrderDate: String
+}
+
+type References {
+    Reference: String
+    Reason: String
+}
+
+type ProductSerialNumber {
+    SerialNumber: String
+}
+
+type Tax {
+    TaxType: String
+    TaxCountryRegion: String
+    TaxCode: String
+    TaxPercentage: Float
+    TaxAmount: Float
+}
+
+type CustomsInformation {
+    ARCNo: String
+    IECAmount: Float
+}
+
+type DocumentTotals {
+    TaxPayable: Float
+    NetTotal: Float
+    GrossTotal: Float
+    Currency: Currency
+    Settlement: [Settlement]
+    Payment: [Payment]
+}
+
+type Currency {
+    CurrencyCode: String
+    CurrencyAmount: Float
+    ExchangeRate: Float
+}
+
+type Settlement {
+    SettlementDiscount: String
+    SettlementAmount: Float
+    SettlementDate: String
+    PaymentTerms: String
+}
+
+type Payment {
+    PaymentMechanism: String
+    PaymentAmount: Float
+    PaymentDate: String
+}
+
+type WithholdingTax {
+    WithholdingTaxType: String
+    WithholdingTaxDescription: String
+    WithholdingTaxAmount: Float
+}
+
+type Ship {
+    DeliveryID: String
+    DeliveryDate: String
+    WarehouseID: String
+    LocationID: String
+    Address: Address
+}
+
+type Address {
+    BuildingNumber: String
+    StreetName: String
+    AddressDetail: String
+    City: String
+    PostalCode: String
+    Region: String
+    Country: String
+}
 
 type CustomersNotIdentified {
     Customer: String
