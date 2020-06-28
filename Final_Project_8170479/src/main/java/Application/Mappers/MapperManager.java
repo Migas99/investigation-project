@@ -1522,6 +1522,9 @@ public class MapperManager {
                     //Criamos agora o nó do CustomsDetails
                     this.nodesContainer.add(new GraphNode(this.addNode(), XMLElement));
 
+                    //Criamos agora a relação
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Product), this.findNodeId(XMLElement), EnumsOfEntities.ProductRelationships.HAS_CUSTOMS_DETAILS);
+
                 } else {
 
                     this.processCustomsDetailsChildren(XMLElement, value);

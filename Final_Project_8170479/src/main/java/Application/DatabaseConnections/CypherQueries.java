@@ -169,6 +169,154 @@ public class CypherQueries {
     }
 
     /**
+     * Pesquisa por todos os fornecedores
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return lista de fornecedores
+     */
+    public static LinkedList<Map<String, Object>> obtainListOfAllSuppliers(Driver driver) {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(supplier)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Supplier + ") "
+                    + "OPTIONAL MATCH "
+                    + "(supplier)-[:" + EnumsOfEntities.OtherRelationships.HAS_ACCOUNT + "]->(account) "
+                    + "OPTIONAL MATCH "
+                    + "(supplier)-[:" + EnumsOfEntities.SupplierRelationships.HAS_SUPPLIER_TAX_ID + "]->(supplierTaxID) "
+                    + "OPTIONAL MATCH "
+                    + "(supplier)-[:" + EnumsOfEntities.OtherRelationships.HAS_COMPANY + "]->(companyName) "
+                    + "OPTIONAL MATCH "
+                    + "(supplier)-[:" + EnumsOfEntities.SupplierRelationships.HAS_CONTACTS + "]->(contacts) "
+                    + "OPTIONAL MATCH "
+                    + "(supplier)-[:" + EnumsOfEntities.SupplierRelationships.HAS_BILLING_ADDRESS + "]->(billingAddress) "
+                    + "OPTIONAL MATCH "
+                    + "(supplier)-[:" + EnumsOfEntities.SupplierRelationships.HAS_SHIP_FROM_ADDRESS + "]->(shipFromAddress) "
+                    + "OPTIONAL MATCH "
+                    + "(contacts)-[:" + EnumsOfEntities.ContactsRelationships.HAS_TELEPHONE + "]->(telephone) "
+                    + "OPTIONAL MATCH "
+                    + "(contacts)-[:" + EnumsOfEntities.ContactsRelationships.HAS_FAX + "]->(fax) "
+                    + "OPTIONAL MATCH "
+                    + "(contacts)-[:" + EnumsOfEntities.ContactsRelationships.HAS_EMAIL + "]->(email) "
+                    + "OPTIONAL MATCH "
+                    + "(contacts)-[:" + EnumsOfEntities.ContactsRelationships.HAS_WEBSITE + "]->(website) "
+                    + "OPTIONAL MATCH "
+                    + "(billingAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_BUILDING_NUMBER + "]->(buildingNumber) "
+                    + "OPTIONAL MATCH "
+                    + "(billingAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_STREET_NAME + "]->(streetName) "
+                    + "OPTIONAL MATCH "
+                    + "(billingAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_CITY + "]->(city) "
+                    + "OPTIONAL MATCH "
+                    + "(billingAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_POSTAL_CODE + "]->(postalCode) "
+                    + "OPTIONAL MATCH "
+                    + "(billingAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_REGION + "]->(region) "
+                    + "OPTIONAL MATCH "
+                    + "(billingAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_COUNTRY + "]->(country) "
+                    + "OPTIONAL MATCH "
+                    + "(shipFromAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_BUILDING_NUMBER + "]->(shipBuildingNumber) "
+                    + "OPTIONAL MATCH "
+                    + "(shipFromAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_STREET_NAME + "]->(shipStreetName) "
+                    + "OPTIONAL MATCH "
+                    + "(shipFromAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_CITY + "]->(shipCity) "
+                    + "OPTIONAL MATCH "
+                    + "(shipFromAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_POSTAL_CODE + "]->(shipPostalCode) "
+                    + "OPTIONAL MATCH "
+                    + "(shipFromAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_REGION + "]->(shipRegion) "
+                    + "OPTIONAL MATCH "
+                    + "(shipFromAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_COUNTRY + "]->(shipCountry) "
+                    + " "
+                    + "RETURN "
+                    + "supplier.SupplierID AS SupplierID, "
+                    + "account.AccountID AS AccountID, "
+                    + "supplierTaxID.SupplierTaxID AS SupplierTaxID, "
+                    + "companyName.CompanyName AS CompanyName, "
+                    + "contacts.Contact AS Contact, "
+
+                    + "{ "
+                    + "BuildingNumber: buildingNumber.BuildingNumber, "
+                    + "StreetName: streetName.StreetName, "
+                    + "AddressDetail: billingAddress.AddressDetail, "
+                    + "City: city.City, "
+                    + "PostalCode: postalCode.PostalCode, "
+                    + "Region: region.Region, "
+                    + "Country: country.Country "
+                    + "} AS BillingAddress, "
+
+                    + "{ "
+                    + "BuildingNumber: shipBuildingNumber.BuildingNumber, "
+                    + "StreetName: shipStreetName.StreetName, "
+                    + "AddressDetail: shipFromAddress.AddressDetail, "
+                    + "City: shipCity.City, "
+                    + "PostalCode: shipPostalCode.PostalCode, "
+                    + "Region: shipRegion.Region, "
+                    + "Country: shipCountry.Country "
+                    + "} AS ShipFromAddress, "
+
+                    + "telephone.Telephone AS Telephone, "
+                    + "fax.Fax AS Fax, "
+                    + "email.Email AS Email, "
+                    + "website.Website AS Website, "
+                    + "supplier.SelfBillingIndicator AS SelfBillingIndicator"
+                    + " "
+                    + "ORDER BY supplier.SupplierID"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
+        }
+    }
+
+    /**
+     * Pesquisa por todos os produtos
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return lista de produtos
+     */
+    public static LinkedList<Map<String, Object>> obtainListOfAllProducts(Driver driver) {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(product)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Product + ") "
+                    + "OPTIONAL MATCH "
+                    + "(product)-[:" + EnumsOfEntities.ProductRelationships.HAS_PRODUCT_TYPE + "]->(productType) "
+                    + "OPTIONAL MATCH "
+                    + "(product)-[:" + EnumsOfEntities.ProductRelationships.HAS_PRODUCT_GROUP + "]->(productGroup) "
+                    + "OPTIONAL MATCH "
+                    + "(product)-[:" + EnumsOfEntities.ProductRelationships.HAS_PRODUCT_NUMBER_CODE + "]->(productNumberCode) "
+                    + "OPTIONAL MATCH "
+                    + "(product)-[:" + EnumsOfEntities.ProductRelationships.HAS_CUSTOMS_DETAILS + "]->(customsDetails)"
+                    + " "
+                    + "RETURN "
+                    + "productType.ProductType AS ProductType, "
+                    + "product.ProductCode AS ProductCode, "
+                    + "productGroup.ProductGroup AS ProductGroup, "
+                    + "product.ProductDescription AS ProductDescription, "
+                    + "productNumberCode.ProductNumberCode AS ProductNumberCode, "
+                    + "collect({ "
+                    + "CNCode: customsDetails.CNCode, "
+                    + "UNNumber: customsDetails.UNNumber "
+                    + "}) AS CustomsDetails"
+                    + " "
+                    + "ORDER BY product.ProductCode"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
+        }
+    }
+
+    /**
      * Pesquisa por clientes onde o seu ID ou CompanyName contenham valores vazios
      *
      * @param driver instância para comunicar com a base de dados

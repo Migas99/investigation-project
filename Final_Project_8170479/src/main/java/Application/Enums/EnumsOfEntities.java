@@ -93,6 +93,7 @@ public class EnumsOfEntities {
         public final static String HAS_PRODUCT_TYPE = "HAS_PRODUCT_TYPE";
         public final static String HAS_PRODUCT_GROUP = "HAS_PRODUCT_GROUP";
         public final static String HAS_PRODUCT_NUMBER_CODE = "HAS_PRODUCT_NUMBER_CODE";
+        public final static String HAS_CUSTOMS_DETAILS = "HAS_CUSTOMS_DETAILS";
     }
 
     public enum GeneralLedgerAccountsRelationships {

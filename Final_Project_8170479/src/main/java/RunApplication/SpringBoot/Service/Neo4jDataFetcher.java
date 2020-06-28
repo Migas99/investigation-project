@@ -78,6 +78,48 @@ public class Neo4jDataFetcher {
         };
     }
 
+    public DataFetcher getListOfAllSuppliers() {
+        return dataFetchingEnvironment -> CypherQueries.obtainListOfAllSuppliers(this.driver);
+    }
+
+    public DataFetcher getSupplierById() {
+        return dataFetchingEnvironment -> {
+            String supplierId = dataFetchingEnvironment.getArgument("id");
+            LinkedList<Map<String, Object>> mapList = CypherQueries.obtainListOfAllSuppliers(this.driver);
+
+            Iterator<Map<String, Object>> iterator = mapList.iterator();
+            while (iterator.hasNext()) {
+                Map<String, Object> map = iterator.next();
+                if (map.get("SupplierID").equals(supplierId)) {
+                    return map;
+                }
+            }
+
+            return null;
+        };
+    }
+
+    public DataFetcher getListOfAllProducts() {
+        return dataFetchingEnvironment -> CypherQueries.obtainListOfAllProducts(this.driver);
+    }
+
+    public DataFetcher getProductById() {
+        return dataFetchingEnvironment -> {
+            String productCode = dataFetchingEnvironment.getArgument("id");
+            LinkedList<Map<String, Object>> mapList = CypherQueries.obtainListOfAllProducts(this.driver);
+
+            Iterator<Map<String, Object>> iterator = mapList.iterator();
+            while (iterator.hasNext()) {
+                Map<String, Object> map = iterator.next();
+                if (map.get("ProductCode").equals(productCode)) {
+                    return map;
+                }
+            }
+
+            return null;
+        };
+    }
+
     public DataFetcher getListOfCustomersNotIdentified() {
         return dataFetchingEnvironment -> CypherQueries.obtainListOfCustomersNotIdentified(this.driver);
     }
