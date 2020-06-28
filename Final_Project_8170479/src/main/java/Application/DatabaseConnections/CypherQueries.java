@@ -14,6 +14,161 @@ import java.util.Map;
 public class CypherQueries {
 
     /**
+     * Pesquisa por todas as contas
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return lista de contas
+     */
+    public static LinkedList<Map<String, Object>> obtainListOfAllAccounts(Driver driver) {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(account)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Account + ")"
+                    + " "
+                    + "OPTIONAL MATCH "
+                    + "(account)-[:" + EnumsOfEntities.AccountRelationships.HAS_OPENING_DEBIT_BALANCE + "]->(openingDebitBalance) "
+                    + "OPTIONAL MATCH "
+                    + "(account)-[:" + EnumsOfEntities.AccountRelationships.HAS_OPENING_CREDIT_BALANCE + "]->(openingCreditBalance) "
+                    + "OPTIONAL MATCH "
+                    + "(account)-[:" + EnumsOfEntities.AccountRelationships.HAS_CLOSING_DEBIT_BALANCE + "]->(closingDebitBalance) "
+                    + "OPTIONAL MATCH "
+                    + "(account)-[:" + EnumsOfEntities.AccountRelationships.HAS_CLOSING_CREDIT_BALANCE + "]->(closingCreditBalance) "
+                    + "OPTIONAL MATCH "
+                    + "(account)-[:" + EnumsOfEntities.AccountRelationships.HAS_GROUPING_CATEGORY + "]->(groupingCategory) "
+                    + "OPTIONAL MATCH "
+                    + "(account)-[:" + EnumsOfEntities.AccountRelationships.HAS_GROUPING_CODE + "]->(groupingCode) "
+                    + "OPTIONAL MATCH "
+                    + "(account)-[:" + EnumsOfEntities.AccountRelationships.HAS_TAXONOMY_CODE + "]->(taxonomyCode) "
+                    + " "
+                    + "RETURN "
+                    + "account.AccountID AS AccountID, "
+                    + "account.AccountDescription AS AccountDescription, "
+                    + "openingDebitBalance.OpeningDebitBalance AS OpeningDebitBalance, "
+                    + "openingCreditBalance.OpeningCreditBalance AS OpeningCreditBalance, "
+                    + "closingDebitBalance.ClosingDebitBalance AS ClosingDebitBalance, "
+                    + "closingCreditBalance.ClosingCreditBalance AS ClosingCreditBalance, "
+                    + "groupingCategory.GroupingCategory AS GroupingCategory, "
+                    + "groupingCode.GroupingCode AS GroupingCode, "
+                    + "taxonomyCode.TaxonomyCode AS TaxonomyCode"
+                    + " "
+                    + "ORDER BY account.AccountID"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
+        }
+    }
+
+    /**
+     * Pesquisa por todos os clientes
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return lista de clientes
+     */
+    public static LinkedList<Map<String, Object>> obtainListOfAllCustomers(Driver driver) {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(customer)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Customer + ") "
+                    + "OPTIONAL MATCH "
+                    + "(customer)-[:" + EnumsOfEntities.OtherRelationships.HAS_ACCOUNT + "]->(account) "
+                    + "OPTIONAL MATCH "
+                    + "(customer)-[:" + EnumsOfEntities.CustomerRelationships.HAS_CUSTOMER_TAX_ID + "]->(customerTaxID) "
+                    + "OPTIONAL MATCH "
+                    + "(customer)-[:" + EnumsOfEntities.OtherRelationships.HAS_COMPANY + "]->(companyName) "
+                    + "OPTIONAL MATCH "
+                    + "(customer)-[:" + EnumsOfEntities.CustomerRelationships.HAS_CONTACTS + "]->(contacts) "
+                    + "OPTIONAL MATCH "
+                    + "(customer)-[:" + EnumsOfEntities.CustomerRelationships.HAS_BILLING_ADDRESS + "]->(billingAddress) "
+                    + "OPTIONAL MATCH "
+                    + "(customer)-[:" + EnumsOfEntities.CustomerRelationships.HAS_SHIP_TO_ADDRESS + "]->(shipToAddress) "
+                    + "OPTIONAL MATCH "
+                    + "(contacts)-[:" + EnumsOfEntities.ContactsRelationships.HAS_TELEPHONE + "]->(telephone) "
+                    + "OPTIONAL MATCH "
+                    + "(contacts)-[:" + EnumsOfEntities.ContactsRelationships.HAS_FAX + "]->(fax) "
+                    + "OPTIONAL MATCH "
+                    + "(contacts)-[:" + EnumsOfEntities.ContactsRelationships.HAS_EMAIL + "]->(email) "
+                    + "OPTIONAL MATCH "
+                    + "(contacts)-[:" + EnumsOfEntities.ContactsRelationships.HAS_WEBSITE + "]->(website) "
+                    + "OPTIONAL MATCH "
+                    + "(billingAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_BUILDING_NUMBER + "]->(buildingNumber) "
+                    + "OPTIONAL MATCH "
+                    + "(billingAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_STREET_NAME + "]->(streetName) "
+                    + "OPTIONAL MATCH "
+                    + "(billingAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_CITY + "]->(city) "
+                    + "OPTIONAL MATCH "
+                    + "(billingAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_POSTAL_CODE + "]->(postalCode) "
+                    + "OPTIONAL MATCH "
+                    + "(billingAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_REGION + "]->(region) "
+                    + "OPTIONAL MATCH "
+                    + "(billingAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_COUNTRY + "]->(country) "
+                    + "OPTIONAL MATCH "
+                    + "(shipToAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_BUILDING_NUMBER + "]->(shipBuildingNumber) "
+                    + "OPTIONAL MATCH "
+                    + "(shipToAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_STREET_NAME + "]->(shipStreetName) "
+                    + "OPTIONAL MATCH "
+                    + "(shipToAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_CITY + "]->(shipCity) "
+                    + "OPTIONAL MATCH "
+                    + "(shipToAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_POSTAL_CODE + "]->(shipPostalCode) "
+                    + "OPTIONAL MATCH "
+                    + "(shipToAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_REGION + "]->(shipRegion) "
+                    + "OPTIONAL MATCH "
+                    + "(shipToAddress)-[:" + EnumsOfEntities.AddressRelationships.HAS_COUNTRY + "]->(shipCountry) "
+                    + " "
+                    + "RETURN "
+                    + "customer.CustomerID AS CustomerID, "
+                    + "account.AccountID AS AccountID, "
+                    + "customerTaxID.CustomerTaxID AS CustomerTaxID, "
+                    + "companyName.CompanyName AS CompanyName, "
+                    + "contacts.Contact AS Contact, "
+
+                    + "{ "
+                    + "BuildingNumber: buildingNumber.BuildingNumber, "
+                    + "StreetName: streetName.StreetName, "
+                    + "AddressDetail: billingAddress.AddressDetail, "
+                    + "City: city.City, "
+                    + "PostalCode: postalCode.PostalCode, "
+                    + "Region: region.Region, "
+                    + "Country: country.Country "
+                    + "} AS BillingAddress, "
+
+                    + "{ "
+                    + "BuildingNumber: shipBuildingNumber.BuildingNumber, "
+                    + "StreetName: shipStreetName.StreetName, "
+                    + "AddressDetail: shipToAddress.AddressDetail, "
+                    + "City: shipCity.City, "
+                    + "PostalCode: shipPostalCode.PostalCode, "
+                    + "Region: shipRegion.Region, "
+                    + "Country: shipCountry.Country "
+                    + "} AS ShipToAddress, "
+
+                    + "telephone.Telephone AS Telephone, "
+                    + "fax.Fax AS Fax, "
+                    + "email.Email AS Email, "
+                    + "website.Website AS Website, "
+                    + "customer.SelfBillingIndicator AS SelfBillingIndicator"
+                    + " "
+                    + "ORDER BY customer.CustomerID"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
+        }
+    }
+
+    /**
      * Pesquisa por clientes onde o seu ID ou CompanyName contenham valores vazios
      *
      * @param driver instância para comunicar com a base de dados
@@ -284,7 +439,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    //+ "(taxTable)-[:TYPE_OF]->(b:TaxTable), "
+                    + "(taxTable)-[:TYPE_OF]->(b:TaxTable), "
                     + "(invoice)-[:TYPE_OF]->(d:Invoice), "
                     + "(invoice)-[:HAS_LINE]->(line), "
                     + "(line)-[:HAS_TAX_TABLE]->(taxTable), "

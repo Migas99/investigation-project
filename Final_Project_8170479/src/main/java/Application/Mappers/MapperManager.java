@@ -37,8 +37,9 @@ public class MapperManager {
     private final LinkedList<Map<String, Long>> customers;
     private final LinkedList<Map<String, Long>> suppliers;
     private final LinkedList<Map<String, Long>> products;
-    private Map<String,Object> taxTable;
+    private Map<String, Object> taxTable;
     private final LinkedList<Map<String, Long>> transactions;
+    private final LinkedList<Map<String, Long>> records;
     private final LinkedList<Map<String, Long>> invoices;
     private final LinkedList<Map<String, Long>> sources;
 
@@ -63,6 +64,7 @@ public class MapperManager {
         this.suppliers = new LinkedList<>();
         this.products = new LinkedList<>();
         this.transactions = new LinkedList<>();
+        this.records = new LinkedList<>();
         this.invoices = new LinkedList<>();
         this.sources = new LinkedList<>();
     }
@@ -95,6 +97,7 @@ public class MapperManager {
 
         } catch (MapException | NodeException e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
             System.exit(1);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
@@ -184,7 +187,7 @@ public class MapperManager {
      * do tipo inteiro
      *
      * @param attribute o atributo
-     * @param value valor do atributo
+     * @param value     valor do atributo
      * @return o id do nó criado
      */
     private long addNode(String attribute, int value) {
@@ -197,7 +200,7 @@ public class MapperManager {
      * do tipo decimal
      *
      * @param attribute o atributo
-     * @param value valor do atributo
+     * @param value     valor do atributo
      * @return o id do nó criado
      */
     private long addNode(String attribute, double value) {
@@ -210,7 +213,7 @@ public class MapperManager {
      * do tipo string
      *
      * @param attribute o atributo
-     * @param value valor do atributo
+     * @param value     valor do atributo
      * @return o id do nó criado
      */
     private long addNode(String attribute, String value) {
@@ -296,17 +299,17 @@ public class MapperManager {
         throw new NodeException(XMLElement);
     }
 
-    private long findInvoiceNodeId(String XMLElement) throws NodeException {
+    private long findInvoiceNodeId(String value) throws NodeException {
         Iterator<Map<String, Long>> iterator = this.invoices.iterator();
 
         while (iterator.hasNext()) {
             Map<String, Long> map = iterator.next();
-            if (map.containsKey(XMLElement)) {
-                return map.get(XMLElement);
+            if (map.containsKey(value)) {
+                return map.get(value);
             }
         }
 
-        throw new NodeException(XMLElement);
+        throw new NodeException(value);
     }
 
     private long findSourceNodeId(String XMLElement) throws NodeException {
@@ -1976,17 +1979,7 @@ public class MapperManager {
                 break;
 
             case EnumsOfElements.CreditLine.AccountID:
-                try {
-                    id = this.findAccountNodeId(value);
-                } catch (NodeException e) {
-                    id = this.addNode(XMLElement, value);
-                    this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.Account));
-                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Account);
-
-                    map = new HashMap<>();
-                    map.put(value, id);
-                    this.accounts.add(map);
-                }
+                id = this.findAccountNodeId(value);
 
                 //Adicionamos uma relação entre o CreditLine e uma account
                 this.driver.addRelationshipToAccount(this.findNodeId(EnumsOfElements.Lines.CreditLine), id);
@@ -1994,16 +1987,20 @@ public class MapperManager {
                 break;
 
             case EnumsOfElements.CreditLine.SourceDocumentID:
-                //Ainda não decidi como processar bem, visto que aparentemente isto indica o InvoiceNo
-                /*long id = this.addNode(XMLElement, value);
+                try {
+                    id = this.findInvoiceNodeId(value);
+                } catch (NodeException e) {
+                    id = this.addNode(EnumsOfElements.Invoice.InvoiceNo, value);
 
-                Map<String, Long> map = new HashMap<>();
-                map.put(value, id);
-                this.invoices.add(map);*/
+                    map = new HashMap<>();
+                    map.put(value, id);
+                    this.invoices.add(map);
 
-                //Adicionamos como propriedade do nó CreditLine
-                //this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Lines.CreditLine), XMLElement, value);
-                //this.driver.addRelationshipToInvoice();
+                    this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.Invoice));
+                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Invoice);
+                }
+
+                this.driver.addRelationshipToInvoice(this.findNodeId(EnumsOfElements.Lines.CreditLine), id);
 
                 break;
 
@@ -2051,17 +2048,7 @@ public class MapperManager {
                 break;
 
             case EnumsOfElements.DebitLine.AccountID:
-                try {
-                    id = this.findAccountNodeId(value);
-                } catch (NodeException e) {
-                    id = this.addNode(XMLElement, value);
-                    this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.Account));
-                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Account);
-
-                    map = new HashMap<>();
-                    map.put(value, id);
-                    this.accounts.add(map);
-                }
+                id = this.findAccountNodeId(value);
 
                 //Adicionamos uma relação entre o DebitLine e uma account
                 this.driver.addRelationshipToAccount(this.findNodeId(EnumsOfElements.Lines.DebitLine), id);
@@ -2069,17 +2056,20 @@ public class MapperManager {
                 break;
 
             case EnumsOfElements.DebitLine.SourceDocumentID:
-                //Ainda não decidi como processar bem, visto que aparentemente isto indica o InvoiceNo
-                /*long id = this.addNode(XMLElement, value);
+                try {
+                    id = this.findInvoiceNodeId(value);
+                } catch (NodeException e) {
+                    id = this.addNode(EnumsOfElements.Invoice.InvoiceNo, value);
 
-                Map<String, Long> map = new HashMap<>();
-                map.put(value, id);
-                this.invoices.add(map);
+                    map = new HashMap<>();
+                    map.put(value, id);
+                    this.invoices.add(map);
 
-                this.driver.addRelationshipToInvoice();*/
+                    this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.Invoice));
+                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Invoice);
+                }
 
-                //Adicionamos como propriedade do nó DebitLine
-                //this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Lines.DebitLine), XMLElement, value);
+                this.driver.addRelationshipToInvoice(this.findNodeId(EnumsOfElements.Lines.DebitLine), id);
 
                 break;
 
@@ -2229,12 +2219,15 @@ public class MapperManager {
             if (EnumsOfElements.SalesInvoices.Invoice.equalsIgnoreCase(this.manageSequenceElements.get(count).getXMLElement())) {
 
                 if (EnumsOfElements.SalesInvoices.Invoice.equalsIgnoreCase(XMLElement)) {
-                    //Criamos o nó do tipo Invoice
+                    /*//Criamos o nó do tipo Invoice
                     this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Invoice));
                     this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Invoice), EnumsOfEntities.Entities.Invoice);
 
                     //Adicionamos uma relação com o nó SalesInvoices
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.SalesInvoices), this.findNodeId(EnumsOfEntities.Entities.Invoice), EnumsOfEntities.SalesInvoicesRelationships.HAS_INVOICE);
+                    */
+
+                    //AGORA CRIAMOS QUANDO RECEBEMOS O INVOICENO
 
                 } else {
 
@@ -2262,14 +2255,27 @@ public class MapperManager {
             switch (XMLElement) {
 
                 case EnumsOfElements.Invoice.InvoiceNo:
-                    id = this.findNodeId(EnumsOfEntities.Entities.Invoice);
+                    try {
+                        id = this.findInvoiceNodeId(value);
+                        //Temos de incrementar manualmente, visto que não chamamos o addNode
+                        this.manageSequenceElements.getLast().incrementChildren();
+                        //Adicionamos novamente ao container
+                        this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.Invoice));
+                    } catch (NodeException e) {
+                        //Criamos o nó do tipo Invoice e adicionamos o atributo
+                        id = this.addNode(XMLElement, value);
 
-                    map = new HashMap<>();
-                    map.put(value, id);
-                    this.invoices.add(map);
+                        map = new HashMap<>();
+                        map.put(value, id);
+                        this.invoices.add(map);
 
-                    //Adicionamos como atributo ao nó Invoice
-                    this.driver.addPropertyToNode(id, XMLElement, value);
+                        //Adicionamos novamente ao container
+                        this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.Invoice));
+                        this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Invoice);
+                    }
+
+                    //Adicionamos uma relação com o nó SalesInvoices
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.SalesInvoices), id, EnumsOfEntities.SalesInvoicesRelationships.HAS_INVOICE);
 
                     break;
 
@@ -3063,13 +3069,14 @@ public class MapperManager {
 
     private void processTaxChildren(String XMLElement, String value) throws MapException, NodeException {
 
+        /*Neste caso, temos de pesquisar pela tabela correspondente, sendo que esta não tem um identificador único*/
         switch (XMLElement) {
 
             case EnumsOfElements.Tax.TaxType:
                 this.taxTable.put(XMLElement, value);
 
                 //Adicionamos como atributo
-                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Line.Tax), XMLElement, value);
+                //this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Line.Tax), XMLElement, value);
 
                 break;
 
@@ -3077,10 +3084,10 @@ public class MapperManager {
                 this.taxTable.put(XMLElement, value);
 
                 //Criamos um novo nó
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
+                //this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
 
                 //Adicionamos a relação deste com o nó Tax
-                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Line.Tax), this.findNodeId(XMLElement), EnumsOfEntities.LineTaxRelationships.HAS_TAX_COUNTRY_REGION);
+                //this.driver.addRelationship(this.findNodeId(EnumsOfElements.Line.Tax), this.findNodeId(XMLElement), EnumsOfEntities.LineTaxRelationships.HAS_TAX_COUNTRY_REGION);
 
                 break;
 
@@ -3088,31 +3095,31 @@ public class MapperManager {
                 this.taxTable.put(XMLElement, value);
 
                 //Adicionamos como atributo
-                this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Line.Tax), XMLElement, value);
+                //this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Line.Tax), XMLElement, value);
 
                 break;
 
             case EnumsOfElements.Tax.TaxPercentage:
                 this.taxTable.put(XMLElement, value);
-                //this.driver.addRelationshipToTaxTable(this.findNodeId(EnumsOfElements.Invoice.Line), this.taxTable);
+                this.driver.addRelationshipToTaxTable(this.findNodeId(EnumsOfElements.Invoice.Line), this.taxTable);
 
                 //Criamos um novo nó
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, Double.valueOf(value)), XMLElement));
+                //this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, Double.valueOf(value)), XMLElement));
 
                 //Adicionamos a relação deste com o nó Tax
-                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Line.Tax), this.findNodeId(XMLElement), EnumsOfEntities.LineTaxRelationships.HAS_TAX_PERCENTAGE);
+                //this.driver.addRelationship(this.findNodeId(EnumsOfElements.Line.Tax), this.findNodeId(XMLElement), EnumsOfEntities.LineTaxRelationships.HAS_TAX_PERCENTAGE);
 
                 break;
 
             case EnumsOfElements.Tax.TaxAmount:
                 this.taxTable.put(XMLElement, value);
-                //this.driver.addRelationshipToTaxTable(this.findNodeId(EnumsOfElements.Invoice.Line), this.taxTable);
+                this.driver.addRelationshipToTaxTable(this.findNodeId(EnumsOfElements.Invoice.Line), this.taxTable);
 
                 //Criamos um novo nó
-                this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, Double.valueOf(value)), XMLElement));
+                //this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, Double.valueOf(value)), XMLElement));
 
                 //Adicionamos a relação deste com o nó Tax
-                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Line.Tax), this.findNodeId(XMLElement), EnumsOfEntities.LineTaxRelationships.HAS_TAX_AMOUNT);
+                //this.driver.addRelationship(this.findNodeId(EnumsOfElements.Line.Tax), this.findNodeId(XMLElement), EnumsOfEntities.LineTaxRelationships.HAS_TAX_AMOUNT);
 
                 break;
 

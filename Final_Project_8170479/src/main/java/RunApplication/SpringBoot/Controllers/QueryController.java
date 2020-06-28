@@ -46,6 +46,10 @@ public class QueryController {
     private RuntimeWiring buildWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring("Query")
+                        .dataFetcher("getAllAccounts", this.dataFetcher.getListOfAllAccounts())
+                        .dataFetcher("getAccountById", this.dataFetcher.getAccountById())
+                        .dataFetcher("getAllCustomers", this.dataFetcher.getListOfAllCustomers())
+                        .dataFetcher("getCustomerById", this.dataFetcher.getCustomerById())
                         .dataFetcher("getListOfCustomersNotIdentified", this.dataFetcher.getListOfCustomersNotIdentified())
                         .dataFetcher("getListOfSuppliersNotIdentified", this.dataFetcher.getListOfSuppliersNotIdentified())
                         .dataFetcher("getListOfInvoicesNotAssociatedWithCustomers", this.dataFetcher.getListOfInvoicesNotAssociatedWithCustomers())

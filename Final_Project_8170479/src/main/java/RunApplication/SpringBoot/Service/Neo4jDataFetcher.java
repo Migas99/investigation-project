@@ -12,6 +12,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -31,6 +34,48 @@ public class Neo4jDataFetcher {
                         Objects.requireNonNull(env.getProperty("NEO4J_PASSWORD"))
                 )
         );
+    }
+
+    public DataFetcher getListOfAllAccounts() {
+        return dataFetchingEnvironment -> CypherQueries.obtainListOfAllAccounts(this.driver);
+    }
+
+    public DataFetcher getAccountById() {
+        return dataFetchingEnvironment -> {
+            String accountId = dataFetchingEnvironment.getArgument("id");
+            LinkedList<Map<String, Object>> mapList = CypherQueries.obtainListOfAllAccounts(this.driver);
+
+            Iterator<Map<String, Object>> iterator = mapList.iterator();
+            while (iterator.hasNext()) {
+                Map<String, Object> map = iterator.next();
+                if (map.get("AccountID").equals(accountId)) {
+                    return map;
+                }
+            }
+
+            return null;
+        };
+    }
+
+    public DataFetcher getListOfAllCustomers() {
+        return dataFetchingEnvironment -> CypherQueries.obtainListOfAllCustomers(this.driver);
+    }
+
+    public DataFetcher getCustomerById() {
+        return dataFetchingEnvironment -> {
+            String customerId = dataFetchingEnvironment.getArgument("id");
+            LinkedList<Map<String, Object>> mapList = CypherQueries.obtainListOfAllCustomers(this.driver);
+
+            Iterator<Map<String, Object>> iterator = mapList.iterator();
+            while (iterator.hasNext()) {
+                Map<String, Object> map = iterator.next();
+                if (map.get("CustomerID").equals(customerId)) {
+                    return map;
+                }
+            }
+
+            return null;
+        };
     }
 
     public DataFetcher getListOfCustomersNotIdentified() {

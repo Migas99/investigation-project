@@ -1,7 +1,6 @@
 package Application.DatabaseConnections;
 
 import Application.Enums.EnumsOfEntities;
-import Application.Models.TaxTable;
 import org.neo4j.driver.*;
 
 import java.util.Map;
@@ -217,7 +216,7 @@ public class Neo4jMapperHelper {
         try (Session session = this.driver.session()) {
             session.writeTransaction(tx -> tx.run(""
                     + "MATCH (a), (b)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(c:" + EnumsOfEntities.Entities.Account + ") "
-                    + "WHERE ID(a) = " + nodeId + " and ID(b) = '" + accountNodeId + "' "
+                    + "WHERE ID(a) = " + nodeId + " and ID(b) = " + accountNodeId + " "
                     + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_ACCOUNT + "]->(b)"
             ));
         }
@@ -298,7 +297,13 @@ public class Neo4jMapperHelper {
     }
 
     public void addRelationshipToInvoice(long nodeId, long invoiceNodeId) {
-
+        try (Session session = this.driver.session()) {
+            session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (a), (b)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(c:" + EnumsOfEntities.Entities.Invoice + ")  "
+                    + "WHERE ID(a) = " + nodeId + " and ID(b) = " + invoiceNodeId + " "
+                    + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.HAS_INVOICE + "]->(b)"
+            ));
+        }
     }
 
     public void addRelationshipToSourceID(long nodeId, long sourceNodeId) {

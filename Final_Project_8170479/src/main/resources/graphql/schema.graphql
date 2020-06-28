@@ -5,9 +5,6 @@ type Query {
     getAllCustomers: [Customer]
     getCustomerById(id: ID): Customer
 
-    getAllSuppliers: [Supplier]
-    getSupplierById(id: ID): Supplier
-
     getListOfCustomersNotIdentified: [CustomersNotIdentified]
     getListOfSuppliersNotIdentified: [SuppliersNotIdentified]
     getListOfInvoicesNotAssociatedWithCustomers: [String]

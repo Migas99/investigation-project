@@ -316,6 +316,7 @@ public class EnumsOfEntities {
         public final static String HAS_PRODUCT = "HAS_PRODUCT";
         public static final String HAS_TAX_TABLE = "HAS_TAX_TABLE";
         public static final String HAS_TRANSACTION = "HAS_TRANSACTION";
+        public static final String HAS_INVOICE = "HAS_INVOICE";
         public static final String HAS_SOURCE = "HAS_SOURCE";
     }
 }
