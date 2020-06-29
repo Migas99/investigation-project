@@ -682,9 +682,7 @@ public class CypherQueries {
             LinkedList<Map<String, Object>> results = new LinkedList<>();
 
             while (queryIterator.hasNext()) {
-                Map<String, Object> map = queryIterator.next().asMap();
-                System.out.println(map.toString());
-                results.add(map);
+                results.add(queryIterator.next().asMap());
             }
 
             return results;

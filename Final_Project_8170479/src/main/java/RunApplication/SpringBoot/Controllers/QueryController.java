@@ -42,26 +42,35 @@ public class QueryController {
         return schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
     }
 
-    // In the GraphQLProvider class
     private RuntimeWiring buildWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring("Query")
+
                         .dataFetcher("getAllAccounts", this.dataFetcher.getListOfAllAccounts())
                         .dataFetcher("getAccountById", this.dataFetcher.getAccountById())
+
                         .dataFetcher("getAllCustomers", this.dataFetcher.getListOfAllCustomers())
                         .dataFetcher("getCustomerById", this.dataFetcher.getCustomerById())
+
                         .dataFetcher("getAllSuppliers", this.dataFetcher.getListOfAllSuppliers())
                         .dataFetcher("getSupplierById", this.dataFetcher.getSupplierById())
+
                         .dataFetcher("getAllProducts", this.dataFetcher.getListOfAllProducts())
                         .dataFetcher("getProductById", this.dataFetcher.getProductById())
+
                         .dataFetcher("getGeneralLedgerEntries", this.dataFetcher.getGeneralLedgerEntries())
+
                         .dataFetcher("getAllJournals", this.dataFetcher.getListOfAllJournals())
                         .dataFetcher("getJournalById", this.dataFetcher.getJournalById())
+
                         .dataFetcher("getAllTransactions", this.dataFetcher.getListOfAllTransactions())
                         .dataFetcher("getTransactionById", this.dataFetcher.getTransactionById())
+
                         .dataFetcher("getSalesInvoices", this.dataFetcher.getSalesInvoices())
+
                         .dataFetcher("getAllInvoices", this.dataFetcher.getListOfAllInvoices())
                         .dataFetcher("getInvoiceById", this.dataFetcher.getInvoiceById())
+
                         .dataFetcher("getListOfCustomersNotIdentified", this.dataFetcher.getListOfCustomersNotIdentified())
                         .dataFetcher("getListOfSuppliersNotIdentified", this.dataFetcher.getListOfSuppliersNotIdentified())
                         .dataFetcher("getListOfInvoicesNotAssociatedWithCustomers", this.dataFetcher.getListOfInvoicesNotAssociatedWithCustomers())
@@ -69,14 +78,19 @@ public class QueryController {
                         .dataFetcher("getListOfDaysWithoutSales", this.dataFetcher.getListOfDaysWithoutSales())
                         .dataFetcher("getListOfNetTotalAndTaxPayableByTaxCode", this.dataFetcher.getListOfNetTotalAndTaxPayableByTaxCode())
                         .dataFetcher("getListOfSalesByPeriod", this.dataFetcher.getListOfSalesByPeriod()))
+
                 .type(newTypeWiring("GeneralLedgerEntries")
                         .dataFetcher("Journal", this.dataFetcher.getListOfAllJournals()))
+
                 .type(newTypeWiring("Journal")
                         .dataFetcher("Transaction", this.dataFetcher.getListOfTransactionsByJournal()))
+
                 .type(newTypeWiring("Transaction")
                         .dataFetcher("Lines", this.dataFetcher.getLinesByTransaction()))
+
                 .type(newTypeWiring("SalesInvoices")
                         .dataFetcher("Invoice", this.dataFetcher.getListOfAllInvoices()))
+
                 .type(newTypeWiring("Invoice")
                         .dataFetcher("DocumentStatus", this.dataFetcher.getDocumentStatusByInvoice())
                         .dataFetcher("SpecialRegimes", this.dataFetcher.getSpecialRegimesByInvoice())
@@ -85,6 +99,7 @@ public class QueryController {
                         .dataFetcher("Line", this.dataFetcher.getListOfLineByInvoice())
                         .dataFetcher("DocumentTotals", this.dataFetcher.getDocumentTotalsByInvoice())
                         .dataFetcher("WithholdingTax", this.dataFetcher.getListOfWithholdingTaxByInvoice()))
+
                 .build();
     }
 

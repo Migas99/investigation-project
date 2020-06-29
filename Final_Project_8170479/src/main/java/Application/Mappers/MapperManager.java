@@ -39,8 +39,7 @@ public class MapperManager {
     private final LinkedList<Map<String, Long>> products;
     private Map<String, Object> taxTable;
     private final LinkedList<Map<String, Long>> transactions;
-    private final LinkedList<Map<String, Long>> records;
-    private final LinkedList<Map<String, Long>> invoices;
+    private final LinkedList<Map<String, Long>> documents;
     private final LinkedList<Map<String, Long>> sources;
 
     /**
@@ -64,8 +63,7 @@ public class MapperManager {
         this.suppliers = new LinkedList<>();
         this.products = new LinkedList<>();
         this.transactions = new LinkedList<>();
-        this.records = new LinkedList<>();
-        this.invoices = new LinkedList<>();
+        this.documents = new LinkedList<>();
         this.sources = new LinkedList<>();
     }
 
@@ -299,8 +297,8 @@ public class MapperManager {
         throw new NodeException(XMLElement);
     }
 
-    private long findInvoiceNodeId(String value) throws NodeException {
-        Iterator<Map<String, Long>> iterator = this.invoices.iterator();
+    private long findDocumentNodeId(String value) throws NodeException {
+        Iterator<Map<String, Long>> iterator = this.documents.iterator();
 
         while (iterator.hasNext()) {
             Map<String, Long> map = iterator.next();
@@ -2001,19 +1999,20 @@ public class MapperManager {
 
             case EnumsOfElements.CreditLine.SourceDocumentID:
                 try {
-                    id = this.findInvoiceNodeId(value);
+                    id = this.findDocumentNodeId(value);
                 } catch (NodeException e) {
                     id = this.addNode(EnumsOfElements.Invoice.InvoiceNo, value);
 
                     map = new HashMap<>();
                     map.put(value, id);
-                    this.invoices.add(map);
+                    this.documents.add(map);
 
                     this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.Invoice));
-                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Invoice);
+                    //this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Invoice);
                 }
 
-                this.driver.addRelationshipToInvoice(this.findNodeId(EnumsOfElements.Lines.CreditLine), id);
+                //this.driver.addRelationshipToInvoice(this.findNodeId(EnumsOfElements.Lines.CreditLine), id);
+                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Lines.CreditLine), id, EnumsOfEntities.CreditLineRelationships.HAS_DOCUMENT);
 
                 break;
 
@@ -2070,19 +2069,20 @@ public class MapperManager {
 
             case EnumsOfElements.DebitLine.SourceDocumentID:
                 try {
-                    id = this.findInvoiceNodeId(value);
+                    id = this.findDocumentNodeId(value);
                 } catch (NodeException e) {
                     id = this.addNode(EnumsOfElements.Invoice.InvoiceNo, value);
 
                     map = new HashMap<>();
                     map.put(value, id);
-                    this.invoices.add(map);
+                    this.documents.add(map);
 
                     this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.Invoice));
-                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Invoice);
+                    //this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Invoice);
                 }
 
-                this.driver.addRelationshipToInvoice(this.findNodeId(EnumsOfElements.Lines.DebitLine), id);
+                //this.driver.addRelationshipToInvoice(this.findNodeId(EnumsOfElements.Lines.DebitLine), id);
+                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Lines.DebitLine), id, EnumsOfEntities.DebitLineRelationships.HAS_DOCUMENT);
 
                 break;
 
@@ -2269,7 +2269,7 @@ public class MapperManager {
 
                 case EnumsOfElements.Invoice.InvoiceNo:
                     try {
-                        id = this.findInvoiceNodeId(value);
+                        id = this.findDocumentNodeId(value);
                         //Temos de incrementar manualmente, visto que não chamamos o addNode
                         this.manageSequenceElements.getLast().incrementChildren();
                         //Adicionamos novamente ao container
@@ -2280,12 +2280,13 @@ public class MapperManager {
 
                         map = new HashMap<>();
                         map.put(value, id);
-                        this.invoices.add(map);
+                        this.documents.add(map);
 
                         //Adicionamos novamente ao container
                         this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.Invoice));
-                        this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Invoice);
                     }
+
+                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Invoice);
 
                     //Adicionamos uma relação com o nó SalesInvoices
                     this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.SalesInvoices), id, EnumsOfEntities.SalesInvoicesRelationships.HAS_INVOICE);
