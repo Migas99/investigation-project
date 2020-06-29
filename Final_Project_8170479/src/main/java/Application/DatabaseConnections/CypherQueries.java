@@ -317,6 +317,279 @@ public class CypherQueries {
     }
 
     /**
+     * Pesquisa pelas GeneralLedgerEntries
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return lista de produtos
+     */
+    public static Map<String, Object> obtainGeneralLedgerEntries(Driver driver) {
+        try (Session session = driver.session()) {
+            Record queryResult = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(ledgerEntree)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.GeneralLedgerEntries + ") "
+                    + "OPTIONAL MATCH "
+                    + "(ledgerEntree)-[:" + EnumsOfEntities.GeneralLedgerEntriesRelationships.HAS_TOTAL_DEBIT + "]->(totalDebit) "
+                    + "OPTIONAL MATCH "
+                    + "(ledgerEntree)-[:" + EnumsOfEntities.GeneralLedgerEntriesRelationships.HAS_TOTAL_CREDIT + "]->(totalCredit) "
+                    + " "
+                    + "RETURN "
+                    + "ledgerEntree.NumberOfEntries AS NumberOfEntries, "
+                    + "totalDebit.TotalDebit AS TotalDebit, "
+                    + "totalCredit.TotalCredit AS TotalCredit"
+                    + " "
+                    + "ORDER BY ledgerEntree.NumberOfEntries"
+            ).single());
+
+            return queryResult.asMap();
+        }
+    }
+
+    /**
+     * Pesquisa por todos os jornais
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return lista de jornais
+     */
+    public static LinkedList<Map<String, Object>> obtainListOfAllJournals(Driver driver) {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(journal)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Journal + ") "
+                    + " "
+                    + "RETURN "
+                    + "journal.JournalID AS JournalID, "
+                    + "journal.Description AS Description"
+                    + " "
+                    + "ORDER BY journal.JournalID"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
+        }
+    }
+
+    public static LinkedList<Map<String, Object>> obtainListOfAllTransactions(Driver driver){
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Transaction + ") "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.TransactionRelationships.HAS_PERIOD + "]->(period) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.TransactionRelationships.HAS_TRANSACTION_DATE + "]->(date) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.OtherRelationships.HAS_SOURCE + "]->(source) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.TransactionRelationships.HAS_DOC_ARCHIVAL_NUMBER + "]->(archivalNumber) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.TransactionRelationships.HAS_TRANSACTION_TYPE + "]->(type) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.TransactionRelationships.HAS_GL_POSTING_DATE + "]->(postingDate) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.OtherRelationships.HAS_CUSTOMER + "]->(customer) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.OtherRelationships.HAS_SUPPLIER + "]->(supplier) "
+                    + " "
+                    + "RETURN "
+                    + "transaction.TransactionID AS TransactionID, "
+                    + "period.Period AS Period, "
+                    + "date.TransactionDate AS TransactionDate, "
+                    + "source.SourceID AS SourceID, "
+                    + "transaction.Description AS Description, "
+                    + "archivalNumber.DocArchivalNumber AS DocArchivalNumber, "
+                    + "type.TransactionType AS TransactionType, "
+                    + "postingDate.GLPostingDate AS GLPostingDate, "
+                    + "customer.CustomerID AS CustomerID, "
+                    + "supplier.SupplierID AS SupplierID"
+                    + " "
+                    + "ORDER BY transaction.TransactionID"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
+        }
+    }
+
+    /**
+     * Pesquisa por todas as transações associadas a um jornal específico
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return lista de transações
+     */
+    public static LinkedList<Map<String, Object>> obtainListOfTransactionsByJournalId(Driver driver, String journalID) {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(journal)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Journal + ") "
+                    + "MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity2:" + EnumsOfEntities.Entities.Transaction + ") "
+                    + "MATCH "
+                    + "(journal)-[:" + EnumsOfEntities.JournalRelationships.HAS_TRANSACTION + "]->(transaction) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.TransactionRelationships.HAS_PERIOD + "]->(period) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.TransactionRelationships.HAS_TRANSACTION_DATE + "]->(date) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.OtherRelationships.HAS_SOURCE + "]->(source) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.TransactionRelationships.HAS_DOC_ARCHIVAL_NUMBER + "]->(archivalNumber) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.TransactionRelationships.HAS_TRANSACTION_TYPE + "]->(type) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.TransactionRelationships.HAS_GL_POSTING_DATE + "]->(postingDate) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.OtherRelationships.HAS_CUSTOMER + "]->(customer) "
+                    + "OPTIONAL MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.OtherRelationships.HAS_SUPPLIER + "]->(supplier) "
+                    + "WITH "
+                    + "journal, transaction, period, date, source, archivalNumber, type, postingDate, customer, supplier"
+                    + " "
+                    + "WHERE "
+                    + "journal.JournalID = '" + journalID + "'"
+                    + " "
+                    + "RETURN "
+                    + "transaction.TransactionID AS TransactionID, "
+                    + "period.Period AS Period, "
+                    + "date.TransactionDate AS TransactionDate, "
+                    + "source.SourceID AS SourceID, "
+                    + "transaction.Description AS Description, "
+                    + "archivalNumber.DocArchivalNumber AS DocArchivalNumber, "
+                    + "type.TransactionType AS TransactionType, "
+                    + "postingDate.GLPostingDate AS GLPostingDate, "
+                    + "customer.CustomerID AS CustomerID, "
+                    + "supplier.SupplierID AS SupplierID"
+                    + " "
+                    + "ORDER BY transaction.TransactionID"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
+        }
+    }
+
+    /**
+     * Pesquisa por todas as linhas de débito associadas a uma transação específica
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return lista de linhas de débito
+     */
+    public static LinkedList<Map<String, Object>> obtainListOfDebitLinesByTransactionId(Driver driver, String transactionId) {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Transaction + ") "
+                    + "MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.TransactionRelationships.HAS_LINES + "]->(lines) "
+                    + "MATCH "
+                    + "(lines)-[:" + EnumsOfEntities.LinesRelationships.HAS_DEBIT_LINE + "]->(debitLine) "
+                    + "OPTIONAL MATCH "
+                    + "(debitLine)-[:" + EnumsOfEntities.OtherRelationships.HAS_ACCOUNT + "]->(account) "
+                    + "OPTIONAL MATCH "
+                    + "(debitLine)-[:" + EnumsOfEntities.OtherRelationships.HAS_INVOICE + "]->(invoice) "
+                    + "OPTIONAL MATCH "
+                    + "(debitLine)-[:" + EnumsOfEntities.DebitLineRelationships.HAS_SYSTEM_ENTRY_DATE + "]->(date) "
+                    + "OPTIONAL MATCH "
+                    + "(debitLine)-[:" + EnumsOfEntities.DebitLineRelationships.HAS_DEBIT_AMOUNT + "]->(amount)"
+                    + " "
+                    + "WITH "
+                    + "transaction, debitLine, account, invoice, date, amount"
+                    + " "
+                    + "WHERE "
+                    + "transaction.TransactionID = '" + transactionId + "'"
+                    + " "
+                    + "RETURN "
+                    + "debitLine.RecordID AS RecordID, "
+                    + "account.AccountID AS AccountID, "
+                    + "invoice.InvoiceNo AS SourceDocumentID, "
+                    + "date.SystemEntryDate AS SystemEntryDate, "
+                    + "debitLine.Description AS Description, "
+                    + "amount.DebitAmount AS DebitAmount"
+                    + " "
+                    + "ORDER BY debitLine.RecordID"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
+        }
+    }
+
+    /**
+     * Pesquisa por todas as linhas de crédito associadas a uma transação específica
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return lista de linhas de crédito
+     */
+    public static LinkedList<Map<String, Object>> obtainListOfCreditLinesByTransactionId(Driver driver, String transactionId) {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Transaction + ") "
+                    + "MATCH "
+                    + "(transaction)-[:" + EnumsOfEntities.TransactionRelationships.HAS_LINES + "]->(lines) "
+                    + "MATCH "
+                    + "(lines)-[:" + EnumsOfEntities.LinesRelationships.HAS_CREDIT_LINE + "]->(creditLine) "
+                    + "OPTIONAL MATCH "
+                    + "(creditLine)-[:" + EnumsOfEntities.OtherRelationships.HAS_ACCOUNT + "]->(account) "
+                    + "OPTIONAL MATCH "
+                    + "(creditLine)-[:" + EnumsOfEntities.OtherRelationships.HAS_INVOICE + "]->(invoice) "
+                    + "OPTIONAL MATCH "
+                    + "(creditLine)-[:" + EnumsOfEntities.CreditLineRelationships.HAS_SYSTEM_ENTRY_DATE + "]->(date) "
+                    + "OPTIONAL MATCH "
+                    + "(creditLine)-[:" + EnumsOfEntities.CreditLineRelationships.HAS_CREDIT_AMOUNT + "]->(amount) "
+                    + " "
+                    + "WITH "
+                    + "transaction, creditLine, account, invoice, date, amount"
+                    + " "
+                    + "WHERE "
+                    + "transaction.TransactionID = '" + transactionId + "'"
+                    + " "
+                    + "RETURN "
+                    + "creditLine.RecordID AS RecordID, "
+                    + "account.AccountID AS AccountID, "
+                    + "invoice.InvoiceNo AS SourceDocumentID, "
+                    + "date.SystemEntryDate AS SystemEntryDate, "
+                    + "creditLine.Description AS Description, "
+                    + "amount.CreditAmount AS CreditAmount"
+                    + " "
+                    + "ORDER BY creditLine.RecordID"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
+        }
+    }
+
+    /**
      * Pesquisa por clientes onde o seu ID ou CompanyName contenham valores vazios
      *
      * @param driver instância para comunicar com a base de dados

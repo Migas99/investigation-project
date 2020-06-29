@@ -12,10 +12,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class Neo4jDataFetcher {
@@ -117,6 +114,73 @@ public class Neo4jDataFetcher {
             }
 
             return null;
+        };
+    }
+
+    public DataFetcher getGeneralLedgerEntries() {
+        return dataFetchingEnvironment -> CypherQueries.obtainGeneralLedgerEntries(this.driver);
+    }
+
+    public DataFetcher getListOfAllJournals() {
+        return dataFetchingEnvironment -> CypherQueries.obtainListOfAllJournals(this.driver);
+    }
+
+    public DataFetcher getJournalById() {
+        return dataFetchingEnvironment -> {
+            String journalID = dataFetchingEnvironment.getArgument("id");
+            LinkedList<Map<String, Object>> mapList = CypherQueries.obtainListOfAllJournals(this.driver);
+
+            Iterator<Map<String, Object>> iterator = mapList.iterator();
+            while (iterator.hasNext()) {
+                Map<String, Object> map = iterator.next();
+                if (map.get("JournalID").equals(journalID)) {
+                    return map;
+                }
+            }
+
+            return null;
+        };
+    }
+
+    public DataFetcher getListOfAllTransactions(){
+        return dataFetchingEnvironment -> CypherQueries.obtainListOfAllTransactions(this.driver);
+    }
+
+    public DataFetcher getTransactionById(){
+        return dataFetchingEnvironment -> {
+            String transactionID = dataFetchingEnvironment.getArgument("id");
+            LinkedList<Map<String, Object>> mapList = CypherQueries.obtainListOfAllTransactions(this.driver);
+
+            Iterator<Map<String, Object>> iterator = mapList.iterator();
+            while (iterator.hasNext()) {
+                Map<String, Object> map = iterator.next();
+                if (map.get("TransactionID").equals(transactionID)) {
+                    return map;
+                }
+            }
+
+            return null;
+        };
+    }
+
+    public DataFetcher getListOfTransactionsByJournal() {
+        return dataFetchingEnvironment -> {
+            Map<String, String> journal = dataFetchingEnvironment.getSource();
+            String journalID = journal.get("JournalID");
+            return CypherQueries.obtainListOfTransactionsByJournalId(this.driver, journalID);
+        };
+    }
+
+    public DataFetcher getLinesByTransaction() {
+        return dataFetchingEnvironment -> {
+            Map<String, String> transaction = dataFetchingEnvironment.getSource();
+            String transactionID = transaction.get("TransactionID");
+
+            Map<String, Object> lines = new HashMap<>();
+            lines.put("DebitLine", CypherQueries.obtainListOfDebitLinesByTransactionId(this.driver, transactionID));
+            lines.put("CreditLine", CypherQueries.obtainListOfCreditLinesByTransactionId(this.driver, transactionID));
+
+            return lines;
         };
     }
 

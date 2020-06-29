@@ -54,6 +54,11 @@ public class QueryController {
                         .dataFetcher("getSupplierById", this.dataFetcher.getSupplierById())
                         .dataFetcher("getAllProducts", this.dataFetcher.getListOfAllProducts())
                         .dataFetcher("getProductById", this.dataFetcher.getProductById())
+                        .dataFetcher("getGeneralLedgerEntries", this.dataFetcher.getGeneralLedgerEntries())
+                        .dataFetcher("getAllJournals", this.dataFetcher.getListOfAllJournals())
+                        .dataFetcher("getJournalById", this.dataFetcher.getJournalById())
+                        .dataFetcher("getAllTransactions", this.dataFetcher.getListOfAllTransactions())
+                        .dataFetcher("getTransactionById", this.dataFetcher.getTransactionById())
                         .dataFetcher("getListOfCustomersNotIdentified", this.dataFetcher.getListOfCustomersNotIdentified())
                         .dataFetcher("getListOfSuppliersNotIdentified", this.dataFetcher.getListOfSuppliersNotIdentified())
                         .dataFetcher("getListOfInvoicesNotAssociatedWithCustomers", this.dataFetcher.getListOfInvoicesNotAssociatedWithCustomers())
@@ -61,6 +66,12 @@ public class QueryController {
                         .dataFetcher("getListOfDaysWithoutSales", this.dataFetcher.getListOfDaysWithoutSales())
                         .dataFetcher("getListOfNetTotalAndTaxPayableByTaxCode", this.dataFetcher.getListOfNetTotalAndTaxPayableByTaxCode())
                         .dataFetcher("getListOfSalesByPeriod", this.dataFetcher.getListOfSalesByPeriod()))
+                .type(newTypeWiring("GeneralLedgerEntries")
+                        .dataFetcher("Journal", this.dataFetcher.getListOfAllJournals()))
+                .type(newTypeWiring("Journal")
+                        .dataFetcher("Transaction", this.dataFetcher.getListOfTransactionsByJournal()))
+                .type(newTypeWiring("Transaction")
+                        .dataFetcher("Lines", this.dataFetcher.getLinesByTransaction()))
                 .build();
     }
 

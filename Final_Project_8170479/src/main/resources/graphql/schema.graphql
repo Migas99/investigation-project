@@ -11,6 +11,14 @@ type Query {
     getAllProducts: [Product]
     getProductById(id: ID): Product
 
+    getGeneralLedgerEntries: GeneralLedgerEntries
+
+    getAllJournals: [Journal]
+    getJournalById(id: ID): Journal
+
+    getAllTransactions: [Transaction]
+    getTransactionById(id: ID): Transaction
+
     getListOfCustomersNotIdentified: [CustomersNotIdentified]
     getListOfSuppliersNotIdentified: [SuppliersNotIdentified]
     getListOfInvoicesNotAssociatedWithCustomers: [String]
@@ -114,7 +122,7 @@ type DebitLine {
     SourceDocumentID: String
     SystemEntryDate: String
     Description: String
-    DebitAmount: String
+    DebitAmount: Float
 }
 
 type CreditLine {
@@ -123,7 +131,7 @@ type CreditLine {
     SourceDocumentID: String
     SystemEntryDate: String
     Description: String
-    CreditAmount: String
+    CreditAmount: Float
 }
 
 type SalesInvoices {
