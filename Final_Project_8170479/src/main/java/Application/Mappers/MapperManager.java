@@ -2809,7 +2809,7 @@ public class MapperManager {
                     }
 
                     //Adicionamos uma relação com um Product
-                    this.driver.addRelationshipToProduct(this.findNodeId(EnumsOfEntities.Entities.Invoice), id);
+                    this.driver.addRelationshipToProduct(this.findNodeId(EnumsOfElements.Invoice.Line), id);
 
                     break;
 
