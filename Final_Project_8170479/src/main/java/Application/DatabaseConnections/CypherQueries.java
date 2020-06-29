@@ -320,7 +320,7 @@ public class CypherQueries {
      * Pesquisa pelas GeneralLedgerEntries
      *
      * @param driver instância para comunicar com a base de dados
-     * @return lista de produtos
+     * @return a GeneralLedgerEntries
      */
     public static Map<String, Object> obtainGeneralLedgerEntries(Driver driver) {
         try (Session session = driver.session()) {
@@ -374,7 +374,13 @@ public class CypherQueries {
         }
     }
 
-    public static LinkedList<Map<String, Object>> obtainListOfAllTransactions(Driver driver){
+    /**
+     * Pesquisa por todas as transações
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return lista de transações
+     */
+    public static LinkedList<Map<String, Object>> obtainListOfAllTransactions(Driver driver) {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
@@ -576,6 +582,494 @@ public class CypherQueries {
                     + "amount.CreditAmount AS CreditAmount"
                     + " "
                     + "ORDER BY creditLine.RecordID"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
+        }
+    }
+
+    /**
+     * Pesquisa pelas SalesInvoices
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return a SalesInvoices
+     */
+    public static Map<String, Object> obtainSalesInvoices(Driver driver) {
+        try (Session session = driver.session()) {
+            Record queryResult = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(salesInvoices)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.SalesInvoices + ") "
+                    + "OPTIONAL MATCH "
+                    + "(salesInvoices)-[:" + EnumsOfEntities.SalesInvoicesRelationships.HAS_TOTAL_DEBIT + "]->(totalDebit) "
+                    + "OPTIONAL MATCH "
+                    + "(salesInvoices)-[:" + EnumsOfEntities.SalesInvoicesRelationships.HAS_TOTAL_CREDIT + "]->(totalCredit) "
+                    + " "
+                    + "RETURN "
+                    + "salesInvoices.NumberOfEntries AS NumberOfEntries, "
+                    + "totalDebit.TotalDebit AS TotalDebit, "
+                    + "totalCredit.TotalCredit AS TotalCredit"
+            ).single());
+
+            return queryResult.asMap();
+        }
+    }
+
+    /**
+     * Pesquisa por todas as faturas
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return lista de faturas
+     */
+    public static LinkedList<Map<String, Object>> obtainListOfAllInvoices(Driver driver) {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Invoice + ") "
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_ATCUD + "]->(atcud) "
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_HASH + "]->(hash) "
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_HASH_CONTROL + "]->(hashControl)"
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_PERIOD + "]->(period)"
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_INVOICE_DATE + "]->(invoiceDate)"
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_INVOICE_TYPE + "]->(invoiceType)"
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.OtherRelationships.HAS_SOURCE + "]->(source)"
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_EAC_Code + "]->(eacCode)"
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_SYSTEM_ENTRY_DATE + "]->(entryDate)"
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.OtherRelationships.HAS_TRANSACTION + "]->(transaction)"
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.OtherRelationships.HAS_CUSTOMER + "]->(customer)"
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_MOVEMENT_END_TIME + "]->(mEndTime)"
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_MOVEMENT_START_TIME + "]->(mStartTime)"
+                    + " "
+                    + "RETURN "
+                    + "invoice.InvoiceNo AS InvoiceNo, "
+                    + "atcud.ATCUD AS ATCUD, "
+                    + "hash.Hash AS Hash, "
+                    + "hashControl.HashControl AS HashControl, "
+                    + "period.Period AS Period, "
+                    + "invoiceDate.InvoiceDate AS InvoiceDate, "
+                    + "invoiceType.InvoiceType AS InvoiceType, "
+                    + "source.SourceID AS SourceID, "
+                    + "eacCode.EACCode AS EACCode, "
+                    + "entryDate.SystemEntryDate AS SystemEntryDate, "
+                    + "transaction.TransactionID AS TransactionID, "
+                    + "customer.CustomerID AS CustomerID, "
+                    + "mEndTime.MovementEndTime AS MovementEndTime, "
+                    + "mStartTime.MovementStartTime AS MovementStartTime"
+                    + " "
+                    + "ORDER BY invoice.InvoiceNo"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                Map<String, Object> map = queryIterator.next().asMap();
+                System.out.println(map.toString());
+                results.add(map);
+            }
+
+            return results;
+        }
+    }
+
+    /**
+     * Pesquisa pelo status de uma dada fatura
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return status da fatura
+     */
+    public static Map<String, Object> obtainDocumentStatusByInvoiceId(Driver driver, String invoiceNo) {
+        try (Session session = driver.session()) {
+            Record queryResult = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Invoice + ") "
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_DOCUMENT_STATUS + "]->(documentStatus) "
+                    + "OPTIONAL MATCH "
+                    + "(documentStatus)-[:" + EnumsOfEntities.DocumentStatusRelationships.HAS_REASON + "]->(reason) "
+                    + "OPTIONAL MATCH "
+                    + "(documentStatus)-[:" + EnumsOfEntities.OtherRelationships.HAS_SOURCE + "]->(source) "
+                    + "OPTIONAL MATCH "
+                    + "(documentStatus)-[:" + EnumsOfEntities.DocumentStatusRelationships.HAS_SOURCE_BILLING + "]->(billing) "
+                    + " "
+                    + "WITH "
+                    + "invoice, documentStatus, reason, source, billing"
+                    + " "
+                    + "WHERE "
+                    + "invoice.InvoiceNo = '" + invoiceNo + "'"
+                    + " "
+                    + "RETURN "
+                    + "documentStatus.InvoiceStatus AS InvoiceStatus, "
+                    + "documentStatus.InvoiceStatusDate AS InvoiceStatusDate, "
+                    + "reason.Reason AS Reason, "
+                    + "source.SourceID AS SourceID, "
+                    + "billing.SourceBilling AS SourceBilling"
+            ).single());
+
+            return queryResult.asMap();
+        }
+    }
+
+    /**
+     * Pesquisa pelos regimes especiais de uma dada fatura
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return regimes especiais da fatura
+     */
+    public static Map<String, Object> obtainSpecialRegimesByInvoiceId(Driver driver, String invoiceNo) {
+        try (Session session = driver.session()) {
+            Record queryResult = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Invoice + ") "
+                    + "OPTIONAL MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_SPECIAL_REGIMES + "]->(special) "
+                    + " "
+                    + "WITH "
+                    + "invoice, special"
+                    + " "
+                    + "WHERE "
+                    + "invoice.InvoiceNo = '" + invoiceNo + "'"
+                    + " "
+                    + "RETURN "
+                    + "special.SelfBillingIndicator AS SelfBillingIndicator, "
+                    + "special.CashVATSchemeIndicator AS CashVATSchemeIndicator, "
+                    + "special.ThirdPartiesBillingIndicator AS ThirdPartiesBillingIndicator"
+            ).single());
+
+            return queryResult.asMap();
+        }
+    }
+
+    /**
+     * @param driver instância para comunicar com a base de dados
+     * @return shipTo da fatura
+     */
+    public static Map<String, Object> obtainShipToByInvoiceId(Driver driver, String invoiceNo) {
+        try (Session session = driver.session()) {
+            Record queryResult = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Invoice + ") "
+                    + "MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_SHIP_TO + "]->(ship) "
+                    + "OPTIONAL MATCH "
+                    + "(ship)-[:" + EnumsOfEntities.ShipToRelationships.HAS_ADDRESS + "]->(address) "
+                    + "OPTIONAL MATCH "
+                    + "(address)-[:" + EnumsOfEntities.AddressRelationships.HAS_BUILDING_NUMBER + "]->(buildingNumber) "
+                    + "OPTIONAL MATCH "
+                    + "(address)-[:" + EnumsOfEntities.AddressRelationships.HAS_STREET_NAME + "]->(streetName) "
+                    + "OPTIONAL MATCH "
+                    + "(address)-[:" + EnumsOfEntities.AddressRelationships.HAS_CITY + "]->(city) "
+                    + "OPTIONAL MATCH "
+                    + "(address)-[:" + EnumsOfEntities.AddressRelationships.HAS_POSTAL_CODE + "]->(postalCode) "
+                    + "OPTIONAL MATCH "
+                    + "(address)-[:" + EnumsOfEntities.AddressRelationships.HAS_REGION + "]->(region) "
+                    + "OPTIONAL MATCH "
+                    + "(address)-[:" + EnumsOfEntities.AddressRelationships.HAS_COUNTRY + "]->(country) "
+                    + " "
+                    + "WITH "
+                    + "invoice, ship, address, buildingNumber, streetName, city, postalCode, region, country"
+                    + " "
+                    + "WHERE "
+                    + "invoice.InvoiceNo = '" + invoiceNo + "'"
+                    + " "
+                    + "RETURN "
+                    + "ship.DeliveryID AS DeliveryID, "
+                    + "ship.DeliveryDate AS DeliveryDate, "
+
+                    + "{ "
+                    + "BuildingNumber: buildingNumber.BuildingNumber, "
+                    + "StreetName: streetName.StreetName, "
+                    + "AddressDetail: address.AddressDetail, "
+                    + "City: city.City, "
+                    + "PostalCode: postalCode.PostalCode, "
+                    + "Region: region.Region, "
+                    + "Country: country.Country "
+                    + "} AS Address"
+
+            ).single());
+
+            return queryResult.asMap();
+        }
+    }
+
+    /**
+     * @param driver instância para comunicar com a base de dados
+     * @return shipFrom da fatura
+     */
+    public static Map<String, Object> obtainShipFromByInvoiceId(Driver driver, String invoiceNo) {
+        try (Session session = driver.session()) {
+            Record queryResult = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Invoice + ") "
+                    + "MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_SHIP_FROM + "]->(ship) "
+                    + "OPTIONAL MATCH "
+                    + "(ship)-[:" + EnumsOfEntities.ShipToRelationships.HAS_ADDRESS + "]->(address) "
+                    + "OPTIONAL MATCH "
+                    + "(address)-[:" + EnumsOfEntities.AddressRelationships.HAS_BUILDING_NUMBER + "]->(buildingNumber) "
+                    + "OPTIONAL MATCH "
+                    + "(address)-[:" + EnumsOfEntities.AddressRelationships.HAS_STREET_NAME + "]->(streetName) "
+                    + "OPTIONAL MATCH "
+                    + "(address)-[:" + EnumsOfEntities.AddressRelationships.HAS_CITY + "]->(city) "
+                    + "OPTIONAL MATCH "
+                    + "(address)-[:" + EnumsOfEntities.AddressRelationships.HAS_POSTAL_CODE + "]->(postalCode) "
+                    + "OPTIONAL MATCH "
+                    + "(address)-[:" + EnumsOfEntities.AddressRelationships.HAS_REGION + "]->(region) "
+                    + "OPTIONAL MATCH "
+                    + "(address)-[:" + EnumsOfEntities.AddressRelationships.HAS_COUNTRY + "]->(country) "
+                    + " "
+                    + "WITH "
+                    + "invoice, ship, address, buildingNumber, streetName, city, postalCode, region, country"
+                    + " "
+                    + "WHERE "
+                    + "invoice.InvoiceNo = '" + invoiceNo + "'"
+                    + " "
+                    + "RETURN "
+                    + "ship.DeliveryID AS DeliveryID, "
+                    + "ship.DeliveryDate AS DeliveryDate, "
+
+                    + "{ "
+                    + "BuildingNumber: buildingNumber.BuildingNumber, "
+                    + "StreetName: streetName.StreetName, "
+                    + "AddressDetail: address.AddressDetail, "
+                    + "City: city.City, "
+                    + "PostalCode: postalCode.PostalCode, "
+                    + "Region: region.Region, "
+                    + "Country: country.Country "
+                    + "} AS Address"
+
+            ).single());
+
+            return queryResult.asMap();
+        }
+    }
+
+    /**
+     * Pesquisa pelas linhas de uma fatura
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return lista de linhas de uma fatura
+     */
+    public static LinkedList<Map<String, Object>> obtainListOfLineByInvoiceId(Driver driver, String invoiceNo) {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Invoice + ") "
+                    + "MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_LINE + "]->(line) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.LineRelationships.HAS_ORDER_REFERENCES + "]->(orderRef) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.OtherRelationships.HAS_PRODUCT + "]->(product) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.LineRelationships.HAS_QUANTITY + "]->(quantity) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.LineRelationships.HAS_UNIT_OF_MEASURE + "]->(measure) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.LineRelationships.HAS_UNIT_PRICE + "]->(unitPrice) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.LineRelationships.HAS_TAX_BASE + "]->(taxBase) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.LineRelationships.HAS_TAX_POINT_DATE + "]->(taxPointDate) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.LineRelationships.HAS_REFERENCES + "]->(ref) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.LineRelationships.HAS_PRODUCT_SERIAL_NUMBER + "]->(serialNumber) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.LineRelationships.HAS_DEBIT_AMOUNT + "]->(debitAmount) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.LineRelationships.HAS_CREDIT_AMOUNT + "]->(creditAmount) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.LineRelationships.HAS_TAX_TABLE + "]->(tax), "
+                    + "(tax)-[:" + EnumsOfEntities.TaxTableRelationships.HAS_TAX_TYPE + "]->(taxType) "
+                    + "OPTIONAL MATCH "
+                    + "(tax)-[:" + EnumsOfEntities.TaxTableRelationships.HAS_TAX_COUNTRY_REGION + "]->(taxCountryRegion) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.LineRelationships.HAS_TAX_EXEMPTION + "]->(exemption) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.LineRelationships.HAS_SETTLEMENT_AMOUNT + "]->(sAmount) "
+                    + "OPTIONAL MATCH "
+                    + "(line)-[:" + EnumsOfEntities.LineRelationships.HAS_CUSTOMS_INFORMATION + "]->(customs)"
+                    + " "
+                    + "WITH "
+                    + "invoice, line, orderRef, product, quantity, measure, unitPrice, taxBase, taxPointDate, ref, serialNumber, "
+                    + "debitAmount, creditAmount, tax, taxType, taxCountryRegion, exemption, sAmount, customs, "
+                    + "collect({ OriginatingON: orderRef.OriginatingON, OrderDate: orderRef.OrderDate }) AS OrderReferences, "
+                    + "collect({ Reference: ref.Reference, Reason: ref.Reason }) AS References, "
+                    + "collect({ SerialNumber: serialNumber.SerialNumber }) AS ProductSerialNumber, "
+                    + "collect({ TaxType: taxType.TaxType, TaxCountryRegion: taxCountryRegion.TaxCountryRegion, "
+                    + "TaxCode: tax.TaxCode, TaxPercentage: tax.TaxPercentage, TaxAmount: tax.TaxAmount }) AS Tax"
+                    + " "
+                    + "WHERE "
+                    + "invoice.InvoiceNo = '" + invoiceNo + "'"
+                    + " "
+                    + "RETURN "
+                    + "line.LineNumber AS LineNumber, "
+
+                    /*+ "{ "
+                    + "OriginatingON: orderRef.OriginatingON, "
+                    + "OrderDate: orderRef.OrderDate "
+                    + "} AS OrderReferences, "*/
+                    + "OrderReferences, "
+
+                    + "product.ProductCode AS ProductCode, "
+                    + "product.ProductDescription AS ProductDescription, "
+                    + "quantity.Quantity AS Quantity, "
+                    + "measure.UnitOfMeasure AS UnitOfMeasure, "
+                    + "unitPrice.UnitPrice AS UnitPrice, "
+                    + "taxBase.TaxBase AS TaxBase, "
+                    + "taxPointDate.TaxPointDate AS TaxPointDate, "
+
+                    /*+ "{ "
+                    + "Reference: ref.Reference, "
+                    + "Reason: ref.Reason "
+                    + "} AS References, "*/
+                    + "References, "
+
+                    + "line.Description AS Description, "
+
+                    /*+ "{ "
+                    + "SerialNumber: serialNumber.SerialNumber "
+                    + "} AS ProductSerialNumber, "*/
+                    + "ProductSerialNumber, "
+
+                    + "debitAmount.DebitAmount AS DebitAmount, "
+                    + "creditAmount.CreditAmount AS CreditAmount, "
+
+                    /*+ "{ "
+                    + "TaxType: taxType.TaxType, "
+                    + "TaxCountryRegion: taxCountryRegion.TaxCountryRegion, "
+                    + "TaxCode: tax.TaxCode, "
+                    + "TaxPercentage: tax.TaxPercentage, "
+                    + "TaxAmount: tax.TaxAmount "
+                    + "} AS Tax, "*/
+                    + "Tax, "
+
+                    + "exemption.TaxExemptionReason AS TaxExemptionReason, "
+                    + "exemption.TaxExemptionCode AS TaxExemptionCode, "
+                    + "sAmount.SettlementAmount AS SettlementAmount, "
+
+                    + "{ "
+                    + "ARCNo: customs.ARCNo, "
+                    + "IECAmount: customs.IECAmount "
+                    + "} AS CustomsInformation"
+
+                    + " "
+                    + "ORDER BY line.LineNumber"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
+        }
+    }
+
+    /**
+     * Pesquisa pela informação relativa aos totais de uma fatura
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return retorna os totais de uma fatura
+     */
+    public static Map<String, Object> obtainDocumentTotalsByInvoiceId(Driver driver, String invoiceNo) {
+        try (Session session = driver.session()) {
+            Record queryResult = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Invoice + ") "
+                    + "MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_DOCUMENT_TOTALS + "]->(documentTotals) "
+                    + "OPTIONAL MATCH "
+                    + "(documentTotals)-[:" + EnumsOfEntities.DocumentTotalsRelationships.HAS_TAX_PAYABLE + "]->(taxPayable) "
+                    + "OPTIONAL MATCH "
+                    + "(documentTotals)-[:" + EnumsOfEntities.DocumentTotalsRelationships.HAS_NET_TOTAL + "]->(netTotal) "
+                    + "OPTIONAL MATCH "
+                    + "(documentTotals)-[:" + EnumsOfEntities.DocumentTotalsRelationships.HAS_CURRENCY + "]->(currency) "
+                    + "OPTIONAL MATCH "
+                    + "(documentTotals)-[:" + EnumsOfEntities.DocumentTotalsRelationships.HAS_SETTLEMENT + "]->(settlement) "
+                    + "OPTIONAL MATCH "
+                    + "(documentTotals)-[:" + EnumsOfEntities.DocumentTotalsRelationships.HAS_PAYMENT + "]->(payment) "
+                    + " "
+                    + "WITH "
+                    + "invoice, documentTotals, taxPayable, netTotal, currency, "
+                    + "collect({ SettlementDiscount: settlement.SettlementDiscount, SettlementAmount: settlement.SettlementAmount, "
+                    + "SettlementDate: settlement.SettlementDate , PaymentTerms: settlement.PaymentTerms }) AS Settlement, "
+                    + "collect({ PaymentMechanism: payment.PaymentMechanism, PaymentAmount: payment.PaymentAmount, "
+                    + "PaymentDate: payment.PaymentDate }) AS Payment"
+                    + " "
+                    + "WHERE "
+                    + "invoice.InvoiceNo = '" + invoiceNo + "'"
+                    + " "
+                    + "RETURN "
+                    + "taxPayable.TaxPayable AS TaxPayable, "
+                    + "netTotal.NetTotal AS NetTotal, "
+                    + "documentTotals.GrossTotal AS GrossTotal, "
+
+                    + "{ "
+                    + "CurrencyCode: currency.CurrencyCode, "
+                    + "CurrencyAmount: currency.CurrencyAmount, "
+                    + "ExchangeRate: currency.ExchangeRate "
+                    + "} AS Currency, "
+
+                    + "Settlement, "
+                    + "Payment"
+            ).single());
+
+            return queryResult.asMap();
+        }
+    }
+
+    /**
+     * Pesquisa pela lista de WithholdingTax por fatura
+     *
+     * @param driver instância para comunicar com a base de dados
+     * @return lista de WithholdingTax
+     */
+    public static List<Map<String, Object>> obtainListOfWithholdingTaxByInvoiceId(Driver driver, String invoiceNo) {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.Invoice + ") "
+                    + "MATCH "
+                    + "(invoice)-[:" + EnumsOfEntities.InvoiceRelationships.HAS_WITHHOLDING_TAX + "]->(holdingTax) "
+                    + "OPTIONAL MATCH "
+                    + "(holdingTax)-[:" + EnumsOfEntities.WithholdingTaxRelationships.HAS_WITHHOLDING_TAX_TYPE + "]->(type) "
+                    + "OPTIONAL MATCH "
+                    + "(holdingTax)-[:" + EnumsOfEntities.WithholdingTaxRelationships.HAS_WITHHOLDING_TAX_AMOUNT + "]->(amount) "
+                    + " "
+                    + "WITH "
+                    + "invoice, holdingTax, type, amount, "
+                    + "collect({ WithholdingTaxType: type.WithholdingTaxType, "
+                    + "WithholdingTaxDescription: holdingTax.WithholdingTaxDescription, "
+                    + "WithholdingTaxAmount: amount.WithholdingTaxAmount }) As WithholdingTax"
+                    + " "
+                    + "WHERE "
+                    + "invoice.InvoiceNo = '" + invoiceNo + "'"
+                    + " "
+                    + "RETURN "
+                    + "WithholdingTax"
             ).list());
 
             Iterator<Record> queryIterator = queryResults.iterator();

@@ -19,6 +19,11 @@ type Query {
     getAllTransactions: [Transaction]
     getTransactionById(id: ID): Transaction
 
+    getSalesInvoices: SalesInvoices
+
+    getAllInvoices: [Invoice]
+    getInvoiceById(id: ID): Invoice
+
     getListOfCustomersNotIdentified: [CustomersNotIdentified]
     getListOfSuppliersNotIdentified: [SuppliersNotIdentified]
     getListOfInvoicesNotAssociatedWithCustomers: [String]
@@ -82,6 +87,16 @@ type Product {
 type CustomsDetails {
     CNCode: String
     UNNumber: String
+}
+
+type TaxTableEntry {
+    TaxType: String
+    TaxCountryRegion: String
+    TaxCode: String
+    Description: String
+    TaxExpirationDate: String
+    TaxPercentage: Float
+    TaxAmount: Float
 }
 
 type GeneralLedgerEntries {
@@ -188,7 +203,7 @@ type Line {
     UnitOfMeasure: String
     UnitPrice: Float
     TaxBase: Float
-    TaxPointDate: Float
+    TaxPointDate: String
     References: [References]
     Description: String
     ProductSerialNumber: [ProductSerialNumber]

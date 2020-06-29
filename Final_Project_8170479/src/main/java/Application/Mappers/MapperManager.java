@@ -348,6 +348,7 @@ public class MapperManager {
     private void processAuditFileChildren(String XMLElement, String value, int count) throws MapException, NodeException {
 
         count++;
+        long id;
 
         switch (this.manageSequenceElements.get(count).getXMLElement()) {
 
@@ -355,9 +356,9 @@ public class MapperManager {
 
                 if (EnumsOfElements.AuditFile.Header.equalsIgnoreCase(XMLElement)) {
                     //Criamos o nó do tipo FileInformation
-                    long id = this.addNode();
+                    id = this.addNode();
                     this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.FileInformation));
-                    this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.FileInformation), EnumsOfEntities.Entities.FileInformation);
+                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.FileInformation);
 
                     this.fileInformationID = id;
 
@@ -386,8 +387,9 @@ public class MapperManager {
 
                 if (EnumsOfElements.AuditFile.GeneralLedgerEntries.equalsIgnoreCase(XMLElement)) {
                     //Criamos o nó do tipo GeneralLedgerEntries
-                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.GeneralLedgerEntries));
-                    this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.GeneralLedgerEntries), EnumsOfEntities.Entities.GeneralLedgerEntries);
+                    id = this.addNode();
+                    this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.GeneralLedgerEntries));
+                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.GeneralLedgerEntries);
 
                 } else {
 
@@ -417,10 +419,10 @@ public class MapperManager {
 
     private void processHeaderChildren(String XMLElement, String value, int count) throws MapException, NodeException {
 
-        if (this.depth == count) {
+        long id;
+        Map<String, Long> map;
 
-            long id = -1;
-            Map<String, Long> map = null;
+        if (this.depth == count) {
 
             switch (XMLElement) {
 
@@ -444,10 +446,11 @@ public class MapperManager {
 
                 case EnumsOfElements.Header.TaxAccountingBasis:
                     //Criamos um nó com o atributo TaxAccountingBasis e o seu valor
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
+                    id = this.addNode(XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(id, XMLElement));
 
                     //Adicionamos uma relação com o FileInformation
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), this.findNodeId(XMLElement), EnumsOfEntities.FileInformationRelationships.HAS_TAX_ACCOUNTING_BASIS);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), id, EnumsOfEntities.FileInformationRelationships.HAS_TAX_ACCOUNTING_BASIS);
 
                     break;
 
@@ -464,77 +467,84 @@ public class MapperManager {
                     this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Company);
 
                     //Criamos agora uma relação com o FileInformation
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), this.findNodeId(EnumsOfEntities.Entities.Company), EnumsOfEntities.FileInformationRelationships.HAS_COMPANY);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), id, EnumsOfEntities.FileInformationRelationships.HAS_COMPANY);
 
                     //Criamos agora uma relação com nó previamente criado que contêm o id da empresa
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Company), this.findNodeId(EnumsOfElements.Header.CompanyID), EnumsOfEntities.CompanyRelationships.HAS_COMPANY_ID);
+                    this.driver.addRelationship(id, this.findNodeId(EnumsOfElements.Header.CompanyID), EnumsOfEntities.CompanyRelationships.HAS_COMPANY_ID);
 
                     //Criamos outra relação com o nó que contêm o número de identificação fiscal da empresa
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Company), this.findNodeId(EnumsOfElements.Header.TaxRegistrationNumber), EnumsOfEntities.CompanyRelationships.HAS_TAX_REGISTRATION_NUMBER);
+                    this.driver.addRelationship(id, this.findNodeId(EnumsOfElements.Header.TaxRegistrationNumber), EnumsOfEntities.CompanyRelationships.HAS_TAX_REGISTRATION_NUMBER);
 
                     break;
 
                 case EnumsOfElements.Header.BussinessName:
                     //Criamos o nó com o atributo BussinessName e o seu valor
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
+                    id = this.addNode(XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(id, XMLElement));
 
                     //Criamos uma relação com a empresa
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Company), this.findNodeId(XMLElement), EnumsOfEntities.CompanyRelationships.HAS_BUSINESS_NAME);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Company), id, EnumsOfEntities.CompanyRelationships.HAS_BUSINESS_NAME);
 
                     break;
 
                 case EnumsOfElements.Header.FiscalYear:
                     //Criamos o nó do tipo FiscalYear com o atributo FiscalYear e o seu valor
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, Integer.valueOf(value)), EnumsOfEntities.Entities.FiscalYear));
-                    this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.FiscalYear), EnumsOfEntities.Entities.FiscalYear);
+                    id = this.addNode(XMLElement, Integer.valueOf(value));
+                    this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.FiscalYear));
+                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.FiscalYear);
 
                     //Criamos agora uma relação com o FileInformation
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), this.findNodeId(EnumsOfEntities.Entities.FiscalYear), EnumsOfEntities.FileInformationRelationships.HAS_FISCAL_YEAR);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), id, EnumsOfEntities.FileInformationRelationships.HAS_FISCAL_YEAR);
 
                     break;
 
                 case EnumsOfElements.Header.StartDate:
                     //Criamos um novo nó com o atributo StartDate e o seu valor
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
+                    id = this.addNode(XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(id, XMLElement));
 
                     //Criamos uma relação com o nó FiscalYear
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FiscalYear), this.findNodeId(XMLElement), EnumsOfEntities.FiscalYearRelationships.HAS_START_DATE);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FiscalYear), id, EnumsOfEntities.FiscalYearRelationships.HAS_START_DATE);
 
                     break;
 
                 case EnumsOfElements.Header.EndDate:
                     //Criamos um novo nó com o atributo EndDate e o seu valor
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
+                    id = this.addNode(XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(id, XMLElement));
 
                     //Criamos uma relação com o ano fiscal
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FiscalYear), this.findNodeId(XMLElement), EnumsOfEntities.FiscalYearRelationships.HAS_END_DATE);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FiscalYear), id, EnumsOfEntities.FiscalYearRelationships.HAS_END_DATE);
 
                     break;
 
                 case EnumsOfElements.Header.CurrencyCode:
                     //Criamos um novo nó com o atributo CurrencyCode e o seu valor
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
+                    id = this.addNode(XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(id, XMLElement));
 
                     //Adicionamos uma relação com o FileInformation
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), this.findNodeId(XMLElement), EnumsOfEntities.FileInformationRelationships.HAS_CURRENCY_CODE);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), id, EnumsOfEntities.FileInformationRelationships.HAS_CURRENCY_CODE);
 
                     break;
 
                 case EnumsOfElements.Header.DateCreated:
                     //Criamos um novo nó com o atributo DateCreated e o seu valor
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
+                    id = this.addNode(XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(id, XMLElement));
 
                     //Adicionamos uma relação com o FileInformation
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), this.findNodeId(XMLElement), EnumsOfEntities.FileInformationRelationships.HAS_DATE_CREATED);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), id, EnumsOfEntities.FileInformationRelationships.HAS_DATE_CREATED);
 
                     break;
 
                 case EnumsOfElements.Header.TaxEntity:
                     //Criamos um novo nó com o atributo TaxEntity e o seu valor
-                    this.nodesContainer.add(new GraphNode(this.addNode(XMLElement, value), XMLElement));
+                    id = this.addNode(XMLElement, value);
+                    this.nodesContainer.add(new GraphNode(id, XMLElement));
 
                     //Adicionamos uma relação com o FileInformation
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), this.findNodeId(XMLElement), EnumsOfEntities.FileInformationRelationships.HAS_TAX_ENTITY);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), id, EnumsOfEntities.FileInformationRelationships.HAS_TAX_ENTITY);
 
                     break;
 
@@ -563,10 +573,10 @@ public class MapperManager {
                     this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Product);
 
                     //Criamos agora uma relação com o FileInformation
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), this.findNodeId(EnumsOfEntities.Entities.Product), EnumsOfEntities.FileInformationRelationships.HAS_PRODUCT);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.FileInformation), id, EnumsOfEntities.FileInformationRelationships.HAS_PRODUCT);
 
                     //Criamos agora uma relação com nó que contêm a empresa que criou o produto
-                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.Product), this.findNodeId(EnumsOfElements.Header.ProductCompanyTaxID), EnumsOfEntities.ProductRelationships.HAS_COMPANY);
+                    this.driver.addRelationship(id, this.findNodeId(EnumsOfElements.Header.ProductCompanyTaxID), EnumsOfEntities.ProductRelationships.HAS_COMPANY);
 
                     break;
 

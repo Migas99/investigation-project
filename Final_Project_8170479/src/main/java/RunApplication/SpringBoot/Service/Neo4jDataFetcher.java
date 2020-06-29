@@ -142,11 +142,11 @@ public class Neo4jDataFetcher {
         };
     }
 
-    public DataFetcher getListOfAllTransactions(){
+    public DataFetcher getListOfAllTransactions() {
         return dataFetchingEnvironment -> CypherQueries.obtainListOfAllTransactions(this.driver);
     }
 
-    public DataFetcher getTransactionById(){
+    public DataFetcher getTransactionById() {
         return dataFetchingEnvironment -> {
             String transactionID = dataFetchingEnvironment.getArgument("id");
             LinkedList<Map<String, Object>> mapList = CypherQueries.obtainListOfAllTransactions(this.driver);
@@ -181,6 +181,87 @@ public class Neo4jDataFetcher {
             lines.put("CreditLine", CypherQueries.obtainListOfCreditLinesByTransactionId(this.driver, transactionID));
 
             return lines;
+        };
+    }
+
+    public DataFetcher getSalesInvoices() {
+        return dataFetchingEnvironment -> CypherQueries.obtainSalesInvoices(this.driver);
+    }
+
+    public DataFetcher getListOfAllInvoices() {
+        return dataFetchingEnvironment -> CypherQueries.obtainListOfAllInvoices(this.driver);
+    }
+
+    public DataFetcher getInvoiceById() {
+        return dataFetchingEnvironment -> {
+            String invoiceNo = dataFetchingEnvironment.getArgument("id");
+            LinkedList<Map<String, Object>> mapList = CypherQueries.obtainListOfAllInvoices(this.driver);
+
+            Iterator<Map<String, Object>> iterator = mapList.iterator();
+            while (iterator.hasNext()) {
+                Map<String, Object> map = iterator.next();
+                if (map.get("InvoiceNo").equals(invoiceNo)) {
+                    return map;
+                }
+            }
+
+            return null;
+        };
+    }
+
+    public DataFetcher getDocumentStatusByInvoice() {
+        return dataFetchingEnvironment -> {
+            Map<String, String> invoice = dataFetchingEnvironment.getSource();
+            String invoiceNo = invoice.get("InvoiceNo");
+            return CypherQueries.obtainDocumentStatusByInvoiceId(this.driver, invoiceNo);
+        };
+    }
+
+    public DataFetcher getSpecialRegimesByInvoice() {
+        return dataFetchingEnvironment -> {
+            Map<String, String> invoice = dataFetchingEnvironment.getSource();
+            String invoiceNo = invoice.get("InvoiceNo");
+            return CypherQueries.obtainSpecialRegimesByInvoiceId(this.driver, invoiceNo);
+        };
+    }
+
+    public DataFetcher getShipToByInvoice() {
+        return dataFetchingEnvironment -> {
+            Map<String, String> invoice = dataFetchingEnvironment.getSource();
+            String invoiceNo = invoice.get("InvoiceNo");
+            return CypherQueries.obtainShipToByInvoiceId(this.driver, invoiceNo);
+        };
+    }
+
+    public DataFetcher getShipFromByInvoice() {
+        return dataFetchingEnvironment -> {
+            Map<String, String> invoice = dataFetchingEnvironment.getSource();
+            String invoiceNo = invoice.get("InvoiceNo");
+            return CypherQueries.obtainShipFromByInvoiceId(this.driver, invoiceNo);
+        };
+    }
+
+    public DataFetcher getListOfLineByInvoice() {
+        return dataFetchingEnvironment -> {
+            Map<String, String> invoice = dataFetchingEnvironment.getSource();
+            String invoiceNo = invoice.get("InvoiceNo");
+            return CypherQueries.obtainListOfLineByInvoiceId(this.driver, invoiceNo);
+        };
+    }
+
+    public DataFetcher getDocumentTotalsByInvoice() {
+        return dataFetchingEnvironment -> {
+            Map<String, String> invoice = dataFetchingEnvironment.getSource();
+            String invoiceNo = invoice.get("InvoiceNo");
+            return CypherQueries.obtainDocumentTotalsByInvoiceId(this.driver, invoiceNo);
+        };
+    }
+
+    public DataFetcher getListOfWithholdingTaxByInvoice() {
+        return dataFetchingEnvironment -> {
+            Map<String, String> invoice = dataFetchingEnvironment.getSource();
+            String invoiceNo = invoice.get("InvoiceNo");
+            return CypherQueries.obtainListOfWithholdingTaxByInvoiceId(this.driver, invoiceNo);
         };
     }
 

@@ -59,6 +59,9 @@ public class QueryController {
                         .dataFetcher("getJournalById", this.dataFetcher.getJournalById())
                         .dataFetcher("getAllTransactions", this.dataFetcher.getListOfAllTransactions())
                         .dataFetcher("getTransactionById", this.dataFetcher.getTransactionById())
+                        .dataFetcher("getSalesInvoices", this.dataFetcher.getSalesInvoices())
+                        .dataFetcher("getAllInvoices", this.dataFetcher.getListOfAllInvoices())
+                        .dataFetcher("getInvoiceById", this.dataFetcher.getInvoiceById())
                         .dataFetcher("getListOfCustomersNotIdentified", this.dataFetcher.getListOfCustomersNotIdentified())
                         .dataFetcher("getListOfSuppliersNotIdentified", this.dataFetcher.getListOfSuppliersNotIdentified())
                         .dataFetcher("getListOfInvoicesNotAssociatedWithCustomers", this.dataFetcher.getListOfInvoicesNotAssociatedWithCustomers())
@@ -72,6 +75,16 @@ public class QueryController {
                         .dataFetcher("Transaction", this.dataFetcher.getListOfTransactionsByJournal()))
                 .type(newTypeWiring("Transaction")
                         .dataFetcher("Lines", this.dataFetcher.getLinesByTransaction()))
+                .type(newTypeWiring("SalesInvoices")
+                        .dataFetcher("Invoice", this.dataFetcher.getListOfAllInvoices()))
+                .type(newTypeWiring("Invoice")
+                        .dataFetcher("DocumentStatus", this.dataFetcher.getDocumentStatusByInvoice())
+                        .dataFetcher("SpecialRegimes", this.dataFetcher.getSpecialRegimesByInvoice())
+                        .dataFetcher("ShipTo", this.dataFetcher.getShipToByInvoice())
+                        .dataFetcher("ShipFrom", this.dataFetcher.getShipFromByInvoice())
+                        .dataFetcher("Line", this.dataFetcher.getListOfLineByInvoice())
+                        .dataFetcher("DocumentTotals", this.dataFetcher.getDocumentTotalsByInvoice())
+                        .dataFetcher("WithholdingTax", this.dataFetcher.getListOfWithholdingTaxByInvoice()))
                 .build();
     }
 
