@@ -2682,12 +2682,16 @@ public class MapperManager {
                     break;
 
                 case EnumsOfElements.ShipTo.WarehouseID:
-                    //Não decidi como processar ainda
-                    throw new MapException(XMLElement);
+                    //Adicionamos uma nova propriedade ao nó ShipTo
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.ShipTo), XMLElement, value);
+
+                    break;
 
                 case EnumsOfElements.ShipTo.LocationID:
-                    //Não decidi como processar ainda
-                    throw new MapException(XMLElement);
+                    //Adicionamos uma nova propriedade ao nó ShipTo
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.ShipTo), XMLElement, value);
+
+                    break;
 
                 default:
                     throw new MapException(XMLElement);
@@ -2741,13 +2745,17 @@ public class MapperManager {
 
                     break;
 
-                case EnumsOfElements.ShipTo.WarehouseID:
-                    //Não decidi como processar ainda
-                    throw new MapException(XMLElement);
+                case EnumsOfElements.ShipFrom.WarehouseID:
+                    //Adicionamos uma nova propriedade ao nó ShipFrom
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.ShipFrom), XMLElement, value);
 
-                case EnumsOfElements.ShipTo.LocationID:
-                    //Não decidi como processar ainda
-                    throw new MapException(XMLElement);
+                    break;
+
+                case EnumsOfElements.ShipFrom.LocationID:
+                    //Adicionamos uma nova propriedade ao nó ShipFrom
+                    this.driver.addPropertyToNode(this.findNodeId(EnumsOfElements.Invoice.ShipFrom), XMLElement, value);
+
+                    break;
 
                 default:
                     throw new MapException(XMLElement);

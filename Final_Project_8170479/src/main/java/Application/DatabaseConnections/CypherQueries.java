@@ -792,6 +792,8 @@ public class CypherQueries {
                     + "RETURN "
                     + "ship.DeliveryID AS DeliveryID, "
                     + "ship.DeliveryDate AS DeliveryDate, "
+                    + "ship.WarehouseID AS WarehouseID, "
+                    + "ship.LocationID AS LocationID, "
 
                     + "{ "
                     + "BuildingNumber: buildingNumber.BuildingNumber, "
@@ -844,6 +846,8 @@ public class CypherQueries {
                     + "RETURN "
                     + "ship.DeliveryID AS DeliveryID, "
                     + "ship.DeliveryDate AS DeliveryDate, "
+                    + "ship.WarehouseID AS WarehouseID, "
+                    + "ship.LocationID AS LocationID, "
 
                     + "{ "
                     + "BuildingNumber: buildingNumber.BuildingNumber, "
