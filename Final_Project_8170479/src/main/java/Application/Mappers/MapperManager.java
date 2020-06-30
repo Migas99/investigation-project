@@ -2001,7 +2001,7 @@ public class MapperManager {
                 try {
                     id = this.findDocumentNodeId(value);
                 } catch (NodeException e) {
-                    id = this.addNode(EnumsOfElements.Invoice.InvoiceNo, value);
+                    id = this.addNode(XMLElement, value);
 
                     map = new HashMap<>();
                     map.put(value, id);
@@ -2012,7 +2012,7 @@ public class MapperManager {
                 }
 
                 //this.driver.addRelationshipToInvoice(this.findNodeId(EnumsOfElements.Lines.CreditLine), id);
-                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Lines.CreditLine), id, EnumsOfEntities.CreditLineRelationships.HAS_DOCUMENT);
+                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Lines.CreditLine), id, EnumsOfEntities.CreditLineRelationships.HAS_SOURCE_DOCUMENT);
 
                 break;
 
@@ -2071,7 +2071,7 @@ public class MapperManager {
                 try {
                     id = this.findDocumentNodeId(value);
                 } catch (NodeException e) {
-                    id = this.addNode(EnumsOfElements.Invoice.InvoiceNo, value);
+                    id = this.addNode(XMLElement, value);
 
                     map = new HashMap<>();
                     map.put(value, id);
@@ -2082,7 +2082,7 @@ public class MapperManager {
                 }
 
                 //this.driver.addRelationshipToInvoice(this.findNodeId(EnumsOfElements.Lines.DebitLine), id);
-                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Lines.DebitLine), id, EnumsOfEntities.DebitLineRelationships.HAS_DOCUMENT);
+                this.driver.addRelationship(this.findNodeId(EnumsOfElements.Lines.DebitLine), id, EnumsOfEntities.DebitLineRelationships.HAS_SOURCE_DOCUMENT);
 
                 break;
 
@@ -2286,6 +2286,7 @@ public class MapperManager {
                         this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.Invoice));
                     }
 
+                    this.driver.addPropertyToNode(id, XMLElement, value);
                     this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Invoice);
 
                     //Adicionamos uma relação com o nó SalesInvoices

@@ -186,7 +186,7 @@ public class EnumsOfEntities {
 
         public final static String HAS_SYSTEM_ENTRY_DATE = "HAS_SYSTEM_ENTRY_DATE";
         public final static String HAS_CREDIT_AMOUNT = "HAS_CREDIT_AMOUNT";
-        public final static String HAS_DOCUMENT = "HAS_DOCUMENT";
+        public final static String HAS_SOURCE_DOCUMENT = "HAS_SOURCE_DOCUMENT";
     }
 
     public enum DebitLineRelationships {
@@ -194,7 +194,7 @@ public class EnumsOfEntities {
 
         public final static String HAS_SYSTEM_ENTRY_DATE = "HAS_SYSTEM_ENTRY_DATE";
         public final static String HAS_DEBIT_AMOUNT = "HAS_DEBIT_AMOUNT";
-        public final static String HAS_DOCUMENT = "HAS_DOCUMENT";
+        public final static String HAS_SOURCE_DOCUMENT = "HAS_SOURCE_DOCUMENT";
     }
 
     public enum SalesInvoicesRelationships {
