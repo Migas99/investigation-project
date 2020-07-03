@@ -3,6 +3,7 @@ package Application.Enums;
 public class EnumsOfEntities {
 
     public enum EntitiesValues {
+        File,
         FileInformation,
         Company,
         FiscalYear,
@@ -31,6 +32,7 @@ public class EnumsOfEntities {
     public enum Entities {
         ELEMENT;
 
+        public final static String File = "File";
         public final static String FileInformation = "FileInformation";
         public final static String Company = "Company";
         public final static String FiscalYear = "FiscalYear";
@@ -55,6 +57,19 @@ public class EnumsOfEntities {
 
         public final static String Address = "Address";
         public final static String Contacts = "Contacts";
+    }
+
+    public enum FileRelationships {
+        ELEMENT;
+
+        public final static String HAS_FILE_INFORMATION = "HAS_FILE_INFORMATION";
+        public final static String HAS_GENERAL_LEDGER_ACCOUNTS = "HAS_GENERAL_LEDGER_ACCOUNTS";
+        public final static String HAS_CUSTOMER = "HAS_CUSTOMER";
+        public final static String HAS_SUPPLIER = "HAS_SUPPLIER";
+        public final static String HAS_PRODUCT = "HAS_PRODUCT";
+        public final static String HAS_TAX_TABLE = "HAS_TAX_TABLE";
+        public final static String HAS_GENERAL_LEDGER_ENTRIES = "HAS_GENERAL_LEDGER_ENTRIES";
+        public final static String HAS_SALES_INVOICES = "HAS_SALES_INVOICES";
     }
 
     public enum FileInformationRelationships {

@@ -73,13 +73,18 @@ public class UploadController {
 
             /*Instaciamos as classes responsáveis pela leitura e processamento do ficheiro*/
             Neo4jMapperHelper helper = new Neo4jMapperHelper(driver);
-            StAX parser = new StAX(helper);
-            System.out.println("[SERVER] Starting to map the file: " + file.getOriginalFilename());
-            parser.processXMLToNeo4j(saftp);
-            driver.close();
-            System.out.println("[SERVER] Done mapping the file: " + file.getOriginalFilename());
 
-            map.put("Message", "The file " + saftp.getName() + " was uploaded and mapped into the database with success.");
+            if (helper.isFileUnique(saftp.getName())) {
+                StAX parser = new StAX(helper);
+                System.out.println("[SERVER] Starting to map the file: " + file.getOriginalFilename());
+                parser.processXMLToNeo4j(saftp);
+                driver.close();
+                System.out.println("[SERVER] Done mapping the file: " + file.getOriginalFilename());
+
+                map.put("Message", "The file " + saftp.getName() + " was uploaded and mapped into the database with success.");
+            } else {
+                map.put("Message", "The file was already uploaded. If that is not the case, change its name.");
+            }
 
         } catch (Exception e) {
 

@@ -6,10 +6,7 @@ import Application.Enums.EnumsOfEntities;
 import Application.Exceptions.MapException;
 import Application.Exceptions.NodeException;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Classe responsável por realizar o mapeamento dos elementos contidos no XML à medida que
@@ -23,7 +20,7 @@ public class MapperManager {
     private final Neo4jMapperHelper driver;
 
     /*Variàveis de auxílio ao algoritmo*/
-    private long fileInformationID;
+    private String fileName;
     private int depth;
 
     /*Listas de auxílio à peformance do algoritmo*/
@@ -50,7 +47,7 @@ public class MapperManager {
     public MapperManager(Neo4jMapperHelper driver) {
         this.driver = driver;
         this.depth = -1;
-        this.fileInformationID = -1;
+        this.fileName = null;
         this.sequenceElements = new LinkedList<>();
         this.manageSequenceElements = new LinkedList<>();
         this.nodesContainer = new LinkedList<>();
@@ -68,7 +65,7 @@ public class MapperManager {
     }
 
     public void setFileName(String fileName) {
-        this.driver.addPropertyToNode(this.fileInformationID, "FileName", fileName);
+        this.fileName = fileName.substring(0, fileName.length()-4);
     }
 
     /**
@@ -132,9 +129,7 @@ public class MapperManager {
      */
     private void loadSequenceElements() {
         EnumsOfElements.SequenceElements[] enums = EnumsOfElements.SequenceElements.values();
-        for (int i = 0; i < enums.length; i++) {
-            this.sequenceElements.add(enums[i].toString());
-        }
+        Arrays.stream(enums).map(Enum::toString).forEach(this.sequenceElements::add);
     }
 
     /**
@@ -144,9 +139,7 @@ public class MapperManager {
     private void loadIdentitiesNodes() {
         if (!this.driver.areIdentityNodesLoaded()) {
             EnumsOfEntities.EntitiesValues[] enums = EnumsOfEntities.EntitiesValues.values();
-            for (int i = 0; i < enums.length; i++) {
-                this.driver.addIdentityNode(enums[i].toString());
-            }
+            Arrays.stream(enums).map(Enum::toString).forEach(this.driver::addIdentityNode);
         }
     }
 
@@ -328,7 +321,9 @@ public class MapperManager {
         if (EnumsOfElements.RootElement.AuditFile.equalsIgnoreCase(this.manageSequenceElements.get(count).getXMLElement())) {
 
             if (EnumsOfElements.RootElement.AuditFile.equalsIgnoreCase(XMLElement)) {
-                //Não é necessário mapear
+                long id = this.addNode("FileName", fileName);
+                this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.File));
+                this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.File);
 
             } else {
 
@@ -353,12 +348,10 @@ public class MapperManager {
             case EnumsOfElements.AuditFile.Header:
 
                 if (EnumsOfElements.AuditFile.Header.equalsIgnoreCase(XMLElement)) {
-                    //Criamos o nó do tipo FileInformation
                     id = this.addNode();
                     this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.FileInformation));
                     this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.FileInformation);
-
-                    this.fileInformationID = id;
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.File), id, EnumsOfEntities.FileRelationships.HAS_FILE_INFORMATION);
 
                 } else {
 
@@ -384,10 +377,10 @@ public class MapperManager {
             case EnumsOfElements.AuditFile.GeneralLedgerEntries:
 
                 if (EnumsOfElements.AuditFile.GeneralLedgerEntries.equalsIgnoreCase(XMLElement)) {
-                    //Criamos o nó do tipo GeneralLedgerEntries
                     id = this.addNode();
                     this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.GeneralLedgerEntries));
                     this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.GeneralLedgerEntries);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.File), id, EnumsOfEntities.FileRelationships.HAS_GENERAL_LEDGER_ENTRIES);
 
                 } else {
 
@@ -787,6 +780,7 @@ public class MapperManager {
     private void processMasterFilesChildren(String XMLElement, String value, int count) throws MapException, NodeException {
 
         count++;
+        long id;
 
         switch (this.manageSequenceElements.get(count).getXMLElement()) {
 
@@ -794,8 +788,10 @@ public class MapperManager {
 
                 if (EnumsOfElements.MasterFiles.GeneralLedgerAccounts.equalsIgnoreCase(XMLElement)) {
                     //Criamos o nó do tipo GeneralLedgerAccounts
-                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.GeneralLedgerAccounts));
-                    this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.GeneralLedgerAccounts), EnumsOfEntities.Entities.GeneralLedgerAccounts);
+                    id = this.addNode();
+                    this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.GeneralLedgerAccounts));
+                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.GeneralLedgerAccounts);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.File), id, EnumsOfEntities.FileRelationships.HAS_GENERAL_LEDGER_ACCOUNTS);
 
                 } else {
 
@@ -809,8 +805,10 @@ public class MapperManager {
 
                 if (EnumsOfElements.MasterFiles.Customer.equalsIgnoreCase(XMLElement)) {
                     //Criamos o nó do tipo Customer
-                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Customer));
-                    this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Customer), EnumsOfEntities.Entities.Customer);
+                    id = this.addNode();
+                    this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.Customer));
+                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Customer);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.File), id, EnumsOfEntities.FileRelationships.HAS_CUSTOMER);
 
                 } else {
 
@@ -825,8 +823,10 @@ public class MapperManager {
 
                 if (EnumsOfElements.MasterFiles.Supplier.equalsIgnoreCase(XMLElement)) {
                     //Criamos o nó do tipo Supplier
-                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Supplier));
-                    this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Supplier), EnumsOfEntities.Entities.Supplier);
+                    id = this.addNode();
+                    this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.Supplier));
+                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Supplier);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.File), id, EnumsOfEntities.FileRelationships.HAS_SUPPLIER);
 
                 } else {
 
@@ -840,9 +840,10 @@ public class MapperManager {
 
                 if (EnumsOfElements.MasterFiles.Product.equalsIgnoreCase(XMLElement)) {
                     //Criamos o nó do tipo Product
-                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.Product));
-                    this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.Product), EnumsOfEntities.Entities.Product);
-
+                    id = this.addNode();
+                    this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.Product));
+                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.Product);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.File), id, EnumsOfEntities.FileRelationships.HAS_PRODUCT);
 
                 } else {
 
@@ -1580,8 +1581,10 @@ public class MapperManager {
 
             if (EnumsOfElements.TaxTable.TaxTableEntry.equalsIgnoreCase(XMLElement)) {
                 //Criamos o nó do tipo TaxTable
-                this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.TaxTable));
-                this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.TaxTable), EnumsOfEntities.Entities.TaxTable);
+                long id = this.addNode();
+                this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.TaxTable));
+                this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.TaxTable);
+                this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.File), id, EnumsOfEntities.FileRelationships.HAS_TAX_TABLE);
 
             } else {
 
@@ -2119,6 +2122,7 @@ public class MapperManager {
     private void processSourceDocumentsChildren(String XMLElement, String value, int count) throws MapException, NodeException {
 
         count++;
+        long id;
 
         switch (this.manageSequenceElements.get(count).getXMLElement()) {
 
@@ -2126,8 +2130,10 @@ public class MapperManager {
 
                 if (EnumsOfElements.SourceDocuments.SalesInvoices.equalsIgnoreCase(XMLElement)) {
                     //Criamos o nó do tipo SalesInvoices
-                    this.nodesContainer.add(new GraphNode(this.addNode(), EnumsOfEntities.Entities.SalesInvoices));
-                    this.driver.addRelationshipTypeOf(this.findNodeId(EnumsOfEntities.Entities.SalesInvoices), EnumsOfEntities.Entities.SalesInvoices);
+                    id = this.addNode();
+                    this.nodesContainer.add(new GraphNode(id, EnumsOfEntities.Entities.SalesInvoices));
+                    this.driver.addRelationshipTypeOf(id, EnumsOfEntities.Entities.SalesInvoices);
+                    this.driver.addRelationship(this.findNodeId(EnumsOfEntities.Entities.File), id, EnumsOfEntities.FileRelationships.HAS_SALES_INVOICES);
 
                 } else {
 

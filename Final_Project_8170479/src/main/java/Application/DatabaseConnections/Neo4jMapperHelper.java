@@ -16,6 +16,24 @@ public class Neo4jMapperHelper {
         this.driver = driver;
     }
 
+    public boolean isFileUnique(String fileName) {
+        try (Session session = this.driver.session()) {
+            final String name = fileName.substring(0, fileName.length()-4);
+
+            boolean isUnique = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (file)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(entity:" + EnumsOfEntities.Entities.File + ") "
+                    + "WHERE file.FileName = '" + name + "' "
+                    + "RETURN (file)"
+            ).list().isEmpty());
+
+            if (isUnique) {
+                return true;
+            }
+
+            return false;
+        }
+    }
+
     /**
      * Verifica se a estrutura do XML já se encontra carregada neste grafo
      *
@@ -43,16 +61,9 @@ public class Neo4jMapperHelper {
      */
     public void addIdentityNode(String XMLElement) {
         try (Session session = this.driver.session()) {
-            boolean isUnique = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (n:" + XMLElement + ") "
-                    + "RETURN (n)"
-            ).list().isEmpty());
-
-            if (isUnique) {
-                session.writeTransaction(tx -> tx.run(""
-                        + "CREATE (n:" + XMLElement + ":Identity)"
-                ));
-            }
+            session.writeTransaction(tx -> tx.run(""
+                    + "CREATE (n:" + XMLElement + ":Identity)"
+            ));
         }
     }
 
@@ -65,7 +76,7 @@ public class Neo4jMapperHelper {
     public void addRelationshipTypeOf(long id, String target) {
         try (Session session = this.driver.session()) {
             session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (a),(b:" + target + ") "
+                    + "MATCH (a), (b:" + target + ") "
                     + "WHERE ID(a) = " + id + " "
                     + "CREATE (a)-[:" + EnumsOfEntities.OtherRelationships.TYPE_OF + "]->(b)"
             ));

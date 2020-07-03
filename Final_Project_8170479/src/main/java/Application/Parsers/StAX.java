@@ -31,6 +31,8 @@ public class StAX {
             String current = null;
             boolean isTrash = false;
 
+            this.mapper.setFileName(XMLFile.getName());
+
             while (reader.hasNext()) {
                 nextEvent = reader.nextEvent();
 
@@ -63,7 +65,6 @@ public class StAX {
                 }
             }
 
-            this.mapper.setFileName(XMLFile.getName());
         } catch (FileNotFoundException | XMLStreamException e) {
             System.err.println(e.getMessage());
         }
