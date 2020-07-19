@@ -68,6 +68,26 @@ public class Entities {
         public final static String Contacts = "Contacts";
     }
 
+    public enum CompanyRelationships {
+        ELEMENT;
+
+        public final static String HAS_COMPANY_ID = "HAS_COMPANY_ID";
+        public final static String HAS_TAX_REGISTRATION_NUMBER = "HAS_TAX_REGISTRATION_NUMBER";
+        public final static String HAS_BUSINESS_NAME = "HAS_BUSINESS_NAME";
+
+        public final static String HAS_COMPANY_ADDRESS = "HAS_COMPANY_ADDRESS";
+
+        public final static String HAS_TELEPHONE = "HAS_TELEPHONE";
+        public final static String HAS_FAX = "HAX_FAX";
+        public final static String HAS_EMAIL = "HAS_EMAIL";
+        public final static String HAS_WEBSITE = "HAS_WEBSITE";
+
+        public final static String RELATED_TO_TRANSACTION = "RELATED_TO_TRANSACTION";
+
+        public final static String SOLD_INVOICE = "SOLD_INVOICE";
+        public final static String BOUGHT_INVOICE = "BOUGHT_INVOICE";
+    }
+
     public enum FileRelationships {
         ELEMENT;
 
@@ -92,21 +112,6 @@ public class Entities {
         public final static String HAS_TAX_ENTITY = "HAS_TAX_ENTITY";
         public final static String PRODUCED_BY = "PRODUCED_BY";
         public final static String HAS_ADDITIONAL_COMMENT = "HAS_ADDITIONAL_COMMENT";
-    }
-
-    public enum CompanyRelationships {
-        ELEMENT;
-
-        public final static String HAS_COMPANY_ID = "HAS_COMPANY_ID";
-        public final static String HAS_TAX_REGISTRATION_NUMBER = "HAS_TAX_REGISTRATION_NUMBER";
-        public final static String HAS_BUSINESS_NAME = "HAS_BUSINESS_NAME";
-
-        public final static String HAS_ADDRESS = "HAS_ADDRESS";
-
-        public final static String HAS_TELEPHONE = "HAS_TELEPHONE";
-        public final static String HAS_FAX = "HAX_FAX";
-        public final static String HAS_EMAIL = "HAS_EMAIL";
-        public final static String HAS_WEBSITE = "HAS_WEBSITE";
     }
 
     public enum FiscalYearRelationships {
@@ -138,6 +143,8 @@ public class Entities {
     public enum CustomerRelationships {
         ELEMENT;
 
+        public final static String REPRESENTS = "REPRESENTS";
+
         public final static String HAS_CUSTOMER_TAX_ID = "HAS_CUSTOMER_TAX_ID";
         public final static String HAS_CONTACT = "HAS_CONTACT";
         public final static String HAS_BILLING_ADDRESS = "HAS_BILLING_ADDRESS";
@@ -151,6 +158,8 @@ public class Entities {
 
     public enum SupplierRelationships {
         ELEMENT;
+
+        public final static String REPRESENTS = "REPRESENTS";
 
         public final static String HAS_SUPPLIER_TAX_ID = "HAS_SUPPLIER_TAX_ID";
         public final static String HAS_CONTACT = "HAS_CONTACT";

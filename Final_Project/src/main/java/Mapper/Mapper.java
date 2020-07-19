@@ -3,7 +3,6 @@ package Mapper;
 import Enumerations.Elements;
 import Enumerations.Entities;
 import Exceptions.MapException;
-import org.neo4j.driver.Driver;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,7 +10,6 @@ import java.util.Map;
 
 public class Mapper {
 
-    private final Driver driver;
     private final QueryConstructor constructor;
 
     private int depth;
@@ -21,17 +19,18 @@ public class Mapper {
     private final Map<String, String> container;
 
     /*Listas de auxílio à criação de relações entre entidades*/
+    private String rootCompany;
     private final Map<String, String> companies;
     private final Map<String, String> accounts;
     private final Map<String, String> customers;
     private final Map<String, String> suppliers;
+    private final Map<String, String> represents;
     private final Map<String, String> products;
     private final Map<String, String> sources;
     private final Map<String, String> transactions;
     private final Map<String, String> documents;
 
-    public Mapper(Driver driver, String fileName) {
-        this.driver = driver;
+    public Mapper(String fileName) {
         this.constructor = new QueryConstructor();
         this.depth = -1;
         this.currentSequences = new LinkedList<>();
@@ -42,6 +41,7 @@ public class Mapper {
         this.accounts = new HashMap<>();
         this.customers = new HashMap<>();
         this.suppliers = new HashMap<>();
+        this.represents = new HashMap<>();
         this.products = new HashMap<>();
         this.transactions = new HashMap<>();
         this.documents = new HashMap<>();
@@ -70,11 +70,8 @@ public class Mapper {
             e.printStackTrace();
             System.out.println(e.getMessage());
             System.exit(1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("\nElement not mapped found!\nElement: " + element + "\n.");
-            System.exit(1);
         }
+
     }
 
     public String requestQuery() {
@@ -86,6 +83,7 @@ public class Mapper {
         if (Elements.RootElement.AuditFile.equalsIgnoreCase(this.currentSequences.get(count))) {
 
             if (Elements.RootElement.AuditFile.equalsIgnoreCase(element)) {
+
                 String identifier = this.constructor.CREATE("FileName", this.fileName);
                 this.constructor.RELATIONSHIP_TYPE_OF(identifier, Entities.EntitiesValues.File);
                 this.container.put(Entities.EntitiesValues.File, identifier);
@@ -226,25 +224,24 @@ public class Mapper {
 
                 case Elements.Header.CompanyName:
 
-                    identifier = this.constructor.CREATE(element, value);
-                    this.container.put(Entities.EntitiesValues.Company, identifier);
+                    this.rootCompany = this.constructor.CREATE(element, value);
 
-                    this.constructor.RELATIONSHIP_TYPE_OF(identifier, Entities.EntitiesValues.Company);
+                    this.constructor.RELATIONSHIP_TYPE_OF(this.rootCompany, Entities.EntitiesValues.Company);
 
                     this.constructor.RELATIONSHIP(
                             this.container.get(Entities.EntitiesValues.File),
-                            identifier,
+                            this.rootCompany,
                             Entities.FileRelationships.RELATED_TO
                     );
 
                     this.constructor.RELATIONSHIP(
-                            identifier,
+                            this.rootCompany,
                             this.container.remove(Elements.Header.CompanyID),
                             Entities.CompanyRelationships.HAS_COMPANY_ID
                     );
 
                     this.constructor.RELATIONSHIP(
-                            identifier,
+                            this.rootCompany,
                             this.container.remove(Elements.Header.TaxRegistrationNumber),
                             Entities.CompanyRelationships.HAS_TAX_REGISTRATION_NUMBER
                     );
@@ -254,7 +251,7 @@ public class Mapper {
                 case Elements.Header.BussinessName:
 
                     this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.Company),
+                            this.rootCompany,
                             this.constructor.CREATE(element, value),
                             Entities.CompanyRelationships.HAS_BUSINESS_NAME
                     );
@@ -380,7 +377,7 @@ public class Mapper {
                 case Elements.Header.Telephone:
 
                     this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.Company),
+                            this.rootCompany,
                             this.constructor.CREATE(element, value),
                             Entities.CompanyRelationships.HAS_TELEPHONE
                     );
@@ -390,7 +387,7 @@ public class Mapper {
                 case Elements.Header.Fax:
 
                     this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.Company),
+                            this.rootCompany,
                             this.constructor.CREATE(element, value),
                             Entities.CompanyRelationships.HAS_FAX
                     );
@@ -400,7 +397,7 @@ public class Mapper {
                 case Elements.Header.Email:
 
                     this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.Company),
+                            this.rootCompany,
                             this.constructor.CREATE(element, value),
                             Entities.CompanyRelationships.HAS_EMAIL
                     );
@@ -410,7 +407,7 @@ public class Mapper {
                 case Elements.Header.Website:
 
                     this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.Company),
+                            this.rootCompany,
                             this.constructor.CREATE(element, value),
                             Entities.CompanyRelationships.HAS_WEBSITE
                     );
@@ -433,9 +430,9 @@ public class Mapper {
                     this.container.put(Entities.EntitiesValues.Address, identifier);
 
                     this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.Company),
+                            this.rootCompany,
                             identifier,
-                            Entities.CompanyRelationships.HAS_ADDRESS
+                            Entities.CompanyRelationships.HAS_COMPANY_ADDRESS
                     );
 
                 } else {
@@ -764,27 +761,35 @@ public class Mapper {
 
                 case Elements.Customer.CompanyName:
 
+                    String customer = this.container.get(Entities.EntitiesValues.Customer);
+
                     if (this.companies.containsKey(value)) {
 
+                        identifier = this.companies.get(value);
+
                         this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Customer),
-                                this.companies.get(value),
-                                Entities.OtherRelationships.HAS_COMPANY
+                                customer,
+                                identifier,
+                                Entities.CustomerRelationships.REPRESENTS
                         );
 
                     } else {
 
                         identifier = this.constructor.CREATE(element, value);
 
+                        this.constructor.RELATIONSHIP_TYPE_OF(identifier, Entities.EntitiesValues.Company);
+
                         this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Customer),
+                                customer,
                                 identifier,
-                                Entities.OtherRelationships.HAS_COMPANY
+                                Entities.CustomerRelationships.REPRESENTS
                         );
 
                         this.companies.put(value, identifier);
 
                     }
+
+                    this.represents.put(customer, identifier);
 
                     break;
 
@@ -961,20 +966,26 @@ public class Mapper {
 
                 case Elements.Supplier.CompanyName:
 
+                    String supplier = this.container.get(Entities.EntitiesValues.Supplier);
+
                     if (this.companies.containsKey(value)) {
 
+                        identifier = this.companies.get(value);
+
                         this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Supplier),
-                                this.companies.get(value),
-                                Entities.OtherRelationships.HAS_COMPANY
+                                supplier,
+                                identifier,
+                                Entities.SupplierRelationships.REPRESENTS
                         );
 
                     } else {
 
                         identifier = this.constructor.CREATE(element, value);
 
+                        this.constructor.RELATIONSHIP_TYPE_OF(identifier, Entities.EntitiesValues.Company);
+
                         this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Supplier),
+                                supplier,
                                 identifier,
                                 Entities.OtherRelationships.HAS_COMPANY
                         );
@@ -982,6 +993,8 @@ public class Mapper {
                         this.companies.put(value, identifier);
 
                     }
+
+                    this.represents.put(supplier, identifier);
 
                     break;
 
@@ -1553,8 +1566,10 @@ public class Mapper {
 
                 case Elements.Transaction.CustomerID:
 
+                    String transaction = this.container.get(Entities.EntitiesValues.Transaction);
+
                     this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.Transaction),
+                            transaction,
                             this.customers.get(value),
                             Entities.OtherRelationships.HAS_CUSTOMER
                     );
@@ -1988,6 +2003,18 @@ public class Mapper {
                             Entities.SalesInvoicesRelationships.HAS_INVOICE
                     );
 
+                    this.constructor.RELATIONSHIP(
+                            this.container.get(Entities.EntitiesValues.SalesInvoices),
+                            identifier,
+                            Entities.SalesInvoicesRelationships.HAS_INVOICE
+                    );
+
+                    this.constructor.RELATIONSHIP(
+                            this.rootCompany,
+                            identifier,
+                            Entities.CompanyRelationships.SOLD_INVOICE
+                    );
+
                     break;
 
                 case Elements.Invoice.ATCUD:
@@ -2108,11 +2135,23 @@ public class Mapper {
 
                 case Elements.Invoice.CustomerID:
 
+                    identifier = this.container.get(Entities.EntitiesValues.Invoice);
+
                     this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.Invoice),
+                            identifier,
                             this.customers.get(value),
                             Entities.OtherRelationships.HAS_CUSTOMER
                     );
+
+                    if (this.represents.containsKey(value)) {
+
+                        this.constructor.RELATIONSHIP(
+                                this.represents.get(value),
+                                identifier,
+                                Entities.CompanyRelationships.BOUGHT_INVOICE
+                        );
+
+                    }
 
                     break;
 

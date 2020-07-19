@@ -24,7 +24,7 @@ public class StAX {
         try {
             XMLInputFactory factory = XMLInputFactory.newInstance();
             XMLEventReader reader = factory.createXMLEventReader(new FileInputStream(XMLFile.getAbsolutePath()));
-            Mapper mapper = new Mapper(driver, XMLFile.getName());
+            Mapper mapper = new Mapper(XMLFile.getName());
 
             XMLEvent nextEvent;
             String current = null;
