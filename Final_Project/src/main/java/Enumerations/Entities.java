@@ -78,7 +78,7 @@ public class Entities {
         public final static String HAS_COMPANY_ADDRESS = "HAS_COMPANY_ADDRESS";
 
         public final static String HAS_TELEPHONE = "HAS_TELEPHONE";
-        public final static String HAS_FAX = "HAX_FAX";
+        public final static String HAS_FAX = "HAS_FAX";
         public final static String HAS_EMAIL = "HAS_EMAIL";
         public final static String HAS_WEBSITE = "HAS_WEBSITE";
 

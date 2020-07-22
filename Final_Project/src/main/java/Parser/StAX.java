@@ -4,6 +4,7 @@ import Enumerations.Elements;
 import Mapper.Mapper;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.Session;
+import org.neo4j.driver.Transaction;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -76,6 +77,14 @@ public class StAX {
             System.out.println("[SERVER] Importing to database the file " + XMLFile.getName() + " ... ");
 
             try (Session session = driver.session()) {
+
+                /*try (Transaction transaction = session.beginTransaction()) {
+
+                    transaction.run(mapper.requestQuery());
+                    transaction.commit();
+
+                }*/
+
                 session.writeTransaction(tx -> tx.run(mapper.requestQuery()));
             }
 

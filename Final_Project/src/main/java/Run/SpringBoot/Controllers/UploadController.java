@@ -82,15 +82,6 @@ public class UploadController {
             Validator validator = schema.newValidator();
             validator.validate(new StAXSource(reader));
 
-            /*Criamos o driver, que conecta à base de dados*/
-            /*Driver driver = GraphDatabase.driver(
-                    env.getProperty("NEO4J_URL"),
-                    AuthTokens.basic(
-                            Objects.requireNonNull(env.getProperty("NEO4J_USERNAME")),
-                            Objects.requireNonNull(env.getProperty("NEO4J_PASSWORD"))
-                    )
-            );*/
-
             if (CypherQueries.isFileUnique(driver, saftp.getName())) {
                 System.out.println("[SERVER] Starting to map the file: " + file.getOriginalFilename());
 

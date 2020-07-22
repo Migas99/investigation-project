@@ -49,16 +49,16 @@ public class CypherQueries {
     public static void loadEntities(Driver driver) {
         Iterator<String> iterator = Entities.EntitiesList.getList().iterator();
         int count = 0;
-        String query = "";
+        StringBuilder query = new StringBuilder();
 
         while (iterator.hasNext()) {
             String identifier = "identity" + count;
-            query = query + "CREATE (" + identifier + ":" + iterator.next() + ") ";
+            query.append("CREATE (").append(identifier).append(":").append(iterator.next()).append(")\n");
             count++;
         }
 
         try (Session session = driver.session()) {
-            String finalQuery = query;
+            String finalQuery = query.toString();
             session.writeTransaction(tx -> tx.run(finalQuery));
         }
     }

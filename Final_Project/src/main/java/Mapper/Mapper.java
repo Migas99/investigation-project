@@ -86,6 +86,7 @@ public class Mapper {
 
                 String identifier = this.constructor.CREATE("FileName", this.fileName);
                 this.constructor.RELATIONSHIP_TYPE_OF(identifier, Entities.EntitiesValues.File);
+
                 this.container.put(Entities.EntitiesValues.File, identifier);
 
             } else {
@@ -224,7 +225,7 @@ public class Mapper {
 
                 case Elements.Header.CompanyName:
 
-                    this.rootCompany = this.constructor.CREATE(element, value);
+                    this.rootCompany = this.constructor.MERGE(element, value);
 
                     this.constructor.RELATIONSHIP_TYPE_OF(this.rootCompany, Entities.EntitiesValues.Company);
 
@@ -775,7 +776,7 @@ public class Mapper {
 
                     } else {
 
-                        identifier = this.constructor.CREATE(element, value);
+                        identifier = this.constructor.MERGE(element, value);
 
                         this.constructor.RELATIONSHIP_TYPE_OF(identifier, Entities.EntitiesValues.Company);
 
@@ -980,7 +981,7 @@ public class Mapper {
 
                     } else {
 
-                        identifier = this.constructor.CREATE(element, value);
+                        identifier = this.constructor.MERGE(element, value);
 
                         this.constructor.RELATIONSHIP_TYPE_OF(identifier, Entities.EntitiesValues.Company);
 
@@ -2136,17 +2137,18 @@ public class Mapper {
                 case Elements.Invoice.CustomerID:
 
                     identifier = this.container.get(Entities.EntitiesValues.Invoice);
+                    String customer = this.customers.get(value);
 
                     this.constructor.RELATIONSHIP(
                             identifier,
-                            this.customers.get(value),
+                            customer,
                             Entities.OtherRelationships.HAS_CUSTOMER
                     );
 
-                    if (this.represents.containsKey(value)) {
+                    if (this.represents.containsKey(customer)) {
 
                         this.constructor.RELATIONSHIP(
-                                this.represents.get(value),
+                                this.represents.get(customer),
                                 identifier,
                                 Entities.CompanyRelationships.BOUGHT_INVOICE
                         );
