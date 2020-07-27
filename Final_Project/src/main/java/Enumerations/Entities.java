@@ -64,6 +64,7 @@ public class Entities {
 
         public static final String Payments = "Payments";
 
+        public final static String CompanyAddress = "CompanyAddress";
         public final static String Address = "Address";
         public final static String Contacts = "Contacts";
     }
@@ -75,17 +76,28 @@ public class Entities {
         public final static String HAS_TAX_REGISTRATION_NUMBER = "HAS_TAX_REGISTRATION_NUMBER";
         public final static String HAS_BUSINESS_NAME = "HAS_BUSINESS_NAME";
 
-        public final static String HAS_COMPANY_ADDRESS = "HAS_COMPANY_ADDRESS";
+        public final static String HAS_BUILDING_NUMBER = "HAS_BUILDING_NUMBER";
+        public final static String HAS_STREET_NAME = "HAS_STREET_NAME";
+        public final static String HAS_ADDRESS_DETAIL = "HAS_ADDRESS_DETAIL";
+        public final static String HAS_CITY = "HAS_CITY";
+        public final static String HAS_POSTAL_CODE = "HAS_POSTAL_CODE";
+        public final static String HAS_REGION = "HAS_REGION";
+        public final static String HAS_COUNTRY = "HAS_COUNTRY";
 
         public final static String HAS_TELEPHONE = "HAS_TELEPHONE";
         public final static String HAS_FAX = "HAS_FAX";
         public final static String HAS_EMAIL = "HAS_EMAIL";
         public final static String HAS_WEBSITE = "HAS_WEBSITE";
 
+        public final static String IS_CUSTOMER_OF = "IS_CUSTOMER_OF";
+        public final static String IS_SUPPLIER_OF = "IS_SUPPLIER_OF";
+
         public final static String RELATED_TO_TRANSACTION = "RELATED_TO_TRANSACTION";
 
         public final static String SOLD_INVOICE = "SOLD_INVOICE";
         public final static String BOUGHT_INVOICE = "BOUGHT_INVOICE";
+
+
     }
 
     public enum FileRelationships {
@@ -262,7 +274,7 @@ public class Entities {
         public static final String HAS_PERIOD = "HAS_PERIOD";
         public static final String HAS_INVOICE_DATE = "HAS_INVOICE_DATE";
         public static final String HAS_INVOICE_TYPE = "HAS_INVOICE_TYPE";
-        public static final String HAS_EAC_Code = "HAS_EAC_Code";
+        public static final String HAS_EAC_CODE = "HAS_EAC_CODE";
         public static final String HAS_SYSTEM_ENTRY_DATE = "HAS_SYSTEM_ENTRY_DATE";
         public static final String HAS_MOVEMENT_END_TIME = "HAS_MOVEMENT_END_TIME";
         public static final String HAS_MOVEMENT_START_TIME = "HAS_MOVEMENT_START_TIME";

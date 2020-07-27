@@ -1,167 +1,229 @@
 package Mapper;
 
-import Enumerations.Entities;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class QueryConstructor {
 
-    private final Map<String, String> types;
-    private String matchTypesQuery;
-    private String mergeQuery;
-    private String uploadQuery;
-    private int count;
+    private final Map<String, Object> parameters;
+    private final StringBuilder mergeComponent;
+    private final StringBuilder createComponent;
+
+    private int nodeCount;
+    private int parameterCount;
 
     public QueryConstructor() {
-        this.matchTypesQuery = "";
-        this.mergeQuery = "";
-        this.uploadQuery = "";
-        this.count = 0;
-        this.types = new HashMap<>();
-
-        for (String type : Entities.EntitiesList.getList()) {
-            String identifier = "n" + this.count;
-            this.types.put(type, identifier);
-            this.matchTypesQuery = this.matchTypesQuery + "MATCH (n" + this.count + ":" + type + ")\n";
-            this.count++;
-        }
-
+        this.parameters = new HashMap<>();
+        this.mergeComponent = new StringBuilder();
+        this.createComponent = new StringBuilder();
+        this.nodeCount = 0;
+        this.parameterCount = 0;
     }
 
     public String getUploadQuery() {
+        String query = this.mergeComponent.append(this.createComponent).toString();
 
-        this.uploadQuery = this.matchTypesQuery + this.mergeQuery + this.uploadQuery;
+        System.out.println(query);
 
-        System.out.println(this.uploadQuery);
-        return this.uploadQuery;
+        return query;
     }
 
-    private void addToQuery(String extra) {
-        this.uploadQuery = this.uploadQuery + "\n" + extra;
+    public Map<String, Object> getParameters() {
+        return this.parameters;
+    }
+
+    private void addToMergeComponent(String query) {
+        this.mergeComponent.append("\n").append(query);
+    }
+
+    private void addToCreateComponent(String query) {
+        this.createComponent.append("\n").append(query);
+    }
+
+    private String newIdentifier() {
+        String identifier = "n" + this.nodeCount;
+        this.nodeCount++;
+
+        return identifier;
     }
 
     public String CREATE() {
-        String identifier = "n" + this.count;
-        this.count++;
+        String identifier = "n" + this.nodeCount;
+        this.nodeCount++;
 
-        this.addToQuery("CREATE (" + identifier + ")");
+        this.addToCreateComponent("CREATE (" + identifier + ")");
+
+        return identifier;
+    }
+
+    public String CREATE(String label) {
+        String identifier = this.newIdentifier();
+
+        this.addToCreateComponent("CREATE (" + identifier + ":" + label + ")");
 
         return identifier;
     }
 
     public String CREATE(String property, int propertyValue) {
-        String identifier = "n" + this.count;
-        this.count++;
+        String node = this.newIdentifier();
 
-        this.addToQuery("CREATE (" + identifier + " { " + property + ": " + propertyValue + " }" + ")");
+        this.addToCreateComponent("CREATE (" + node + " { " + property + ": " + propertyValue + " }" + ")");
 
-        return identifier;
-    }
-
-    public void CREATE_RANDOM(String property, int propertyValue) {
-        this.addToQuery("CREATE ({ " + property + ": " + propertyValue + " }" + ")");
+        return node;
     }
 
     public String CREATE(String property, double propertyValue) {
-        String identifier = "n" + this.count;
-        this.count++;
+        String identifier = "n" + this.nodeCount;
+        this.nodeCount++;
 
-        this.addToQuery("CREATE (" + identifier + " { " + property + ": " + propertyValue + " }" + ")");
+        this.addToCreateComponent("CREATE (" + identifier + " { " + property + ": " + propertyValue + " }" + ")");
 
         return identifier;
-    }
-
-    public void CREATE_RANDOM(String property, double propertyValue) {
-        this.addToQuery("CREATE ({ " + property + ": " + propertyValue + " }" + ")");
     }
 
     public String CREATE(String property, String propertyValue) {
-        String identifier = "n" + this.count;
-        this.count++;
+        String identifier = "n" + this.nodeCount;
+        this.nodeCount++;
 
-        this.addToQuery("CREATE (" + identifier + " { " + property + ": '" + propertyValue + "' }" + ")");
+        this.addToCreateComponent("CREATE (" + identifier + " { " + property + ": '" + propertyValue + "' }" + ")");
 
         return identifier;
     }
 
-    public void CREATE_RANDOM(String property, String propertyValue) {
-        this.addToQuery("CREATE ({ " + property + ": '" + propertyValue + "' }" + ")");
+    public String CREATE(String label, String property, int propertyValue) {
+        String identifier = "n" + this.nodeCount;
+        this.nodeCount++;
+
+        this.addToCreateComponent("CREATE (" + identifier + ":" + label + " { " + property + ": " + propertyValue + " }" + ")");
+
+        return identifier;
+    }
+
+    public String CREATE(String label, String property, double propertyValue) {
+        String identifier = "n" + this.nodeCount;
+        this.nodeCount++;
+
+        this.addToCreateComponent("CREATE (" + identifier + ":" + label + " { " + property + ": " + propertyValue + " }" + ")");
+
+        return identifier;
+    }
+
+    public String CREATE(String label, String property, String propertyValue) {
+        String identifier = "n" + this.nodeCount;
+        this.nodeCount++;
+
+        this.addToCreateComponent("CREATE (" + identifier + ":" + label + " { " + property + ": '" + propertyValue + "' }" + ")");
+
+        return identifier;
     }
 
     public String MERGE(String property, int propertyValue) {
-        String identifier = "n" + this.count;
-        this.count++;
+        String identifier = "n" + this.nodeCount;
+        this.nodeCount++;
 
-        this.mergeQuery = this.mergeQuery + "MERGE (" + identifier + " { " + property + ": " + propertyValue + " }" + ")\n";
+        this.addToMergeComponent("MERGE (" + identifier + " { " + property + ": " + propertyValue + " }" + ")");
 
         return identifier;
     }
 
     public String MERGE(String property, double propertyValue) {
-        String identifier = "n" + this.count;
-        this.count++;
+        String identifier = "n" + this.nodeCount;
+        this.nodeCount++;
 
-        this.mergeQuery = this.mergeQuery + "MERGE (" + identifier + " { " + property + ": " + propertyValue + " }" + ")\n";
+        this.addToMergeComponent("MERGE (" + identifier + " { " + property + ": " + propertyValue + " }" + ")");
 
         return identifier;
     }
 
     public String MERGE(String property, String propertyValue) {
-        String identifier = "n" + this.count;
-        this.count++;
+        String identifier = "n" + this.nodeCount;
+        this.nodeCount++;
 
-        this.mergeQuery = this.mergeQuery + "MERGE (" + identifier + " { " + property + ": '" + propertyValue + "' }" + ")\n";
+        this.addToMergeComponent("MERGE (" + identifier + " { " + property + ": '" + propertyValue + "' }" + ")");
 
         return identifier;
     }
 
-    public void CREATE_AND_RELATE_TO_RIGHT(String property, int value, String identifier, String relationship) {
-        this.addToQuery("CREATE (" + identifier + ")-[:" + relationship + "]->({" + property + ": " + value + "})");
+    public String MERGE(String label, String property, int propertyValue) {
+        String identifier = "n" + this.nodeCount;
+        this.nodeCount++;
+
+        this.addToMergeComponent("MERGE (" + identifier + ":" + label + " { " + property + ": " + propertyValue + " })");
+
+        return identifier;
     }
 
-    public void CREATE_AND_RELATE_TO_RIGHT(String property, double value, String identifier, String relationship) {
-        this.addToQuery("CREATE (" + identifier + ")-[:" + relationship + "]->({" + property + ": " + value + "})");
+    public String MERGE(String label, String property, double propertyValue) {
+        String identifier = "n" + this.nodeCount;
+        this.nodeCount++;
+
+        this.addToMergeComponent("MERGE (" + identifier + ":" + label + " { " + property + ": " + propertyValue + " })");
+
+        return identifier;
     }
 
-    public void CREATE_AND_RELATE_TO_RIGHT(String property, String value, String identifier, String relationship) {
-        this.addToQuery("CREATE (" + identifier + ")-[:" + relationship + "]->({" + property + ": '" + value + "'})");
+    public String MERGE(String label, String property, String propertyValue) {
+        String identifier = "n" + this.nodeCount;
+        this.nodeCount++;
+
+        this.addToMergeComponent("MERGE (" + identifier + ":" + label + " { " + property + ": '" + propertyValue + "' })");
+
+        return identifier;
     }
 
-    public void CREATE_AND_RELATE_TO_LEFT(String property, int value, String identifier, String relationship) {
-        this.addToQuery("CREATE ({" + property + ": " + value + "})-[:" + relationship + "]->(" + identifier + ")");
+    public void CREATE_AND_RELATE_TO_RIGHT(String from, String property, int value, String relationship) {
+        this.addToCreateComponent("CREATE (" + from + ")-[:" + relationship + "]->({" + property + ": " + value + "})");
     }
 
-    public void CREATE_AND_RELATE_TO_LEFT(String property, double value, String identifier, String relationship) {
-        this.addToQuery("CREATE ({" + property + ": " + value + "})-[:" + relationship + "]->(" + identifier + ")");
+    public void CREATE_AND_RELATE_TO_RIGHT(String from, String property, double value, String relationship) {
+        this.addToCreateComponent("CREATE (" + from + ")-[:" + relationship + "]->({" + property + ": " + value + "})");
     }
 
-    public void CREATE_AND_RELATE_TO_LEFT(String property, String value, String identifier, String relationship) {
-        this.addToQuery("CREATE ({" + property + ": '" + value + "'})-[:" + relationship + "]->(" + identifier + ")");
+    public void CREATE_AND_RELATE_TO_RIGHT(String from, String property, String value, String relationship) {
+        this.addToCreateComponent("CREATE (" + from + ")-[:" + relationship + "]->({" + property + ": '" + value + "'})");
     }
 
-    public void PROPERTY(String identifier, String property, int propertyValue) {
-        this.addToQuery("SET " + identifier + "." + property + " = " + propertyValue);
+    public void CREATE_AND_RELATE_TO_LEFT(String property, int value, String target, String relationship) {
+        this.addToCreateComponent("CREATE ({" + property + ": " + value + "})-[:" + relationship + "]->(" + target + ")");
     }
 
-    public void PROPERTY(String identifier, String property, double propertyValue) {
-        this.addToQuery("SET " + identifier + "." + property + " = " + propertyValue);
+    public void CREATE_AND_RELATE_TO_LEFT(String property, double value, String target, String relationship) {
+        this.addToCreateComponent("CREATE ({" + property + ": " + value + "})-[:" + relationship + "]->(" + target + ")");
     }
 
-    public void PROPERTY(String identifier, String property, String propertyValue) {
-        this.addToQuery("SET " + identifier + "." + property + " = '" + propertyValue + "'");
+    public void CREATE_AND_RELATE_TO_LEFT(String property, String value, String target, String relationship) {
+        this.addToCreateComponent("CREATE ({" + property + ": '" + value + "'})-[:" + relationship + "]->(" + target + ")");
+    }
+
+    public void MERGE_AND_RELATE_TO_RIGHT(String from, String property, String value, String relationship) {
+        this.addToMergeComponent("MERGE (" + from + ")-[:" + relationship + "]->({" + property + ": '" + value + "'})");
+    }
+
+    public void MERGE_AND_RELATE_TO_RIGHT(String from, String label, String property, String value, String relationship) {
+        this.addToMergeComponent("MERGE (" + from + ")-[:" + relationship + "]->(:" + label + " {" + property + ": '" + value + "'})");
+    }
+
+    public void SET_LABEL(String identifier, String label) {
+        this.addToCreateComponent("SET " + identifier + ":" + label);
+    }
+
+    public void SET_PROPERTY(String identifier, String property, int propertyValue) {
+        this.addToCreateComponent("SET " + identifier + "." + property + " = " + propertyValue);
+    }
+
+    public void SET_PROPERTY(String identifier, String property, double propertyValue) {
+        this.addToCreateComponent("SET " + identifier + "." + property + " = " + propertyValue);
+    }
+
+    public void SET_PROPERTY(String identifier, String property, String propertyValue) {
+        this.addToCreateComponent("SET " + identifier + "." + property + " = '" + propertyValue + "'");
     }
 
     public void RELATIONSHIP(String identifier1, String identifier2, String relationship) {
-        this.addToQuery("CREATE (" + identifier1 + ")-[:" + relationship + "]->(" + identifier2 + ")");
+        this.addToCreateComponent("CREATE (" + identifier1 + ")-[:" + relationship + "]->(" + identifier2 + ")");
     }
 
-    public void RELATIONSHIP_WITH_MERGE(String identifier1, String identifier2, String relationship) {
-        this.addToQuery("MERGE (" + identifier1 + ")-[:" + relationship + "]->(" + identifier2 + ")");
+    public void MERGE_RELATIONSHIP(String identifier1, String identifier2, String relationship) {
+        this.addToMergeComponent("MERGE (" + identifier1 + ")-[:" + relationship + "]->(" + identifier2 + ")");
     }
-
-    public void RELATIONSHIP_TYPE_OF(String identifier, String label) {
-        this.addToQuery("CREATE (" + identifier + ")-[:" + Entities.OtherRelationships.TYPE_OF + "]->(" + this.types.get(label) + ")");
-    }
-
 }

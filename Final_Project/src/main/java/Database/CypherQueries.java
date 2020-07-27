@@ -1,15 +1,10 @@
-package Cypher;
+package Database;
 
 import Enumerations.Entities;
-import org.neo4j.driver.Driver;
-import org.neo4j.driver.Record;
-import org.neo4j.driver.Session;
+import org.neo4j.driver.*;
 
 import java.time.LocalDate;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CypherQueries {
 
@@ -715,7 +710,7 @@ public class CypherQueries {
                     + "OPTIONAL MATCH "
                     + "(invoice)-[:" + Entities.OtherRelationships.HAS_SOURCE + "]->(source) "
                     + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_EAC_Code + "]->(eacCode) "
+                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_EAC_CODE + "]->(eacCode) "
                     + "OPTIONAL MATCH "
                     + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_SYSTEM_ENTRY_DATE + "]->(entryDate) "
                     + "OPTIONAL MATCH "

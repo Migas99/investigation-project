@@ -1,10 +1,9 @@
 package Run.SpringBoot.Service;
 
-import Cypher.CypherQueries;
+import Database.CypherQueries;
+import Database.Neo4jConnector;
 import graphql.schema.DataFetcher;
-import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
-import org.neo4j.driver.GraphDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -22,13 +21,7 @@ public class Neo4jDataFetcher {
 
     @PostConstruct
     private void init() {
-        this.driver = GraphDatabase.driver(
-                Objects.requireNonNull(env.getProperty("NEO4J_URL")),
-                AuthTokens.basic(
-                        Objects.requireNonNull(env.getProperty("NEO4J_USERNAME")),
-                        Objects.requireNonNull(env.getProperty("NEO4J_PASSWORD"))
-                )
-        );
+        this.driver = Neo4jConnector.getDriver();
     }
 
     public DataFetcher getListOfAllAccounts() {

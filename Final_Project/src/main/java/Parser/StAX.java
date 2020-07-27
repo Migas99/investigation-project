@@ -21,8 +21,10 @@ import javax.xml.stream.events.*;
  */
 public class StAX {
 
-    public static void processXMLToNeo4j(Driver driver, File XMLFile) {
+    public static void processXMLToNeo4j(File XMLFile) {
+
         try {
+
             XMLInputFactory factory = XMLInputFactory.newInstance();
             XMLEventReader reader = factory.createXMLEventReader(new FileInputStream(XMLFile.getAbsolutePath()));
             Mapper mapper = new Mapper(XMLFile.getName());
@@ -75,18 +77,7 @@ public class StAX {
             }
 
             System.out.println("[SERVER] Importing to database the file " + XMLFile.getName() + " ... ");
-
-            try (Session session = driver.session()) {
-
-                /*try (Transaction transaction = session.beginTransaction()) {
-
-                    transaction.run(mapper.requestQuery());
-                    transaction.commit();
-
-                }*/
-
-                session.writeTransaction(tx -> tx.run(mapper.requestQuery()));
-            }
+            mapper.uploadToDatabase();
 
         } catch (FileNotFoundException | XMLStreamException e) {
             e.printStackTrace();

@@ -1,14 +1,7 @@
 package Run.SpringBoot.Controllers;
 
-import Cypher.CypherQueries;
+import Database.Neo4jConnector;
 import Parser.StAX;
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
-import graphql.GraphQL;
-import graphql.schema.GraphQLSchema;
-import org.neo4j.driver.AuthTokens;
-import org.neo4j.driver.Driver;
-import org.neo4j.driver.GraphDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,23 +31,9 @@ public class UploadController {
     @Autowired
     private Environment env;
 
-    private Driver driver;
-
     @PostConstruct
     public void init() {
-        /*Criamos o driver, que conecta à base de dados*/
-        this.driver = GraphDatabase.driver(
-                env.getProperty("NEO4J_URL"),
-                AuthTokens.basic(
-                        Objects.requireNonNull(env.getProperty("NEO4J_USERNAME")),
-                        Objects.requireNonNull(env.getProperty("NEO4J_PASSWORD"))
-                )
-        );
-
-        if (!CypherQueries.areIdentityNodesLoaded(this.driver)) {
-            CypherQueries.loadEntities(this.driver);
-        }
-
+        Neo4jConnector.initializeDatabase();
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
@@ -82,16 +61,10 @@ public class UploadController {
             Validator validator = schema.newValidator();
             validator.validate(new StAXSource(reader));
 
-            if (CypherQueries.isFileUnique(driver, saftp.getName())) {
-                System.out.println("[SERVER] Starting to map the file: " + file.getOriginalFilename());
-
-                StAX.processXMLToNeo4j(driver, saftp);
-
-                System.out.println("[SERVER] Done mapping the file: " + file.getOriginalFilename());
-                map.put("Message", "The file " + saftp.getName() + " was uploaded and mapped into the database with success.");
-            } else {
-                map.put("Message", "The file was already uploaded. If that is not the case, change its name.");
-            }
+            System.out.println("[SERVER] Starting to map the file: " + file.getOriginalFilename());
+            StAX.processXMLToNeo4j(saftp);
+            System.out.println("[SERVER] Done mapping the file: " + file.getOriginalFilename());
+            map.put("Message", "The file " + saftp.getName() + " was uploaded and mapped into the database with success.");
 
         } catch (Exception e) {
 
