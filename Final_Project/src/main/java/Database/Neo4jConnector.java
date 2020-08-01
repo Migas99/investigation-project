@@ -22,8 +22,24 @@ public class Neo4jConnector {
 
         try (Session session = driver.session()) {
             session.writeTransaction(tx -> tx.run(
-                    "CREATE INDEX CompanyNameIndex FOR (n:" + Entities.EntitiesValues.Company + ") ON (n." + Elements.Header.CompanyName + ")"
+                    "CREATE INDEX CompanyNameIndex FOR (n:" + Entities.Labels.Company + ") ON (n." + Elements.Header.CompanyName + ")"
             ));
+            session.writeTransaction(tx -> tx.run(
+                    "CREATE INDEX TaxRegistrationNumberIndex FOR (n:" + Entities.Labels.CompanyInfo + ") ON (n." + Elements.Header.TaxRegistrationNumber + ")"
+            ));
+        }
+
+        driver.close();
+    }
+
+    public static void uploadToDatabase(String query){
+        Driver driver = getDriver();
+
+        try (Session session = driver.session()) {
+            System.out.println("[SERVER] Processing the query ...");
+            session.writeTransaction(tx -> tx.run(query));
+            System.out.println("[SERVER] Merging entities ...");
+            session.writeTransaction(tx -> tx.run(CypherQueries.mergeCompanies()));
         }
 
         driver.close();

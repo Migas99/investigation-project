@@ -27,7 +27,7 @@ public class Elements {
         public static final String TaxRegistrationNumber = "TaxRegistrationNumber";
         public static final String TaxAccountingBasis = "TaxAccountingBasis";
         public static final String CompanyName = "CompanyName";
-        public static final String BussinessName = "BussinessName";
+        public static final String BusinessName = "BusinessName";
         public static final String CompanyAddress = "CompanyAddress";
         public static final String FiscalYear = "FiscalYear";
         public static final String StartDate = "StartDate";
@@ -301,14 +301,122 @@ public class Elements {
         public static final String WithholdingTax = "WithholdingTax";
     }
 
+    public enum MovementOfGoods {
+        ELEMENT;
+
+        public static final String NumberOfMovementLines = "NumberOfMovementLines";
+        public static final String TotalQuantityIssued = "TotalQuantityIssued";
+        public static final String StockMovement = "StockMovement";
+
+    }
+
+    public enum StockMovement {
+        ELEMENT;
+
+        public static final String DocumentNumber = "DocumentNumber";
+        public static final String ATCUD = "ATCUD";
+        public static final String DocumentStatus = "DocumentStatus";
+        public static final String Hash = "Hash";
+        public static final String HashControl = "HashControl";
+        public static final String Period = "Period";
+        public static final String MovementDate = "MovementDate";
+        public static final String MovementType = "MovementType";
+        public static final String SystemEntryDate = "SystemEntryDate";
+        public static final String TransactionID = "TransactionID";
+        public static final String CustomerID = "CustomerID";
+        public static final String SupplierID = "SupplierID";
+        public static final String SourceID = "SourceID";
+        public static final String EACCode = "EACCode";
+        public static final String MovementComments = "MovementComments";
+        public static final String ShipTo = "ShipTo";
+        public static final String ShipFrom = "ShipFrom";
+        public static final String MovementEndTime = "MovementEndTime";
+        public static final String MovementStartTime = "MovementStartTime";
+        public static final String ATDocCodeID = "ATDocCodeID";
+        public static final String Line = "Line";
+        public static final String DocumentTotals = "DocumentTotals";
+
+    }
+
+    public enum WorkingDocuments {
+        ELEMENT;
+
+        public static final String NumberOfEntries = "NumberOfEntries";
+        public static final String TotalDebit = "TotalDebit";
+        public static final String TotalCredit = "TotalCredit";
+        public static final String WorkDocument = "WorkDocument";
+    }
+
+    public enum WorkDocument {
+        ELEMENT;
+
+        public static final String DocumentNumber = "DocumentNumber";
+        public static final String ATCUD = "ATCUD";
+        public static final String DocumentStatus = "DocumentStatus";
+        public static final String Hash = "Hash";
+        public static final String HashControl = "HashControl";
+        public static final String Period = "Period";
+        public static final String WorkDate = "WorkDate";
+        public static final String WorkType = "WorkType";
+        public static final String SourceID = "SourceID";
+        public static final String EACCode = "EACCode";
+        public static final String SystemEntryDate = "SystemEntryDate";
+        public static final String TransactionID = "TransactionID";
+        public static final String CustomerID = "CustomerID";
+        public static final String Line = "Line";
+        public static final String DocumentTotals = "DocumentTotals";
+    }
+
+    public enum Payments {
+        ELEMENT;
+
+        public static final String NumberOfEntries = "NumberOfEntries";
+        public static final String TotalDebit = "TotalDebit";
+        public static final String TotalCredit = "TotalCredit";
+        public static final String Payment = "Payment";
+    }
+
+    public enum Payment {
+        ELEMENT;
+
+        public static final String PaymentRefNo = "PaymentRefNo";
+        public static final String ATCUD = "ATCUD";
+        public static final String Period = "Period";
+        public static final String TransactionID = "TransactionID";
+        public static final String TransactionDate = "TransactionDate";
+        public static final String PaymentType = "PaymentType";
+        public static final String Description = "Description";
+        public static final String SystemID = "SystemID";
+        public static final String DocumentStatus = "DocumentStatus";
+        public static final String PaymentMethod = "PaymentMethod";
+        public static final String SourceID = "SourceID";
+        public static final String SystemEntryDate = "SystemEntryDate";
+        public static final String CustomerID = "CustomerID";
+        public static final String Line = "Line";
+        public static final String DocumentTotals = "DocumentTotals";
+        public static final String WithholdingTax = "WithholdingTax";
+    }
+
     public enum DocumentStatus {
         ELEMENT;
 
         public static final String InvoiceStatus = "InvoiceStatus";
         public static final String InvoiceStatusDate = "InvoiceStatusDate";
+
+        public static final String MovementStatus = "MovementStatus";
+        public static final String MovementStatusDate = "MovementStatusDate";
+
+        public static final String WorkStatus = "WorkStatus";
+        public static final String WorkStatusDate = "WorkStatusDate";
+
+        public static final String PaymentStatus = "PaymentStatus";
+        public static final String PaymentStatusDate = "PaymentStatusDate";
+
         public static final String Reason = "Reason";
         public static final String SourceID = "SourceID";
+
         public static final String SourceBilling = "SourceBilling";
+        public static final String SourcePayment = "SourcePayment";
     }
 
     public enum SpecialRegimes {
@@ -317,38 +425,6 @@ public class Elements {
         public static final String SelfBillingIndicator = "SelfBillingIndicator";
         public static final String CashVATSchemeIndicator = "CashVATSchemeIndicator";
         public static final String ThirdPartiesBillingIndicator = "ThirdPartiesBillingIndicator";
-    }
-
-    public enum ShipTo {
-        ELEMENT;
-
-        public static final String DeliveryID = "DeliveryID";
-        public static final String DeliveryDate = "DeliveryDate";
-        public static final String WarehouseID = "WarehouseID";
-        public static final String LocationID = "LocationID";
-        public static final String Address = "Address";
-    }
-
-    public enum ShipFrom {
-        ELEMENT;
-
-        public static final String DeliveryID = "DeliveryID";
-        public static final String DeliveryDate = "DeliveryDate";
-        public static final String WarehouseID = "WarehouseID";
-        public static final String LocationID = "LocationID";
-        public static final String Address = "Address";
-    }
-
-    public enum Address {
-        ELEMENT;
-
-        public static final String BuildingNumber = "BuildingNumber";
-        public static final String StreetName = "StreetName";
-        public static final String AddressDetail = "AddressDetail";
-        public static final String City = "City";
-        public static final String PostalCode = "PostalCode";
-        public static final String Region = "Region";
-        public static final String Country = "Country";
     }
 
     public enum Line {
@@ -373,6 +449,8 @@ public class Elements {
         public static final String TaxExemptionCode = "TaxExemptionCode";
         public static final String SettlementAmount = "SettlementAmount";
         public static final String CustomsInformation = "CustomsInformation";
+
+        public static final String SourceDocumentID = "SourceDocumentID";
     }
 
     public enum OrderReferences {
@@ -380,6 +458,14 @@ public class Elements {
 
         public static final String OriginatingON = "OriginatingON";
         public static final String OrderDate = "OrderDate";
+    }
+
+    public enum SourceDocumentID {
+        ELEMENT;
+
+        public static final String OriginatingON = "OriginatingON";
+        public static final String InvoiceDate = "InvoiceDate";
+        public static final String Description = "Description";
     }
 
     public enum References {
@@ -440,7 +526,7 @@ public class Elements {
         public static final String PaymentTerms = "PaymentTerms";
     }
 
-    public enum Payment {
+    public enum PaymentMethod {
         ELEMENT;
 
         public static final String PaymentMechanism = "PaymentMechanism";
@@ -454,6 +540,38 @@ public class Elements {
         public static final String WithholdingTaxType = "WithholdingTaxType";
         public static final String WithholdingTaxDescription = "WithholdingTaxDescription";
         public static final String WithholdingTaxAmount = "WithholdingTaxAmount";
+    }
+
+    public enum ShipTo {
+        ELEMENT;
+
+        public static final String DeliveryID = "DeliveryID";
+        public static final String DeliveryDate = "DeliveryDate";
+        public static final String WarehouseID = "WarehouseID";
+        public static final String LocationID = "LocationID";
+        public static final String Address = "Address";
+    }
+
+    public enum ShipFrom {
+        ELEMENT;
+
+        public static final String DeliveryID = "DeliveryID";
+        public static final String DeliveryDate = "DeliveryDate";
+        public static final String WarehouseID = "WarehouseID";
+        public static final String LocationID = "LocationID";
+        public static final String Address = "Address";
+    }
+
+    public enum Address {
+        ELEMENT;
+
+        public static final String BuildingNumber = "BuildingNumber";
+        public static final String StreetName = "StreetName";
+        public static final String AddressDetail = "AddressDetail";
+        public static final String City = "City";
+        public static final String PostalCode = "PostalCode";
+        public static final String Region = "Region";
+        public static final String Country = "Country";
     }
 
     public enum ExceptionValues {

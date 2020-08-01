@@ -24,8 +24,6 @@ type Query {
     getAllInvoices: [Invoice]
     getInvoiceById(id: ID): Invoice
 
-    getListOfCustomersNotIdentified: [CustomersNotIdentified]
-    getListOfSuppliersNotIdentified: [SuppliersNotIdentified]
     getListOfInvoicesNotAssociatedWithCustomers: [String]
     getListOfNegativeAmountsInGeneralLedger: [NegativeAmountsInGeneralLedger]
     getListOfDaysWithoutSales: [String]

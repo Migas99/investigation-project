@@ -8,14 +8,54 @@ import java.util.*;
 
 public class CypherQueries {
 
-    public static boolean isFileUnique(Driver driver, String fileName) {
-        try (Session session = driver.session()) {
+    public static String mergeCompanies() {
+        return ""
+                + "MATCH (n1:Company),(n2:Company)\n"
+                + "WHERE n1.CompanyName = n2.CompanyName AND ID(n1) < ID(n2)\n"
+                + "WITH [n1,n2] AS results\n"
+                + "CALL apoc.refactor.mergeNodes(results, {properties:'discard', mergeRels:true})\n"
+                + "YIELD node RETURN 1\n"
+
+                + "UNION\n"
+
+                + "MATCH (n1:CompanyInfo),(n2:CompanyInfo)\n"
+                + "WHERE\n"
+                + "(n1.CompanyID = n2.CompanyID OR n1.TaxRegistrationNumber = n2.TaxRegistrationNumber OR n1.BussinessName = n2.BussinessName )\n"
+                + "AND ID(n1) < ID(n2)\n"
+                + "WITH [n1,n2] AS results\n"
+                + "CALL apoc.refactor.mergeNodes(results, {properties:'discard', mergeRels:true})\n"
+                + "YIELD node RETURN 1\n"
+
+                + "UNION\n"
+
+                + "MATCH (n1:CompanyContact),(n2:CompanyContact)\n"
+                + "WHERE\n"
+                + "(n1.Telephone = n2.Telephone OR n1.Fax = n2.Fax OR n1.Email = n2.Email OR n1.Website = n2.Website )\n"
+                + "AND ID(n1) < ID(n2)\n"
+                + "WITH [n1,n2] AS results\n"
+                + "CALL apoc.refactor.mergeNodes(results, {properties:'discard', mergeRels:true})\n"
+                + "YIELD node RETURN 1\n"
+
+                + "UNION\n"
+
+                + "MATCH (n1:CompanyAddress), (n2:CompanyAddress)\n"
+                + "WHERE\n"
+                + "(n1.BuildingNumber = n2.BuildingNumber OR n1.StreetName = n2.StreetName OR n1.AddressDetail = n2.AddressDetail\n"
+                + "OR n1.City = n2.City OR n1.PostalCode = n2.PostalCode OR n1.Region = n2.Region OR n1.Country = n2.Country )\n"
+                + "AND ID(n1) < id(n2)\n"
+                + "WITH [n1,n2] as results\n"
+                + "CALL apoc.refactor.mergeNodes(results, {properties:'discard', mergeRels:true})\n"
+                + "YIELD node RETURN 1\n";
+    }
+
+    public static boolean isFileNameUnique(String fileName) {
+        try (Session session = Neo4jConnector.getDriver().session()) {
             final String name = fileName.substring(0, fileName.length() - 4);
 
             boolean isUnique = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (file)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.File + ") "
-                    + "WHERE file.FileName = '" + name + "' "
-                    + "RETURN (file)"
+                    + "MATCH (file:" + Entities.Labels.File + ")\n"
+                    + "WHERE file.FileName = '" + name + "'\n"
+                    + "RETURN file"
             ).list().isEmpty());
 
             if (isUnique) {
@@ -23,38 +63,6 @@ public class CypherQueries {
             }
 
             return false;
-        }
-    }
-
-    public static boolean areIdentityNodesLoaded(Driver driver) {
-        try (Session session = driver.session()) {
-            boolean answer = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (any:File) "
-                    + "RETURN (any)"
-            ).list().isEmpty());
-
-            if (answer) {
-                return false;
-            }
-
-            return true;
-        }
-    }
-
-    public static void loadEntities(Driver driver) {
-        Iterator<String> iterator = Entities.EntitiesList.getList().iterator();
-        int count = 0;
-        StringBuilder query = new StringBuilder();
-
-        while (iterator.hasNext()) {
-            String identifier = "identity" + count;
-            query.append("CREATE (").append(identifier).append(":").append(iterator.next()).append(")\n");
-            count++;
-        }
-
-        try (Session session = driver.session()) {
-            String finalQuery = query.toString();
-            session.writeTransaction(tx -> tx.run(finalQuery));
         }
     }
 
@@ -68,7 +76,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(account)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Account + ")"
+                    + "(account)-[:" + "]->(entity:" + Entities.Labels.Account + ")"
                     + " "
                     + "OPTIONAL MATCH "
                     + "(account)-[:" + Entities.AccountRelationships.HAS_ACCOUNT_DESCRIPTION + "]->(description) "
@@ -122,7 +130,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(customer)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Customer + ") "
+                    + "(customer)-[:" + "]->(entity:" + Entities.Labels.Customer + ") "
                     + "OPTIONAL MATCH "
                     + "(customer)-[:" + Entities.OtherRelationships.HAS_ACCOUNT + "]->(account) "
                     + "OPTIONAL MATCH "
@@ -227,7 +235,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(supplier)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Supplier + ") "
+                    + "(supplier)-[:" + "]->(entity:" + Entities.Labels.Supplier + ") "
                     + "OPTIONAL MATCH "
                     + "(supplier)-[:" + Entities.OtherRelationships.HAS_ACCOUNT + "]->(account) "
                     + "OPTIONAL MATCH "
@@ -332,7 +340,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(product)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Product + ") "
+                    + "(product)-[:" + "]->(entity:" + Entities.Labels.Product + ") "
                     + "OPTIONAL MATCH "
                     + "(product)-[:" + Entities.ProductRelationships.HAS_PRODUCT_TYPE + "]->(productType) "
                     + "OPTIONAL MATCH "
@@ -379,7 +387,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             Record queryResult = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(ledgerEntree)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.GeneralLedgerEntries + ") "
+                    + "(ledgerEntree)-[:" + "]->(entity:" + Entities.Labels.GeneralLedgerEntries + ") "
                     + "OPTIONAL MATCH "
                     + "(ledgerEntree)-[:" + Entities.GeneralLedgerEntriesRelationships.HAS_TOTAL_DEBIT + "]->(totalDebit) "
                     + "OPTIONAL MATCH "
@@ -407,7 +415,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(journal)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Journal + ") "
+                    + "(journal)-[:" + "]->(entity:" + Entities.Labels.Journal + ") "
                     + "OPTIONAL MATCH "
                     + "(journal)-[:" + Entities.JournalRelationships.HAS_DESCRIPTION + "]->(description)"
                     + " "
@@ -439,13 +447,13 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(transaction)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Transaction + ") "
+                    + "(transaction)-[:" + "]->(entity:" + Entities.Labels.Transaction + ") "
                     + "OPTIONAL MATCH "
                     + "(transaction)-[:" + Entities.TransactionRelationships.HAS_PERIOD + "]->(period) "
                     + "OPTIONAL MATCH "
                     + "(transaction)-[:" + Entities.TransactionRelationships.HAS_TRANSACTION_DATE + "]->(date) "
                     + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.OtherRelationships.HAS_SOURCE + "]->(source) "
+                    + "(transaction)-[:" + "]->(source) "
                     + "OPTIONAL MATCH "
                     + "(transaction)-[:" + Entities.TransactionRelationships.HAS_DESCRIPTION + "]->(description) "
                     + "OPTIONAL MATCH "
@@ -495,9 +503,9 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(journal)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Journal + ") "
+                    + "(journal)-[:" + "]->(entity:" + Entities.Labels.Journal + ") "
                     + "MATCH "
-                    + "(transaction)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity2:" + Entities.EntitiesValues.Transaction + ") "
+                    + "(transaction)-[:" + "]->(entity2:" + Entities.Labels.Transaction + ") "
                     + "MATCH "
                     + "(journal)-[:" + Entities.JournalRelationships.HAS_TRANSACTION + "]->(transaction) "
                     + "OPTIONAL MATCH "
@@ -505,7 +513,7 @@ public class CypherQueries {
                     + "OPTIONAL MATCH "
                     + "(transaction)-[:" + Entities.TransactionRelationships.HAS_TRANSACTION_DATE + "]->(date) "
                     + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.OtherRelationships.HAS_SOURCE + "]->(source) "
+                    + "(transaction)-[:" + "]->(source) "
                     + "OPTIONAL MATCH "
                     + "(transaction)-[:" + Entities.TransactionRelationships.HAS_DESCRIPTION + "]->(description) "
                     + "OPTIONAL MATCH "
@@ -560,7 +568,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(transaction)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Transaction + ") "
+                    + "(transaction)-[:" + "]->(entity:" + Entities.Labels.Transaction + ") "
                     + "MATCH "
                     + "(transaction)-[:" + Entities.TransactionRelationships.HAS_LINES + "]->(lines) "
                     + "MATCH "
@@ -614,7 +622,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(transaction)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Transaction + ") "
+                    + "(transaction)-[:" + "]->(entity:" + Entities.Labels.Transaction + ") "
                     + "MATCH "
                     + "(transaction)-[:" + Entities.TransactionRelationships.HAS_LINES + "]->(lines) "
                     + "MATCH "
@@ -668,7 +676,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             Record queryResult = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(salesInvoices)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.SalesInvoices + ") "
+                    + "(salesInvoices)-[:" + "]->(entity:" + Entities.Labels.SalesInvoices + ") "
                     + "OPTIONAL MATCH "
                     + "(salesInvoices)-[:" + Entities.SalesInvoicesRelationships.HAS_TOTAL_DEBIT + "]->(totalDebit) "
                     + "OPTIONAL MATCH "
@@ -694,7 +702,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(invoice)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Invoice + ") "
+                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
                     + "OPTIONAL MATCH "
                     + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_ATCUD + "]->(atcud) "
                     + "OPTIONAL MATCH "
@@ -708,7 +716,7 @@ public class CypherQueries {
                     + "OPTIONAL MATCH "
                     + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_INVOICE_TYPE + "]->(invoiceType) "
                     + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.OtherRelationships.HAS_SOURCE + "]->(source) "
+                    + "(invoice)-[:" + "]->(source) "
                     + "OPTIONAL MATCH "
                     + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_EAC_CODE + "]->(eacCode) "
                     + "OPTIONAL MATCH "
@@ -762,11 +770,11 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             Record queryResult = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(invoice)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Invoice + ") "
+                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
                     + "OPTIONAL MATCH "
                     + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_DOCUMENT_STATUS + "]->(documentStatus) "
                     + "OPTIONAL MATCH "
-                    + "(documentStatus)-[:" + Entities.OtherRelationships.HAS_SOURCE + "]->(source) "
+                    + "(documentStatus)-[:" + "]->(source) "
                     + " "
                     + "WITH "
                     + "invoice, documentStatus, source"
@@ -796,7 +804,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             Record queryResult = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(invoice)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Invoice + ") "
+                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
                     + "OPTIONAL MATCH "
                     + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_SPECIAL_REGIMES + "]->(special) "
                     + " "
@@ -824,7 +832,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             Record queryResult = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(invoice)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Invoice + ") "
+                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
                     + "MATCH "
                     + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_SHIP_TO + "]->(ship) "
                     + "OPTIONAL MATCH "
@@ -878,7 +886,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             Record queryResult = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(invoice)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Invoice + ") "
+                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
                     + "MATCH "
                     + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_SHIP_FROM + "]->(ship) "
                     + "OPTIONAL MATCH "
@@ -934,7 +942,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(invoice)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Invoice + ") "
+                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
                     + "MATCH "
                     + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_LINE + "]->(line) "
                     + "OPTIONAL MATCH "
@@ -1052,7 +1060,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             Record queryResult = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(invoice)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Invoice + ") "
+                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
                     + "MATCH "
                     + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_DOCUMENT_TOTALS + "]->(documentTotals) "
                     + "OPTIONAL MATCH "
@@ -1101,7 +1109,7 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
-                    + "(invoice)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:" + Entities.EntitiesValues.Invoice + ") "
+                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
                     + "MATCH "
                     + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_WITHHOLDING_TAX + "]->(holdingTax) "
                     + "OPTIONAL MATCH "
@@ -1129,87 +1137,6 @@ public class CypherQueries {
             }
 
             return results;
-        }
-    }
-
-    /**
-     * Pesquisa por clientes onde o seu ID ou CompanyName contenham valores vazios
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista que contêm o id do cliente e o nome da empresa
-     */
-    public static LinkedList<Map<String, Object>> obtainListOfCustomersNotIdentified(Driver driver) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(customer)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity:Customer), "
-                    + "(company)-[:" + Entities.OtherRelationships.TYPE_OF + "]->(entity2:Company), "
-                    + "(customer)-[:" + Entities.OtherRelationships.HAS_COMPANY + "]->(company)"
-                    + " "
-                    + "WHERE "
-                    + "customer.CustomerID = ''"
-                    + " OR "
-                    + "customer.CustomerID = NULL"
-                    + " OR "
-                    + "company.CompanyName = ''"
-                    + " OR "
-                    + "company.CompanyName = NULL"
-                    + " "
-                    + "RETURN "
-                    + "customer.CustomerID AS Customer, "
-                    + "company.CompanyName AS Company"
-                    + " "
-                    + "ORDER BY customer.CustomerID"
-            ).list());
-
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
-        }
-    }
-
-    /**
-     * Pesquisa por fornecedores onde o seu ID ou CompanyName contenham valores vazios
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista que contêm o id do fornecedor e o nome da empresa
-     */
-    public static Iterator<Map<String, Object>> obtainListOfSuppliersNotIdentified(Driver driver) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(supplier)-[:TYPE_OF]->(entity:Supplier), "
-                    + "(supplier)-[:HAS_COMPANY]->(company)"
-                    + " "
-                    + "WHERE "
-                    + "supplier.SupplierID = ''"
-                    + " OR "
-                    + "supplier.SupplierID = NULL"
-                    + " OR "
-                    + "company.CompanyName = ''"
-                    + " OR "
-                    + "company.CompanyName = NULL"
-                    + " "
-                    + "RETURN "
-                    + "supplier.SupplierID AS Supplier, "
-                    + "company.CompanyName AS Company"
-                    + " "
-                    + "ORDER BY supplier.SupplierID"
-            ).list());
-
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results.iterator();
         }
     }
 

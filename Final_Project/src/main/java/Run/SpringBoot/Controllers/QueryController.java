@@ -71,8 +71,6 @@ public class QueryController {
                         .dataFetcher("getAllInvoices", this.dataFetcher.getListOfAllInvoices())
                         .dataFetcher("getInvoiceById", this.dataFetcher.getInvoiceById())
 
-                        .dataFetcher("getListOfCustomersNotIdentified", this.dataFetcher.getListOfCustomersNotIdentified())
-                        .dataFetcher("getListOfSuppliersNotIdentified", this.dataFetcher.getListOfSuppliersNotIdentified())
                         .dataFetcher("getListOfInvoicesNotAssociatedWithCustomers", this.dataFetcher.getListOfInvoicesNotAssociatedWithCustomers())
                         .dataFetcher("getListOfNegativeAmountsInGeneralLedger", this.dataFetcher.getListOfNegativeAmountsInGeneralLedger())
                         .dataFetcher("getListOfDaysWithoutSales", this.dataFetcher.getListOfDaysWithoutSales())

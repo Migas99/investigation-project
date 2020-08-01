@@ -1,5 +1,6 @@
 package Run.SpringBoot.Controllers;
 
+import Database.CypherQueries;
 import Database.Neo4jConnector;
 import Parser.StAX;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,10 +62,14 @@ public class UploadController {
             Validator validator = schema.newValidator();
             validator.validate(new StAXSource(reader));
 
-            System.out.println("[SERVER] Starting to map the file: " + file.getOriginalFilename());
-            StAX.processXMLToNeo4j(saftp);
-            System.out.println("[SERVER] Done mapping the file: " + file.getOriginalFilename());
-            map.put("Message", "The file " + saftp.getName() + " was uploaded and mapped into the database with success.");
+            if (CypherQueries.isFileNameUnique(saftp.getName())) {
+                System.out.println("[SERVER] Starting to map the file: " + file.getOriginalFilename());
+                StAX.processXMLToNeo4j(saftp);
+                System.out.println("[SERVER] Done mapping the file: " + file.getOriginalFilename());
+                map.put("Message", "The file " + saftp.getName() + " was uploaded and mapped into the database with success.");
+            } else {
+                map.put("Message", "This file or another one with the same name has already been uploaded.");
+            }
 
         } catch (Exception e) {
 

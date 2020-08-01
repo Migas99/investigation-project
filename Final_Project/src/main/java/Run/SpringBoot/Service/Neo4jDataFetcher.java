@@ -256,14 +256,6 @@ public class Neo4jDataFetcher {
         };
     }
 
-    public DataFetcher getListOfCustomersNotIdentified() {
-        return dataFetchingEnvironment -> CypherQueries.obtainListOfCustomersNotIdentified(this.driver);
-    }
-
-    public DataFetcher getListOfSuppliersNotIdentified() {
-        return dataFetchingEnvironment -> CypherQueries.obtainListOfSuppliersNotIdentified(this.driver);
-    }
-
     public DataFetcher getListOfInvoicesNotAssociatedWithCustomers() {
         return dataFetchingEnvironment -> CypherQueries.obtainListOfInvoicesNotAssociatedWithCustomers(this.driver);
     }

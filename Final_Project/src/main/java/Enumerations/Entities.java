@@ -1,72 +1,65 @@
 package Enumerations;
 
-import java.util.LinkedList;
-
 public class Entities {
 
-    public enum EntitiesList {
-        File,
-        Company,
-        GeneralLedgerAccounts,
-        Account,
-        Customer,
-        Supplier,
-        Product,
-        TaxTable,
-        GeneralLedgerEntries,
-        Journal,
-        Transaction,
-        SalesInvoices,
-        Invoice,
-
-        /*MovementOfGoods,
-        WorkingDocuments,
-        Payments,*/
-
-        Address,
-        Contacts;
-
-        public static LinkedList<String> getList() {
-            Entities.EntitiesList[] array = values();
-            LinkedList<String> list = new LinkedList<>();
-
-            for (EntitiesList entitiesList : array) {
-                list.add(entitiesList.name());
-            }
-
-            return list;
-        }
-    }
-
-    public enum EntitiesValues {
+    public enum Labels {
         ELEMENT;
 
         public final static String File = "File";
-        public final static String FileInformation = "FileInformation";
+        public final static String FileInfo = "FileInfo";
+
         public final static String Company = "Company";
-        public final static String FiscalYear = "FiscalYear";
+        public final static String CompanyInfo = "CompanyInfo";
+        public final static String CompanyAddress = "CompanyAddress";
+        public final static String CompanyContact = "CompanyContact";
+
         public final static String GeneralLedgerAccounts = "GeneralLedgerAccounts";
         public final static String Account = "Account";
-        public final static String Customer = "Customer";
-        public final static String Supplier = "Supplier";
-        public final static String Product = "Product";
-        public final static String TaxTable = "TaxTable";
-        public final static String GeneralLedgerEntries = "GeneralLedgerEntries";
-        public final static String Journal = "Journal";
-        public final static String Transaction = "Transaction";
-        public final static String SalesInvoices = "SalesInvoices";
-        public static final String Invoice = "Invoice";
+        public final static String AccountInfo = "AccountInfo";
 
+        public final static String Customer = "Customer";
+        public final static String CustomerInfo = "CustomerInfo";
+
+        public final static String Supplier = "Supplier";
+        public final static String SupplierInfo = "SupplierInfo";
+
+        public final static String Product = "Product";
+        public final static String ProductInfo = "ProductInfo";
+
+        public final static String TaxTable = "TaxTable";
+
+        public final static String GeneralLedgerEntries = "GeneralLedgerEntries";
+
+        public final static String Journal = "Journal";
+        public final static String JournalInfo = "JournalInfo";
+
+        public final static String Transaction = "Transaction";
+        public final static String TransactionInfo = "TransactionInfo";
+        public final static String CreditLine = "CreditLine";
+        public final static String DebitLine = "DebitLine";
+
+        public final static String SalesInvoices = "SalesInvoices";
+
+        public static final String Invoice = "Invoice";
+        public static final String InvoiceInfo = "InvoiceInfo";
 
         public final static String MovementOfGoods = "MovementOfGoods";
 
+        public final static String StockMovement = "StockMovement";
+        public final static String StockMovementInfo = "StockMovementInfo";
+
         public static final String WorkingDocuments = "WorkingDocuments";
+
+        public static final String WorkDocument = "WorkDocument";
+        public static final String WorkDocumentInfo = "WorkDocumentInfo";
 
         public static final String Payments = "Payments";
 
-        public final static String CompanyAddress = "CompanyAddress";
+        public static final String Payment = "Payment";
+        public static final String PaymentInfo = "PaymentInfo";
+
         public final static String Address = "Address";
-        public final static String Contacts = "Contacts";
+        public final static String Contact = "Contact";
     }
 
     public enum CompanyRelationships {
@@ -89,21 +82,15 @@ public class Entities {
         public final static String HAS_EMAIL = "HAS_EMAIL";
         public final static String HAS_WEBSITE = "HAS_WEBSITE";
 
+        public final static String HAS_SAFTP = "HAS_SAFTP";
         public final static String IS_CUSTOMER_OF = "IS_CUSTOMER_OF";
         public final static String IS_SUPPLIER_OF = "IS_SUPPLIER_OF";
-
-        public final static String RELATED_TO_TRANSACTION = "RELATED_TO_TRANSACTION";
-
-        public final static String SOLD_INVOICE = "SOLD_INVOICE";
-        public final static String BOUGHT_INVOICE = "BOUGHT_INVOICE";
-
-
     }
 
     public enum FileRelationships {
         ELEMENT;
 
-        public final static String RELATED_TO = "RELATED_TO";
+        public final static String RELATED_TO_COMPANY = "RELATED_TO_COMPANY";
         public final static String HAS_ADDITIONAL_INFORMATION = "HAS_ADDITIONAL_INFORMATION";
         public final static String HAS_GENERAL_LEDGER_ACCOUNTS = "HAS_GENERAL_LEDGER_ACCOUNTS";
         public final static String HAS_CUSTOMER = "HAS_CUSTOMER";
@@ -112,6 +99,9 @@ public class Entities {
         public final static String HAS_TAX_TABLE = "HAS_TAX_TABLE";
         public final static String HAS_GENERAL_LEDGER_ENTRIES = "HAS_GENERAL_LEDGER_ENTRIES";
         public final static String HAS_SALES_INVOICES = "HAS_SALES_INVOICES";
+        public final static String HAS_MOVEMENT_OF_GOODS = "HAS_MOVEMENT_OF_GOODS";
+        public final static String HAS_WORKING_DOCUMENTS = "HAS_WORKING_DOCUMENTS";
+        public final static String HAS_PAYMENTS = "HAS_PAYMENTS";
     }
 
     public enum FileInformationRelationships {
@@ -119,18 +109,13 @@ public class Entities {
 
         public final static String HAS_TAX_ACCOUNTING_BASIS = "HAS_TAX_ACCOUNTING_BASIS";
         public final static String HAS_FISCAL_YEAR = "HAS_FISCAL_YEAR";
+        public final static String HAS_START_DATE = "HAS_START_DATE";
+        public final static String HAS_END_DATE = "HAS_END_DATE";
         public final static String HAS_CURRENCY_CODE = "HAS_CURRENCY_CODE";
         public final static String HAS_DATE_CREATED = "HAS_DATE_CREATED";
         public final static String HAS_TAX_ENTITY = "HAS_TAX_ENTITY";
         public final static String PRODUCED_BY = "PRODUCED_BY";
         public final static String HAS_ADDITIONAL_COMMENT = "HAS_ADDITIONAL_COMMENT";
-    }
-
-    public enum FiscalYearRelationships {
-        ELEMENT;
-
-        public final static String HAS_START_DATE = "HAS_START_DATE";
-        public final static String HAS_END_DATE = "HAS_END_DATE";
     }
 
     public enum GeneralLedgerAccountsRelationships {
@@ -155,7 +140,7 @@ public class Entities {
     public enum CustomerRelationships {
         ELEMENT;
 
-        public final static String REPRESENTS = "REPRESENTS";
+        public final static String REPRESENTS_AS_CUSTOMER = "REPRESENTS_AS_CUSTOMER";
 
         public final static String HAS_CUSTOMER_TAX_ID = "HAS_CUSTOMER_TAX_ID";
         public final static String HAS_CONTACT = "HAS_CONTACT";
@@ -171,7 +156,7 @@ public class Entities {
     public enum SupplierRelationships {
         ELEMENT;
 
-        public final static String REPRESENTS = "REPRESENTS";
+        public final static String REPRESENTS_AS_SUPPLIER = "REPRESENTS_AS_SUPPLIER";
 
         public final static String HAS_SUPPLIER_TAX_ID = "HAS_SUPPLIER_TAX_ID";
         public final static String HAS_CONTACT = "HAS_CONTACT";
@@ -225,6 +210,7 @@ public class Entities {
 
         public final static String HAS_PERIOD = "HAS_PERIOD";
         public final static String HAS_TRANSACTION_DATE = "HAS_TRANSACTION_DATE";
+        public static final String HAS_SOURCE_ID = "HAS_SOURCE_ID";
         public final static String HAS_DESCRIPTION = "HAS_DESCRIPTION";
         public final static String HAS_DOC_ARCHIVAL_NUMBER = "HAS_DOC_ARCHIVAL_NUMBER";
         public final static String HAS_TRANSACTION_TYPE = "HAS_TRANSACTION_TYPE";
@@ -274,6 +260,7 @@ public class Entities {
         public static final String HAS_PERIOD = "HAS_PERIOD";
         public static final String HAS_INVOICE_DATE = "HAS_INVOICE_DATE";
         public static final String HAS_INVOICE_TYPE = "HAS_INVOICE_TYPE";
+        public static final String HAS_SOURCE_ID = "HAS_SOURCE_ID";
         public static final String HAS_EAC_CODE = "HAS_EAC_CODE";
         public static final String HAS_SYSTEM_ENTRY_DATE = "HAS_SYSTEM_ENTRY_DATE";
         public static final String HAS_MOVEMENT_END_TIME = "HAS_MOVEMENT_END_TIME";
@@ -286,6 +273,103 @@ public class Entities {
         public static final String HAS_LINE = "HAS_LINE";
         public static final String HAS_DOCUMENT_TOTALS = "HAS_DOCUMENT_TOTALS";
         public static final String HAS_WITHHOLDING_TAX = "HAS_WITHHOLDING_TAX";
+
+        public static final String HAS_SELLER = "HAS_SELLER";
+        public static final String HAS_BUYER = "HAS_BUYER";
+    }
+
+    public enum MovementOfGoodsRelationships {
+        ELEMENT;
+
+        public static final String HAS_TOTAL_QUANTITY_ISSUED = "HAS_TOTAL_QUANTITY_ISSUED";
+        public static final String HAS_STOCK_MOVEMENT = "HAS_STOCK_MOVEMENT";
+    }
+
+    public enum StockMovementRelationships {
+        ELEMENT;
+
+        public static final String HAS_ATCUD = "HAS_ATCUD";
+        public static final String HAS_HASH = "HAS_HASH";
+        public static final String HAS_HASH_CONTROL = "HAS_HASH_CONTROL";
+        public static final String HAS_PERIOD = "HAS_PERIOD";
+        public final static String HAS_MOVEMENT_DATE = "HAS_MOVEMENT_DATE";
+        public final static String HAS_MOVEMENT_TYPE = "HAS_MOVEMENT_TYPE";
+        public final static String HAS_SYSTEM_ENTRY_DATE = "HAS_SYSTEM_ENTRY_DATE";
+        public final static String HAS_SOURCE_ID = "HAS_SOURCE_ID";
+        public final static String HAS_EAC_CODE = "HAS_EAC_CODE";
+        public final static String HAS_MOVEMENT_COMMENTS = "HAS_MOVEMENT_COMMENTS";
+        public final static String HAS_MOVEMENT_END_TIME = "HAS_MOVEMENT_END_TIME";
+        public final static String HAS_MOVEMENT_START_TIME = "HAS_MOVEMENT_START_TIME";
+        public final static String HAS_AT_DOC_CODE_ID = "HAS_AT_DOC_CODE_ID";
+
+        public static final String HAS_DOCUMENT_STATUS = "HAS_DOCUMENT_STATUS";
+        public static final String HAS_SHIP_TO = "HAS_SHIP_TO";
+        public static final String HAS_SHIP_FROM = "HAS_SHIP_FROM";
+        public static final String HAS_LINE = "HAS_LINE";
+        public static final String HAS_DOCUMENT_TOTALS = "HAS_DOCUMENT_TOTALS";
+
+        public static final String HAS_SELLER = "HAS_SELLER";
+        public static final String HAS_BUYER = "HAS_BUYER";
+    }
+
+    public enum WorkingDocumentsRelationships {
+        ELEMENT;
+
+        public static final String HAS_TOTAL_DEBIT = "HAS_TOTAL_DEBIT";
+        public static final String HAS_TOTAL_CREDIT = "HAS_TOTAL_CREDIT";
+        public static final String HAS_WORK_DOCUMENT = "HAS_WORK_DOCUMENT";
+    }
+
+    public enum WorkDocumentRelationships {
+        ELEMENT;
+
+        public static final String HAS_ATCUD = "HAS_ATCUD";
+        public static final String HAS_HASH = "HAS_HASH";
+        public static final String HAS_HASH_CONTROL = "HAS_HASH_CONTROL";
+        public static final String HAS_PERIOD = "HAS_PERIOD";
+        public static final String HAS_WORK_DATE = "HAS_WORK_DATE";
+        public static final String HAS_WORK_TYPE = "HAS_WORK_TYPE";
+        public final static String HAS_SOURCE_ID = "HAS_SOURCE_ID";
+        public final static String HAS_EAC_CODE = "HAS_EAC_CODE";
+        public final static String HAS_SYSTEM_ENTRY_DATE = "HAS_SYSTEM_ENTRY_DATE";
+
+        public static final String HAS_DOCUMENT_STATUS = "HAS_DOCUMENT_STATUS";
+        public static final String HAS_LINE = "HAS_LINE";
+        public static final String HAS_DOCUMENT_TOTALS = "HAS_DOCUMENT_TOTALS";
+
+        public static final String HAS_SELLER = "HAS_SELLER";
+        public static final String HAS_BUYER = "HAS_BUYER";
+
+    }
+
+    public enum PaymentsRelationships {
+        ELEMENT;
+
+        public static final String HAS_TOTAL_DEBIT = "HAS_TOTAL_DEBIT";
+        public static final String HAS_TOTAL_CREDIT = "HAS_TOTAL_CREDIT";
+        public static final String HAS_PAYMENT = "HAS_PAYMENT";
+    }
+
+    public enum PaymentRelationships {
+        ELEMENT;
+
+        public static final String HAS_ATCUD = "HAS_ATCUD";
+        public static final String HAS_PERIOD = "HAS_PERIOD";
+        public static final String HAS_TRANSACTION_DATE = "HAS_TRANSACTION_DATE";
+        public static final String HAS_PAYMENT_TYPE = "HAS_PAYMENT_TYPE";
+        public static final String HAS_DESCRIPTION = "HAS_DESCRIPTION";
+        public static final String HAS_SYSTEM_ID = "HAS_SYSTEM_ID";
+        public final static String HAS_SOURCE_ID = "HAS_SOURCE_ID";
+        public final static String HAS_SYSTEM_ENTRY_DATE = "HAS_SYSTEM_ENTRY_DATE";
+
+        public static final String HAS_DOCUMENT_STATUS = "HAS_DOCUMENT_STATUS";
+        public static final String HAS_PAYMENT_METHOD = "HAS_PAYMENT_METHOD";
+        public static final String HAS_LINE = "HAS_LINE";
+        public static final String HAS_DOCUMENT_TOTALS = "HAS_DOCUMENT_TOTALS";
+        public static final String HAS_WITHHOLDING_TAX = "HAS_WITHHOLDING_TAX";
+
+        public static final String WAS_PAID = "WAS_PAID";
+        public static final String PAID = "PAID";
     }
 
     public enum DocumentStatusRelationships {
@@ -328,6 +412,7 @@ public class Entities {
         public static final String HAS_PRODUCT_SERIAL_NUMBER = "HAS_PRODUCT_SERIAL_NUMBER";
         public static final String HAS_TAX_TABLE = "HAS_TAX_TABLE";
         public static final String HAS_CUSTOMS_INFORMATION = "HAS_CUSTOMS_INFORMATION";
+        public static final String HAS_SOURCE_DOCUMENT_ID = "HAS_SOURCE_DOCUMENT_ID";
     }
 
     public enum LineTaxRelationships {
@@ -342,9 +427,6 @@ public class Entities {
     public enum DocumentTotalsRelationships {
         ELEMENT;
 
-        public static final String HAS_TAX_PAYABLE = "HAS_TAX_PAYABLE";
-        public static final String HAS_NET_TOTAL = "HAS_NET_TOTAL";
-        public static final String HAS_GROSS_TOTAL = "HAS_GROSS_TOTAL";
         public static final String HAS_CURRENCY = "HAS_CURRENCY";
         public static final String HAS_SETTLEMENT = "HAS_SETTLEMENT";
         public static final String HAS_PAYMENT = "HAS_PAYMENT";
@@ -371,15 +453,11 @@ public class Entities {
     public enum OtherRelationships {
         ELEMENT;
 
-        public final static String TYPE_OF = "TYPE_OF";
         public final static String HAS_COMPANY = "HAS_COMPANY";
         public final static String HAS_ACCOUNT = "HAS_ACCOUNT";
         public final static String HAS_CUSTOMER = "HAS_CUSTOMER";
         public final static String HAS_SUPPLIER = "HAS_SUPPLIER";
         public final static String HAS_PRODUCT = "HAS_PRODUCT";
-        public static final String HAS_TAX_TABLE = "HAS_TAX_TABLE";
         public static final String HAS_TRANSACTION = "HAS_TRANSACTION";
-        public static final String HAS_INVOICE = "HAS_INVOICE";
-        public static final String HAS_SOURCE = "HAS_SOURCE";
     }
 }

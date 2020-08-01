@@ -27,7 +27,6 @@ public class Mapper {
     private final Map<String, String> suppliers;
     private final Map<String, String> represents;
     private final Map<String, String> products;
-    private final Map<String, String> sources;
     private final Map<String, String> transactions;
     private final Map<String, String> documents;
 
@@ -46,11 +45,10 @@ public class Mapper {
         this.products = new HashMap<>();
         this.transactions = new HashMap<>();
         this.documents = new HashMap<>();
-        this.sources = new HashMap<>();
     }
 
     public void uploadToDatabase() {
-        Neo4jConnector.runTransaction(this.constructor.getUploadQuery());
+        Neo4jConnector.uploadToDatabase(this.constructor.getUploadQuery());
     }
 
     public void processStartSequence(String element) {
@@ -85,8 +83,10 @@ public class Mapper {
 
             if (Elements.RootElement.AuditFile.equalsIgnoreCase(element)) {
 
-                String identifier = this.constructor.CREATE(Entities.EntitiesValues.File, "FileName", this.fileName);
-                this.container.put(Entities.EntitiesValues.File, identifier);
+                this.container.put(
+                        element,
+                        this.constructor.CREATE(Entities.Labels.File, "FileName", this.fileName)
+                );
 
             } else {
 
@@ -111,15 +111,15 @@ public class Mapper {
 
                 if (Elements.AuditFile.Header.equalsIgnoreCase(element)) {
 
-                    String identifier = this.constructor.CREATE();
+                    String identifier = this.constructor.CREATE(Entities.Labels.FileInfo);
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.File),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.RootElement.AuditFile),
                             identifier,
                             Entities.FileRelationships.HAS_ADDITIONAL_INFORMATION
                     );
 
-                    this.container.put(Entities.EntitiesValues.FileInformation, identifier);
+                    this.container.put(element, identifier);
 
                 } else {
 
@@ -131,14 +131,8 @@ public class Mapper {
 
             case Elements.AuditFile.MasterFiles:
 
-                if (Elements.AuditFile.MasterFiles.equalsIgnoreCase(element)) {
-
-                    // this.container.clear();
-
-                } else {
-
+                if (!Elements.AuditFile.MasterFiles.equalsIgnoreCase(element)) {
                     this.processMasterFilesChildren(element, value, count);
-
                 }
 
                 break;
@@ -147,17 +141,15 @@ public class Mapper {
 
                 if (Elements.AuditFile.GeneralLedgerEntries.equalsIgnoreCase(element)) {
 
-                    String identifier = this.constructor.CREATE(Entities.EntitiesValues.GeneralLedgerEntries);
+                    String identifier = this.constructor.CREATE(Entities.Labels.GeneralLedgerEntries);
 
-                    //this.constructor.CREATE_RELATIONSHIP_TYPE_OF(identifier, Entities.EntitiesValues.GeneralLedgerEntries);
-
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.File),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.RootElement.AuditFile),
                             identifier,
                             Entities.FileRelationships.HAS_GENERAL_LEDGER_ENTRIES
                     );
 
-                    this.container.put(Entities.EntitiesValues.GeneralLedgerEntries, identifier);
+                    this.container.put(element, identifier);
 
                 } else {
 
@@ -169,14 +161,8 @@ public class Mapper {
 
             case Elements.AuditFile.SourceDocuments:
 
-                if (Elements.AuditFile.SourceDocuments.equalsIgnoreCase(element)) {
-
-                    //this.container.clear();
-
-                } else {
-
+                if (!Elements.AuditFile.SourceDocuments.equalsIgnoreCase(element)) {
                     this.processSourceDocumentsChildren(element, value, count);
-
                 }
 
                 break;
@@ -195,24 +181,38 @@ public class Mapper {
             switch (element) {
 
                 case Elements.Header.AuditFileVersion:
-                    this.constructor.SET_PROPERTY(this.container.get(Entities.EntitiesValues.FileInformation), element, value);
+
+                    this.constructor.SET_PROPERTY(
+                            this.container.get(Elements.AuditFile.Header),
+                            element,
+                            value
+                    );
 
                     break;
 
                 case Elements.Header.CompanyID:
-                    this.container.put(element, this.constructor.CREATE(element, value));
+
+                    this.container.put(
+                            element,
+                            this.constructor.CREATE(Entities.Labels.CompanyInfo, element, value)
+                    );
 
                     break;
 
                 case Elements.Header.TaxRegistrationNumber:
-                    this.container.put(element, this.constructor.CREATE(element, Integer.parseInt(value)));
+
+                    this.container.put(
+                            element,
+                            this.constructor.CREATE(Entities.Labels.CompanyInfo, element, Integer.parseInt(value))
+                    );
 
                     break;
 
                 case Elements.Header.TaxAccountingBasis:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.FileInformation),
+                            this.container.get(Elements.AuditFile.Header),
+                            Entities.Labels.FileInfo,
                             element,
                             value,
                             Entities.FileInformationRelationships.HAS_TAX_ACCOUNTING_BASIS
@@ -222,32 +222,39 @@ public class Mapper {
 
                 case Elements.Header.CompanyName:
 
-                    this.rootCompany = this.constructor.MERGE(Entities.EntitiesValues.Company, element, value);
+                    this.rootCompany = this.constructor.CREATE(Entities.Labels.Company, element, value);
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.File),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.AuditFile.Header),
                             this.rootCompany,
-                            Entities.FileRelationships.RELATED_TO
+                            Entities.FileRelationships.RELATED_TO_COMPANY
                     );
 
-                    this.constructor.RELATIONSHIP(
+                    this.constructor.CREATE_RELATIONSHIP(
                             this.rootCompany,
-                            this.container.remove(Elements.Header.CompanyID),
+                            this.container.get(Elements.AuditFile.Header),
+                            Entities.CompanyRelationships.HAS_SAFTP
+                    );
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.rootCompany,
+                            this.container.get(Elements.Header.CompanyID),
                             Entities.CompanyRelationships.HAS_COMPANY_ID
                     );
 
-                    this.constructor.RELATIONSHIP(
+                    this.constructor.CREATE_RELATIONSHIP(
                             this.rootCompany,
-                            this.container.remove(Elements.Header.TaxRegistrationNumber),
+                            this.container.get(Elements.Header.TaxRegistrationNumber),
                             Entities.CompanyRelationships.HAS_TAX_REGISTRATION_NUMBER
                     );
 
                     break;
 
-                case Elements.Header.BussinessName:
+                case Elements.Header.BusinessName:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.rootCompany,
+                            Entities.Labels.CompanyInfo,
                             element,
                             value,
                             Entities.CompanyRelationships.HAS_BUSINESS_NAME
@@ -257,25 +264,24 @@ public class Mapper {
 
                 case Elements.Header.FiscalYear:
 
-                    identifier = this.constructor.CREATE(element, Integer.parseInt(value));
-
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.FileInformation),
-                            identifier,
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.AuditFile.Header),
+                            Entities.Labels.FileInfo,
+                            element,
+                            Integer.parseInt(value),
                             Entities.FileInformationRelationships.HAS_FISCAL_YEAR
                     );
-
-                    this.container.put(Entities.EntitiesValues.FiscalYear, identifier);
 
                     break;
 
                 case Elements.Header.StartDate:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.FiscalYear),
+                            this.container.get(Elements.AuditFile.Header),
+                            Entities.Labels.FileInfo,
                             element,
                             value,
-                            Entities.FiscalYearRelationships.HAS_START_DATE
+                            Entities.FileInformationRelationships.HAS_START_DATE
                     );
 
                     break;
@@ -283,10 +289,11 @@ public class Mapper {
                 case Elements.Header.EndDate:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.FiscalYear),
+                            this.container.get(Elements.AuditFile.Header),
+                            Entities.Labels.FileInfo,
                             element,
                             value,
-                            Entities.FiscalYearRelationships.HAS_END_DATE
+                            Entities.FileInformationRelationships.HAS_END_DATE
                     );
 
                     break;
@@ -294,7 +301,8 @@ public class Mapper {
                 case Elements.Header.CurrencyCode:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.FileInformation),
+                            this.container.get(Elements.AuditFile.Header),
+                            Entities.Labels.FileInfo,
                             element,
                             value,
                             Entities.FileInformationRelationships.HAS_CURRENCY_CODE
@@ -305,7 +313,8 @@ public class Mapper {
                 case Elements.Header.DateCreated:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.FileInformation),
+                            this.container.get(Elements.AuditFile.Header),
+                            Entities.Labels.FileInfo,
                             element,
                             value,
                             Entities.FileInformationRelationships.HAS_DATE_CREATED
@@ -316,7 +325,8 @@ public class Mapper {
                 case Elements.Header.TaxEntity:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.FileInformation),
+                            this.container.get(Elements.AuditFile.Header),
+                            Entities.Labels.FileInfo,
                             element,
                             value,
                             Entities.FileInformationRelationships.HAS_TAX_ENTITY
@@ -326,10 +336,10 @@ public class Mapper {
 
                 case Elements.Header.ProductCompanyTaxID:
 
-                    identifier = this.constructor.CREATE(element, value);
+                    identifier = this.constructor.CREATE(Entities.Labels.FileInfo, element, value);
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.FileInformation),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.AuditFile.Header),
                             identifier,
                             Entities.FileInformationRelationships.PRODUCED_BY
                     );
@@ -339,24 +349,37 @@ public class Mapper {
                     break;
 
                 case Elements.Header.SoftwareCertificateNumber:
-                    this.constructor.SET_PROPERTY(this.container.get(Elements.Header.ProductCompanyTaxID), element, Integer.parseInt(value));
+                    this.constructor.SET_PROPERTY(
+                            this.container.get(Elements.Header.ProductCompanyTaxID),
+                            element,
+                            Integer.parseInt(value)
+                    );
 
                     break;
 
                 case Elements.Header.ProductID:
-                    this.constructor.SET_PROPERTY(this.container.get(Elements.Header.ProductCompanyTaxID), element, value);
+                    this.constructor.SET_PROPERTY(
+                            this.container.get(Elements.Header.ProductCompanyTaxID),
+                            element,
+                            value
+                    );
 
                     break;
 
                 case Elements.Header.ProductVersion:
-                    this.constructor.SET_PROPERTY(this.container.remove(Elements.Header.ProductCompanyTaxID), element, value);
+                    this.constructor.SET_PROPERTY(
+                            this.container.remove(Elements.Header.ProductCompanyTaxID),
+                            element,
+                            value
+                    );
 
                     break;
 
                 case Elements.Header.HeaderComment:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.FileInformation),
+                            this.container.get(Elements.AuditFile.Header),
+                            Entities.Labels.FileInfo,
                             element,
                             value,
                             Entities.FileInformationRelationships.HAS_ADDITIONAL_COMMENT
@@ -366,8 +389,9 @@ public class Mapper {
 
                 case Elements.Header.Telephone:
 
-                    this.constructor.MERGE_AND_RELATE_TO_RIGHT(
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.rootCompany,
+                            Entities.Labels.CompanyContact,
                             element,
                             value,
                             Entities.CompanyRelationships.HAS_TELEPHONE
@@ -377,8 +401,9 @@ public class Mapper {
 
                 case Elements.Header.Fax:
 
-                    this.constructor.MERGE_AND_RELATE_TO_RIGHT(
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.rootCompany,
+                            Entities.Labels.CompanyContact,
                             element,
                             value,
                             Entities.CompanyRelationships.HAS_FAX
@@ -388,8 +413,9 @@ public class Mapper {
 
                 case Elements.Header.Email:
 
-                    this.constructor.MERGE_AND_RELATE_TO_RIGHT(
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.rootCompany,
+                            Entities.Labels.CompanyContact,
                             element,
                             value,
                             Entities.CompanyRelationships.HAS_EMAIL
@@ -399,8 +425,9 @@ public class Mapper {
 
                 case Elements.Header.Website:
 
-                    this.constructor.MERGE_AND_RELATE_TO_RIGHT(
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.rootCompany,
+                            Entities.Labels.CompanyContact,
                             element,
                             value,
                             Entities.CompanyRelationships.HAS_WEBSITE
@@ -439,9 +466,9 @@ public class Mapper {
 
             case Elements.CompanyAddress.BuildingNumber:
 
-                this.constructor.MERGE_AND_RELATE_TO_RIGHT(
+                this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.rootCompany,
-                        //Entities.EntitiesValues.CompanyAddress,
+                        Entities.Labels.CompanyAddress,
                         element,
                         value,
                         Entities.CompanyRelationships.HAS_BUILDING_NUMBER
@@ -451,9 +478,9 @@ public class Mapper {
 
             case Elements.CompanyAddress.StreetName:
 
-                this.constructor.MERGE_AND_RELATE_TO_RIGHT(
+                this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.rootCompany,
-                        //Entities.EntitiesValues.CompanyAddress,
+                        Entities.Labels.CompanyAddress,
                         element,
                         value,
                         Entities.CompanyRelationships.HAS_STREET_NAME
@@ -463,9 +490,9 @@ public class Mapper {
 
             case Elements.CompanyAddress.AddressDetail:
 
-                this.constructor.MERGE_AND_RELATE_TO_RIGHT(
+                this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.rootCompany,
-                        //Entities.EntitiesValues.CompanyAddress,
+                        Entities.Labels.CompanyAddress,
                         element,
                         value,
                         Entities.CompanyRelationships.HAS_ADDRESS_DETAIL
@@ -475,9 +502,9 @@ public class Mapper {
 
             case Elements.CompanyAddress.City:
 
-                this.constructor.MERGE_AND_RELATE_TO_RIGHT(
+                this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.rootCompany,
-                        //Entities.EntitiesValues.CompanyAddress,
+                        Entities.Labels.CompanyAddress,
                         element,
                         value,
                         Entities.CompanyRelationships.HAS_CITY
@@ -487,9 +514,9 @@ public class Mapper {
 
             case Elements.CompanyAddress.PostalCode:
 
-                this.constructor.MERGE_AND_RELATE_TO_RIGHT(
+                this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.rootCompany,
-                        //Entities.EntitiesValues.CompanyAddress,
+                        Entities.Labels.CompanyAddress,
                         element,
                         value,
                         Entities.CompanyRelationships.HAS_POSTAL_CODE
@@ -499,9 +526,9 @@ public class Mapper {
 
             case Elements.CompanyAddress.Region:
 
-                this.constructor.MERGE_AND_RELATE_TO_RIGHT(
+                this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.rootCompany,
-                        //Entities.EntitiesValues.CompanyAddress,
+                        Entities.Labels.CompanyAddress,
                         element,
                         value,
                         Entities.CompanyRelationships.HAS_REGION
@@ -511,9 +538,9 @@ public class Mapper {
 
             case Elements.CompanyAddress.Country:
 
-                this.constructor.MERGE_AND_RELATE_TO_RIGHT(
+                this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.rootCompany,
-                        //Entities.EntitiesValues.CompanyAddress,
+                        Entities.Labels.CompanyAddress,
                         element,
                         value,
                         Entities.CompanyRelationships.HAS_COUNTRY
@@ -538,15 +565,15 @@ public class Mapper {
 
                 if (Elements.MasterFiles.GeneralLedgerAccounts.equalsIgnoreCase(element)) {
 
-                    identifier = this.constructor.CREATE(Entities.EntitiesValues.GeneralLedgerAccounts);
+                    identifier = this.constructor.CREATE(Entities.Labels.GeneralLedgerAccounts);
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.File),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.RootElement.AuditFile),
                             identifier,
                             Entities.FileRelationships.HAS_GENERAL_LEDGER_ACCOUNTS
                     );
 
-                    this.container.put(Entities.EntitiesValues.GeneralLedgerAccounts, identifier);
+                    this.container.put(element, identifier);
 
                 } else {
 
@@ -560,15 +587,15 @@ public class Mapper {
 
                 if (Elements.MasterFiles.Customer.equalsIgnoreCase(element)) {
 
-                    identifier = this.constructor.CREATE(Entities.EntitiesValues.Customer);
+                    identifier = this.constructor.CREATE(Entities.Labels.Customer);
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.File),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.RootElement.AuditFile),
                             identifier,
                             Entities.FileRelationships.HAS_CUSTOMER
                     );
 
-                    this.container.put(Entities.EntitiesValues.Customer, identifier);
+                    this.container.put(element, identifier);
 
                 } else {
 
@@ -583,15 +610,15 @@ public class Mapper {
 
                 if (Elements.MasterFiles.Supplier.equalsIgnoreCase(element)) {
 
-                    identifier = this.constructor.CREATE(Entities.EntitiesValues.Supplier);
+                    identifier = this.constructor.CREATE(Entities.Labels.Supplier);
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.File),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.RootElement.AuditFile),
                             identifier,
                             Entities.FileRelationships.HAS_SUPPLIER
                     );
 
-                    this.container.put(Entities.EntitiesValues.Supplier, identifier);
+                    this.container.put(element, identifier);
 
                 } else {
 
@@ -605,15 +632,15 @@ public class Mapper {
 
                 if (Elements.MasterFiles.Product.equalsIgnoreCase(element)) {
 
-                    identifier = this.constructor.CREATE(Entities.EntitiesValues.Product);
+                    identifier = this.constructor.CREATE(Entities.Labels.Product);
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.File),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.RootElement.AuditFile),
                             identifier,
                             Entities.FileRelationships.HAS_PRODUCT
                     );
 
-                    this.container.put(Entities.EntitiesValues.Product, identifier);
+                    this.container.put(element, identifier);
 
                 } else {
 
@@ -642,7 +669,12 @@ public class Mapper {
         if (this.depth == count) {
 
             if (Elements.GeneralLedgerAccounts.TaxonomyReference.equalsIgnoreCase(element)) {
-                this.constructor.SET_PROPERTY(this.container.get(Entities.EntitiesValues.GeneralLedgerAccounts), element, value);
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.MasterFiles.GeneralLedgerAccounts),
+                        element,
+                        value
+                );
 
             } else {
 
@@ -658,15 +690,15 @@ public class Mapper {
 
                 if (Elements.GeneralLedgerAccounts.Account.equalsIgnoreCase(element)) {
 
-                    String identifier = this.constructor.CREATE(Entities.EntitiesValues.Account);
+                    String identifier = this.constructor.CREATE(Entities.Labels.Account);
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.GeneralLedgerAccounts),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.MasterFiles.GeneralLedgerAccounts),
                             identifier,
                             Entities.GeneralLedgerAccountsRelationships.HAS_ACCOUNT
                     );
 
-                    this.container.put(Entities.EntitiesValues.Account, identifier);
+                    this.container.put(element, identifier);
 
                 } else {
 
@@ -689,7 +721,7 @@ public class Mapper {
         switch (element) {
 
             case Elements.Account.AccountID:
-                String identifier = this.container.get(Entities.EntitiesValues.Account);
+                String identifier = this.container.get(Elements.GeneralLedgerAccounts.Account);
                 this.constructor.SET_PROPERTY(identifier, element, value);
                 this.accounts.put(value, identifier);
 
@@ -698,7 +730,8 @@ public class Mapper {
             case Elements.Account.AccountDescription:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.Account),
+                        this.container.get(Elements.GeneralLedgerAccounts.Account),
+                        Entities.Labels.AccountInfo,
                         element,
                         value,
                         Entities.AccountRelationships.HAS_ACCOUNT_DESCRIPTION
@@ -709,7 +742,8 @@ public class Mapper {
             case Elements.Account.OpeningDebitBalance:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.Account),
+                        this.container.get(Elements.GeneralLedgerAccounts.Account),
+                        Entities.Labels.AccountInfo,
                         element,
                         Double.parseDouble(value),
                         Entities.AccountRelationships.HAS_OPENING_DEBIT_BALANCE
@@ -720,7 +754,8 @@ public class Mapper {
             case Elements.Account.OpeningCreditBalance:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.Account),
+                        this.container.get(Elements.GeneralLedgerAccounts.Account),
+                        Entities.Labels.AccountInfo,
                         element,
                         Double.parseDouble(value),
                         Entities.AccountRelationships.HAS_OPENING_CREDIT_BALANCE
@@ -731,7 +766,8 @@ public class Mapper {
             case Elements.Account.ClosingDebitBalance:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.Account),
+                        this.container.get(Elements.GeneralLedgerAccounts.Account),
+                        Entities.Labels.AccountInfo,
                         element,
                         Double.parseDouble(value),
                         Entities.AccountRelationships.HAS_CLOSING_DEBIT_BALANCE
@@ -742,7 +778,8 @@ public class Mapper {
             case Elements.Account.ClosingCreditBalance:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.Account),
+                        this.container.get(Elements.GeneralLedgerAccounts.Account),
+                        Entities.Labels.AccountInfo,
                         element,
                         Double.parseDouble(value),
                         Entities.AccountRelationships.HAS_CLOSING_CREDIT_BALANCE
@@ -753,7 +790,8 @@ public class Mapper {
             case Elements.Account.GroupingCategory:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.Account),
+                        this.container.get(Elements.GeneralLedgerAccounts.Account),
+                        Entities.Labels.AccountInfo,
                         element,
                         value,
                         Entities.AccountRelationships.HAS_GROUPING_CATEGORY
@@ -764,7 +802,8 @@ public class Mapper {
             case Elements.Account.GroupingCode:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.Account),
+                        this.container.get(Elements.GeneralLedgerAccounts.Account),
+                        Entities.Labels.AccountInfo,
                         element,
                         value,
                         Entities.AccountRelationships.HAS_GROUPING_CODE
@@ -775,7 +814,8 @@ public class Mapper {
             case Elements.Account.TaxonomyCode:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.Account),
+                        this.container.get(Elements.GeneralLedgerAccounts.Account),
+                        Entities.Labels.AccountInfo,
                         element,
                         Integer.parseInt(value),
                         Entities.AccountRelationships.HAS_TAXONOMY_CODE
@@ -797,7 +837,7 @@ public class Mapper {
             switch (element) {
 
                 case Elements.Customer.CustomerID:
-                    identifier = this.container.get(Entities.EntitiesValues.Customer);
+                    identifier = this.container.get(Elements.MasterFiles.Customer);
                     this.constructor.SET_PROPERTY(identifier, element, value);
                     this.customers.put(value, identifier);
 
@@ -807,18 +847,18 @@ public class Mapper {
 
                     if (this.accounts.containsKey(value)) {
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Customer),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.MasterFiles.Customer),
                                 this.accounts.get(value),
                                 Entities.OtherRelationships.HAS_ACCOUNT
                         );
 
                     } else {
 
-                        identifier = this.constructor.CREATE(element, value);
+                        identifier = this.constructor.CREATE(Entities.Labels.Account, element, value);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Customer),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.MasterFiles.Customer),
                                 identifier,
                                 Entities.OtherRelationships.HAS_ACCOUNT
                         );
@@ -832,7 +872,8 @@ public class Mapper {
                 case Elements.Customer.CustomerTaxID:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Customer),
+                            this.container.get(Elements.MasterFiles.Customer),
+                            Entities.Labels.CustomerInfo,
                             element,
                             value,
                             Entities.CustomerRelationships.HAS_CUSTOMER_TAX_ID
@@ -842,29 +883,29 @@ public class Mapper {
 
                 case Elements.Customer.CompanyName:
 
-                    String customer = this.container.get(Entities.EntitiesValues.Customer);
+                    String customer = this.container.get(Elements.MasterFiles.Customer);
 
                     if (this.companies.containsKey(value)) {
 
                         identifier = this.companies.get(value);
 
-                        this.constructor.RELATIONSHIP(
+                        this.constructor.CREATE_RELATIONSHIP(
                                 customer,
                                 identifier,
-                                Entities.CustomerRelationships.REPRESENTS
+                                Entities.CustomerRelationships.REPRESENTS_AS_CUSTOMER
                         );
 
                     } else {
 
-                        identifier = this.constructor.MERGE(Entities.EntitiesValues.Company, element, value);
+                        identifier = this.constructor.CREATE(Entities.Labels.Company, element, value);
 
-                        this.constructor.MERGE_RELATIONSHIP(this.rootCompany, identifier, Entities.CompanyRelationships.IS_SUPPLIER_OF);
-                        this.constructor.MERGE_RELATIONSHIP(identifier, this.rootCompany, Entities.CompanyRelationships.IS_CUSTOMER_OF);
+                        this.constructor.CREATE_RELATIONSHIP(this.rootCompany, identifier, Entities.CompanyRelationships.IS_SUPPLIER_OF);
+                        this.constructor.CREATE_RELATIONSHIP(identifier, this.rootCompany, Entities.CompanyRelationships.IS_CUSTOMER_OF);
 
-                        this.constructor.RELATIONSHIP(
+                        this.constructor.CREATE_RELATIONSHIP(
                                 customer,
                                 identifier,
-                                Entities.CustomerRelationships.REPRESENTS
+                                Entities.CustomerRelationships.REPRESENTS_AS_CUSTOMER
                         );
 
                         this.companies.put(value, identifier);
@@ -878,7 +919,8 @@ public class Mapper {
                 case Elements.Customer.Contact:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Customer),
+                            this.container.get(Elements.MasterFiles.Customer),
+                            Entities.Labels.CustomerInfo,
                             element,
                             value,
                             Entities.CustomerRelationships.HAS_CONTACT
@@ -889,7 +931,8 @@ public class Mapper {
                 case Elements.Customer.Telephone:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Customer),
+                            this.container.get(Elements.MasterFiles.Customer),
+                            Entities.Labels.Contact,
                             element,
                             value,
                             Entities.CustomerRelationships.HAS_TELEPHONE
@@ -900,7 +943,8 @@ public class Mapper {
                 case Elements.Customer.Fax:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Customer),
+                            this.container.get(Elements.MasterFiles.Customer),
+                            Entities.Labels.Contact,
                             element,
                             value,
                             Entities.CustomerRelationships.HAS_FAX
@@ -911,7 +955,8 @@ public class Mapper {
                 case Elements.Customer.Email:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Customer),
+                            this.container.get(Elements.MasterFiles.Customer),
+                            Entities.Labels.Contact,
                             element,
                             value,
                             Entities.CustomerRelationships.HAS_EMAIL
@@ -922,7 +967,8 @@ public class Mapper {
                 case Elements.Customer.Website:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Customer),
+                            this.container.get(Elements.MasterFiles.Customer),
+                            Entities.Labels.Contact,
                             element,
                             value,
                             Entities.CustomerRelationships.HAS_WEBSITE
@@ -933,7 +979,8 @@ public class Mapper {
                 case Elements.Customer.SelfBillingIndicator:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Customer),
+                            this.container.get(Elements.MasterFiles.Customer),
+                            Entities.Labels.CustomerInfo,
                             element,
                             Integer.parseInt(value),
                             Entities.CustomerRelationships.HAS_SELF_BILLING_INDICATOR
@@ -955,11 +1002,11 @@ public class Mapper {
 
                     if (Elements.Customer.BillingAddress.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
-                        this.container.put(Entities.EntitiesValues.Address, identifier);
+                        String identifier = this.constructor.CREATE(Entities.Labels.Address);
+                        this.container.put(Entities.Labels.Address, identifier);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Customer),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.MasterFiles.Customer),
                                 identifier,
                                 Entities.CustomerRelationships.HAS_BILLING_ADDRESS
                         );
@@ -976,11 +1023,11 @@ public class Mapper {
 
                     if (Elements.Customer.ShipToAddress.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
-                        this.container.put(Entities.EntitiesValues.Address, identifier);
+                        String identifier = this.constructor.CREATE(Entities.Labels.Address);
+                        this.container.put(Entities.Labels.Address, identifier);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Customer),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.MasterFiles.Customer),
                                 identifier,
                                 Entities.CustomerRelationships.HAS_SHIP_TO_ADDRESS
                         );
@@ -1010,7 +1057,7 @@ public class Mapper {
 
                 case Elements.Supplier.SupplierID:
 
-                    identifier = this.container.get(Entities.EntitiesValues.Supplier);
+                    identifier = this.container.get(Elements.MasterFiles.Supplier);
                     this.constructor.SET_PROPERTY(identifier, element, value);
                     this.suppliers.put(value, identifier);
 
@@ -1020,8 +1067,8 @@ public class Mapper {
 
                     if (this.accounts.containsKey(value)) {
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Supplier),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.MasterFiles.Supplier),
                                 this.accounts.get(value),
                                 Entities.OtherRelationships.HAS_ACCOUNT
                         );
@@ -1030,8 +1077,8 @@ public class Mapper {
 
                         identifier = this.constructor.CREATE(element, value);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Supplier),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.MasterFiles.Supplier),
                                 identifier,
                                 Entities.OtherRelationships.HAS_ACCOUNT
                         );
@@ -1045,7 +1092,8 @@ public class Mapper {
                 case Elements.Supplier.SupplierTaxID:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Supplier),
+                            this.container.get(Elements.MasterFiles.Supplier),
+                            Entities.Labels.SupplierInfo,
                             element,
                             value,
                             Entities.SupplierRelationships.HAS_SUPPLIER_TAX_ID
@@ -1055,26 +1103,26 @@ public class Mapper {
 
                 case Elements.Supplier.CompanyName:
 
-                    String supplier = this.container.get(Entities.EntitiesValues.Supplier);
+                    String supplier = this.container.get(Elements.MasterFiles.Supplier);
 
                     if (this.companies.containsKey(value)) {
 
                         identifier = this.companies.get(value);
 
-                        this.constructor.RELATIONSHIP(
+                        this.constructor.CREATE_RELATIONSHIP(
                                 supplier,
                                 identifier,
-                                Entities.SupplierRelationships.REPRESENTS
+                                Entities.SupplierRelationships.REPRESENTS_AS_SUPPLIER
                         );
 
                     } else {
 
-                        identifier = this.constructor.MERGE(Entities.EntitiesValues.Company, element, value);
+                        identifier = this.constructor.CREATE(Entities.Labels.Company, element, value);
 
-                        this.constructor.MERGE_RELATIONSHIP(this.rootCompany, identifier, Entities.CompanyRelationships.IS_CUSTOMER_OF);
-                        this.constructor.MERGE_RELATIONSHIP(identifier, this.rootCompany, Entities.CompanyRelationships.IS_SUPPLIER_OF);
+                        this.constructor.CREATE_RELATIONSHIP(this.rootCompany, identifier, Entities.CompanyRelationships.IS_CUSTOMER_OF);
+                        this.constructor.CREATE_RELATIONSHIP(identifier, this.rootCompany, Entities.CompanyRelationships.IS_SUPPLIER_OF);
 
-                        this.constructor.RELATIONSHIP(
+                        this.constructor.CREATE_RELATIONSHIP(
                                 supplier,
                                 identifier,
                                 Entities.OtherRelationships.HAS_COMPANY
@@ -1091,7 +1139,8 @@ public class Mapper {
                 case Elements.Supplier.Contact:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Supplier),
+                            this.container.get(Elements.MasterFiles.Supplier),
+                            Entities.Labels.SupplierInfo,
                             element,
                             value,
                             Entities.SupplierRelationships.HAS_CONTACT
@@ -1102,7 +1151,8 @@ public class Mapper {
                 case Elements.Supplier.Telephone:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Supplier),
+                            this.container.get(Elements.MasterFiles.Supplier),
+                            Entities.Labels.Contact,
                             element,
                             value,
                             Entities.SupplierRelationships.HAS_TELEPHONE
@@ -1113,7 +1163,8 @@ public class Mapper {
                 case Elements.Supplier.Fax:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Supplier),
+                            this.container.get(Elements.MasterFiles.Supplier),
+                            Entities.Labels.Contact,
                             element,
                             value,
                             Entities.SupplierRelationships.HAS_FAX
@@ -1124,7 +1175,8 @@ public class Mapper {
                 case Elements.Supplier.Email:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Supplier),
+                            this.container.get(Elements.MasterFiles.Supplier),
+                            Entities.Labels.Contact,
                             element,
                             value,
                             Entities.SupplierRelationships.HAS_EMAIL
@@ -1135,7 +1187,8 @@ public class Mapper {
                 case Elements.Supplier.Website:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Supplier),
+                            this.container.get(Elements.MasterFiles.Supplier),
+                            Entities.Labels.Contact,
                             element,
                             value,
                             Entities.SupplierRelationships.HAS_WEBSITE
@@ -1146,7 +1199,8 @@ public class Mapper {
                 case Elements.Supplier.SelfBillingIndicator:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Supplier),
+                            this.container.get(Elements.MasterFiles.Supplier),
+                            Entities.Labels.SupplierInfo,
                             element,
                             Integer.parseInt(value),
                             Entities.SupplierRelationships.HAS_SELF_BILLING_INDICATOR
@@ -1168,11 +1222,11 @@ public class Mapper {
 
                     if (Elements.Supplier.BillingAddress.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
-                        this.container.put(Entities.EntitiesValues.Address, identifier);
+                        String identifier = this.constructor.CREATE(Entities.Labels.Address);
+                        this.container.put(Entities.Labels.Address, identifier);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Supplier),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.MasterFiles.Supplier),
                                 identifier,
                                 Entities.SupplierRelationships.HAS_BILLING_ADDRESS
                         );
@@ -1189,11 +1243,11 @@ public class Mapper {
 
                     if (Elements.Supplier.ShipFromAddress.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
-                        this.container.put(Entities.EntitiesValues.Address, identifier);
+                        String identifier = this.constructor.CREATE(Entities.Labels.Address);
+                        this.container.put(Entities.Labels.Address, identifier);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Supplier),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.MasterFiles.Supplier),
                                 identifier,
                                 Entities.SupplierRelationships.HAS_SHIP_FROM_ADDRESS
                         );
@@ -1223,7 +1277,8 @@ public class Mapper {
                 case Elements.Product.ProductType:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Product),
+                            this.container.get(Elements.MasterFiles.Product),
+                            Entities.Labels.ProductInfo,
                             element,
                             value,
                             Entities.ProductRelationships.HAS_PRODUCT_TYPE
@@ -1233,7 +1288,7 @@ public class Mapper {
 
                 case Elements.Product.ProductCode:
 
-                    String identifier = this.container.get(Entities.EntitiesValues.Product);
+                    String identifier = this.container.get(Elements.MasterFiles.Product);
                     this.constructor.SET_PROPERTY(identifier, element, value);
                     this.products.put(value, identifier);
 
@@ -1242,7 +1297,8 @@ public class Mapper {
                 case Elements.Product.ProductGroup:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Product),
+                            this.container.get(Elements.MasterFiles.Product),
+                            Entities.Labels.ProductInfo,
                             element,
                             value,
                             Entities.ProductRelationships.HAS_PRODUCT_GROUP
@@ -1253,7 +1309,8 @@ public class Mapper {
                 case Elements.Product.ProductDescription:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Product),
+                            this.container.get(Elements.MasterFiles.Product),
+                            Entities.Labels.ProductInfo,
                             element,
                             value,
                             Entities.ProductRelationships.HAS_PRODUCT_DESCRIPTION
@@ -1264,7 +1321,8 @@ public class Mapper {
                 case Elements.Product.ProductNumberCode:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Product),
+                            this.container.get(Elements.MasterFiles.Product),
+                            Entities.Labels.ProductInfo,
                             element,
                             value,
                             Entities.ProductRelationships.HAS_PRODUCT_NUMBER_CODE
@@ -1284,11 +1342,11 @@ public class Mapper {
 
                 if (Elements.Product.CustomsDetails.equalsIgnoreCase(element)) {
 
-                    String identifier = this.constructor.CREATE();
+                    String identifier = this.constructor.CREATE(Entities.Labels.ProductInfo);
                     this.container.put(element, identifier);
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.Product),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.MasterFiles.Product),
                             identifier,
                             Entities.ProductRelationships.HAS_CUSTOMS_DETAILS
                     );
@@ -1316,7 +1374,11 @@ public class Mapper {
             case Elements.CustomsDetails.CNCode:
 
             case Elements.CustomsDetails.UNNumber:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.Product.CustomsDetails), element, value);
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.Product.CustomsDetails),
+                        element,
+                        value
+                );
 
                 break;
 
@@ -1335,11 +1397,11 @@ public class Mapper {
 
             if (Elements.TaxTable.TaxTableEntry.equalsIgnoreCase(element)) {
 
-                String identifier = this.constructor.CREATE(Entities.EntitiesValues.TaxTable);
-                this.container.put(Entities.EntitiesValues.TaxTable, identifier);
+                String identifier = this.constructor.CREATE(Entities.Labels.TaxTable);
+                this.container.put(element, identifier);
 
-                this.constructor.RELATIONSHIP(
-                        this.container.get(Entities.EntitiesValues.File),
+                this.constructor.CREATE_RELATIONSHIP(
+                        this.container.get(Elements.RootElement.AuditFile),
                         identifier,
                         Entities.FileRelationships.HAS_TAX_TABLE
                 );
@@ -1365,7 +1427,8 @@ public class Mapper {
             case Elements.TaxTableEntry.TaxType:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.TaxTable),
+                        this.container.get(Elements.TaxTable.TaxTableEntry),
+                        Entities.Labels.TaxTable,
                         element,
                         value,
                         Entities.TaxTableRelationships.HAS_TAX_TYPE
@@ -1376,7 +1439,8 @@ public class Mapper {
             case Elements.TaxTableEntry.TaxCountryRegion:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.TaxTable),
+                        this.container.get(Elements.TaxTable.TaxTableEntry),
+                        Entities.Labels.TaxTable,
                         element,
                         value,
                         Entities.TaxTableRelationships.HAS_TAX_COUNTRY_REGION
@@ -1385,14 +1449,19 @@ public class Mapper {
                 break;
 
             case Elements.TaxTableEntry.TaxCode:
-                this.constructor.SET_PROPERTY(this.container.get(Entities.EntitiesValues.TaxTable), element, value);
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.TaxTable.TaxTableEntry),
+                        element,
+                        value
+                );
 
                 break;
 
             case Elements.TaxTableEntry.Description:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.TaxTable),
+                        this.container.get(Elements.TaxTable.TaxTableEntry),
+                        Entities.Labels.TaxTable,
                         element,
                         value,
                         Entities.TaxTableRelationships.HAS_DESCRIPTION
@@ -1403,7 +1472,8 @@ public class Mapper {
             case Elements.TaxTableEntry.TaxExpirationDate:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.TaxTable),
+                        this.container.get(Elements.TaxTable.TaxTableEntry),
+                        Entities.Labels.TaxTable,
                         element,
                         value,
                         Entities.TaxTableRelationships.HAS_TAX_EXPIRATION_DATE
@@ -1414,7 +1484,8 @@ public class Mapper {
             case Elements.TaxTableEntry.TaxPercentage:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.TaxTable),
+                        this.container.get(Elements.TaxTable.TaxTableEntry),
+                        Entities.Labels.TaxTable,
                         element,
                         Double.parseDouble(value),
                         Entities.TaxTableRelationships.HAS_TAX_PERCENTAGE
@@ -1425,7 +1496,8 @@ public class Mapper {
             case Elements.TaxTableEntry.TaxAmount:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.TaxTable),
+                        this.container.get(Elements.TaxTable.TaxTableEntry),
+                        Entities.Labels.TaxTable,
                         element,
                         Double.parseDouble(value),
                         Entities.TaxTableRelationships.HAS_TAX_AMOUNT
@@ -1446,14 +1518,20 @@ public class Mapper {
             switch (element) {
 
                 case Elements.GeneralLedgerEntries.NumberOfEntries:
-                    this.constructor.SET_PROPERTY(this.container.get(Entities.EntitiesValues.GeneralLedgerEntries), element, Integer.parseInt(value));
+
+                    this.constructor.SET_PROPERTY(
+                            this.container.get(Elements.AuditFile.GeneralLedgerEntries),
+                            element,
+                            Integer.parseInt(value)
+                    );
 
                     break;
 
                 case Elements.GeneralLedgerEntries.TotalDebit:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.GeneralLedgerEntries),
+                            this.container.get(Elements.AuditFile.GeneralLedgerEntries),
+                            Entities.Labels.GeneralLedgerEntries,
                             element,
                             Double.parseDouble(value),
                             Entities.GeneralLedgerEntriesRelationships.HAS_TOTAL_DEBIT
@@ -1464,7 +1542,8 @@ public class Mapper {
                 case Elements.GeneralLedgerEntries.TotalCredit:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.GeneralLedgerEntries),
+                            this.container.get(Elements.AuditFile.GeneralLedgerEntries),
+                            Entities.Labels.GeneralLedgerEntries,
                             element,
                             Double.parseDouble(value),
                             Entities.GeneralLedgerEntriesRelationships.HAS_TOTAL_CREDIT
@@ -1484,13 +1563,11 @@ public class Mapper {
 
                 if (Elements.GeneralLedgerEntries.Journal.equalsIgnoreCase(element)) {
 
-                    String identifier = this.constructor.CREATE(Entities.EntitiesValues.Journal);
-                    this.container.put(Entities.EntitiesValues.Journal, identifier);
+                    String identifier = this.constructor.CREATE(Entities.Labels.Journal);
+                    this.container.put(element, identifier);
 
-                    //this.constructor.CREATE_RELATIONSHIP_TYPE_OF(identifier, Entities.EntitiesValues.Journal);
-
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.GeneralLedgerEntries),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.AuditFile.GeneralLedgerEntries),
                             identifier,
                             Entities.GeneralLedgerEntriesRelationships.HAS_JOURNAL
                     );
@@ -1518,14 +1595,19 @@ public class Mapper {
             switch (element) {
 
                 case Elements.Journal.JournalID:
-                    this.constructor.SET_PROPERTY(this.container.get(Entities.EntitiesValues.Journal), element, value);
+                    this.constructor.SET_PROPERTY(
+                            this.container.get(Elements.GeneralLedgerEntries.Journal),
+                            element,
+                            value
+                    );
 
                     break;
 
                 case Elements.Journal.Description:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Journal),
+                            this.container.get(Elements.GeneralLedgerEntries.Journal),
+                            Entities.Labels.JournalInfo,
                             element,
                             value,
                             Entities.JournalRelationships.HAS_DESCRIPTION
@@ -1545,13 +1627,11 @@ public class Mapper {
 
                 if (Elements.Journal.Transaction.equalsIgnoreCase(element)) {
 
-                    String identifier = this.constructor.CREATE(Entities.EntitiesValues.Transaction);
-                    this.container.put(Entities.EntitiesValues.Transaction, identifier);
+                    String identifier = this.constructor.CREATE(Entities.Labels.Transaction);
+                    this.container.put(element, identifier);
 
-                    //this.constructor.CREATE_RELATIONSHIP_TYPE_OF(identifier, Entities.EntitiesValues.Transaction);
-
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.Journal),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.GeneralLedgerEntries.Journal),
                             identifier,
                             Entities.JournalRelationships.HAS_TRANSACTION
                     );
@@ -1579,7 +1659,7 @@ public class Mapper {
             switch (element) {
 
                 case Elements.Transaction.TransactionID:
-                    String identifier = this.container.get(Entities.EntitiesValues.Transaction);
+                    String identifier = this.container.get(Elements.Journal.Transaction);
                     this.constructor.SET_PROPERTY(identifier, element, value);
                     this.transactions.put(value, identifier);
 
@@ -1588,7 +1668,8 @@ public class Mapper {
                 case Elements.Transaction.Period:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Transaction),
+                            this.container.get(Elements.Journal.Transaction),
+                            Entities.Labels.TransactionInfo,
                             element,
                             Integer.parseInt(value),
                             Entities.TransactionRelationships.HAS_PERIOD
@@ -1599,7 +1680,8 @@ public class Mapper {
                 case Elements.Transaction.TransactionDate:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Transaction),
+                            this.container.get(Elements.Journal.Transaction),
+                            Entities.Labels.TransactionInfo,
                             element,
                             value,
                             Entities.TransactionRelationships.HAS_TRANSACTION_DATE
@@ -1609,34 +1691,21 @@ public class Mapper {
 
                 case Elements.Transaction.SourceID:
 
-                    if (this.sources.containsKey(value)) {
-
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Transaction),
-                                this.sources.get(value),
-                                Entities.OtherRelationships.HAS_SOURCE
-                        );
-
-                    } else {
-
-                        identifier = this.constructor.CREATE(element, value);
-
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Transaction),
-                                identifier,
-                                Entities.OtherRelationships.HAS_SOURCE
-                        );
-
-                        this.sources.put(value, identifier);
-
-                    }
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.Journal.Transaction),
+                            Entities.Labels.TransactionInfo,
+                            element,
+                            value,
+                            Entities.TransactionRelationships.HAS_SOURCE_ID
+                    );
 
                     break;
 
                 case Elements.Transaction.Description:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Transaction),
+                            this.container.get(Elements.Journal.Transaction),
+                            Entities.Labels.TransactionInfo,
                             element,
                             value,
                             Entities.TransactionRelationships.HAS_DESCRIPTION
@@ -1647,7 +1716,8 @@ public class Mapper {
                 case Elements.Transaction.DocArchivalNumber:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Transaction),
+                            this.container.get(Elements.Journal.Transaction),
+                            Entities.Labels.TransactionInfo,
                             element,
                             value,
                             Entities.TransactionRelationships.HAS_DOC_ARCHIVAL_NUMBER
@@ -1658,7 +1728,8 @@ public class Mapper {
                 case Elements.Transaction.TransactionType:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Transaction),
+                            this.container.get(Elements.Journal.Transaction),
+                            Entities.Labels.TransactionInfo,
                             element,
                             value,
                             Entities.TransactionRelationships.HAS_TRANSACTION_TYPE
@@ -1669,7 +1740,8 @@ public class Mapper {
                 case Elements.Transaction.GLPostingDate:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Transaction),
+                            this.container.get(Elements.Journal.Transaction),
+                            Entities.Labels.TransactionInfo,
                             element,
                             value,
                             Entities.TransactionRelationships.HAS_GL_POSTING_DATE
@@ -1679,8 +1751,8 @@ public class Mapper {
 
                 case Elements.Transaction.CustomerID:
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.Transaction),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.Journal.Transaction),
                             this.customers.get(value),
                             Entities.OtherRelationships.HAS_CUSTOMER
                     );
@@ -1689,8 +1761,8 @@ public class Mapper {
 
                 case Elements.Transaction.SupplierID:
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.Transaction),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.Journal.Transaction),
                             this.suppliers.get(value),
                             Entities.OtherRelationships.HAS_SUPPLIER
                     );
@@ -1709,11 +1781,11 @@ public class Mapper {
 
                 if (Elements.Transaction.Lines.equalsIgnoreCase(element)) {
 
-                    String identifier = this.constructor.CREATE();
+                    String identifier = this.constructor.CREATE(Entities.Labels.TransactionInfo);
                     this.container.put(element, identifier);
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.Transaction),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.Journal.Transaction),
                             identifier,
                             Entities.TransactionRelationships.HAS_LINES
                     );
@@ -1744,10 +1816,10 @@ public class Mapper {
 
                 if (Elements.Lines.CreditLine.equalsIgnoreCase(element)) {
 
-                    String identifier = this.constructor.CREATE();
+                    String identifier = this.constructor.CREATE(Entities.Labels.CreditLine);
                     this.container.put(element, identifier);
 
-                    this.constructor.RELATIONSHIP(
+                    this.constructor.CREATE_RELATIONSHIP(
                             this.container.get(Elements.Transaction.Lines),
                             identifier,
                             Entities.LinesRelationships.HAS_CREDIT_LINE
@@ -1765,10 +1837,10 @@ public class Mapper {
 
                 if (Elements.Lines.DebitLine.equalsIgnoreCase(element)) {
 
-                    String identifier = this.constructor.CREATE();
+                    String identifier = this.constructor.CREATE(Entities.Labels.DebitLine);
                     this.container.put(element, identifier);
 
-                    this.constructor.RELATIONSHIP(
+                    this.constructor.CREATE_RELATIONSHIP(
                             this.container.get(Elements.Transaction.Lines),
                             identifier,
                             Entities.LinesRelationships.HAS_DEBIT_LINE
@@ -1793,13 +1865,18 @@ public class Mapper {
         switch (element) {
 
             case Elements.CreditLine.RecordID:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.Lines.CreditLine), element, value);
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.Lines.CreditLine),
+                        element,
+                        value
+                );
 
                 break;
 
             case Elements.CreditLine.AccountID:
 
-                this.constructor.RELATIONSHIP(
+                this.constructor.CREATE_RELATIONSHIP(
                         this.container.get(Elements.Lines.CreditLine),
                         this.accounts.get(value),
                         Entities.OtherRelationships.HAS_ACCOUNT
@@ -1811,7 +1888,7 @@ public class Mapper {
 
                 if (this.documents.containsKey(value)) {
 
-                    this.constructor.RELATIONSHIP(
+                    this.constructor.CREATE_RELATIONSHIP(
                             this.container.get(Elements.Lines.CreditLine),
                             this.documents.get(value),
                             Entities.CreditLineRelationships.HAS_SOURCE_DOCUMENT
@@ -1821,7 +1898,7 @@ public class Mapper {
 
                     String identifier = this.constructor.CREATE(element, value);
 
-                    this.constructor.RELATIONSHIP(
+                    this.constructor.CREATE_RELATIONSHIP(
                             this.container.get(Elements.Lines.CreditLine),
                             identifier,
                             Entities.CreditLineRelationships.HAS_SOURCE_DOCUMENT
@@ -1837,6 +1914,7 @@ public class Mapper {
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.container.get(Elements.Lines.CreditLine),
+                        Entities.Labels.CreditLine,
                         element,
                         value,
                         Entities.CreditLineRelationships.HAS_SYSTEM_ENTRY_DATE
@@ -1848,6 +1926,7 @@ public class Mapper {
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.container.get(Elements.Lines.CreditLine),
+                        Entities.Labels.CreditLine,
                         element,
                         value,
                         Entities.CreditLineRelationships.HAS_DESCRIPTION
@@ -1859,6 +1938,7 @@ public class Mapper {
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.container.get(Elements.Lines.CreditLine),
+                        Entities.Labels.CreditLine,
                         element,
                         Double.parseDouble(value),
                         Entities.CreditLineRelationships.HAS_CREDIT_AMOUNT
@@ -1877,13 +1957,18 @@ public class Mapper {
         switch (element) {
 
             case Elements.DebitLine.RecordID:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.Lines.DebitLine), element, value);
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.Lines.DebitLine),
+                        element,
+                        value
+                );
 
                 break;
 
             case Elements.DebitLine.AccountID:
 
-                this.constructor.RELATIONSHIP(
+                this.constructor.CREATE_RELATIONSHIP(
                         this.container.get(Elements.Lines.DebitLine),
                         this.accounts.get(value),
                         Entities.OtherRelationships.HAS_ACCOUNT
@@ -1895,7 +1980,7 @@ public class Mapper {
 
                 if (this.documents.containsKey(value)) {
 
-                    this.constructor.RELATIONSHIP(
+                    this.constructor.CREATE_RELATIONSHIP(
                             this.container.get(Elements.Lines.DebitLine),
                             this.documents.get(value),
                             Entities.DebitLineRelationships.HAS_SOURCE_DOCUMENT
@@ -1905,7 +1990,7 @@ public class Mapper {
 
                     String identifier = this.constructor.CREATE(element, value);
 
-                    this.constructor.RELATIONSHIP(
+                    this.constructor.CREATE_RELATIONSHIP(
                             this.container.get(Elements.Lines.DebitLine),
                             identifier,
                             Entities.DebitLineRelationships.HAS_SOURCE_DOCUMENT
@@ -1921,6 +2006,7 @@ public class Mapper {
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.container.get(Elements.Lines.DebitLine),
+                        Entities.Labels.DebitLine,
                         element,
                         value,
                         Entities.DebitLineRelationships.HAS_SYSTEM_ENTRY_DATE
@@ -1932,6 +2018,7 @@ public class Mapper {
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.container.get(Elements.Lines.DebitLine),
+                        Entities.Labels.DebitLine,
                         element,
                         value,
                         Entities.DebitLineRelationships.HAS_DESCRIPTION
@@ -1943,6 +2030,7 @@ public class Mapper {
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.container.get(Elements.Lines.DebitLine),
+                        Entities.Labels.DebitLine,
                         element,
                         Double.parseDouble(value),
                         Entities.DebitLineRelationships.HAS_DEBIT_AMOUNT
@@ -1966,13 +2054,11 @@ public class Mapper {
 
                 if (Elements.SourceDocuments.SalesInvoices.equalsIgnoreCase(element)) {
 
-                    String identifier = this.constructor.CREATE(Entities.EntitiesValues.SalesInvoices);
-                    this.container.put(Entities.EntitiesValues.SalesInvoices, identifier);
+                    String identifier = this.constructor.CREATE(Entities.Labels.SalesInvoices);
+                    this.container.put(element, identifier);
 
-                    //this.constructor.CREATE_RELATIONSHIP_TYPE_OF(identifier, Entities.EntitiesValues.SalesInvoices);
-
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.File),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.RootElement.AuditFile),
                             identifier,
                             Entities.FileRelationships.HAS_SALES_INVOICES
                     );
@@ -1989,43 +2075,64 @@ public class Mapper {
 
                 if (Elements.SourceDocuments.MovementOfGoods.equalsIgnoreCase(element)) {
 
-                    throw new MapException(element);
+                    String identifier = this.constructor.CREATE(Entities.Labels.MovementOfGoods);
+                    this.container.put(element, identifier);
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.RootElement.AuditFile),
+                            identifier,
+                            Entities.FileRelationships.HAS_MOVEMENT_OF_GOODS
+                    );
 
                 } else {
 
-                    throw new MapException(element);
+                    this.processMovementOfGoodsChildren(element, value, count);
 
                 }
 
-                //break;
+                break;
 
             case Elements.SourceDocuments.WorkingDocuments:
 
                 if (Elements.SourceDocuments.WorkingDocuments.equalsIgnoreCase(element)) {
 
-                    throw new MapException(element);
+                    String identifier = this.constructor.CREATE(Entities.Labels.WorkingDocuments);
+                    this.container.put(element, identifier);
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.RootElement.AuditFile),
+                            identifier,
+                            Entities.FileRelationships.HAS_WORKING_DOCUMENTS
+                    );
 
                 } else {
 
-                    throw new MapException(element);
+                    this.processWorkingDocumentsChildren(element, value, count);
 
                 }
 
-                //break;
+                break;
 
             case Elements.SourceDocuments.Payments:
 
                 if (Elements.SourceDocuments.Payments.equalsIgnoreCase(element)) {
 
-                    throw new MapException(element);
+                    String identifier = this.constructor.CREATE(Entities.Labels.Payments);
+                    this.container.put(element, identifier);
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.RootElement.AuditFile),
+                            identifier,
+                            Entities.FileRelationships.HAS_PAYMENTS
+                    );
 
                 } else {
 
-                    throw new MapException(element);
+                    this.processPaymentsChildren(element, value, count);
 
                 }
 
-                //break;
+                break;
 
             default:
                 throw new MapException(this.currentSequences.get(count));
@@ -2040,14 +2147,20 @@ public class Mapper {
             switch (element) {
 
                 case Elements.SalesInvoices.NumberOfEntries:
-                    this.constructor.SET_PROPERTY(this.container.get(Entities.EntitiesValues.SalesInvoices), element, Integer.parseInt(value));
+
+                    this.constructor.SET_PROPERTY(
+                            this.container.get(Elements.SourceDocuments.SalesInvoices),
+                            element,
+                            Integer.parseInt(value)
+                    );
 
                     break;
 
                 case Elements.SalesInvoices.TotalDebit:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.SalesInvoices),
+                            this.container.get(Elements.SourceDocuments.SalesInvoices),
+                            Entities.Labels.SalesInvoices,
                             element,
                             Double.parseDouble(value),
                             Entities.SalesInvoicesRelationships.HAS_TOTAL_DEBIT
@@ -2058,7 +2171,8 @@ public class Mapper {
                 case Elements.SalesInvoices.TotalCredit:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.SalesInvoices),
+                            this.container.get(Elements.SourceDocuments.SalesInvoices),
+                            Entities.Labels.SalesInvoices,
                             element,
                             Double.parseDouble(value),
                             Entities.SalesInvoicesRelationships.HAS_TOTAL_CREDIT
@@ -2105,28 +2219,27 @@ public class Mapper {
                     if (this.documents.containsKey(value)) {
 
                         identifier = this.documents.get(value);
-                        this.constructor.SET_LABEL(identifier, Entities.EntitiesValues.Invoice);
+                        this.constructor.SET_LABEL(identifier, Entities.Labels.Invoice);
                         this.constructor.SET_PROPERTY(identifier, element, value);
 
                     } else {
 
-                        identifier = this.constructor.CREATE(Entities.EntitiesValues.Invoice, element, value);
+                        identifier = this.constructor.CREATE(Entities.Labels.Invoice, element, value);
 
                     }
 
-                    this.container.put(Entities.EntitiesValues.Invoice, identifier);
-                    //this.constructor.CREATE_RELATIONSHIP_TYPE_OF(identifier, Entities.EntitiesValues.Invoice);
+                    this.container.put(Elements.SalesInvoices.Invoice, identifier);
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.SalesInvoices),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.SourceDocuments.SalesInvoices),
                             identifier,
                             Entities.SalesInvoicesRelationships.HAS_INVOICE
                     );
 
-                    this.constructor.RELATIONSHIP(
-                            this.rootCompany,
+                    this.constructor.CREATE_RELATIONSHIP(
                             identifier,
-                            Entities.CompanyRelationships.SOLD_INVOICE
+                            this.rootCompany,
+                            Entities.InvoiceRelationships.HAS_SELLER
                     );
 
                     break;
@@ -2134,7 +2247,8 @@ public class Mapper {
                 case Elements.Invoice.ATCUD:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Invoice),
+                            this.container.get(Elements.SalesInvoices.Invoice),
+                            Entities.Labels.InvoiceInfo,
                             element,
                             value,
                             Entities.InvoiceRelationships.HAS_ATCUD
@@ -2145,7 +2259,8 @@ public class Mapper {
                 case Elements.Invoice.Hash:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Invoice),
+                            this.container.get(Elements.SalesInvoices.Invoice),
+                            Entities.Labels.InvoiceInfo,
                             element,
                             value,
                             Entities.InvoiceRelationships.HAS_HASH
@@ -2156,7 +2271,8 @@ public class Mapper {
                 case Elements.Invoice.HashControl:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Invoice),
+                            this.container.get(Elements.SalesInvoices.Invoice),
+                            Entities.Labels.InvoiceInfo,
                             element,
                             value,
                             Entities.InvoiceRelationships.HAS_HASH_CONTROL
@@ -2167,7 +2283,8 @@ public class Mapper {
                 case Elements.Invoice.Period:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Invoice),
+                            this.container.get(Elements.SalesInvoices.Invoice),
+                            Entities.Labels.InvoiceInfo,
                             element,
                             Integer.parseInt(value),
                             Entities.InvoiceRelationships.HAS_PERIOD
@@ -2178,7 +2295,8 @@ public class Mapper {
                 case Elements.Invoice.InvoiceDate:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Invoice),
+                            this.container.get(Elements.SalesInvoices.Invoice),
+                            Entities.Labels.InvoiceInfo,
                             element,
                             value,
                             Entities.InvoiceRelationships.HAS_INVOICE_DATE
@@ -2189,7 +2307,8 @@ public class Mapper {
                 case Elements.Invoice.InvoiceType:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Invoice),
+                            this.container.get(Elements.SalesInvoices.Invoice),
+                            Entities.Labels.InvoiceInfo,
                             element,
                             value,
                             Entities.InvoiceRelationships.HAS_INVOICE_TYPE
@@ -2199,34 +2318,21 @@ public class Mapper {
 
                 case Elements.Invoice.SourceID:
 
-                    if (this.sources.containsKey(value)) {
-
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Invoice),
-                                this.sources.get(value),
-                                Entities.OtherRelationships.HAS_SOURCE
-                        );
-
-                    } else {
-
-                        identifier = this.constructor.CREATE(element, value);
-
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Invoice),
-                                identifier,
-                                Entities.OtherRelationships.HAS_SOURCE
-                        );
-
-                        this.sources.put(value, identifier);
-
-                    }
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.SalesInvoices.Invoice),
+                            Entities.Labels.InvoiceInfo,
+                            element,
+                            value,
+                            Entities.InvoiceRelationships.HAS_SOURCE_ID
+                    );
 
                     break;
 
                 case Elements.Invoice.EACCode:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Invoice),
+                            this.container.get(Elements.SalesInvoices.Invoice),
+                            Entities.Labels.InvoiceInfo,
                             element,
                             value,
                             Entities.InvoiceRelationships.HAS_EAC_CODE
@@ -2237,7 +2343,8 @@ public class Mapper {
                 case Elements.Invoice.SystemEntryDate:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Invoice),
+                            this.container.get(Elements.SalesInvoices.Invoice),
+                            Entities.Labels.InvoiceInfo,
                             element,
                             value,
                             Entities.InvoiceRelationships.HAS_SYSTEM_ENTRY_DATE
@@ -2247,8 +2354,8 @@ public class Mapper {
 
                 case Elements.Invoice.TransactionID:
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Entities.EntitiesValues.Invoice),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.SalesInvoices.Invoice),
                             this.transactions.get(value),
                             Entities.OtherRelationships.HAS_TRANSACTION
                     );
@@ -2257,10 +2364,10 @@ public class Mapper {
 
                 case Elements.Invoice.CustomerID:
 
-                    identifier = this.container.get(Entities.EntitiesValues.Invoice);
+                    identifier = this.container.get(Elements.SalesInvoices.Invoice);
                     String customer = this.customers.get(value);
 
-                    this.constructor.RELATIONSHIP(
+                    this.constructor.CREATE_RELATIONSHIP(
                             identifier,
                             customer,
                             Entities.OtherRelationships.HAS_CUSTOMER
@@ -2268,10 +2375,10 @@ public class Mapper {
 
                     if (this.represents.containsKey(customer)) {
 
-                        this.constructor.RELATIONSHIP(
-                                this.represents.get(customer),
+                        this.constructor.CREATE_RELATIONSHIP(
                                 identifier,
-                                Entities.CompanyRelationships.BOUGHT_INVOICE
+                                this.represents.get(customer),
+                                Entities.InvoiceRelationships.HAS_BUYER
                         );
 
                     }
@@ -2281,7 +2388,8 @@ public class Mapper {
                 case Elements.Invoice.MovementEndTime:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Invoice),
+                            this.container.get(Elements.SalesInvoices.Invoice),
+                            Entities.Labels.InvoiceInfo,
                             element,
                             value,
                             Entities.InvoiceRelationships.HAS_MOVEMENT_END_TIME
@@ -2292,7 +2400,8 @@ public class Mapper {
                 case Elements.Invoice.MovementStartTime:
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                            this.container.get(Entities.EntitiesValues.Invoice),
+                            this.container.get(Elements.SalesInvoices.Invoice),
+                            Entities.Labels.InvoiceInfo,
                             element,
                             value,
                             Entities.InvoiceRelationships.HAS_MOVEMENT_START_TIME
@@ -2314,11 +2423,11 @@ public class Mapper {
 
                     if (Elements.Invoice.DocumentStatus.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(Entities.Labels.InvoiceInfo);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Invoice),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.SalesInvoices.Invoice),
                                 identifier,
                                 Entities.InvoiceRelationships.HAS_DOCUMENT_STATUS
                         );
@@ -2335,11 +2444,11 @@ public class Mapper {
 
                     if (Elements.Invoice.SpecialRegimes.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(Entities.Labels.InvoiceInfo);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Invoice),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.SalesInvoices.Invoice),
                                 identifier,
                                 Entities.InvoiceRelationships.HAS_SPECIAL_REGIMES
                         );
@@ -2356,18 +2465,18 @@ public class Mapper {
 
                     if (Elements.Invoice.ShipTo.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(Entities.Labels.InvoiceInfo);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Invoice),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.SalesInvoices.Invoice),
                                 identifier,
                                 Entities.InvoiceRelationships.HAS_SHIP_TO
                         );
 
                     } else {
 
-                        this.processShipToChildren(element, value, count);
+                        this.processShipToChildren(Elements.Invoice.ShipTo, element, value, count);
 
                     }
 
@@ -2377,18 +2486,18 @@ public class Mapper {
 
                     if (Elements.Invoice.ShipFrom.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(Entities.Labels.InvoiceInfo);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Invoice),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.SalesInvoices.Invoice),
                                 identifier,
                                 Entities.InvoiceRelationships.HAS_SHIP_FROM
                         );
 
                     } else {
 
-                        this.processShipFromChildren(element, value, count);
+                        this.processShipFromChildren(Elements.Invoice.ShipFrom, element, value, count);
 
                     }
 
@@ -2398,18 +2507,18 @@ public class Mapper {
 
                     if (Elements.Invoice.Line.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(Entities.Labels.InvoiceInfo);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Invoice),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.SalesInvoices.Invoice),
                                 identifier,
                                 Entities.InvoiceRelationships.HAS_LINE
                         );
 
                     } else {
 
-                        this.processLineChildren(element, value, count);
+                        this.processLineChildren(Entities.Labels.InvoiceInfo, element, value, count);
 
                     }
 
@@ -2419,18 +2528,24 @@ public class Mapper {
 
                     if (Elements.Invoice.DocumentTotals.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(Entities.Labels.InvoiceInfo);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Invoice),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.SalesInvoices.Invoice),
                                 identifier,
                                 Entities.InvoiceRelationships.HAS_DOCUMENT_TOTALS
                         );
 
                     } else {
 
-                        this.processDocumentTotalsChildren(element, value, count);
+                        this.processDocumentTotalsChildren(
+                                Elements.Invoice.DocumentTotals,
+                                Entities.Labels.InvoiceInfo,
+                                element,
+                                value,
+                                count
+                        );
 
                     }
 
@@ -2440,18 +2555,1161 @@ public class Mapper {
 
                     if (Elements.Invoice.WithholdingTax.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(Entities.Labels.InvoiceInfo);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Entities.EntitiesValues.Invoice),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.SalesInvoices.Invoice),
                                 identifier,
                                 Entities.InvoiceRelationships.HAS_WITHHOLDING_TAX
                         );
 
                     } else {
 
-                        this.processWithholdingTaxChildren(element, value);
+                        this.processWithholdingTaxChildren(
+                                Elements.Invoice.WithholdingTax,
+                                Entities.Labels.InvoiceInfo,
+                                element,
+                                value
+                        );
+
+                    }
+
+                    break;
+
+                default:
+                    throw new MapException(this.currentSequences.get(count));
+            }
+
+        }
+
+    }
+
+    private void processMovementOfGoodsChildren(String element, String value, int count) throws MapException {
+
+        if (this.depth == count) {
+
+            switch (element) {
+
+                case Elements.MovementOfGoods.NumberOfMovementLines:
+
+                    this.constructor.SET_PROPERTY(
+                            this.container.get(Elements.SourceDocuments.MovementOfGoods),
+                            element,
+                            Integer.parseInt(value)
+                    );
+
+                    break;
+
+                case Elements.MovementOfGoods.TotalQuantityIssued:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.SourceDocuments.MovementOfGoods),
+                            Entities.Labels.MovementOfGoods,
+                            element,
+                            Double.parseDouble(value),
+                            Entities.MovementOfGoodsRelationships.HAS_TOTAL_QUANTITY_ISSUED
+                    );
+
+                    break;
+
+                default:
+                    throw new MapException(element);
+            }
+
+        } else {
+
+            count++;
+
+            if (Elements.MovementOfGoods.StockMovement.equalsIgnoreCase(this.currentSequences.get(count))) {
+
+                if (!Elements.MovementOfGoods.StockMovement.equalsIgnoreCase(element)) {
+
+                    this.processStockMovementChildren(element, value, count);
+
+                }
+
+            } else {
+
+                throw new MapException(this.currentSequences.get(count));
+
+            }
+
+        }
+
+    }
+
+    private void processStockMovementChildren(String element, String value, int count) throws MapException {
+
+        if (this.depth == count) {
+
+            String identifier;
+
+            switch (element) {
+
+                case Elements.StockMovement.DocumentNumber:
+
+                    if (this.documents.containsKey(value)) {
+
+                        identifier = this.documents.get(value);
+                        this.constructor.SET_LABEL(identifier, Entities.Labels.StockMovement);
+                        this.constructor.SET_PROPERTY(identifier, element, value);
+
+                    } else {
+
+                        identifier = this.constructor.CREATE(Entities.Labels.StockMovement, element, value);
+
+                    }
+
+                    this.container.put(Elements.MovementOfGoods.StockMovement, identifier);
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.SourceDocuments.MovementOfGoods),
+                            identifier,
+                            Entities.MovementOfGoodsRelationships.HAS_STOCK_MOVEMENT
+                    );
+
+                    break;
+
+                case Elements.StockMovement.ATCUD:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.MovementOfGoods.StockMovement),
+                            Entities.Labels.StockMovementInfo,
+                            element,
+                            value,
+                            Entities.StockMovementRelationships.HAS_ATCUD
+                    );
+
+                    break;
+
+                case Elements.StockMovement.Hash:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.MovementOfGoods.StockMovement),
+                            Entities.Labels.StockMovementInfo,
+                            element,
+                            value,
+                            Entities.StockMovementRelationships.HAS_HASH
+                    );
+
+                    break;
+
+                case Elements.StockMovement.HashControl:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.MovementOfGoods.StockMovement),
+                            Entities.Labels.StockMovementInfo,
+                            element,
+                            value,
+                            Entities.StockMovementRelationships.HAS_HASH_CONTROL
+                    );
+
+                    break;
+
+                case Elements.StockMovement.Period:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.MovementOfGoods.StockMovement),
+                            Entities.Labels.StockMovementInfo,
+                            element,
+                            Integer.parseInt(value),
+                            Entities.StockMovementRelationships.HAS_PERIOD
+                    );
+
+                    break;
+
+                case Elements.StockMovement.MovementDate:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.MovementOfGoods.StockMovement),
+                            Entities.Labels.StockMovementInfo,
+                            element,
+                            value,
+                            Entities.StockMovementRelationships.HAS_MOVEMENT_DATE
+                    );
+
+                    break;
+
+                case Elements.StockMovement.MovementType:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.MovementOfGoods.StockMovement),
+                            Entities.Labels.StockMovementInfo,
+                            element,
+                            value,
+                            Entities.StockMovementRelationships.HAS_MOVEMENT_TYPE
+                    );
+
+                    break;
+
+                case Elements.StockMovement.SystemEntryDate:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.MovementOfGoods.StockMovement),
+                            Entities.Labels.StockMovementInfo,
+                            element,
+                            value,
+                            Entities.StockMovementRelationships.HAS_SYSTEM_ENTRY_DATE
+                    );
+
+                    break;
+
+                case Elements.StockMovement.TransactionID:
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.MovementOfGoods.StockMovement),
+                            this.transactions.get(value),
+                            Entities.OtherRelationships.HAS_TRANSACTION
+                    );
+
+                    break;
+
+                case Elements.StockMovement.CustomerID:
+
+                    identifier = this.container.get(Elements.MovementOfGoods.StockMovement);
+                    String customer = this.customers.get(value);
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            identifier,
+                            customer,
+                            Entities.OtherRelationships.HAS_CUSTOMER
+                    );
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            identifier,
+                            this.rootCompany,
+                            Entities.StockMovementRelationships.HAS_SELLER
+                    );
+
+                    if (this.represents.containsKey(customer)) {
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                identifier,
+                                this.represents.get(customer),
+                                Entities.StockMovementRelationships.HAS_BUYER
+                        );
+
+                    }
+
+                    break;
+
+                case Elements.StockMovement.SupplierID:
+
+                    identifier = this.container.get(Elements.MovementOfGoods.StockMovement);
+                    String supplier = this.suppliers.get(value);
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            identifier,
+                            supplier,
+                            Entities.OtherRelationships.HAS_SUPPLIER
+                    );
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            identifier,
+                            this.rootCompany,
+                            Entities.StockMovementRelationships.HAS_BUYER
+                    );
+
+                    if (this.represents.containsKey(supplier)) {
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                identifier,
+                                this.represents.get(supplier),
+                                Entities.StockMovementRelationships.HAS_SELLER
+                        );
+
+                    }
+
+                    break;
+
+                case Elements.StockMovement.SourceID:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.MovementOfGoods.StockMovement),
+                            Entities.Labels.StockMovementInfo,
+                            element,
+                            value,
+                            Entities.StockMovementRelationships.HAS_SOURCE_ID
+                    );
+
+                    break;
+
+                case Elements.StockMovement.EACCode:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.MovementOfGoods.StockMovement),
+                            Entities.Labels.StockMovementInfo,
+                            element,
+                            value,
+                            Entities.StockMovementRelationships.HAS_EAC_CODE
+                    );
+
+                    break;
+
+                case Elements.StockMovement.MovementComments:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.MovementOfGoods.StockMovement),
+                            Entities.Labels.StockMovementInfo,
+                            element,
+                            value,
+                            Entities.StockMovementRelationships.HAS_MOVEMENT_COMMENTS
+                    );
+
+                    break;
+
+                case Elements.StockMovement.MovementEndTime:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.MovementOfGoods.StockMovement),
+                            Entities.Labels.StockMovementInfo,
+                            element,
+                            value,
+                            Entities.StockMovementRelationships.HAS_MOVEMENT_END_TIME
+                    );
+
+                    break;
+
+                case Elements.StockMovement.MovementStartTime:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.MovementOfGoods.StockMovement),
+                            Entities.Labels.StockMovementInfo,
+                            element,
+                            value,
+                            Entities.StockMovementRelationships.HAS_MOVEMENT_START_TIME
+                    );
+
+                    break;
+
+                case Elements.StockMovement.ATDocCodeID:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.MovementOfGoods.StockMovement),
+                            Entities.Labels.StockMovementInfo,
+                            element,
+                            value,
+                            Entities.StockMovementRelationships.HAS_AT_DOC_CODE_ID
+                    );
+
+                    break;
+
+                default:
+                    throw new MapException(element);
+            }
+
+        } else {
+
+            count++;
+
+            switch (this.currentSequences.get(count)) {
+
+                case Elements.StockMovement.DocumentStatus:
+
+                    if (Elements.StockMovement.DocumentStatus.equalsIgnoreCase(element)) {
+
+                        String identifier = this.constructor.CREATE(Entities.Labels.StockMovementInfo);
+                        this.container.put(element, identifier);
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.MovementOfGoods.StockMovement),
+                                identifier,
+                                Entities.StockMovementRelationships.HAS_DOCUMENT_STATUS
+                        );
+
+                    } else {
+
+                        this.processDocumentStatusChildren(element, value);
+
+                    }
+
+                    break;
+
+                case Elements.StockMovement.ShipTo:
+
+                    if (Elements.StockMovement.ShipTo.equalsIgnoreCase(element)) {
+
+                        String identifier = this.constructor.CREATE(Entities.Labels.StockMovementInfo);
+                        this.container.put(element, identifier);
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.MovementOfGoods.StockMovement),
+                                identifier,
+                                Entities.StockMovementRelationships.HAS_SHIP_TO
+                        );
+
+                    } else {
+
+                        this.processShipToChildren(Elements.StockMovement.ShipTo, element, value, count);
+
+                    }
+
+                    break;
+
+                case Elements.StockMovement.ShipFrom:
+
+                    if (Elements.StockMovement.ShipFrom.equalsIgnoreCase(element)) {
+
+                        String identifier = this.constructor.CREATE(Entities.Labels.StockMovementInfo);
+                        this.container.put(element, identifier);
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.MovementOfGoods.StockMovement),
+                                identifier,
+                                Entities.StockMovementRelationships.HAS_SHIP_FROM
+                        );
+
+                    } else {
+
+                        this.processShipFromChildren(Elements.StockMovement.ShipFrom, element, value, count);
+
+                    }
+
+                    break;
+
+                case Elements.StockMovement.Line:
+
+                    if (Elements.StockMovement.Line.equalsIgnoreCase(element)) {
+
+                        String identifier = this.constructor.CREATE(Entities.Labels.StockMovementInfo);
+                        this.container.put(element, identifier);
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.MovementOfGoods.StockMovement),
+                                identifier,
+                                Entities.StockMovementRelationships.HAS_LINE
+                        );
+
+                    } else {
+
+                        this.processLineChildren(Entities.Labels.StockMovementInfo, element, value, count);
+
+                    }
+
+                    break;
+
+                case Elements.StockMovement.DocumentTotals:
+
+                    if (Elements.StockMovement.DocumentTotals.equalsIgnoreCase(element)) {
+
+                        String identifier = this.constructor.CREATE(Entities.Labels.StockMovementInfo);
+                        this.container.put(element, identifier);
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.MovementOfGoods.StockMovement),
+                                identifier,
+                                Entities.StockMovementRelationships.HAS_DOCUMENT_TOTALS
+                        );
+
+                    } else {
+
+                        this.processDocumentTotalsChildren(
+                                Elements.StockMovement.DocumentTotals,
+                                Entities.Labels.StockMovementInfo,
+                                element,
+                                value,
+                                count
+                        );
+
+                    }
+
+                    break;
+
+                default:
+                    throw new MapException(this.currentSequences.get(count));
+            }
+
+        }
+
+    }
+
+    private void processWorkingDocumentsChildren(String element, String value, int count) throws MapException {
+
+        if (this.depth == count) {
+
+            switch (element) {
+
+                case Elements.WorkingDocuments.NumberOfEntries:
+
+                    this.constructor.SET_PROPERTY(
+                            this.container.get(Elements.SourceDocuments.WorkingDocuments),
+                            element,
+                            Integer.parseInt(value)
+                    );
+
+                    break;
+
+                case Elements.WorkingDocuments.TotalDebit:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.SourceDocuments.WorkingDocuments),
+                            Entities.Labels.WorkingDocuments,
+                            element,
+                            Double.parseDouble(value),
+                            Entities.WorkingDocumentsRelationships.HAS_TOTAL_DEBIT
+                    );
+
+                    break;
+
+                case Elements.WorkingDocuments.TotalCredit:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.SourceDocuments.WorkingDocuments),
+                            Entities.Labels.WorkingDocuments,
+                            element,
+                            Double.parseDouble(value),
+                            Entities.WorkingDocumentsRelationships.HAS_TOTAL_CREDIT
+                    );
+
+                    break;
+
+                default:
+                    throw new MapException(element);
+            }
+
+        } else {
+
+            count++;
+
+            if (Elements.WorkingDocuments.WorkDocument.equalsIgnoreCase(this.currentSequences.get(count))) {
+
+                if (!Elements.WorkingDocuments.WorkDocument.equalsIgnoreCase(element)) {
+
+                    this.processWorkDocumentChildren(element, value, count);
+
+                }
+
+            } else {
+
+                throw new MapException(this.currentSequences.get(count));
+
+            }
+
+        }
+
+    }
+
+    private void processWorkDocumentChildren(String element, String value, int count) throws MapException {
+
+        if (this.depth == count) {
+
+            String identifier;
+
+            switch (element) {
+
+                case Elements.WorkDocument.DocumentNumber:
+
+                    if (this.documents.containsKey(value)) {
+
+                        identifier = this.documents.get(value);
+                        this.constructor.SET_LABEL(identifier, Entities.Labels.WorkDocument);
+                        this.constructor.SET_PROPERTY(identifier, element, value);
+
+                    } else {
+
+                        identifier = this.constructor.CREATE(Entities.Labels.WorkDocument, element, value);
+
+                    }
+
+                    this.container.put(Elements.WorkingDocuments.WorkDocument, identifier);
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.SourceDocuments.WorkingDocuments),
+                            identifier,
+                            Entities.WorkingDocumentsRelationships.HAS_WORK_DOCUMENT
+                    );
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            identifier,
+                            this.rootCompany,
+                            Entities.WorkDocumentRelationships.HAS_SELLER
+                    );
+
+                    break;
+
+                case Elements.WorkDocument.ATCUD:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.WorkingDocuments.WorkDocument),
+                            Entities.Labels.WorkDocumentInfo,
+                            element,
+                            value,
+                            Entities.WorkDocumentRelationships.HAS_ATCUD
+                    );
+
+                    break;
+
+                case Elements.WorkDocument.Hash:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.WorkingDocuments.WorkDocument),
+                            Entities.Labels.WorkDocumentInfo,
+                            element,
+                            value,
+                            Entities.WorkDocumentRelationships.HAS_HASH
+                    );
+
+                    break;
+
+                case Elements.WorkDocument.HashControl:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.WorkingDocuments.WorkDocument),
+                            Entities.Labels.WorkDocumentInfo,
+                            element,
+                            value,
+                            Entities.WorkDocumentRelationships.HAS_HASH_CONTROL
+                    );
+
+                    break;
+
+                case Elements.WorkDocument.Period:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.WorkingDocuments.WorkDocument),
+                            Entities.Labels.WorkDocumentInfo,
+                            element,
+                            Integer.parseInt(value),
+                            Entities.WorkDocumentRelationships.HAS_PERIOD
+                    );
+
+                    break;
+
+                case Elements.WorkDocument.WorkDate:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.WorkingDocuments.WorkDocument),
+                            Entities.Labels.WorkDocumentInfo,
+                            element,
+                            value,
+                            Entities.WorkDocumentRelationships.HAS_WORK_DATE
+                    );
+
+                    break;
+
+                case Elements.WorkDocument.WorkType:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.WorkingDocuments.WorkDocument),
+                            Entities.Labels.WorkDocumentInfo,
+                            element,
+                            value,
+                            Entities.WorkDocumentRelationships.HAS_WORK_TYPE
+                    );
+
+                    break;
+
+                case Elements.WorkDocument.SourceID:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.WorkingDocuments.WorkDocument),
+                            Entities.Labels.WorkDocumentInfo,
+                            element,
+                            value,
+                            Entities.WorkDocumentRelationships.HAS_SOURCE_ID
+                    );
+
+                    break;
+
+                case Elements.WorkDocument.EACCode:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.WorkingDocuments.WorkDocument),
+                            Entities.Labels.WorkDocumentInfo,
+                            element,
+                            value,
+                            Entities.WorkDocumentRelationships.HAS_EAC_CODE
+                    );
+
+                    break;
+
+                case Elements.WorkDocument.SystemEntryDate:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.WorkingDocuments.WorkDocument),
+                            Entities.Labels.WorkDocumentInfo,
+                            element,
+                            value,
+                            Entities.WorkDocumentRelationships.HAS_SYSTEM_ENTRY_DATE
+                    );
+
+                    break;
+
+                case Elements.WorkDocument.TransactionID:
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.WorkingDocuments.WorkDocument),
+                            this.transactions.get(value),
+                            Entities.OtherRelationships.HAS_TRANSACTION
+                    );
+
+                    break;
+
+                case Elements.WorkDocument.CustomerID:
+
+                    identifier = this.container.get(Elements.WorkingDocuments.WorkDocument);
+                    String customer = this.customers.get(value);
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            identifier,
+                            customer,
+                            Entities.OtherRelationships.HAS_CUSTOMER
+                    );
+
+                    if (this.represents.containsKey(customer)) {
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                identifier,
+                                this.represents.get(customer),
+                                Entities.WorkDocumentRelationships.HAS_BUYER
+                        );
+
+                    }
+
+                    break;
+
+                default:
+                    throw new MapException(element);
+            }
+
+        } else {
+
+            count++;
+
+            switch (this.currentSequences.get(count)) {
+
+                case Elements.WorkDocument.DocumentStatus:
+
+                    if (Elements.WorkDocument.DocumentStatus.equalsIgnoreCase(element)) {
+
+                        String identifier = this.constructor.CREATE(Entities.Labels.WorkDocumentInfo);
+                        this.container.put(element, identifier);
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.WorkingDocuments.WorkDocument),
+                                identifier,
+                                Entities.WorkDocumentRelationships.HAS_DOCUMENT_STATUS
+                        );
+
+                    } else {
+
+                        this.processDocumentStatusChildren(element, value);
+
+                    }
+
+                    break;
+
+                case Elements.WorkDocument.Line:
+
+                    if (Elements.WorkDocument.Line.equalsIgnoreCase(element)) {
+
+                        String identifier = this.constructor.CREATE(Entities.Labels.WorkDocumentInfo);
+                        this.container.put(element, identifier);
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.WorkingDocuments.WorkDocument),
+                                identifier,
+                                Entities.WorkDocumentRelationships.HAS_LINE
+                        );
+
+                    } else {
+
+                        this.processLineChildren(Entities.Labels.WorkDocumentInfo, element, value, count);
+
+                    }
+
+                    break;
+
+                case Elements.WorkDocument.DocumentTotals:
+
+                    if (Elements.WorkDocument.DocumentTotals.equalsIgnoreCase(element)) {
+
+                        String identifier = this.constructor.CREATE(Entities.Labels.WorkDocumentInfo);
+                        this.container.put(element, identifier);
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.WorkingDocuments.WorkDocument),
+                                identifier,
+                                Entities.WorkDocumentRelationships.HAS_DOCUMENT_TOTALS
+                        );
+
+                    } else {
+
+                        this.processDocumentTotalsChildren(
+                                Elements.WorkDocument.DocumentTotals,
+                                Entities.Labels.WorkDocumentInfo,
+                                element,
+                                value,
+                                count
+                        );
+
+                    }
+
+                    break;
+
+                default:
+                    throw new MapException(this.currentSequences.get(count));
+            }
+
+        }
+
+    }
+
+    private void processPaymentsChildren(String element, String value, int count) throws MapException {
+
+        if (this.depth == count) {
+
+            switch (element) {
+
+                case Elements.Payments.NumberOfEntries:
+
+                    this.constructor.SET_PROPERTY(
+                            this.container.get(Elements.SourceDocuments.Payments),
+                            element,
+                            Integer.parseInt(value)
+                    );
+
+                    break;
+
+                case Elements.Payments.TotalDebit:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.SourceDocuments.Payments),
+                            Entities.Labels.Payments,
+                            element,
+                            Double.parseDouble(value),
+                            Entities.PaymentsRelationships.HAS_TOTAL_DEBIT
+                    );
+
+                    break;
+
+                case Elements.Payments.TotalCredit:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.SourceDocuments.Payments),
+                            Entities.Labels.Payments,
+                            element,
+                            Double.parseDouble(value),
+                            Entities.PaymentsRelationships.HAS_TOTAL_CREDIT
+                    );
+
+                    break;
+
+                default:
+                    throw new MapException(element);
+            }
+
+        } else {
+
+            count++;
+
+            if (Elements.Payments.Payment.equalsIgnoreCase(this.currentSequences.get(count))) {
+
+                if (!Elements.Payments.Payment.equalsIgnoreCase(element)) {
+
+                    this.processPaymentChildren(element, value, count);
+
+                }
+
+            } else {
+
+                throw new MapException(this.currentSequences.get(count));
+
+            }
+
+        }
+
+    }
+
+    private void processPaymentChildren(String element, String value, int count) throws MapException {
+
+        if (this.depth == count) {
+
+            String identifier;
+
+            switch (element) {
+
+                case Elements.Payment.PaymentRefNo:
+
+                    if (this.documents.containsKey(value)) {
+
+                        identifier = this.documents.get(value);
+                        this.constructor.SET_LABEL(identifier, Entities.Labels.Payment);
+                        this.constructor.SET_PROPERTY(identifier, element, value);
+
+                    } else {
+
+                        identifier = this.constructor.CREATE(Entities.Labels.Payment, element, value);
+
+                    }
+
+                    this.container.put(Elements.Payments.Payment, identifier);
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.SourceDocuments.Payments),
+                            identifier,
+                            Entities.PaymentsRelationships.HAS_PAYMENT
+                    );
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            identifier,
+                            this.rootCompany,
+                            Entities.PaymentRelationships.WAS_PAID
+                    );
+
+                    break;
+
+                case Elements.Payment.ATCUD:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.Payments.Payment),
+                            Entities.Labels.PaymentInfo,
+                            element,
+                            value,
+                            Entities.PaymentRelationships.HAS_ATCUD
+                    );
+
+                    break;
+
+                case Elements.Payment.Period:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.Payments.Payment),
+                            Entities.Labels.PaymentInfo,
+                            element,
+                            Integer.parseInt(value),
+                            Entities.PaymentRelationships.HAS_PERIOD
+                    );
+
+                    break;
+
+                case Elements.Payment.TransactionID:
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(Elements.Payments.Payment),
+                            this.transactions.get(value),
+                            Entities.OtherRelationships.HAS_TRANSACTION
+                    );
+
+                    break;
+
+                case Elements.Payment.TransactionDate:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.Payments.Payment),
+                            Entities.Labels.PaymentInfo,
+                            element,
+                            value,
+                            Entities.PaymentRelationships.HAS_TRANSACTION_DATE
+                    );
+
+                    break;
+
+                case Elements.Payment.PaymentType:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.Payments.Payment),
+                            Entities.Labels.PaymentInfo,
+                            element,
+                            value,
+                            Entities.PaymentRelationships.HAS_PAYMENT_TYPE
+                    );
+
+                    break;
+
+                case Elements.Payment.Description:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.Payments.Payment),
+                            Entities.Labels.PaymentInfo,
+                            element,
+                            value,
+                            Entities.PaymentRelationships.HAS_DESCRIPTION
+                    );
+
+                    break;
+
+                case Elements.Payment.SystemID:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.Payments.Payment),
+                            Entities.Labels.PaymentInfo,
+                            element,
+                            value,
+                            Entities.PaymentRelationships.HAS_SYSTEM_ID
+                    );
+
+                    break;
+
+                case Elements.Payment.SourceID:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.Payments.Payment),
+                            Entities.Labels.PaymentInfo,
+                            element,
+                            value,
+                            Entities.PaymentRelationships.HAS_SOURCE_ID
+                    );
+
+                    break;
+
+                case Elements.Payment.SystemEntryDate:
+
+                    this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                            this.container.get(Elements.Payments.Payment),
+                            Entities.Labels.PaymentInfo,
+                            element,
+                            value,
+                            Entities.PaymentRelationships.HAS_SYSTEM_ENTRY_DATE
+                    );
+
+                    break;
+
+                case Elements.Payment.CustomerID:
+
+                    identifier = this.container.get(Elements.Payments.Payment);
+                    String customer = this.customers.get(value);
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            identifier,
+                            customer,
+                            Entities.OtherRelationships.HAS_CUSTOMER
+                    );
+
+                    if (this.represents.containsKey(customer)) {
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                identifier,
+                                this.represents.get(customer),
+                                Entities.PaymentRelationships.PAID
+                        );
+
+                    }
+
+                    break;
+
+                default:
+                    throw new MapException(element);
+            }
+
+        } else {
+
+            count++;
+
+            switch (this.currentSequences.get(count)) {
+
+                case Elements.Payment.DocumentStatus:
+
+                    if (Elements.Payment.DocumentStatus.equalsIgnoreCase(element)) {
+
+                        String identifier = this.constructor.CREATE(Entities.Labels.PaymentInfo);
+                        this.container.put(element, identifier);
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.Payments.Payment),
+                                identifier,
+                                Entities.PaymentRelationships.HAS_DOCUMENT_STATUS
+                        );
+
+                    } else {
+
+                        this.processDocumentStatusChildren(element, value);
+
+                    }
+
+                    break;
+
+                case Elements.Payment.PaymentMethod:
+
+                    if (Elements.Payment.PaymentMethod.equalsIgnoreCase(element)) {
+
+                        String identifier = this.constructor.CREATE(Entities.Labels.PaymentInfo);
+                        this.container.put(element, identifier);
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.Payments.Payment),
+                                identifier,
+                                Entities.PaymentRelationships.HAS_PAYMENT_METHOD
+                        );
+
+                    } else {
+
+                        this.processPaymentMethodChildren(element, value);
+
+                    }
+
+                    break;
+
+                case Elements.Payment.Line:
+
+                    if (Elements.Payment.Line.equalsIgnoreCase(element)) {
+
+                        String identifier = this.constructor.CREATE(Entities.Labels.PaymentInfo);
+                        this.container.put(element, identifier);
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.Payments.Payment),
+                                identifier,
+                                Entities.PaymentRelationships.HAS_LINE
+                        );
+
+                    } else {
+
+                        this.processLineChildren(Entities.Labels.PaymentInfo, element, value, count);
+
+                    }
+
+                    break;
+
+                case Elements.Payment.DocumentTotals:
+
+                    if (Elements.Payment.DocumentTotals.equalsIgnoreCase(element)) {
+
+                        String identifier = this.constructor.CREATE(Entities.Labels.PaymentInfo);
+                        this.container.put(element, identifier);
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.Payments.Payment),
+                                identifier,
+                                Entities.PaymentRelationships.HAS_DOCUMENT_TOTALS
+                        );
+
+                    } else {
+
+                        this.processDocumentTotalsChildren(
+                                Elements.Payment.DocumentTotals,
+                                Entities.Labels.PaymentInfo,
+                                element,
+                                value,
+                                count
+                        );
+
+                    }
+
+                    break;
+
+                case Elements.Payment.WithholdingTax:
+
+                    if (Elements.Payment.WithholdingTax.equalsIgnoreCase(element)) {
+
+                        String identifier = this.constructor.CREATE(Entities.Labels.PaymentInfo);
+                        this.container.put(element, identifier);
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.Payments.Payment),
+                                identifier,
+                                Entities.PaymentRelationships.HAS_WITHHOLDING_TAX
+                        );
+
+                    } else {
+
+                        this.processWithholdingTaxChildren(
+                                Elements.Payment.WithholdingTax,
+                                Entities.Labels.PaymentInfo,
+                                element,
+                                value
+                        );
 
                     }
 
@@ -2471,38 +3729,33 @@ public class Mapper {
 
             case Elements.DocumentStatus.InvoiceStatus:
 
-            case Elements.DocumentStatus.SourceBilling:
-
             case Elements.DocumentStatus.InvoiceStatusDate:
 
-            case Elements.DocumentStatus.Reason:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.Invoice.DocumentStatus), element, value);
+            case Elements.DocumentStatus.MovementStatus:
 
-                break;
+            case Elements.DocumentStatus.MovementStatusDate:
+
+            case Elements.DocumentStatus.WorkStatus:
+
+            case Elements.DocumentStatus.WorkStatusDate:
+
+            case Elements.DocumentStatus.PaymentStatus:
+
+            case Elements.DocumentStatus.PaymentStatusDate:
+
+            case Elements.DocumentStatus.Reason:
 
             case Elements.DocumentStatus.SourceID:
 
-                if (this.sources.containsKey(value)) {
+            case Elements.DocumentStatus.SourceBilling:
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Elements.Invoice.DocumentStatus),
-                            this.sources.get(value),
-                            Entities.OtherRelationships.HAS_SOURCE
-                    );
+            case Elements.DocumentStatus.SourcePayment:
 
-                } else {
-
-                    String identifier = this.constructor.CREATE(element, value);
-
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Elements.Invoice.DocumentStatus),
-                            identifier,
-                            Entities.OtherRelationships.HAS_SOURCE
-                    );
-
-                    this.sources.put(value, identifier);
-
-                }
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.Invoice.DocumentStatus),
+                        element,
+                        value
+                );
 
                 break;
 
@@ -2521,7 +3774,12 @@ public class Mapper {
             case Elements.SpecialRegimes.CashVATSchemeIndicator:
 
             case Elements.SpecialRegimes.ThirdPartiesBillingIndicator:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.Invoice.SpecialRegimes), element, value);
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.Invoice.SpecialRegimes),
+                        element,
+                        value
+                );
 
                 break;
 
@@ -2531,7 +3789,7 @@ public class Mapper {
 
     }
 
-    private void processShipToChildren(String element, String value, int count) throws MapException {
+    private void processShipToChildren(String containerId, String element, String value, int count) throws MapException {
 
         if (this.depth == count) {
 
@@ -2544,7 +3802,12 @@ public class Mapper {
                 case Elements.ShipTo.WarehouseID:
 
                 case Elements.ShipTo.LocationID:
-                    this.constructor.SET_PROPERTY(this.container.get(Elements.Invoice.ShipTo), element, value);
+
+                    this.constructor.SET_PROPERTY(
+                            this.container.get(containerId),
+                            element,
+                            value
+                    );
 
                     break;
 
@@ -2560,11 +3823,11 @@ public class Mapper {
 
                 if (Elements.ShipTo.Address.equalsIgnoreCase(element)) {
 
-                    String identifier = this.constructor.CREATE();
-                    this.container.put(Entities.EntitiesValues.Address, identifier);
+                    String identifier = this.constructor.CREATE(Entities.Labels.Address);
+                    this.container.put(Entities.Labels.Address, identifier);
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Elements.Invoice.ShipTo),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(containerId),
                             identifier,
                             Entities.ShipToRelationships.HAS_ADDRESS
                     );
@@ -2585,7 +3848,7 @@ public class Mapper {
 
     }
 
-    private void processShipFromChildren(String element, String value, int count) throws MapException {
+    private void processShipFromChildren(String containerId, String element, String value, int count) throws MapException {
 
         if (this.depth == count) {
 
@@ -2598,7 +3861,12 @@ public class Mapper {
                 case Elements.ShipFrom.WarehouseID:
 
                 case Elements.ShipFrom.LocationID:
-                    this.constructor.SET_PROPERTY(this.container.get(Elements.Invoice.ShipFrom), element, value);
+
+                    this.constructor.SET_PROPERTY(
+                            this.container.get(containerId),
+                            element,
+                            value
+                    );
 
                     break;
 
@@ -2614,11 +3882,11 @@ public class Mapper {
 
                 if (Elements.ShipFrom.Address.equalsIgnoreCase(element)) {
 
-                    String identifier = this.constructor.CREATE();
-                    this.container.put(Entities.EntitiesValues.Address, identifier);
+                    String identifier = this.constructor.CREATE(Entities.Labels.Address);
+                    this.container.put(Entities.Labels.Address, identifier);
 
-                    this.constructor.RELATIONSHIP(
-                            this.container.get(Elements.Invoice.ShipFrom),
+                    this.constructor.CREATE_RELATIONSHIP(
+                            this.container.get(containerId),
                             identifier,
                             Entities.ShipFromRelationships.HAS_ADDRESS
                     );
@@ -2639,7 +3907,7 @@ public class Mapper {
 
     }
 
-    private void processLineChildren(String element, String value, int count) throws MapException {
+    private void processLineChildren(String label, String element, String value, int count) throws MapException {
 
         if (this.depth == count) {
 
@@ -2652,7 +3920,7 @@ public class Mapper {
 
                 case Elements.Line.ProductCode:
 
-                    this.constructor.RELATIONSHIP(
+                    this.constructor.CREATE_RELATIONSHIP(
                             this.container.get(Elements.Invoice.Line),
                             this.products.get(value),
                             Entities.OtherRelationships.HAS_PRODUCT
@@ -2669,6 +3937,7 @@ public class Mapper {
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.container.get(Elements.Invoice.Line),
+                            label,
                             element,
                             Double.parseDouble(value),
                             Entities.LineRelationships.HAS_QUANTITY
@@ -2680,6 +3949,7 @@ public class Mapper {
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.container.get(Elements.Invoice.Line),
+                            label,
                             element,
                             value,
                             Entities.LineRelationships.HAS_UNIT_OF_MEASURE
@@ -2691,6 +3961,7 @@ public class Mapper {
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.container.get(Elements.Invoice.Line),
+                            label,
                             element,
                             Double.parseDouble(value),
                             Entities.LineRelationships.HAS_UNIT_PRICE
@@ -2702,6 +3973,7 @@ public class Mapper {
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.container.get(Elements.Invoice.Line),
+                            label,
                             element,
                             Double.parseDouble(value),
                             Entities.LineRelationships.HAS_TAX_BASE
@@ -2713,6 +3985,7 @@ public class Mapper {
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.container.get(Elements.Invoice.Line),
+                            label,
                             element,
                             value,
                             Entities.LineRelationships.HAS_TAX_POINT_DATE
@@ -2724,6 +3997,7 @@ public class Mapper {
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.container.get(Elements.Invoice.Line),
+                            label,
                             element,
                             value,
                             Entities.LineRelationships.HAS_DESCRIPTION
@@ -2735,6 +4009,7 @@ public class Mapper {
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.container.get(Elements.Invoice.Line),
+                            label,
                             element,
                             Double.parseDouble(value),
                             Entities.LineRelationships.HAS_DEBIT_AMOUNT
@@ -2746,6 +4021,7 @@ public class Mapper {
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.container.get(Elements.Invoice.Line),
+                            label,
                             element,
                             Double.parseDouble(value),
                             Entities.LineRelationships.HAS_CREDIT_AMOUNT
@@ -2757,6 +4033,7 @@ public class Mapper {
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.container.get(Elements.Invoice.Line),
+                            label,
                             element,
                             value,
                             Entities.LineRelationships.HAS_TAX_EXEMPTION_REASON
@@ -2768,6 +4045,7 @@ public class Mapper {
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.container.get(Elements.Invoice.Line),
+                            label,
                             element,
                             value,
                             Entities.LineRelationships.HAS_TAX_EXEMPTION_CODE
@@ -2779,6 +4057,7 @@ public class Mapper {
 
                     this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                             this.container.get(Elements.Invoice.Line),
+                            label,
                             element,
                             Double.parseDouble(value),
                             Entities.LineRelationships.HAS_SETTLEMENT_AMOUNT
@@ -2800,10 +4079,10 @@ public class Mapper {
 
                     if (Elements.Line.OrderReferences.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(label);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
+                        this.constructor.CREATE_RELATIONSHIP(
                                 this.container.get(Elements.Invoice.Line),
                                 identifier,
                                 Entities.LineRelationships.HAS_ORDER_REFERENCES
@@ -2821,10 +4100,10 @@ public class Mapper {
 
                     if (Elements.Line.References.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(label);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
+                        this.constructor.CREATE_RELATIONSHIP(
                                 this.container.get(Elements.Invoice.Line),
                                 identifier,
                                 Entities.LineRelationships.HAS_REFERENCES
@@ -2842,10 +4121,10 @@ public class Mapper {
 
                     if (Elements.Line.ProductSerialNumber.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(label);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
+                        this.constructor.CREATE_RELATIONSHIP(
                                 this.container.get(Elements.Invoice.Line),
                                 identifier,
                                 Entities.LineRelationships.HAS_PRODUCT_SERIAL_NUMBER
@@ -2863,10 +4142,10 @@ public class Mapper {
 
                     if (Elements.Line.Tax.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(label);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
+                        this.constructor.CREATE_RELATIONSHIP(
                                 this.container.get(Elements.Invoice.Line),
                                 identifier,
                                 Entities.LineRelationships.HAS_TAX_TABLE
@@ -2874,7 +4153,7 @@ public class Mapper {
 
                     } else {
 
-                        this.processTaxChildren(element, value);
+                        this.processTaxChildren(label, element, value);
 
                     }
 
@@ -2884,10 +4163,10 @@ public class Mapper {
 
                     if (Elements.Line.CustomsInformation.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(label);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
+                        this.constructor.CREATE_RELATIONSHIP(
                                 this.container.get(Elements.Invoice.Line),
                                 identifier,
                                 Entities.LineRelationships.HAS_CUSTOMS_INFORMATION
@@ -2896,6 +4175,27 @@ public class Mapper {
                     } else {
 
                         this.processCustomsInformationChildren(element, value);
+
+                    }
+
+                    break;
+
+                case Elements.Line.SourceDocumentID:
+
+                    if (Elements.Line.SourceDocumentID.equalsIgnoreCase(element)) {
+
+                        String identifier = this.constructor.CREATE(label);
+                        this.container.put(element, identifier);
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(Elements.Invoice.Line),
+                                identifier,
+                                Entities.LineRelationships.HAS_SOURCE_DOCUMENT_ID
+                        );
+
+                    } else {
+
+                        this.processSourceDocumentIDChildren(element, value);
 
                     }
 
@@ -2916,7 +4216,12 @@ public class Mapper {
             case Elements.OrderReferences.OriginatingON:
 
             case Elements.OrderReferences.OrderDate:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.Line.OrderReferences), element, value);
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.Line.OrderReferences),
+                        element,
+                        value
+                );
 
                 break;
 
@@ -2933,7 +4238,12 @@ public class Mapper {
             case Elements.References.Reference:
 
             case Elements.References.Reason:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.Line.References), element, value);
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.Line.References),
+                        element,
+                        value
+                );
 
                 break;
 
@@ -2946,7 +4256,12 @@ public class Mapper {
     private void processProductSerialNumberChildren(String element, String value) throws MapException {
 
         if (Elements.ProductSerialNumber.SerialNumber.equalsIgnoreCase(element)) {
-            this.constructor.SET_PROPERTY(this.container.get(Elements.Line.ProductSerialNumber), element, value);
+
+            this.constructor.SET_PROPERTY(
+                    this.container.get(Elements.Line.ProductSerialNumber),
+                    element,
+                    value
+            );
 
         } else {
 
@@ -2956,7 +4271,7 @@ public class Mapper {
 
     }
 
-    private void processTaxChildren(String element, String value) throws MapException {
+    private void processTaxChildren(String label, String element, String value) throws MapException {
 
         switch (element) {
 
@@ -2964,6 +4279,7 @@ public class Mapper {
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.container.get(Elements.Line.Tax),
+                        label,
                         element,
                         value,
                         Entities.LineTaxRelationships.HAS_TAX_TYPE
@@ -2975,6 +4291,7 @@ public class Mapper {
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.container.get(Elements.Line.Tax),
+                        label,
                         element,
                         value,
                         Entities.LineTaxRelationships.HAS_TAX_COUNTRY_REGION
@@ -2983,7 +4300,12 @@ public class Mapper {
                 break;
 
             case Elements.Tax.TaxCode:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.Line.Tax), element, value);
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.Line.Tax),
+                        element,
+                        value
+                );
 
                 break;
 
@@ -2991,6 +4313,7 @@ public class Mapper {
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.container.get(Elements.Line.Tax),
+                        label,
                         element,
                         Double.parseDouble(value),
                         Entities.LineTaxRelationships.HAS_TAX_PERCENTAGE
@@ -3002,6 +4325,7 @@ public class Mapper {
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
                         this.container.get(Elements.Line.Tax),
+                        label,
                         element,
                         Double.parseDouble(value),
                         Entities.LineTaxRelationships.HAS_TAX_AMOUNT
@@ -3020,12 +4344,22 @@ public class Mapper {
         switch (element) {
 
             case Elements.CustomsInformation.ARCNo:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.Line.CustomsInformation), element, value);
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.Line.CustomsInformation),
+                        element,
+                        value
+                );
 
                 break;
 
             case Elements.CustomsInformation.IECAmount:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.Line.CustomsInformation), element, Double.parseDouble(value));
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.Line.CustomsInformation),
+                        element,
+                        Double.parseDouble(value)
+                );
 
                 break;
 
@@ -3035,7 +4369,31 @@ public class Mapper {
 
     }
 
-    private void processDocumentTotalsChildren(String element, String value, int count) throws MapException {
+    private void processSourceDocumentIDChildren(String element, String value) throws MapException {
+
+        switch (element) {
+
+            case Elements.SourceDocumentID.OriginatingON:
+
+            case Elements.SourceDocumentID.InvoiceDate:
+
+            case Elements.SourceDocumentID.Description:
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.Line.SourceDocumentID),
+                        element,
+                        value
+                );
+
+                break;
+
+            default:
+                throw new MapException(element);
+        }
+
+    }
+
+    private void processDocumentTotalsChildren(String document, String label, String element, String value, int count) throws MapException {
 
         if (this.depth == count) {
 
@@ -3046,7 +4404,12 @@ public class Mapper {
                 case Elements.DocumentTotals.NetTotal:
 
                 case Elements.DocumentTotals.GrossTotal:
-                    this.constructor.SET_PROPERTY(this.container.get(Elements.Invoice.DocumentTotals), element, Double.parseDouble(value));
+
+                    this.constructor.SET_PROPERTY(
+                            this.container.get(document),
+                            element,
+                            Double.parseDouble(value)
+                    );
 
                     break;
 
@@ -3064,11 +4427,11 @@ public class Mapper {
 
                     if (Elements.DocumentTotals.Currency.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(label);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Elements.Invoice.DocumentTotals),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(document),
                                 identifier,
                                 Entities.DocumentTotalsRelationships.HAS_CURRENCY
                         );
@@ -3085,11 +4448,11 @@ public class Mapper {
 
                     if (Elements.DocumentTotals.Settlement.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(label);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Elements.Invoice.DocumentTotals),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(document),
                                 identifier,
                                 Entities.DocumentTotalsRelationships.HAS_SETTLEMENT
                         );
@@ -3106,18 +4469,18 @@ public class Mapper {
 
                     if (Elements.DocumentTotals.Payment.equalsIgnoreCase(element)) {
 
-                        String identifier = this.constructor.CREATE();
+                        String identifier = this.constructor.CREATE(label);
                         this.container.put(element, identifier);
 
-                        this.constructor.RELATIONSHIP(
-                                this.container.get(Elements.Invoice.DocumentTotals),
+                        this.constructor.CREATE_RELATIONSHIP(
+                                this.container.get(document),
                                 identifier,
                                 Entities.DocumentTotalsRelationships.HAS_PAYMENT
                         );
 
                     } else {
 
-                        this.processPaymentChildren(element, value);
+                        this.processPaymentMethodChildren(element, value);
 
                     }
 
@@ -3136,14 +4499,24 @@ public class Mapper {
         switch (element) {
 
             case Elements.Currency.CurrencyCode:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.DocumentTotals.Currency), element, value);
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.DocumentTotals.Currency),
+                        element,
+                        value
+                );
 
                 break;
 
             case Elements.Currency.CurrencyAmount:
 
             case Elements.Currency.ExchangeRate:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.DocumentTotals.Currency), element, Double.parseDouble(value));
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.DocumentTotals.Currency),
+                        element,
+                        Double.parseDouble(value)
+                );
 
                 break;
 
@@ -3162,12 +4535,22 @@ public class Mapper {
             case Elements.Settlement.SettlementDate:
 
             case Elements.Settlement.PaymentTerms:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.DocumentTotals.Settlement), element, value);
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.DocumentTotals.Settlement),
+                        element,
+                        value
+                );
 
                 break;
 
             case Elements.Settlement.SettlementAmount:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.DocumentTotals.Settlement), element, Double.parseDouble(value));
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.DocumentTotals.Settlement),
+                        element,
+                        Double.parseDouble(value)
+                );
 
                 break;
 
@@ -3177,19 +4560,29 @@ public class Mapper {
 
     }
 
-    private void processPaymentChildren(String element, String value) throws MapException {
+    private void processPaymentMethodChildren(String element, String value) throws MapException {
 
         switch (element) {
 
-            case Elements.Payment.PaymentMechanism:
+            case Elements.PaymentMethod.PaymentMechanism:
 
-            case Elements.Payment.PaymentDate:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.DocumentTotals.Payment), element, value);
+            case Elements.PaymentMethod.PaymentDate:
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.DocumentTotals.Payment),
+                        element,
+                        value
+                );
 
                 break;
 
-            case Elements.Payment.PaymentAmount:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.DocumentTotals.Payment), element, Double.parseDouble(value));
+            case Elements.PaymentMethod.PaymentAmount:
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(Elements.DocumentTotals.Payment),
+                        element,
+                        Double.parseDouble(value)
+                );
 
                 break;
 
@@ -3199,14 +4592,15 @@ public class Mapper {
 
     }
 
-    private void processWithholdingTaxChildren(String element, String value) throws MapException {
+    private void processWithholdingTaxChildren(String withholding, String label, String element, String value) throws MapException {
 
         switch (element) {
 
             case Elements.WithholdingTax.WithholdingTaxType:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Elements.Invoice.WithholdingTax),
+                        this.container.get(withholding),
+                        label,
                         element,
                         value,
                         Entities.WithholdingTaxRelationships.HAS_WITHHOLDING_TAX_TYPE
@@ -3215,14 +4609,20 @@ public class Mapper {
                 break;
 
             case Elements.WithholdingTax.WithholdingTaxDescription:
-                this.constructor.SET_PROPERTY(this.container.get(Elements.Invoice.WithholdingTax), element, value);
+
+                this.constructor.SET_PROPERTY(
+                        this.container.get(withholding),
+                        element,
+                        value
+                );
 
                 break;
 
             case Elements.WithholdingTax.WithholdingTaxAmount:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Elements.Invoice.WithholdingTax),
+                        this.container.get(withholding),
+                        label,
                         element,
                         Double.parseDouble(value),
                         Entities.WithholdingTaxRelationships.HAS_WITHHOLDING_TAX_AMOUNT
@@ -3243,7 +4643,8 @@ public class Mapper {
             case Elements.CompanyAddress.BuildingNumber:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.Address),
+                        this.container.get(Entities.Labels.Address),
+                        Entities.Labels.Address,
                         element,
                         value,
                         Entities.AddressRelationships.HAS_BUILDING_NUMBER
@@ -3254,7 +4655,8 @@ public class Mapper {
             case Elements.CompanyAddress.StreetName:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.Address),
+                        this.container.get(Entities.Labels.Address),
+                        Entities.Labels.Address,
                         element,
                         value,
                         Entities.AddressRelationships.HAS_STREET_NAME
@@ -3263,14 +4665,15 @@ public class Mapper {
                 break;
 
             case Elements.CompanyAddress.AddressDetail:
-                this.constructor.SET_PROPERTY(this.container.get(Entities.EntitiesValues.Address), element, value);
+                this.constructor.SET_PROPERTY(this.container.get(Entities.Labels.Address), element, value);
 
                 break;
 
             case Elements.CompanyAddress.City:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.Address),
+                        this.container.get(Entities.Labels.Address),
+                        Entities.Labels.Address,
                         element,
                         value,
                         Entities.AddressRelationships.HAS_CITY
@@ -3281,7 +4684,8 @@ public class Mapper {
             case Elements.CompanyAddress.PostalCode:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.Address),
+                        this.container.get(Entities.Labels.Address),
+                        Entities.Labels.Address,
                         element,
                         value,
                         Entities.AddressRelationships.HAS_POSTAL_CODE
@@ -3292,7 +4696,8 @@ public class Mapper {
             case Elements.CompanyAddress.Region:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.Address),
+                        this.container.get(Entities.Labels.Address),
+                        Entities.Labels.Address,
                         element,
                         value,
                         Entities.AddressRelationships.HAS_REGION
@@ -3303,7 +4708,8 @@ public class Mapper {
             case Elements.CompanyAddress.Country:
 
                 this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(Entities.EntitiesValues.Address),
+                        this.container.get(Entities.Labels.Address),
+                        Entities.Labels.Address,
                         element,
                         value,
                         Entities.AddressRelationships.HAS_COUNTRY
