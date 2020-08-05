@@ -233,7 +233,7 @@ public class Mapper {
                     this.constructor.CREATE_RELATIONSHIP(
                             this.rootCompany,
                             this.container.get(Elements.AuditFile.Header),
-                            Entities.CompanyRelationships.HAS_SAFTP
+                            Entities.CompanyRelationships.HAS_SAFTP_FILE
                     );
 
                     this.constructor.CREATE_RELATIONSHIP(
@@ -1075,7 +1075,7 @@ public class Mapper {
 
                     } else {
 
-                        identifier = this.constructor.CREATE(element, value);
+                        identifier = this.constructor.CREATE(Entities.Labels.Account, element, value);
 
                         this.constructor.CREATE_RELATIONSHIP(
                                 this.container.get(Elements.MasterFiles.Supplier),
@@ -1656,10 +1656,12 @@ public class Mapper {
 
         if (this.depth == count) {
 
+            String identifier;
+
             switch (element) {
 
                 case Elements.Transaction.TransactionID:
-                    String identifier = this.container.get(Elements.Journal.Transaction);
+                    identifier = this.container.get(Elements.Journal.Transaction);
                     this.constructor.SET_PROPERTY(identifier, element, value);
                     this.transactions.put(value, identifier);
 
@@ -1751,21 +1753,59 @@ public class Mapper {
 
                 case Elements.Transaction.CustomerID:
 
+                    identifier = this.container.get(Elements.Journal.Transaction);
+                    String customer = this.customers.get(value);
+
                     this.constructor.CREATE_RELATIONSHIP(
-                            this.container.get(Elements.Journal.Transaction),
-                            this.customers.get(value),
+                            identifier,
+                            customer,
                             Entities.OtherRelationships.HAS_CUSTOMER
                     );
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            identifier,
+                            this.rootCompany,
+                            Entities.TransactionRelationships.HAS_SELLER
+                    );
+
+                    if (this.represents.containsKey(customer)) {
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                identifier,
+                                this.represents.get(customer),
+                                Entities.TransactionRelationships.HAS_BUYER
+                        );
+
+                    }
 
                     break;
 
                 case Elements.Transaction.SupplierID:
 
+                    identifier = this.container.get(Elements.Journal.Transaction);
+                    String supplier = this.suppliers.get(value);
+
                     this.constructor.CREATE_RELATIONSHIP(
-                            this.container.get(Elements.Journal.Transaction),
-                            this.suppliers.get(value),
+                            identifier,
+                            supplier,
                             Entities.OtherRelationships.HAS_SUPPLIER
                     );
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            identifier,
+                            this.rootCompany,
+                            Entities.TransactionRelationships.HAS_BUYER
+                    );
+
+                    if (this.represents.containsKey(supplier)) {
+
+                        this.constructor.CREATE_RELATIONSHIP(
+                                identifier,
+                                this.represents.get(supplier),
+                                Entities.TransactionRelationships.HAS_SELLER
+                        );
+
+                    }
 
                     break;
 

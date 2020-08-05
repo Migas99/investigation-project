@@ -1,5 +1,6 @@
 package Run.SpringBoot.Service;
 
+import Database.CypherAlgorithms;
 import Database.CypherQueries;
 import Database.Neo4jConnector;
 import graphql.schema.DataFetcher;
@@ -22,6 +23,34 @@ public class Neo4jDataFetcher {
     @PostConstruct
     private void init() {
         this.driver = Neo4jConnector.getDriver();
+    }
+
+    public DataFetcher detectCommunitiesWithLouvain(){
+        return dataFetchingEnvironment -> CypherAlgorithms.louvainAlgorithm(this.driver);
+    }
+
+    public DataFetcher detectCommunitiesWithLocalClustering(){
+        return dataFetchingEnvironment -> CypherAlgorithms.localClusteringAlgorithm(this.driver);
+    }
+
+    public DataFetcher getListOfInvoicesNotAssociatedWithCustomers() {
+        return dataFetchingEnvironment -> CypherQueries.obtainListOfInvoicesNotAssociatedWithCustomers(this.driver);
+    }
+
+    public DataFetcher getListOfNegativeAmountsInGeneralLedger() {
+        return dataFetchingEnvironment -> CypherQueries.obtainListOfNegativeAmountsInGeneralLedger(this.driver);
+    }
+
+    public DataFetcher getListOfDaysWithoutSales() {
+        return dataFetchingEnvironment -> CypherQueries.obtainListOfDaysWithoutSales(this.driver);
+    }
+
+    public DataFetcher getListOfNetTotalAndTaxPayableByTaxCode() {
+        return dataFetchingEnvironment -> CypherQueries.obtainListOfNetTotalAndTaxPayableByTaxCode(this.driver);
+    }
+
+    public DataFetcher getListOfSalesByPeriod() {
+        return dataFetchingEnvironment -> CypherQueries.obtainListOfSalesByPeriod(this.driver);
     }
 
     public DataFetcher getListOfAllAccounts() {
@@ -254,25 +283,5 @@ public class Neo4jDataFetcher {
             String invoiceNo = invoice.get("InvoiceNo");
             return CypherQueries.obtainListOfWithholdingTaxByInvoiceId(this.driver, invoiceNo);
         };
-    }
-
-    public DataFetcher getListOfInvoicesNotAssociatedWithCustomers() {
-        return dataFetchingEnvironment -> CypherQueries.obtainListOfInvoicesNotAssociatedWithCustomers(this.driver);
-    }
-
-    public DataFetcher getListOfNegativeAmountsInGeneralLedger() {
-        return dataFetchingEnvironment -> CypherQueries.obtainListOfNegativeAmountsInGeneralLedger(this.driver);
-    }
-
-    public DataFetcher getListOfDaysWithoutSales() {
-        return dataFetchingEnvironment -> CypherQueries.obtainListOfDaysWithoutSales(this.driver);
-    }
-
-    public DataFetcher getListOfNetTotalAndTaxPayableByTaxCode() {
-        return dataFetchingEnvironment -> CypherQueries.obtainListOfNetTotalAndTaxPayableByTaxCode(this.driver);
-    }
-
-    public DataFetcher getListOfSalesByPeriod() {
-        return dataFetchingEnvironment -> CypherQueries.obtainListOfSalesByPeriod(this.driver);
     }
 }

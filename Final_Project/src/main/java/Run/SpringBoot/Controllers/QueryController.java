@@ -46,6 +46,15 @@ public class QueryController {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring("Query")
 
+                        .dataFetcher("detectCommunitiesWithLouvain", this.dataFetcher.detectCommunitiesWithLouvain())
+                        .dataFetcher("detectCommunitiesWithLocalClustering", this.dataFetcher.detectCommunitiesWithLocalClustering())
+
+                        .dataFetcher("getListOfInvoicesNotAssociatedWithCustomers", this.dataFetcher.getListOfInvoicesNotAssociatedWithCustomers())
+                        .dataFetcher("getListOfNegativeAmountsInGeneralLedger", this.dataFetcher.getListOfNegativeAmountsInGeneralLedger())
+                        .dataFetcher("getListOfDaysWithoutSales", this.dataFetcher.getListOfDaysWithoutSales())
+                        .dataFetcher("getListOfNetTotalAndTaxPayableByTaxCode", this.dataFetcher.getListOfNetTotalAndTaxPayableByTaxCode())
+                        .dataFetcher("getListOfSalesByPeriod", this.dataFetcher.getListOfSalesByPeriod())
+
                         .dataFetcher("getAllAccounts", this.dataFetcher.getListOfAllAccounts())
                         .dataFetcher("getAccountById", this.dataFetcher.getAccountById())
 
@@ -69,13 +78,7 @@ public class QueryController {
                         .dataFetcher("getSalesInvoices", this.dataFetcher.getSalesInvoices())
 
                         .dataFetcher("getAllInvoices", this.dataFetcher.getListOfAllInvoices())
-                        .dataFetcher("getInvoiceById", this.dataFetcher.getInvoiceById())
-
-                        .dataFetcher("getListOfInvoicesNotAssociatedWithCustomers", this.dataFetcher.getListOfInvoicesNotAssociatedWithCustomers())
-                        .dataFetcher("getListOfNegativeAmountsInGeneralLedger", this.dataFetcher.getListOfNegativeAmountsInGeneralLedger())
-                        .dataFetcher("getListOfDaysWithoutSales", this.dataFetcher.getListOfDaysWithoutSales())
-                        .dataFetcher("getListOfNetTotalAndTaxPayableByTaxCode", this.dataFetcher.getListOfNetTotalAndTaxPayableByTaxCode())
-                        .dataFetcher("getListOfSalesByPeriod", this.dataFetcher.getListOfSalesByPeriod()))
+                        .dataFetcher("getInvoiceById", this.dataFetcher.getInvoiceById()))
 
                 .type(newTypeWiring("GeneralLedgerEntries")
                         .dataFetcher("Journal", this.dataFetcher.getListOfAllJournals()))

@@ -82,7 +82,7 @@ public class Entities {
         public final static String HAS_EMAIL = "HAS_EMAIL";
         public final static String HAS_WEBSITE = "HAS_WEBSITE";
 
-        public final static String HAS_SAFTP = "HAS_SAFTP";
+        public final static String HAS_SAFTP_FILE = "HAS_SAFTP_FILE";
         public final static String IS_CUSTOMER_OF = "IS_CUSTOMER_OF";
         public final static String IS_SUPPLIER_OF = "IS_SUPPLIER_OF";
     }
@@ -216,6 +216,9 @@ public class Entities {
         public final static String HAS_TRANSACTION_TYPE = "HAS_TRANSACTION_TYPE";
         public final static String HAS_GL_POSTING_DATE = "HAS_GL_POSTING_DATE";
         public final static String HAS_LINES = "HAS_LINES";
+
+        public static final String HAS_SELLER = "HAS_SELLER";
+        public static final String HAS_BUYER = "HAS_BUYER";
     }
 
     public enum LinesRelationships {

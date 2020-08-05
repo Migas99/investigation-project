@@ -62,7 +62,7 @@ public class UploadController {
             Validator validator = schema.newValidator();
             validator.validate(new StAXSource(reader));
 
-            if (CypherQueries.isFileNameUnique(saftp.getName())) {
+            if (Neo4jConnector.isFileNameUnique(saftp.getName())) {
                 System.out.println("[SERVER] Starting to map the file: " + file.getOriginalFilename());
                 StAX.processXMLToNeo4j(saftp);
                 System.out.println("[SERVER] Done mapping the file: " + file.getOriginalFilename());
