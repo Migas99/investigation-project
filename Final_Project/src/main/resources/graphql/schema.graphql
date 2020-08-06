@@ -1,6 +1,8 @@
 type Query {
     detectCommunitiesWithLouvain: [Louvain]
     detectCommunitiesWithLocalClustering: [LocalClustering]
+    pageRank: [PageRank]
+    nodeSimilarity: [NodeSimilarity]
 
     getListOfInvoicesNotAssociatedWithCustomers: [String]
     getListOfNegativeAmountsInGeneralLedger: [NegativeAmountsInGeneralLedger]
@@ -42,6 +44,17 @@ type Louvain {
 type LocalClustering {
     Company: String
     Coefficient: Float
+}
+
+type PageRank {
+    Company: String
+    Score: Float
+}
+
+type NodeSimilarity {
+    CompanyOne: String
+    CompanyTwo: String
+    Similarity: Float
 }
 
 type NegativeAmountsInGeneralLedger {

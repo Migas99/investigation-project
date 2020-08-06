@@ -25,12 +25,20 @@ public class Neo4jDataFetcher {
         this.driver = Neo4jConnector.getDriver();
     }
 
-    public DataFetcher detectCommunitiesWithLouvain(){
+    public DataFetcher louvain() {
         return dataFetchingEnvironment -> CypherAlgorithms.louvainAlgorithm(this.driver);
     }
 
-    public DataFetcher detectCommunitiesWithLocalClustering(){
+    public DataFetcher localClustering() {
         return dataFetchingEnvironment -> CypherAlgorithms.localClusteringAlgorithm(this.driver);
+    }
+
+    public DataFetcher pageRank() {
+        return dataFetchingEnvironment -> CypherAlgorithms.pageRankAlgorithm(this.driver);
+    }
+
+    public DataFetcher nodeSimilarity() {
+        return dataFetchingEnvironment -> CypherAlgorithms.nodeSimilarityAlgorithm(this.driver);
     }
 
     public DataFetcher getListOfInvoicesNotAssociatedWithCustomers() {

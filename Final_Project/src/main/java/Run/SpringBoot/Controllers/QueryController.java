@@ -46,8 +46,10 @@ public class QueryController {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring("Query")
 
-                        .dataFetcher("detectCommunitiesWithLouvain", this.dataFetcher.detectCommunitiesWithLouvain())
-                        .dataFetcher("detectCommunitiesWithLocalClustering", this.dataFetcher.detectCommunitiesWithLocalClustering())
+                        .dataFetcher("detectCommunitiesWithLouvain", this.dataFetcher.louvain())
+                        .dataFetcher("detectCommunitiesWithLocalClustering", this.dataFetcher.localClustering())
+                        .dataFetcher("pageRank", this.dataFetcher.pageRank())
+                        .dataFetcher("nodeSimilarity", this.dataFetcher.nodeSimilarity())
 
                         .dataFetcher("getListOfInvoicesNotAssociatedWithCustomers", this.dataFetcher.getListOfInvoicesNotAssociatedWithCustomers())
                         .dataFetcher("getListOfNegativeAmountsInGeneralLedger", this.dataFetcher.getListOfNegativeAmountsInGeneralLedger())
