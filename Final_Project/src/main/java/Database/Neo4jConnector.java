@@ -6,6 +6,9 @@ import org.neo4j.driver.*;
 
 import java.util.*;
 
+/**
+ * Classe que fornece métodos para se conectar à base de dados
+ */
 public class Neo4jConnector {
 
     private static final String bolt = "bolt://localhost:7687";
@@ -16,11 +19,8 @@ public class Neo4jConnector {
         return GraphDatabase.driver(bolt, AuthTokens.basic(username, password));
     }
 
-    public static void initializeDatabase() {
-        Driver driver = getDriver();
-
+    public static void initializeDatabase(Driver driver) {
         try (Session session = driver.session()) {
-
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(
                     "CALL db.indexes()"
             ).list());
@@ -34,8 +34,6 @@ public class Neo4jConnector {
                 ));
             }
         }
-
-        driver.close();
     }
 
     public static void uploadToDatabase(String query) {
@@ -67,8 +65,8 @@ public class Neo4jConnector {
         }
     }
 
-    public static boolean isFileNameUnique(String fileName) {
-        try (Session session = getDriver().session()) {
+    public static boolean isFileNameUnique(Driver driver, String fileName) {
+        try (Session session = driver.session()) {
             final String name = fileName.substring(0, fileName.length() - 4);
 
             boolean isUnique = session.writeTransaction(tx -> tx.run(""

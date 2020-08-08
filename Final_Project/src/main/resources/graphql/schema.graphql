@@ -4,9 +4,9 @@ type Query {
     pageRank: [PageRank]
     nodeSimilarity: [NodeSimilarity]
 
-    getListOfInvoicesNotAssociatedWithCustomers: [String]
+    getListOfInvoicesNotAssociatedWithCustomers: [ListOfInvoicesNotAssociatedWithCustomers]
     getListOfNegativeAmountsInGeneralLedger: [NegativeAmountsInGeneralLedger]
-    getListOfDaysWithoutSales: [String]
+    getListOfDaysWithoutSales: [ListOfDaysWithoutSales]
     getListOfNetTotalAndTaxPayableByTaxCode: [NetTotalAndTaxPayableByTaxCode]
     getListOfSalesByPeriod: [SalesByPeriod]
 
@@ -57,6 +57,16 @@ type NodeSimilarity {
     Similarity: Float
 }
 
+type ListOfInvoicesNotAssociatedWithCustomers {
+    Company: String
+    Files: [ListOfInvoicesNotAssociatedWithCustomers2]
+}
+
+type ListOfInvoicesNotAssociatedWithCustomers2 {
+    FileName: String
+    InvoicesNo: [String]
+}
+
 type NegativeAmountsInGeneralLedger {
     Transaction: String
     RecordID: String
@@ -64,13 +74,48 @@ type NegativeAmountsInGeneralLedger {
     DebitAmount: Float
 }
 
+type ListOfDaysWithoutSales {
+    Company: String
+    Files: [ListOfDaysWithoutSales2]
+}
+
+type ListOfDaysWithoutSales2 {
+    FileName: String
+    FiscalYear: Int
+    StartDate: String
+    EndDate: String
+    DaysWithoutSales: [String]
+}
+
 type NetTotalAndTaxPayableByTaxCode {
+    Company: String
+    Files: [NetTotalAndTaxPayableByTaxCode2]
+}
+
+type NetTotalAndTaxPayableByTaxCode2 {
+    FileName: String
+    FiscalYear: Int
+    NetTotalAndTaxPayableByTaxCode: [NetTotalAndTaxPayableByTaxCode3]
+}
+
+type NetTotalAndTaxPayableByTaxCode3 {
     TaxCode: String
+    TotalNetTotal: Float
     TotalTaxPayable: Float
-    TotalTaxAmount: Float
 }
 
 type SalesByPeriod {
+    Company: String
+    Files: [SalesByPeriod2]
+}
+
+type SalesByPeriod2 {
+    FileName: String
+    FiscalYear: Int
+    SalesByPeriod: [SalesByPeriod3]
+}
+
+type SalesByPeriod3 {
     Period: Int
     TotalSalesWithoutTax: Float
     TotalSalesWithTax: Float

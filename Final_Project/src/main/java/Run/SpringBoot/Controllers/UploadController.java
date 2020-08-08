@@ -3,6 +3,7 @@ package Run.SpringBoot.Controllers;
 import Database.CypherQueries;
 import Database.Neo4jConnector;
 import Parser.StAX;
+import org.neo4j.driver.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,10 +32,12 @@ public class UploadController {
 
     @Autowired
     private Environment env;
+    private Driver driver;
 
     @PostConstruct
     public void init() {
-        Neo4jConnector.initializeDatabase();
+        this.driver = Neo4jConnector.getDriver();
+        Neo4jConnector.initializeDatabase(this.driver);
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
@@ -62,7 +65,7 @@ public class UploadController {
             Validator validator = schema.newValidator();
             validator.validate(new StAXSource(reader));
 
-            if (Neo4jConnector.isFileNameUnique(saftp.getName())) {
+            if (Neo4jConnector.isFileNameUnique(this.driver, saftp.getName())) {
                 System.out.println("[SERVER] Starting to map the file: " + file.getOriginalFilename());
                 StAX.processXMLToNeo4j(saftp);
                 System.out.println("[SERVER] Done mapping the file: " + file.getOriginalFilename());

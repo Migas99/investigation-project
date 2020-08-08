@@ -6,6 +6,9 @@ import org.neo4j.driver.*;
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * Classe que contêm as Queries de pesquisa e restrição
+ */
 public class CypherQueries {
 
     /**
@@ -1088,27 +1091,23 @@ public class CypherQueries {
      * @param driver instância para comunicar com a base de dados
      * @return lista que contêm o número da fatura que não está associada com nenhum cliente
      */
-    public static LinkedList<String> obtainListOfInvoicesNotAssociatedWithCustomers(Driver driver) {
+    public static LinkedList<Map<String, Object>> obtainListOfInvoicesNotAssociatedWithCustomers(Driver driver) {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(invoice)-[:TYPE_OF]->(entity:Invoice), "
-                    + "(invoice)-[:HAS_PERIOD]->(period)"
-                    + " "
-                    + "WHERE "
-                    + "NOT EXISTS( (invoice)-[:HAS_CUSTOMER]->() )"
-                    + " "
-                    + "RETURN "
-                    + "invoice.InvoiceNo AS Invoice"
-                    + " "
-                    + "ORDER BY period.Period"
+                    + "MATCH (c:" + Entities.Labels.Company + ")-[:" + Entities.CompanyRelationships.HAS_SAFTP_FILE + "]->(f:" + Entities.Labels.File + ")\n"
+                    + "MATCH (f)-[:" + Entities.FileRelationships.HAS_SALES_INVOICES + "]->(si:" + Entities.Labels.SalesInvoices + ")\n"
+                    + "MATCH (si)-[:" + Entities.SalesInvoicesRelationships.HAS_INVOICE + "]->(i:" + Entities.Labels.Invoice + ")\n"
+                    + "WHERE NOT EXISTS( (i)-[:" + Entities.OtherRelationships.HAS_CUSTOMER + "]->() )\n"
+                    + "WITH c, f, collect(i.InvoiceNo) AS InvoicesNo\n"
+                    + "WITH c, collect({FileName: f.FileName, InvoicesNo: InvoicesNo}) AS Files\n"
+                    + "RETURN DISTINCT(c.CompanyName) AS Company, Files\n"
             ).list());
 
             Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<String> results = new LinkedList<>();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
 
             while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap().get("Invoice").toString());
+                results.add(queryIterator.next().asMap());
             }
 
             return results;
@@ -1213,52 +1212,83 @@ public class CypherQueries {
      * @param driver instância para comunicar com a base de dados
      * @return lista que contêm datas referentes aos dias que não existiram vendas
      */
-    public static LinkedList<String> obtainListOfDaysWithoutSales(Driver driver) {
+    public static LinkedList<Map<String, Object>> obtainListOfDaysWithoutSales(Driver driver) {
         try (Session session = driver.session()) {
-            Record fiscalYearDates = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(fiscalYear)-[:TYPE_OF]->(entity:FiscalYear), "
-                    + "(fiscalYear)-[:HAS_START_DATE]->(startDate), "
-                    + "(fiscalYear)-[:HAS_END_DATE]->(endDate)"
-                    + " "
-                    + "RETURN startDate.StartDate AS StartDate, endDate.EndDate AS EndDate"
-            ).single());
+            LinkedList<Map<String, Object>> answer = new LinkedList<>();
 
-            String startDate = fiscalYearDates.asMap().get("StartDate").toString();
-            String endDate = fiscalYearDates.asMap().get("EndDate").toString();
+            Iterator<Record> recordOfCompanies = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (c:" + Entities.Labels.Company + ")-[:" + Entities.CompanyRelationships.HAS_SAFTP_FILE + "]->(f:" + Entities.Labels.File + ")\n"
+                    + "WITH c, collect(f.FileName) AS Files\n"
+                    + "RETURN c.CompanyName AS Company, Files\n"
+            ).list().iterator());
 
-            List<Record> daysWithSalesQuery = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(invoice)-[:TYPE_OF]->(entity:Invoice), "
-                    + "(invoice)-[:HAS_INVOICE_DATE]->(invoiceDate)"
-                    + " "
-                    + "RETURN "
-                    + "invoice.InvoiceNo AS InvoiceNo, "
-                    + "invoiceDate.InvoiceDate AS InvoiceDate"
-                    + " "
-                    + "ORDER BY invoiceDate.InvoiceDate"
-            ).list());
-
-            LinkedList<String> daysWithSales = new LinkedList<>();
-            Iterator<Record> iterator = daysWithSalesQuery.iterator();
-
-            while (iterator.hasNext()) {
-                daysWithSales.add(iterator.next().asMap().get("InvoiceDate").toString());
+            LinkedList<Map<String, Object>> listOfCompaniesAndFiles = new LinkedList<>();
+            while (recordOfCompanies.hasNext()) {
+                listOfCompaniesAndFiles.add(recordOfCompanies.next().asMap());
             }
 
-            LinkedList<String> daysWithoutSales = new LinkedList<>();
-            String currentDate = startDate;
+            Iterator<Map<String, Object>> iterateOverCompaniesAndFiles = listOfCompaniesAndFiles.iterator();
+            while (iterateOverCompaniesAndFiles.hasNext()) {
+                Map<String, Object> map = iterateOverCompaniesAndFiles.next();
 
-            while (!currentDate.equalsIgnoreCase(endDate)) {
+                Map<String, Object> company = new HashMap<>();
+                company.put("Company", String.valueOf(map.get("Company")));
 
-                if (!daysWithSales.contains(currentDate)) {
-                    daysWithoutSales.add(currentDate);
+                LinkedList<Map<String, Object>> listFiles = new LinkedList<>();
+
+                Iterator<Object> iterateOverFiles = null;
+                while (iterateOverFiles.hasNext()) {
+                    String fileName = String.valueOf(iterateOverFiles.next());
+                    System.out.println(fileName);
+
+                    Map<String, Object> files = new HashMap<>();
+                    files.put("FileName", fileName);
+
+                    Record fiscalYearDates = session.writeTransaction(tx -> tx.run(""
+                            + "MATCH (f:" + Entities.Labels.File + ")-[:" + Entities.FileRelationships.HAS_ADDITIONAL_INFORMATION + "]->(fi:" + Entities.Labels.FileInfo + ")\n"
+                            + "MATCH (fi)-[:" + Entities.FileInformationRelationships.HAS_START_DATE + "]->(sd:" + Entities.Labels.FileInfo + ")\n"
+                            + "MATCH (fi)-[:" + Entities.FileInformationRelationships.HAS_END_DATE + "]->(ed:" + Entities.Labels.FileInfo + ")\n"
+                            + "WHERE f.FileName = '" + fileName + "'\n"
+                            + "RETURN sd.StartDate AS StartDate, ed.EndDate AS EndDate"
+                    ).single());
+
+                    String startDate = fiscalYearDates.asMap().get("StartDate").toString();
+                    String endDate = fiscalYearDates.asMap().get("EndDate").toString();
+
+                    Iterator<Record> daysWithSalesQuery = session.writeTransaction(tx -> tx.run(""
+                            + "MATCH (f:" + Entities.Labels.File + ")-[:" + Entities.FileRelationships.HAS_SALES_INVOICES + "]->(si:" + Entities.Labels.SalesInvoices + ")\n"
+                            + "MATCH (si)-[:" + Entities.SalesInvoicesRelationships.HAS_INVOICE + "]->(i:" + Entities.Labels.Invoice + ")\n"
+                            + "MATCH (i)-[:" + Entities.InvoiceRelationships.HAS_INVOICE_DATE + "]->(id:" + Entities.Labels.InvoiceInfo + ")\n"
+                            + "WHERE f.FileName = '" + fileName + "'\n"
+                            + "RETURN id.InvoiceDate AS InvoiceDate"
+                            + "ORDER BY invoiceDate.InvoiceDate"
+                    ).list().iterator());
+
+                    LinkedList<String> daysWithSales = new LinkedList<>();
+                    while (daysWithSalesQuery.hasNext()) {
+                        daysWithSales.add(daysWithSalesQuery.next().asMap().get("InvoiceDate").toString());
+                    }
+
+                    LinkedList<String> daysWithoutSales = new LinkedList<>();
+                    String currentDate = startDate;
+
+                    while (!currentDate.equalsIgnoreCase(endDate)) {
+
+                        if (!daysWithSales.contains(currentDate)) {
+                            daysWithoutSales.add(currentDate);
+                        }
+
+                        currentDate = LocalDate.parse(currentDate).plusDays(1).toString();
+                    }
+
+                    files.put("DaysWithoutSales", daysWithoutSales);
+                    listFiles.add(files);
                 }
 
-                currentDate = LocalDate.parse(currentDate).plusDays(1).toString();
+                company.put("Files", listFiles);
             }
 
-            return daysWithoutSales;
+            return null;
         }
     }
 
@@ -1271,19 +1301,18 @@ public class CypherQueries {
     public static LinkedList<Map<String, Object>> obtainListOfNetTotalAndTaxPayableByTaxCode(Driver driver) {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(taxTable)-[:TYPE_OF]->(b:TaxTable), "
-                    + "(invoice)-[:TYPE_OF]->(d:Invoice), "
-                    + "(invoice)-[:HAS_LINE]->(line), "
-                    + "(line)-[:HAS_TAX_TABLE]->(taxTable), "
-                    + "(invoice)-[:HAS_DOCUMENT_TOTALS]->(documentTotals)"
-                    + " "
-                    + "RETURN "
-                    + "taxTable.TaxCode AS TaxCode, "
-                    + "SUM(documentTotals.TaxPayable) AS TotalTaxPayable, "
-                    + "SUM(documentTotals.TaxAmount) AS TotalTaxAmount"
-                    + " "
-                    + "ORDER BY taxTable.TaxCode"
+                    + "MATCH (c:" + Entities.Labels.Company + ")-[:" + Entities.CompanyRelationships.HAS_SAFTP_FILE + "]->(f:" + Entities.Labels.File + ")\n"
+                    + "MATCH (f)-[:" + Entities.FileRelationships.HAS_ADDITIONAL_INFORMATION + "]->(fi:" + Entities.Labels.FileInfo + ")\n"
+                    + "MATCH (fi)-[:" + Entities.FileInformationRelationships.HAS_FISCAL_YEAR + "]->(fy:" + Entities.Labels.FileInfo + ")\n"
+                    + "MATCH (f)-[:" + Entities.FileRelationships.HAS_SALES_INVOICES + "]->(si:" + Entities.Labels.SalesInvoices + ")\n"
+                    + "MATCH (si)-[:" + Entities.SalesInvoicesRelationships.HAS_INVOICE + "]->(i:" + Entities.Labels.Invoice + ")\n"
+                    + "MATCH (i)-[:" + Entities.InvoiceRelationships.HAS_LINE + "]->(l:" + Entities.Labels.InvoiceInfo + ")\n"
+                    + "MATCH (l)-[:" + Entities.LineRelationships.HAS_TAX_TABLE + "]->(tb:" + Entities.Labels.InvoiceInfo + ")\n"
+                    + "MATCH (i)-[:" + Entities.InvoiceRelationships.HAS_DOCUMENT_TOTALS + "]->(dt:" + Entities.Labels.InvoiceInfo + ")\n"
+                    + "WITH c, f, fy, { TaxCode: tb.TaxCode, TotalNetTotal: SUM(dt.NetTotal), TotalTaxPayable: SUM(dt.TaxPayable) } AS Amount\n"
+                    + "WITH c, f, fy, collect(Amount) AS NetTotalAndTaxPayableByTaxCode\n"
+                    + "WITH c, collect({ FileName: f.FileName, FiscalYear: fy.FiscalYear, NetTotalAndTaxPayableByTaxCode: NetTotalAndTaxPayableByTaxCode }) AS Files\n"
+                    + "RETURN c.CompanyName AS Company, Files\n"
             ).list());
 
             Iterator<Record> queryIterator = queryResults.iterator();
@@ -1306,17 +1335,17 @@ public class CypherQueries {
     public static LinkedList<Map<String, Object>> obtainListOfSalesByPeriod(Driver driver) {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(invoice)-[:TYPE_OF]->(b:Invoice), "
-                    + "(invoice)-[:HAS_PERIOD]->(period), "
-                    + "(invoice)-[:HAS_DOCUMENT_TOTALS]->(documentTotals)"
-                    + " "
-                    + "RETURN "
-                    + "DISTINCT(period.Period) AS Period, "
-                    + "SUM(documentTotals.GrossTotal) AS TotalSalesWithoutTax, "
-                    + "SUM(documentTotals.NetTotal) AS TotalSalesWithTax"
-                    + " "
-                    + "ORDER BY period.Period"
+                    + "MATCH (c:" + Entities.Labels.Company + ")-[:" + Entities.CompanyRelationships.HAS_SAFTP_FILE + "]->(f:" + Entities.Labels.File + ")\n"
+                    + "MATCH (f)-[:" + Entities.FileRelationships.HAS_ADDITIONAL_INFORMATION + "]->(fi:" + Entities.Labels.FileInfo + ")\n"
+                    + "MATCH (fi)-[:" + Entities.FileInformationRelationships.HAS_FISCAL_YEAR + "]->(fy:" + Entities.Labels.FileInfo + ")\n"
+                    + "MATCH (f)-[:" + Entities.FileRelationships.HAS_SALES_INVOICES + "]->(si:" + Entities.Labels.SalesInvoices + ")\n"
+                    + "MATCH (si)-[:" + Entities.SalesInvoicesRelationships.HAS_INVOICE + "]->(i:" + Entities.Labels.Invoice + ")\n"
+                    + "MATCH (i)-[:" + Entities.InvoiceRelationships.HAS_PERIOD + "]->(ip:" + Entities.Labels.InvoiceInfo + ")\n"
+                    + "MATCH (i)-[:" + Entities.InvoiceRelationships.HAS_DOCUMENT_TOTALS + "]->(idt:" + Entities.Labels.InvoiceInfo + ")\n"
+                    + "WITH c, f, fy, { Period: ip.Period, TotalSalesWithoutTax: SUM(idt.GrossTotal), TotalSalesWithTax: SUM(idt.NetTotal) } AS Sale\n"
+                    + "WITH c, f, fy, collect(Sale) AS SalesByPeriod\n"
+                    + "WITH c, collect({ FileName: f.FileName, FiscalYear: fy.FiscalYear, SalesByPeriod: SalesByPeriod }) AS Files\n"
+                    + "RETURN c.CompanyName AS Company, Files\n"
             ).list());
 
             Iterator<Record> queryIterator = queryResults.iterator();

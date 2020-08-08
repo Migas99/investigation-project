@@ -225,14 +225,14 @@ public class Mapper {
                     this.rootCompany = this.constructor.CREATE(Entities.Labels.Company, element, value);
 
                     this.constructor.CREATE_RELATIONSHIP(
-                            this.container.get(Elements.AuditFile.Header),
+                            this.container.get(Elements.RootElement.AuditFile),
                             this.rootCompany,
                             Entities.FileRelationships.RELATED_TO_COMPANY
                     );
 
                     this.constructor.CREATE_RELATIONSHIP(
                             this.rootCompany,
-                            this.container.get(Elements.AuditFile.Header),
+                            this.container.get(Elements.RootElement.AuditFile),
                             Entities.CompanyRelationships.HAS_SAFTP_FILE
                     );
 
