@@ -12,1080 +12,6 @@ import java.util.*;
 public class CypherQueries {
 
     /**
-     * Pesquisa por todas as contas
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista de contas
-     */
-    public static LinkedList<Map<String, Object>> obtainListOfAllAccounts(Driver driver) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(account)-[:" + "]->(entity:" + Entities.Labels.Account + ")"
-                    + " "
-                    + "OPTIONAL MATCH "
-                    + "(account)-[:" + Entities.AccountRelationships.HAS_ACCOUNT_DESCRIPTION + "]->(description) "
-                    + "OPTIONAL MATCH "
-                    + "(account)-[:" + Entities.AccountRelationships.HAS_OPENING_DEBIT_BALANCE + "]->(openingDebitBalance) "
-                    + "OPTIONAL MATCH "
-                    + "(account)-[:" + Entities.AccountRelationships.HAS_OPENING_CREDIT_BALANCE + "]->(openingCreditBalance) "
-                    + "OPTIONAL MATCH "
-                    + "(account)-[:" + Entities.AccountRelationships.HAS_CLOSING_DEBIT_BALANCE + "]->(closingDebitBalance) "
-                    + "OPTIONAL MATCH "
-                    + "(account)-[:" + Entities.AccountRelationships.HAS_CLOSING_CREDIT_BALANCE + "]->(closingCreditBalance) "
-                    + "OPTIONAL MATCH "
-                    + "(account)-[:" + Entities.AccountRelationships.HAS_GROUPING_CATEGORY + "]->(groupingCategory) "
-                    + "OPTIONAL MATCH "
-                    + "(account)-[:" + Entities.AccountRelationships.HAS_GROUPING_CODE + "]->(groupingCode) "
-                    + "OPTIONAL MATCH "
-                    + "(account)-[:" + Entities.AccountRelationships.HAS_TAXONOMY_CODE + "]->(taxonomyCode) "
-                    + " "
-                    + "RETURN "
-                    + "account.AccountID AS AccountID, "
-                    + "description.AccountDescription AS AccountDescription, "
-                    + "openingDebitBalance.OpeningDebitBalance AS OpeningDebitBalance, "
-                    + "openingCreditBalance.OpeningCreditBalance AS OpeningCreditBalance, "
-                    + "closingDebitBalance.ClosingDebitBalance AS ClosingDebitBalance, "
-                    + "closingCreditBalance.ClosingCreditBalance AS ClosingCreditBalance, "
-                    + "groupingCategory.GroupingCategory AS GroupingCategory, "
-                    + "groupingCode.GroupingCode AS GroupingCode, "
-                    + "taxonomyCode.TaxonomyCode AS TaxonomyCode"
-                    + " "
-                    + "ORDER BY account.AccountID"
-            ).list());
-
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
-        }
-    }
-
-    /**
-     * Pesquisa por todos os clientes
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista de clientes
-     */
-    public static LinkedList<Map<String, Object>> obtainListOfAllCustomers(Driver driver) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(customer)-[:" + "]->(entity:" + Entities.Labels.Customer + ") "
-                    + "OPTIONAL MATCH "
-                    + "(customer)-[:" + Entities.OtherRelationships.HAS_ACCOUNT + "]->(account) "
-                    + "OPTIONAL MATCH "
-                    + "(customer)-[:" + Entities.CustomerRelationships.HAS_CUSTOMER_TAX_ID + "]->(customerTaxID) "
-                    + "OPTIONAL MATCH "
-                    + "(customer)-[:" + Entities.OtherRelationships.HAS_COMPANY + "]->(companyName) "
-                    + "OPTIONAL MATCH "
-                    + "(customer)-[:" + Entities.CustomerRelationships.HAS_CONTACT + "]->(contact) "
-                    + "OPTIONAL MATCH "
-                    + "(customer)-[:" + Entities.CustomerRelationships.HAS_BILLING_ADDRESS + "]->(billingAddress) "
-                    + "OPTIONAL MATCH "
-                    + "(customer)-[:" + Entities.CustomerRelationships.HAS_SHIP_TO_ADDRESS + "]->(shipToAddress) "
-                    + "OPTIONAL MATCH "
-                    + "(customer)-[:" + Entities.CustomerRelationships.HAS_TELEPHONE + "]->(telephone) "
-                    + "OPTIONAL MATCH "
-                    + "(customer)-[:" + Entities.CustomerRelationships.HAS_FAX + "]->(fax) "
-                    + "OPTIONAL MATCH "
-                    + "(customer)-[:" + Entities.CustomerRelationships.HAS_EMAIL + "]->(email) "
-                    + "OPTIONAL MATCH "
-                    + "(customer)-[:" + Entities.CustomerRelationships.HAS_WEBSITE + "]->(website) "
-                    + "OPTIONAL MATCH "
-                    + "(customer)-[:" + Entities.CustomerRelationships.HAS_SELF_BILLING_INDICATOR + "]->(indicator) "
-                    + "OPTIONAL MATCH "
-                    + "(billingAddress)-[:" + Entities.AddressRelationships.HAS_BUILDING_NUMBER + "]->(buildingNumber) "
-                    + "OPTIONAL MATCH "
-                    + "(billingAddress)-[:" + Entities.AddressRelationships.HAS_STREET_NAME + "]->(streetName) "
-                    + "OPTIONAL MATCH "
-                    + "(billingAddress)-[:" + Entities.AddressRelationships.HAS_CITY + "]->(city) "
-                    + "OPTIONAL MATCH "
-                    + "(billingAddress)-[:" + Entities.AddressRelationships.HAS_POSTAL_CODE + "]->(postalCode) "
-                    + "OPTIONAL MATCH "
-                    + "(billingAddress)-[:" + Entities.AddressRelationships.HAS_REGION + "]->(region) "
-                    + "OPTIONAL MATCH "
-                    + "(billingAddress)-[:" + Entities.AddressRelationships.HAS_COUNTRY + "]->(country) "
-                    + "OPTIONAL MATCH "
-                    + "(shipToAddress)-[:" + Entities.AddressRelationships.HAS_BUILDING_NUMBER + "]->(shipBuildingNumber) "
-                    + "OPTIONAL MATCH "
-                    + "(shipToAddress)-[:" + Entities.AddressRelationships.HAS_STREET_NAME + "]->(shipStreetName) "
-                    + "OPTIONAL MATCH "
-                    + "(shipToAddress)-[:" + Entities.AddressRelationships.HAS_CITY + "]->(shipCity) "
-                    + "OPTIONAL MATCH "
-                    + "(shipToAddress)-[:" + Entities.AddressRelationships.HAS_POSTAL_CODE + "]->(shipPostalCode) "
-                    + "OPTIONAL MATCH "
-                    + "(shipToAddress)-[:" + Entities.AddressRelationships.HAS_REGION + "]->(shipRegion) "
-                    + "OPTIONAL MATCH "
-                    + "(shipToAddress)-[:" + Entities.AddressRelationships.HAS_COUNTRY + "]->(shipCountry) "
-                    + " "
-                    + "RETURN "
-                    + "customer.CustomerID AS CustomerID, "
-                    + "account.AccountID AS AccountID, "
-                    + "customerTaxID.CustomerTaxID AS CustomerTaxID, "
-                    + "companyName.CompanyName AS CompanyName, "
-                    + "contact.Contact AS Contact, "
-
-                    + "{ "
-                    + "BuildingNumber: buildingNumber.BuildingNumber, "
-                    + "StreetName: streetName.StreetName, "
-                    + "AddressDetail: billingAddress.AddressDetail, "
-                    + "City: city.City, "
-                    + "PostalCode: postalCode.PostalCode, "
-                    + "Region: region.Region, "
-                    + "Country: country.Country "
-                    + "} AS BillingAddress, "
-
-                    + "{ "
-                    + "BuildingNumber: shipBuildingNumber.BuildingNumber, "
-                    + "StreetName: shipStreetName.StreetName, "
-                    + "AddressDetail: shipToAddress.AddressDetail, "
-                    + "City: shipCity.City, "
-                    + "PostalCode: shipPostalCode.PostalCode, "
-                    + "Region: shipRegion.Region, "
-                    + "Country: shipCountry.Country "
-                    + "} AS ShipToAddress, "
-
-                    + "telephone.Telephone AS Telephone, "
-                    + "fax.Fax AS Fax, "
-                    + "email.Email AS Email, "
-                    + "website.Website AS Website, "
-                    + "indicator.SelfBillingIndicator AS SelfBillingIndicator"
-                    + " "
-                    + "ORDER BY customer.CustomerID"
-            ).list());
-
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
-        }
-    }
-
-    /**
-     * Pesquisa por todos os fornecedores
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista de fornecedores
-     */
-    public static LinkedList<Map<String, Object>> obtainListOfAllSuppliers(Driver driver) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(supplier)-[:" + "]->(entity:" + Entities.Labels.Supplier + ") "
-                    + "OPTIONAL MATCH "
-                    + "(supplier)-[:" + Entities.OtherRelationships.HAS_ACCOUNT + "]->(account) "
-                    + "OPTIONAL MATCH "
-                    + "(supplier)-[:" + Entities.SupplierRelationships.HAS_SUPPLIER_TAX_ID + "]->(supplierTaxID) "
-                    + "OPTIONAL MATCH "
-                    + "(supplier)-[:" + Entities.OtherRelationships.HAS_COMPANY + "]->(companyName) "
-                    + "OPTIONAL MATCH "
-                    + "(supplier)-[:" + Entities.SupplierRelationships.HAS_CONTACT + "]->(contact) "
-                    + "OPTIONAL MATCH "
-                    + "(supplier)-[:" + Entities.SupplierRelationships.HAS_BILLING_ADDRESS + "]->(billingAddress) "
-                    + "OPTIONAL MATCH "
-                    + "(supplier)-[:" + Entities.SupplierRelationships.HAS_SHIP_FROM_ADDRESS + "]->(shipFromAddress) "
-                    + "OPTIONAL MATCH "
-                    + "(supplier)-[:" + Entities.SupplierRelationships.HAS_TELEPHONE + "]->(telephone) "
-                    + "OPTIONAL MATCH "
-                    + "(supplier)-[:" + Entities.SupplierRelationships.HAS_FAX + "]->(fax) "
-                    + "OPTIONAL MATCH "
-                    + "(supplier)-[:" + Entities.SupplierRelationships.HAS_EMAIL + "]->(email) "
-                    + "OPTIONAL MATCH "
-                    + "(supplier)-[:" + Entities.SupplierRelationships.HAS_WEBSITE + "]->(website) "
-                    + "OPTIONAL MATCH "
-                    + "(supplier)-[:" + Entities.SupplierRelationships.HAS_SELF_BILLING_INDICATOR + "]->(indicator) "
-                    + "OPTIONAL MATCH "
-                    + "(billingAddress)-[:" + Entities.AddressRelationships.HAS_BUILDING_NUMBER + "]->(buildingNumber) "
-                    + "OPTIONAL MATCH "
-                    + "(billingAddress)-[:" + Entities.AddressRelationships.HAS_STREET_NAME + "]->(streetName) "
-                    + "OPTIONAL MATCH "
-                    + "(billingAddress)-[:" + Entities.AddressRelationships.HAS_CITY + "]->(city) "
-                    + "OPTIONAL MATCH "
-                    + "(billingAddress)-[:" + Entities.AddressRelationships.HAS_POSTAL_CODE + "]->(postalCode) "
-                    + "OPTIONAL MATCH "
-                    + "(billingAddress)-[:" + Entities.AddressRelationships.HAS_REGION + "]->(region) "
-                    + "OPTIONAL MATCH "
-                    + "(billingAddress)-[:" + Entities.AddressRelationships.HAS_COUNTRY + "]->(country) "
-                    + "OPTIONAL MATCH "
-                    + "(shipFromAddress)-[:" + Entities.AddressRelationships.HAS_BUILDING_NUMBER + "]->(shipBuildingNumber) "
-                    + "OPTIONAL MATCH "
-                    + "(shipFromAddress)-[:" + Entities.AddressRelationships.HAS_STREET_NAME + "]->(shipStreetName) "
-                    + "OPTIONAL MATCH "
-                    + "(shipFromAddress)-[:" + Entities.AddressRelationships.HAS_CITY + "]->(shipCity) "
-                    + "OPTIONAL MATCH "
-                    + "(shipFromAddress)-[:" + Entities.AddressRelationships.HAS_POSTAL_CODE + "]->(shipPostalCode) "
-                    + "OPTIONAL MATCH "
-                    + "(shipFromAddress)-[:" + Entities.AddressRelationships.HAS_REGION + "]->(shipRegion) "
-                    + "OPTIONAL MATCH "
-                    + "(shipFromAddress)-[:" + Entities.AddressRelationships.HAS_COUNTRY + "]->(shipCountry) "
-                    + " "
-                    + "RETURN "
-                    + "supplier.SupplierID AS SupplierID, "
-                    + "account.AccountID AS AccountID, "
-                    + "supplierTaxID.SupplierTaxID AS SupplierTaxID, "
-                    + "companyName.CompanyName AS CompanyName, "
-                    + "contact.Contact AS Contact, "
-
-                    + "{ "
-                    + "BuildingNumber: buildingNumber.BuildingNumber, "
-                    + "StreetName: streetName.StreetName, "
-                    + "AddressDetail: billingAddress.AddressDetail, "
-                    + "City: city.City, "
-                    + "PostalCode: postalCode.PostalCode, "
-                    + "Region: region.Region, "
-                    + "Country: country.Country "
-                    + "} AS BillingAddress, "
-
-                    + "{ "
-                    + "BuildingNumber: shipBuildingNumber.BuildingNumber, "
-                    + "StreetName: shipStreetName.StreetName, "
-                    + "AddressDetail: shipFromAddress.AddressDetail, "
-                    + "City: shipCity.City, "
-                    + "PostalCode: shipPostalCode.PostalCode, "
-                    + "Region: shipRegion.Region, "
-                    + "Country: shipCountry.Country "
-                    + "} AS ShipFromAddress, "
-
-                    + "telephone.Telephone AS Telephone, "
-                    + "fax.Fax AS Fax, "
-                    + "email.Email AS Email, "
-                    + "website.Website AS Website, "
-                    + "indicator.SelfBillingIndicator AS SelfBillingIndicator"
-                    + " "
-                    + "ORDER BY supplier.SupplierID"
-            ).list());
-
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
-        }
-    }
-
-    /**
-     * Pesquisa por todos os produtos
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista de produtos
-     */
-    public static LinkedList<Map<String, Object>> obtainListOfAllProducts(Driver driver) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(product)-[:" + "]->(entity:" + Entities.Labels.Product + ") "
-                    + "OPTIONAL MATCH "
-                    + "(product)-[:" + Entities.ProductRelationships.HAS_PRODUCT_TYPE + "]->(productType) "
-                    + "OPTIONAL MATCH "
-                    + "(product)-[:" + Entities.ProductRelationships.HAS_PRODUCT_GROUP + "]->(productGroup) "
-                    + "OPTIONAL MATCH "
-                    + "(product)-[:" + Entities.ProductRelationships.HAS_PRODUCT_DESCRIPTION + "]->(description) "
-                    + "OPTIONAL MATCH "
-                    + "(product)-[:" + Entities.ProductRelationships.HAS_PRODUCT_NUMBER_CODE + "]->(productNumberCode) "
-                    + "OPTIONAL MATCH "
-                    + "(product)-[:" + Entities.ProductRelationships.HAS_CUSTOMS_DETAILS + "]->(customsDetails)"
-                    + " "
-                    + "RETURN "
-                    + "productType.ProductType AS ProductType, "
-                    + "product.ProductCode AS ProductCode, "
-                    + "productGroup.ProductGroup AS ProductGroup, "
-                    + "description.ProductDescription AS ProductDescription, "
-                    + "productNumberCode.ProductNumberCode AS ProductNumberCode, "
-                    + "collect({ "
-                    + "CNCode: customsDetails.CNCode, "
-                    + "UNNumber: customsDetails.UNNumber "
-                    + "}) AS CustomsDetails"
-                    + " "
-                    + "ORDER BY product.ProductCode"
-            ).list());
-
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
-        }
-    }
-
-    /**
-     * Pesquisa pelas GeneralLedgerEntries
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return a GeneralLedgerEntries
-     */
-    public static Map<String, Object> obtainGeneralLedgerEntries(Driver driver) {
-        try (Session session = driver.session()) {
-            Record queryResult = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(ledgerEntree)-[:" + "]->(entity:" + Entities.Labels.GeneralLedgerEntries + ") "
-                    + "OPTIONAL MATCH "
-                    + "(ledgerEntree)-[:" + Entities.GeneralLedgerEntriesRelationships.HAS_TOTAL_DEBIT + "]->(totalDebit) "
-                    + "OPTIONAL MATCH "
-                    + "(ledgerEntree)-[:" + Entities.GeneralLedgerEntriesRelationships.HAS_TOTAL_CREDIT + "]->(totalCredit) "
-                    + " "
-                    + "RETURN "
-                    + "ledgerEntree.NumberOfEntries AS NumberOfEntries, "
-                    + "totalDebit.TotalDebit AS TotalDebit, "
-                    + "totalCredit.TotalCredit AS TotalCredit"
-                    + " "
-                    + "ORDER BY ledgerEntree.NumberOfEntries"
-            ).single());
-
-            return queryResult.asMap();
-        }
-    }
-
-    /**
-     * Pesquisa por todos os jornais
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista de jornais
-     */
-    public static LinkedList<Map<String, Object>> obtainListOfAllJournals(Driver driver) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(journal)-[:" + "]->(entity:" + Entities.Labels.Journal + ") "
-                    + "OPTIONAL MATCH "
-                    + "(journal)-[:" + Entities.JournalRelationships.HAS_DESCRIPTION + "]->(description)"
-                    + " "
-                    + "RETURN "
-                    + "journal.JournalID AS JournalID, "
-                    + "description.Description AS Description"
-                    + " "
-                    + "ORDER BY journal.JournalID"
-            ).list());
-
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
-        }
-    }
-
-    /**
-     * Pesquisa por todas as transações
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista de transações
-     */
-    public static LinkedList<Map<String, Object>> obtainListOfAllTransactions(Driver driver) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(transaction)-[:" + "]->(entity:" + Entities.Labels.Transaction + ") "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.TransactionRelationships.HAS_PERIOD + "]->(period) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.TransactionRelationships.HAS_TRANSACTION_DATE + "]->(date) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + "]->(source) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.TransactionRelationships.HAS_DESCRIPTION + "]->(description) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.TransactionRelationships.HAS_DOC_ARCHIVAL_NUMBER + "]->(archivalNumber) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.TransactionRelationships.HAS_TRANSACTION_TYPE + "]->(type) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.TransactionRelationships.HAS_GL_POSTING_DATE + "]->(postingDate) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.OtherRelationships.HAS_CUSTOMER + "]->(customer) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.OtherRelationships.HAS_SUPPLIER + "]->(supplier) "
-                    + " "
-                    + "RETURN "
-                    + "transaction.TransactionID AS TransactionID, "
-                    + "period.Period AS Period, "
-                    + "date.TransactionDate AS TransactionDate, "
-                    + "source.SourceID AS SourceID, "
-                    + "description.Description AS Description, "
-                    + "archivalNumber.DocArchivalNumber AS DocArchivalNumber, "
-                    + "type.TransactionType AS TransactionType, "
-                    + "postingDate.GLPostingDate AS GLPostingDate, "
-                    + "customer.CustomerID AS CustomerID, "
-                    + "supplier.SupplierID AS SupplierID"
-                    + " "
-                    + "ORDER BY transaction.TransactionID"
-            ).list());
-
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
-        }
-    }
-
-    /**
-     * Pesquisa por todas as transações associadas a um jornal específico
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista de transações
-     */
-    public static LinkedList<Map<String, Object>> obtainListOfTransactionsByJournalId(Driver driver, String journalID) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(journal)-[:" + "]->(entity:" + Entities.Labels.Journal + ") "
-                    + "MATCH "
-                    + "(transaction)-[:" + "]->(entity2:" + Entities.Labels.Transaction + ") "
-                    + "MATCH "
-                    + "(journal)-[:" + Entities.JournalRelationships.HAS_TRANSACTION + "]->(transaction) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.TransactionRelationships.HAS_PERIOD + "]->(period) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.TransactionRelationships.HAS_TRANSACTION_DATE + "]->(date) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + "]->(source) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.TransactionRelationships.HAS_DESCRIPTION + "]->(description) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.TransactionRelationships.HAS_DOC_ARCHIVAL_NUMBER + "]->(archivalNumber) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.TransactionRelationships.HAS_TRANSACTION_TYPE + "]->(type) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.TransactionRelationships.HAS_GL_POSTING_DATE + "]->(postingDate) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.OtherRelationships.HAS_CUSTOMER + "]->(customer) "
-                    + "OPTIONAL MATCH "
-                    + "(transaction)-[:" + Entities.OtherRelationships.HAS_SUPPLIER + "]->(supplier) "
-                    + "WITH "
-                    + "journal, transaction, period, date, source, description, archivalNumber, type, postingDate, customer, supplier"
-                    + " "
-                    + "WHERE "
-                    + "journal.JournalID = '" + journalID + "'"
-                    + " "
-                    + "RETURN "
-                    + "transaction.TransactionID AS TransactionID, "
-                    + "period.Period AS Period, "
-                    + "date.TransactionDate AS TransactionDate, "
-                    + "source.SourceID AS SourceID, "
-                    + "description.Description AS Description, "
-                    + "archivalNumber.DocArchivalNumber AS DocArchivalNumber, "
-                    + "type.TransactionType AS TransactionType, "
-                    + "postingDate.GLPostingDate AS GLPostingDate, "
-                    + "customer.CustomerID AS CustomerID, "
-                    + "supplier.SupplierID AS SupplierID"
-                    + " "
-                    + "ORDER BY transaction.TransactionID"
-            ).list());
-
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
-        }
-    }
-
-    /**
-     * Pesquisa por todas as linhas de débito associadas a uma transação específica
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista de linhas de débito
-     */
-    public static LinkedList<Map<String, Object>> obtainListOfDebitLinesByTransactionId(Driver driver, String transactionId) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(transaction)-[:" + "]->(entity:" + Entities.Labels.Transaction + ") "
-                    + "MATCH "
-                    + "(transaction)-[:" + Entities.TransactionRelationships.HAS_LINES + "]->(lines) "
-                    + "MATCH "
-                    + "(lines)-[:" + Entities.LinesRelationships.HAS_DEBIT_LINE + "]->(debitLine) "
-                    + "OPTIONAL MATCH "
-                    + "(debitLine)-[:" + Entities.OtherRelationships.HAS_ACCOUNT + "]->(account) "
-                    + "OPTIONAL MATCH "
-                    + "(debitLine)-[:" + Entities.DebitLineRelationships.HAS_SOURCE_DOCUMENT + "]->(document) "
-                    + "OPTIONAL MATCH "
-                    + "(debitLine)-[:" + Entities.DebitLineRelationships.HAS_SYSTEM_ENTRY_DATE + "]->(date) "
-                    + "OPTIONAL MATCH "
-                    + "(debitLine)-[:" + Entities.DebitLineRelationships.HAS_DESCRIPTION + "]->(description) "
-                    + "OPTIONAL MATCH "
-                    + "(debitLine)-[:" + Entities.DebitLineRelationships.HAS_DEBIT_AMOUNT + "]->(amount)"
-                    + " "
-                    + "WITH "
-                    + "transaction, debitLine, account, document, date, description, amount"
-                    + " "
-                    + "WHERE "
-                    + "transaction.TransactionID = '" + transactionId + "'"
-                    + " "
-                    + "RETURN "
-                    + "debitLine.RecordID AS RecordID, "
-                    + "account.AccountID AS AccountID, "
-                    + "document.SourceDocumentID AS SourceDocumentID, "
-                    + "date.SystemEntryDate AS SystemEntryDate, "
-                    + "description.Description AS Description, "
-                    + "amount.DebitAmount AS DebitAmount"
-                    + " "
-                    + "ORDER BY debitLine.RecordID"
-            ).list());
-
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
-        }
-    }
-
-    /**
-     * Pesquisa por todas as linhas de crédito associadas a uma transação específica
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista de linhas de crédito
-     */
-    public static LinkedList<Map<String, Object>> obtainListOfCreditLinesByTransactionId(Driver driver, String transactionId) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(transaction)-[:" + "]->(entity:" + Entities.Labels.Transaction + ") "
-                    + "MATCH "
-                    + "(transaction)-[:" + Entities.TransactionRelationships.HAS_LINES + "]->(lines) "
-                    + "MATCH "
-                    + "(lines)-[:" + Entities.LinesRelationships.HAS_CREDIT_LINE + "]->(creditLine) "
-                    + "OPTIONAL MATCH "
-                    + "(creditLine)-[:" + Entities.OtherRelationships.HAS_ACCOUNT + "]->(account) "
-                    + "OPTIONAL MATCH "
-                    + "(creditLine)-[:" + Entities.CreditLineRelationships.HAS_SOURCE_DOCUMENT + "]->(document) "
-                    + "OPTIONAL MATCH "
-                    + "(creditLine)-[:" + Entities.CreditLineRelationships.HAS_SYSTEM_ENTRY_DATE + "]->(date) "
-                    + "OPTIONAL MATCH "
-                    + "(creditLine)-[:" + Entities.CreditLineRelationships.HAS_DESCRIPTION + "]->(description) "
-                    + "OPTIONAL MATCH "
-                    + "(creditLine)-[:" + Entities.CreditLineRelationships.HAS_CREDIT_AMOUNT + "]->(amount) "
-                    + " "
-                    + "WITH "
-                    + "transaction, creditLine, account, document, date, description, amount"
-                    + " "
-                    + "WHERE "
-                    + "transaction.TransactionID = '" + transactionId + "'"
-                    + " "
-                    + "RETURN "
-                    + "creditLine.RecordID AS RecordID, "
-                    + "account.AccountID AS AccountID, "
-                    + "document.SourceDocumentID AS SourceDocumentID, "
-                    + "date.SystemEntryDate AS SystemEntryDate, "
-                    + "description.Description AS Description, "
-                    + "amount.CreditAmount AS CreditAmount"
-                    + " "
-                    + "ORDER BY creditLine.RecordID"
-            ).list());
-
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
-        }
-    }
-
-    /**
-     * Pesquisa pelas SalesInvoices
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return a SalesInvoices
-     */
-    public static Map<String, Object> obtainSalesInvoices(Driver driver) {
-        try (Session session = driver.session()) {
-            Record queryResult = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(salesInvoices)-[:" + "]->(entity:" + Entities.Labels.SalesInvoices + ") "
-                    + "OPTIONAL MATCH "
-                    + "(salesInvoices)-[:" + Entities.SalesInvoicesRelationships.HAS_TOTAL_DEBIT + "]->(totalDebit) "
-                    + "OPTIONAL MATCH "
-                    + "(salesInvoices)-[:" + Entities.SalesInvoicesRelationships.HAS_TOTAL_CREDIT + "]->(totalCredit) "
-                    + " "
-                    + "RETURN "
-                    + "salesInvoices.NumberOfEntries AS NumberOfEntries, "
-                    + "totalDebit.TotalDebit AS TotalDebit, "
-                    + "totalCredit.TotalCredit AS TotalCredit"
-            ).single());
-
-            return queryResult.asMap();
-        }
-    }
-
-    /**
-     * Pesquisa por todas as faturas
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista de faturas
-     */
-    public static LinkedList<Map<String, Object>> obtainListOfAllInvoices(Driver driver) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_ATCUD + "]->(atcud) "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_HASH + "]->(hash) "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_HASH_CONTROL + "]->(hashControl) "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_PERIOD + "]->(period) "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_INVOICE_DATE + "]->(invoiceDate) "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_INVOICE_TYPE + "]->(invoiceType) "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + "]->(source) "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_EAC_CODE + "]->(eacCode) "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_SYSTEM_ENTRY_DATE + "]->(entryDate) "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.OtherRelationships.HAS_TRANSACTION + "]->(transaction) "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.OtherRelationships.HAS_CUSTOMER + "]->(customer) "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_MOVEMENT_END_TIME + "]->(mEndTime) "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_MOVEMENT_START_TIME + "]->(mStartTime)"
-                    + " "
-                    + "RETURN "
-                    + "invoice.InvoiceNo AS InvoiceNo, "
-                    + "atcud.ATCUD AS ATCUD, "
-                    + "hash.Hash AS Hash, "
-                    + "hashControl.HashControl AS HashControl, "
-                    + "period.Period AS Period, "
-                    + "invoiceDate.InvoiceDate AS InvoiceDate, "
-                    + "invoiceType.InvoiceType AS InvoiceType, "
-                    + "source.SourceID AS SourceID, "
-                    + "eacCode.EACCode AS EACCode, "
-                    + "entryDate.SystemEntryDate AS SystemEntryDate, "
-                    + "transaction.TransactionID AS TransactionID, "
-                    + "customer.CustomerID AS CustomerID, "
-                    + "mEndTime.MovementEndTime AS MovementEndTime, "
-                    + "mStartTime.MovementStartTime AS MovementStartTime"
-                    + " "
-                    + "ORDER BY invoice.InvoiceNo"
-            ).list());
-
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
-        }
-    }
-
-    /**
-     * Pesquisa pelo status de uma dada fatura
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return status da fatura
-     */
-    public static Map<String, Object> obtainDocumentStatusByInvoiceId(Driver driver, String invoiceNo) {
-        try (Session session = driver.session()) {
-            Record queryResult = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_DOCUMENT_STATUS + "]->(documentStatus) "
-                    + "OPTIONAL MATCH "
-                    + "(documentStatus)-[:" + "]->(source) "
-                    + " "
-                    + "WITH "
-                    + "invoice, documentStatus, source"
-                    + " "
-                    + "WHERE "
-                    + "invoice.InvoiceNo = '" + invoiceNo + "'"
-                    + " "
-                    + "RETURN "
-                    + "documentStatus.InvoiceStatus AS InvoiceStatus, "
-                    + "documentStatus.InvoiceStatusDate AS InvoiceStatusDate, "
-                    + "documentStatus.Reason AS Reason, "
-                    + "source.SourceID AS SourceID, "
-                    + "documentStatus.SourceBilling AS SourceBilling"
-            ).single());
-
-            return queryResult.asMap();
-        }
-    }
-
-    /**
-     * Pesquisa pelos regimes especiais de uma dada fatura
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return regimes especiais da fatura
-     */
-    public static Map<String, Object> obtainSpecialRegimesByInvoiceId(Driver driver, String invoiceNo) {
-        try (Session session = driver.session()) {
-            Record queryResult = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
-                    + "OPTIONAL MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_SPECIAL_REGIMES + "]->(special) "
-                    + " "
-                    + "WITH "
-                    + "invoice, special"
-                    + " "
-                    + "WHERE "
-                    + "invoice.InvoiceNo = '" + invoiceNo + "'"
-                    + " "
-                    + "RETURN "
-                    + "special.SelfBillingIndicator AS SelfBillingIndicator, "
-                    + "special.CashVATSchemeIndicator AS CashVATSchemeIndicator, "
-                    + "special.ThirdPartiesBillingIndicator AS ThirdPartiesBillingIndicator"
-            ).single());
-
-            return queryResult.asMap();
-        }
-    }
-
-    /**
-     * @param driver instância para comunicar com a base de dados
-     * @return shipTo da fatura
-     */
-    public static Map<String, Object> obtainShipToByInvoiceId(Driver driver, String invoiceNo) {
-        try (Session session = driver.session()) {
-            Record queryResult = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
-                    + "MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_SHIP_TO + "]->(ship) "
-                    + "OPTIONAL MATCH "
-                    + "(ship)-[:" + Entities.ShipToRelationships.HAS_ADDRESS + "]->(address) "
-                    + "OPTIONAL MATCH "
-                    + "(address)-[:" + Entities.AddressRelationships.HAS_BUILDING_NUMBER + "]->(buildingNumber) "
-                    + "OPTIONAL MATCH "
-                    + "(address)-[:" + Entities.AddressRelationships.HAS_STREET_NAME + "]->(streetName) "
-                    + "OPTIONAL MATCH "
-                    + "(address)-[:" + Entities.AddressRelationships.HAS_CITY + "]->(city) "
-                    + "OPTIONAL MATCH "
-                    + "(address)-[:" + Entities.AddressRelationships.HAS_POSTAL_CODE + "]->(postalCode) "
-                    + "OPTIONAL MATCH "
-                    + "(address)-[:" + Entities.AddressRelationships.HAS_REGION + "]->(region) "
-                    + "OPTIONAL MATCH "
-                    + "(address)-[:" + Entities.AddressRelationships.HAS_COUNTRY + "]->(country) "
-                    + " "
-                    + "WITH "
-                    + "invoice, ship, address, buildingNumber, streetName, city, postalCode, region, country"
-                    + " "
-                    + "WHERE "
-                    + "invoice.InvoiceNo = '" + invoiceNo + "'"
-                    + " "
-                    + "RETURN "
-                    + "ship.DeliveryID AS DeliveryID, "
-                    + "ship.DeliveryDate AS DeliveryDate, "
-                    + "ship.WarehouseID AS WarehouseID, "
-                    + "ship.LocationID AS LocationID, "
-
-                    + "{ "
-                    + "BuildingNumber: buildingNumber.BuildingNumber, "
-                    + "StreetName: streetName.StreetName, "
-                    + "AddressDetail: address.AddressDetail, "
-                    + "City: city.City, "
-                    + "PostalCode: postalCode.PostalCode, "
-                    + "Region: region.Region, "
-                    + "Country: country.Country "
-                    + "} AS Address"
-
-            ).single());
-
-            return queryResult.asMap();
-        }
-    }
-
-    /**
-     * @param driver instância para comunicar com a base de dados
-     * @return shipFrom da fatura
-     */
-    public static Map<String, Object> obtainShipFromByInvoiceId(Driver driver, String invoiceNo) {
-        try (Session session = driver.session()) {
-            Record queryResult = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
-                    + "MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_SHIP_FROM + "]->(ship) "
-                    + "OPTIONAL MATCH "
-                    + "(ship)-[:" + Entities.ShipToRelationships.HAS_ADDRESS + "]->(address) "
-                    + "OPTIONAL MATCH "
-                    + "(address)-[:" + Entities.AddressRelationships.HAS_BUILDING_NUMBER + "]->(buildingNumber) "
-                    + "OPTIONAL MATCH "
-                    + "(address)-[:" + Entities.AddressRelationships.HAS_STREET_NAME + "]->(streetName) "
-                    + "OPTIONAL MATCH "
-                    + "(address)-[:" + Entities.AddressRelationships.HAS_CITY + "]->(city) "
-                    + "OPTIONAL MATCH "
-                    + "(address)-[:" + Entities.AddressRelationships.HAS_POSTAL_CODE + "]->(postalCode) "
-                    + "OPTIONAL MATCH "
-                    + "(address)-[:" + Entities.AddressRelationships.HAS_REGION + "]->(region) "
-                    + "OPTIONAL MATCH "
-                    + "(address)-[:" + Entities.AddressRelationships.HAS_COUNTRY + "]->(country) "
-                    + " "
-                    + "WITH "
-                    + "invoice, ship, address, buildingNumber, streetName, city, postalCode, region, country"
-                    + " "
-                    + "WHERE "
-                    + "invoice.InvoiceNo = '" + invoiceNo + "'"
-                    + " "
-                    + "RETURN "
-                    + "ship.DeliveryID AS DeliveryID, "
-                    + "ship.DeliveryDate AS DeliveryDate, "
-                    + "ship.WarehouseID AS WarehouseID, "
-                    + "ship.LocationID AS LocationID, "
-
-                    + "{ "
-                    + "BuildingNumber: buildingNumber.BuildingNumber, "
-                    + "StreetName: streetName.StreetName, "
-                    + "AddressDetail: address.AddressDetail, "
-                    + "City: city.City, "
-                    + "PostalCode: postalCode.PostalCode, "
-                    + "Region: region.Region, "
-                    + "Country: country.Country "
-                    + "} AS Address"
-
-            ).single());
-
-            return queryResult.asMap();
-        }
-    }
-
-    /**
-     * Pesquisa pelas linhas de uma fatura
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista de linhas de uma fatura
-     */
-    public static LinkedList<Map<String, Object>> obtainListOfLineByInvoiceId(Driver driver, String invoiceNo) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
-                    + "MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_LINE + "]->(line) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_ORDER_REFERENCES + "]->(orderRef) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.OtherRelationships.HAS_PRODUCT + "]->(product) "
-                    + "OPTIONAL MATCH "
-                    + "(product)-[:" + Entities.ProductRelationships.HAS_PRODUCT_DESCRIPTION + "]->(productDescription) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_QUANTITY + "]->(quantity) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_UNIT_OF_MEASURE + "]->(measure) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_UNIT_PRICE + "]->(unitPrice) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_TAX_BASE + "]->(taxBase) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_TAX_POINT_DATE + "]->(taxPointDate) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_DESCRIPTION + "]->(lineDescription) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_REFERENCES + "]->(ref) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_PRODUCT_SERIAL_NUMBER + "]->(serialNumber) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_DEBIT_AMOUNT + "]->(debitAmount) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_CREDIT_AMOUNT + "]->(creditAmount) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_TAX_TABLE + "]->(tax) "
-                    + "OPTIONAL MATCH "
-                    + "(tax)-[:" + Entities.TaxTableRelationships.HAS_TAX_TYPE + "]->(taxType) "
-                    + "OPTIONAL MATCH "
-                    + "(tax)-[:" + Entities.TaxTableRelationships.HAS_TAX_COUNTRY_REGION + "]->(taxCountryRegion) "
-                    + "OPTIONAL MATCH "
-                    + "(tax)-[:" + Entities.TaxTableRelationships.HAS_TAX_PERCENTAGE + "]->(taxPercentage) "
-                    + "OPTIONAL MATCH "
-                    + "(tax)-[:" + Entities.TaxTableRelationships.HAS_TAX_AMOUNT + "]->(taxAmount) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_TAX_EXEMPTION_REASON + "]->(exemptionReason) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_TAX_EXEMPTION_CODE + "]->(exemptionCode) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_SETTLEMENT_AMOUNT + "]->(sAmount) "
-                    + "OPTIONAL MATCH "
-                    + "(line)-[:" + Entities.LineRelationships.HAS_CUSTOMS_INFORMATION + "]->(customs)"
-                    + " "
-                    + "WITH "
-                    + "invoice, line, orderRef, product, productDescription, quantity, measure, unitPrice, taxBase, taxPointDate, lineDescription, ref, serialNumber, "
-                    + "debitAmount, creditAmount, tax, taxType, taxCountryRegion, taxPercentage, taxAmount, exemptionReason, exemptionCode, sAmount, customs, "
-                    + "collect({ OriginatingON: orderRef.OriginatingON, OrderDate: orderRef.OrderDate }) AS OrderReferences, "
-                    + "collect({ Reference: ref.Reference, Reason: ref.Reason }) AS References, "
-                    + "collect({ SerialNumber: serialNumber.SerialNumber }) AS ProductSerialNumber, "
-                    + "collect({ TaxType: taxType.TaxType, TaxCountryRegion: taxCountryRegion.TaxCountryRegion, "
-                    + "TaxCode: tax.TaxCode, TaxPercentage: taxPercentage.TaxPercentage, TaxAmount: taxAmount.TaxAmount }) AS Tax"
-                    + " "
-                    + "WHERE "
-                    + "invoice.InvoiceNo = '" + invoiceNo + "'"
-                    + " "
-                    + "RETURN "
-                    + "line.LineNumber AS LineNumber, "
-
-                    + "OrderReferences, "
-
-                    + "product.ProductCode AS ProductCode, "
-                    + "productDescription.ProductDescription AS ProductDescription, "
-                    + "quantity.Quantity AS Quantity, "
-                    + "measure.UnitOfMeasure AS UnitOfMeasure, "
-                    + "unitPrice.UnitPrice AS UnitPrice, "
-                    + "taxBase.TaxBase AS TaxBase, "
-                    + "taxPointDate.TaxPointDate AS TaxPointDate, "
-
-                    + "References, "
-
-                    + "lineDescription.Description AS Description, "
-
-                    + "ProductSerialNumber, "
-
-                    + "debitAmount.DebitAmount AS DebitAmount, "
-                    + "creditAmount.CreditAmount AS CreditAmount, "
-
-                    + "Tax, "
-
-                    + "exemptionReason.TaxExemptionReason AS TaxExemptionReason, "
-                    + "exemptionCode.TaxExemptionCode AS TaxExemptionCode, "
-                    + "sAmount.SettlementAmount AS SettlementAmount, "
-
-                    + "{ "
-                    + "ARCNo: customs.ARCNo, "
-                    + "IECAmount: customs.IECAmount "
-                    + "} AS CustomsInformation"
-
-                    + " "
-                    + "ORDER BY line.LineNumber"
-            ).list());
-
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
-        }
-    }
-
-    /**
-     * Pesquisa pela informação relativa aos totais de uma fatura
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return retorna os totais de uma fatura
-     */
-    public static Map<String, Object> obtainDocumentTotalsByInvoiceId(Driver driver, String invoiceNo) {
-        try (Session session = driver.session()) {
-            Record queryResult = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
-                    + "MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_DOCUMENT_TOTALS + "]->(documentTotals) "
-                    + "OPTIONAL MATCH "
-                    + "(documentTotals)-[:" + Entities.DocumentTotalsRelationships.HAS_CURRENCY + "]->(currency) "
-                    + "OPTIONAL MATCH "
-                    + "(documentTotals)-[:" + Entities.DocumentTotalsRelationships.HAS_SETTLEMENT + "]->(settlement) "
-                    + "OPTIONAL MATCH "
-                    + "(documentTotals)-[:" + Entities.DocumentTotalsRelationships.HAS_PAYMENT + "]->(payment) "
-                    + " "
-                    + "WITH "
-                    + "invoice, documentTotals, currency, "
-                    + "collect({ SettlementDiscount: settlement.SettlementDiscount, SettlementAmount: settlement.SettlementAmount, "
-                    + "SettlementDate: settlement.SettlementDate , PaymentTerms: settlement.PaymentTerms }) AS Settlement, "
-                    + "collect({ PaymentMechanism: payment.PaymentMechanism, PaymentAmount: payment.PaymentAmount, "
-                    + "PaymentDate: payment.PaymentDate }) AS Payment"
-                    + " "
-                    + "WHERE "
-                    + "invoice.InvoiceNo = '" + invoiceNo + "'"
-                    + " "
-                    + "RETURN "
-                    + "documentTotals.TaxPayable AS TaxPayable, "
-                    + "documentTotals.NetTotal AS NetTotal, "
-                    + "documentTotals.GrossTotal AS GrossTotal, "
-
-                    + "{ "
-                    + "CurrencyCode: currency.CurrencyCode, "
-                    + "CurrencyAmount: currency.CurrencyAmount, "
-                    + "ExchangeRate: currency.ExchangeRate "
-                    + "} AS Currency, "
-
-                    + "Settlement, "
-                    + "Payment"
-            ).single());
-
-            return queryResult.asMap();
-        }
-    }
-
-    /**
-     * Pesquisa pela lista de WithholdingTax por fatura
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista de WithholdingTax
-     */
-    public static List<Map<String, Object>> obtainListOfWithholdingTaxByInvoiceId(Driver driver, String invoiceNo) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(invoice)-[:" + "]->(entity:" + Entities.Labels.Invoice + ") "
-                    + "MATCH "
-                    + "(invoice)-[:" + Entities.InvoiceRelationships.HAS_WITHHOLDING_TAX + "]->(holdingTax) "
-                    + "OPTIONAL MATCH "
-                    + "(holdingTax)-[:" + Entities.WithholdingTaxRelationships.HAS_WITHHOLDING_TAX_TYPE + "]->(type) "
-                    + "OPTIONAL MATCH "
-                    + "(holdingTax)-[:" + Entities.WithholdingTaxRelationships.HAS_WITHHOLDING_TAX_AMOUNT + "]->(amount) "
-                    + " "
-                    + "WITH "
-                    + "invoice, holdingTax, type, amount"
-                    + " "
-                    + "WHERE "
-                    + "invoice.InvoiceNo = '" + invoiceNo + "'"
-                    + " "
-                    + "RETURN "
-                    + "type.WithholdingTaxType AS WithholdingTaxType, "
-                    + "holdingTax.WithholdingTaxDescription AS WithholdingTaxDescription, "
-                    + "amount.WithholdingTaxAmount AS WithholdingTaxAmount"
-            ).list());
-
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
-        }
-    }
-
-    /**
      * Pesquisa por faturas que não estejam associadas a um cliente
      *
      * @param driver instância para comunicar com a base de dados
@@ -1123,21 +49,22 @@ public class CypherQueries {
     public static LinkedList<Map<String, Object>> obtainListOfNegativeAmountsInGeneralLedger(Driver driver) {
         LinkedList<Map<String, Object>> results = new LinkedList<>();
 
-        results.addAll(obtainListOfCreditLinesWithNegativeAmounts(driver));
-        results.addAll(obtainListOfDebitLinesWithNegativeAmounts(driver));
-
-        return results;
-    }
-
-    /**
-     * Auxilia o método obtainListOfNegativeAmountsInGeneralLedger.
-     * Este método pesquisa apenas por linhas do tipo CreditLine.
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista que contêm o id da transação, o id da linha e o valor da linha
-     */
-    private static LinkedList<Map<String, Object>> obtainListOfCreditLinesWithNegativeAmounts(Driver driver) {
         try (Session session = driver.session()) {
+
+            session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (c:" + Entities.Labels.Company + ")-[:" + Entities.CompanyRelationships.HAS_SAFTP_FILE + "]->(f:" + Entities.Labels.File + ")\n"
+                    + "MATCH (f)-[:" + Entities.FileRelationships.HAS_GENERAL_LEDGER_ENTRIES + "]->(gle:" + Entities.Labels.GeneralLedgerEntries + ")\n"
+                    + "MATCH (gle)-[:" + Entities.GeneralLedgerEntriesRelationships.HAS_JOURNAL + "]->(j:" + Entities.Labels.Journal + ")\n"
+                    + "MATCH (j)-[:" + Entities.JournalRelationships.HAS_TRANSACTION + "]->(t:" + Entities.Labels.Transaction + ")\n"
+                    + "MATCH (t)-[:" + Entities.TransactionRelationships.HAS_LINES + "]->(l:" + Entities.Labels.TransactionInfo + ")\n"
+                    + "MATCH (l)-[:" + Entities.LinesRelationships.HAS_CREDIT_LINE + "]->(c:" + Entities.Labels.CreditLine + ")\n"
+                    + "MATCH (l)-[:" + Entities.LinesRelationships.HAS_DEBIT_LINE + "]->(d:" + Entities.Labels.DebitLine + ")\n"
+                    + "MATCH (c)-[:" + Entities.CreditLineRelationships.HAS_CREDIT_AMOUNT + "]->(ca:" + Entities.Labels.CreditLine + ")\n"
+                    + "MATCH (d)-[:" + Entities.DebitLineRelationships.HAS_DEBIT_AMOUNT + "]->(da:" + Entities.Labels.DebitLine + ")\n"
+                    + "WHERE ca.CreditAmount < 0 OR da.DebitAmount < 0\n"
+                    + "WITH c, f, j, t, c, d, collect(ca) AS CreditAmounts, collect(da) AS DebitAmounts\n"
+            ));
+
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
                     + "(transaction)-[:TYPE_OF]->(b:Transaction), "
@@ -1156,27 +83,7 @@ public class CypherQueries {
                     + "ORDER BY transaction.TransactionID"
             ).list());
 
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
-        }
-    }
-
-    /**
-     * Auxilia o método obtainListOfNegativeAmountsInGeneralLedger.
-     * Este método pesquisa apenas por linhas do tipo DebitLine.
-     *
-     * @param driver instância para comunicar com a base de dados
-     * @return lista que contêm o id da transação, o id da linha e o valor da linha
-     */
-    private static LinkedList<Map<String, Object>> obtainListOfDebitLinesWithNegativeAmounts(Driver driver) {
-        try (Session session = driver.session()) {
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+            List<Record> queryResults2 = session.writeTransaction(tx -> tx.run(""
                     + "MATCH "
                     + "(transaction)-[:TYPE_OF]->(b:Transaction), "
                     + "(transaction)-[:HAS_LINES]->(lines), "
@@ -1194,15 +101,9 @@ public class CypherQueries {
                     + "ORDER BY transaction.TransactionID"
             ).list());
 
-            Iterator<Record> queryIterator = queryResults.iterator();
-            LinkedList<Map<String, Object>> results = new LinkedList<>();
-
-            while (queryIterator.hasNext()) {
-                results.add(queryIterator.next().asMap());
-            }
-
-            return results;
         }
+
+        return results;
     }
 
     /**
@@ -1216,52 +117,67 @@ public class CypherQueries {
         try (Session session = driver.session()) {
             LinkedList<Map<String, Object>> answer = new LinkedList<>();
 
-            Iterator<Record> recordOfCompanies = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH (c:" + Entities.Labels.Company + ")-[:" + Entities.CompanyRelationships.HAS_SAFTP_FILE + "]->(f:" + Entities.Labels.File + ")\n"
-                    + "WITH c, collect(f.FileName) AS Files\n"
-                    + "RETURN c.CompanyName AS Company, Files\n"
+            Iterator<Record> recordsOfCompanies = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (c:" + Entities.Labels.Company + ")-[:" + Entities.CompanyRelationships.HAS_SAFTP_FILE + "]->(:" + Entities.Labels.File + ")\n"
+                    + "RETURN DISTINCT(c.CompanyName) AS Company\n"
             ).list().iterator());
 
-            LinkedList<Map<String, Object>> listOfCompaniesAndFiles = new LinkedList<>();
-            while (recordOfCompanies.hasNext()) {
-                listOfCompaniesAndFiles.add(recordOfCompanies.next().asMap());
+            LinkedList<String> listOfCompanies = new LinkedList<>();
+            while (recordsOfCompanies.hasNext()) {
+                listOfCompanies.add(String.valueOf(recordsOfCompanies.next().asMap().get("Company")));
             }
 
-            Iterator<Map<String, Object>> iterateOverCompaniesAndFiles = listOfCompaniesAndFiles.iterator();
-            while (iterateOverCompaniesAndFiles.hasNext()) {
-                Map<String, Object> map = iterateOverCompaniesAndFiles.next();
+            Iterator<String> iterateOverCompanies = listOfCompanies.iterator();
+            while (iterateOverCompanies.hasNext()) {
+                Map<String, Object> first = new HashMap<>();
 
-                Map<String, Object> company = new HashMap<>();
-                company.put("Company", String.valueOf(map.get("Company")));
+                String companyName = iterateOverCompanies.next();
+                first.put("Company", companyName);
 
-                LinkedList<Map<String, Object>> listFiles = new LinkedList<>();
+                Iterator<Record> recordsOfFiles = session.writeTransaction(tx -> tx.run(""
+                        + "MATCH (c:" + Entities.Labels.Company + ")-[:" + Entities.CompanyRelationships.HAS_SAFTP_FILE + "]->(f:" + Entities.Labels.File + ")\n"
+                        + "WHERE c.CompanyName = '" + companyName + "'\n"
+                        + "RETURN f.FileName AS File\n"
+                ).list().iterator());
 
-                Iterator<Object> iterateOverFiles = null;
+                LinkedList<String> listOfFiles = new LinkedList<>();
+                while (recordsOfFiles.hasNext()) {
+                    listOfFiles.add(String.valueOf(recordsOfFiles.next().asMap().get("File")));
+                }
+
+                Iterator<String> iterateOverFiles = listOfFiles.iterator();
+                LinkedList<Map<String, Object>> listOfFilesAnswer = new LinkedList<>();
                 while (iterateOverFiles.hasNext()) {
-                    String fileName = String.valueOf(iterateOverFiles.next());
-                    System.out.println(fileName);
+                    Map<String, Object> second = new HashMap<>();
 
-                    Map<String, Object> files = new HashMap<>();
-                    files.put("FileName", fileName);
+                    String fileName = iterateOverFiles.next();
+                    second.put("FileName", fileName);
 
                     Record fiscalYearDates = session.writeTransaction(tx -> tx.run(""
                             + "MATCH (f:" + Entities.Labels.File + ")-[:" + Entities.FileRelationships.HAS_ADDITIONAL_INFORMATION + "]->(fi:" + Entities.Labels.FileInfo + ")\n"
+                            + "MATCH (fi)-[:" + Entities.FileInformationRelationships.HAS_FISCAL_YEAR + "]->(fy:" + Entities.Labels.FileInfo + ")\n"
                             + "MATCH (fi)-[:" + Entities.FileInformationRelationships.HAS_START_DATE + "]->(sd:" + Entities.Labels.FileInfo + ")\n"
                             + "MATCH (fi)-[:" + Entities.FileInformationRelationships.HAS_END_DATE + "]->(ed:" + Entities.Labels.FileInfo + ")\n"
                             + "WHERE f.FileName = '" + fileName + "'\n"
-                            + "RETURN sd.StartDate AS StartDate, ed.EndDate AS EndDate"
+                            + "RETURN fy.FiscalYear AS FiscalYear, sd.StartDate AS StartDate, ed.EndDate AS EndDate\n"
                     ).single());
 
-                    String startDate = fiscalYearDates.asMap().get("StartDate").toString();
-                    String endDate = fiscalYearDates.asMap().get("EndDate").toString();
+
+                    Integer fiscalYear = Integer.parseInt(String.valueOf(fiscalYearDates.asMap().get("FiscalYear")));
+                    String startDate = String.valueOf(fiscalYearDates.asMap().get("StartDate"));
+                    String endDate = String.valueOf(fiscalYearDates.asMap().get("EndDate"));
+
+                    second.put("FiscalYear", fiscalYear);
+                    second.put("StartDate", startDate);
+                    second.put("EndDate", endDate);
 
                     Iterator<Record> daysWithSalesQuery = session.writeTransaction(tx -> tx.run(""
                             + "MATCH (f:" + Entities.Labels.File + ")-[:" + Entities.FileRelationships.HAS_SALES_INVOICES + "]->(si:" + Entities.Labels.SalesInvoices + ")\n"
                             + "MATCH (si)-[:" + Entities.SalesInvoicesRelationships.HAS_INVOICE + "]->(i:" + Entities.Labels.Invoice + ")\n"
                             + "MATCH (i)-[:" + Entities.InvoiceRelationships.HAS_INVOICE_DATE + "]->(id:" + Entities.Labels.InvoiceInfo + ")\n"
                             + "WHERE f.FileName = '" + fileName + "'\n"
-                            + "RETURN id.InvoiceDate AS InvoiceDate"
-                            + "ORDER BY invoiceDate.InvoiceDate"
+                            + "RETURN id.InvoiceDate AS InvoiceDate\n"
+                            + "ORDER BY id.InvoiceDate\n"
                     ).list().iterator());
 
                     LinkedList<String> daysWithSales = new LinkedList<>();
@@ -1281,14 +197,15 @@ public class CypherQueries {
                         currentDate = LocalDate.parse(currentDate).plusDays(1).toString();
                     }
 
-                    files.put("DaysWithoutSales", daysWithoutSales);
-                    listFiles.add(files);
+                    second.put("DaysWithoutSales", daysWithoutSales);
+                    listOfFilesAnswer.add(second);
                 }
 
-                company.put("Files", listFiles);
+                first.put("Files", listOfFilesAnswer);
+                answer.add(first);
             }
 
-            return null;
+            return answer;
         }
     }
 

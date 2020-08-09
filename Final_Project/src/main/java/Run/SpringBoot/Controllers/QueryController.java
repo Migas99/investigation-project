@@ -46,62 +46,19 @@ public class QueryController {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring("Query")
 
+                        //Querys relativas aos algoritmos
                         .dataFetcher("detectCommunitiesWithLouvain", this.dataFetcher.louvain())
                         .dataFetcher("detectCommunitiesWithLocalClustering", this.dataFetcher.localClustering())
                         .dataFetcher("pageRank", this.dataFetcher.pageRank())
                         .dataFetcher("nodeSimilarity", this.dataFetcher.nodeSimilarity())
 
+                        //Querys relativas as vistas e restrições
                         .dataFetcher("getListOfInvoicesNotAssociatedWithCustomers", this.dataFetcher.getListOfInvoicesNotAssociatedWithCustomers())
                         .dataFetcher("getListOfNegativeAmountsInGeneralLedger", this.dataFetcher.getListOfNegativeAmountsInGeneralLedger())
                         .dataFetcher("getListOfDaysWithoutSales", this.dataFetcher.getListOfDaysWithoutSales())
                         .dataFetcher("getListOfNetTotalAndTaxPayableByTaxCode", this.dataFetcher.getListOfNetTotalAndTaxPayableByTaxCode())
                         .dataFetcher("getListOfSalesByPeriod", this.dataFetcher.getListOfSalesByPeriod())
-
-                        .dataFetcher("getAllAccounts", this.dataFetcher.getListOfAllAccounts())
-                        .dataFetcher("getAccountById", this.dataFetcher.getAccountById())
-
-                        .dataFetcher("getAllCustomers", this.dataFetcher.getListOfAllCustomers())
-                        .dataFetcher("getCustomerById", this.dataFetcher.getCustomerById())
-
-                        .dataFetcher("getAllSuppliers", this.dataFetcher.getListOfAllSuppliers())
-                        .dataFetcher("getSupplierById", this.dataFetcher.getSupplierById())
-
-                        .dataFetcher("getAllProducts", this.dataFetcher.getListOfAllProducts())
-                        .dataFetcher("getProductById", this.dataFetcher.getProductById())
-
-                        .dataFetcher("getGeneralLedgerEntries", this.dataFetcher.getGeneralLedgerEntries())
-
-                        .dataFetcher("getAllJournals", this.dataFetcher.getListOfAllJournals())
-                        .dataFetcher("getJournalById", this.dataFetcher.getJournalById())
-
-                        .dataFetcher("getAllTransactions", this.dataFetcher.getListOfAllTransactions())
-                        .dataFetcher("getTransactionById", this.dataFetcher.getTransactionById())
-
-                        .dataFetcher("getSalesInvoices", this.dataFetcher.getSalesInvoices())
-
-                        .dataFetcher("getAllInvoices", this.dataFetcher.getListOfAllInvoices())
-                        .dataFetcher("getInvoiceById", this.dataFetcher.getInvoiceById()))
-
-                .type(newTypeWiring("GeneralLedgerEntries")
-                        .dataFetcher("Journal", this.dataFetcher.getListOfAllJournals()))
-
-                .type(newTypeWiring("Journal")
-                        .dataFetcher("Transaction", this.dataFetcher.getListOfTransactionsByJournal()))
-
-                .type(newTypeWiring("Transaction")
-                        .dataFetcher("Lines", this.dataFetcher.getLinesByTransaction()))
-
-                .type(newTypeWiring("SalesInvoices")
-                        .dataFetcher("Invoice", this.dataFetcher.getListOfAllInvoices()))
-
-                .type(newTypeWiring("Invoice")
-                        .dataFetcher("DocumentStatus", this.dataFetcher.getDocumentStatusByInvoice())
-                        .dataFetcher("SpecialRegimes", this.dataFetcher.getSpecialRegimesByInvoice())
-                        .dataFetcher("ShipTo", this.dataFetcher.getShipToByInvoice())
-                        .dataFetcher("ShipFrom", this.dataFetcher.getShipFromByInvoice())
-                        .dataFetcher("Line", this.dataFetcher.getListOfLineByInvoice())
-                        .dataFetcher("DocumentTotals", this.dataFetcher.getDocumentTotalsByInvoice())
-                        .dataFetcher("WithholdingTax", this.dataFetcher.getListOfWithholdingTaxByInvoice()))
+                )
 
                 .build();
     }
