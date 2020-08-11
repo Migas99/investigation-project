@@ -2,6 +2,7 @@ package Run.SpringBoot.Service;
 
 import Database.CypherAlgorithms;
 import Database.CypherQueries;
+import Database.CypherViews;
 import Database.Neo4jConnector;
 import graphql.schema.DataFetcher;
 import org.neo4j.driver.Driver;
@@ -10,7 +11,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
 
 @Service
 public class Neo4jDataFetcher {
@@ -61,4 +61,11 @@ public class Neo4jDataFetcher {
         return dataFetchingEnvironment -> CypherQueries.obtainListOfSalesByPeriod(this.driver);
     }
 
+    public DataFetcher getListOfFilesByCompany() {
+        return dataFetchingEnvironment -> CypherViews.getListOfFilesByCompany(this.driver);
+    }
+
+    public DataFetcher getFileByName() {
+        return dataFetchingEnvironment -> CypherViews.getFileByName(this.driver, dataFetchingEnvironment.getArgument("fileName"));
+    }
 }

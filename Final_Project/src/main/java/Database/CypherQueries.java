@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 /**
- * Classe que contêm as Queries de pesquisa e restrição
+ * Classe que contêm as Queries de pesquisa e restrição, segundo as sugestões da OCDE
  */
 public class CypherQueries {
 
@@ -44,66 +44,39 @@ public class CypherQueries {
      * Pesquisa por transações que contenham linhas onde o seu débito ou crédito é negativo
      *
      * @param driver instância para comunicar com a base de dados
-     * @return lista que contêm o id da transação, o id da linha e o valor da linha
+     * @return lista que especifica quais as linhas com valores negativos
      */
     public static LinkedList<Map<String, Object>> obtainListOfNegativeAmountsInGeneralLedger(Driver driver) {
-        LinkedList<Map<String, Object>> results = new LinkedList<>();
-
         try (Session session = driver.session()) {
 
-            session.writeTransaction(tx -> tx.run(""
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH (c:" + Entities.Labels.Company + ")-[:" + Entities.CompanyRelationships.HAS_SAFTP_FILE + "]->(f:" + Entities.Labels.File + ")\n"
                     + "MATCH (f)-[:" + Entities.FileRelationships.HAS_GENERAL_LEDGER_ENTRIES + "]->(gle:" + Entities.Labels.GeneralLedgerEntries + ")\n"
                     + "MATCH (gle)-[:" + Entities.GeneralLedgerEntriesRelationships.HAS_JOURNAL + "]->(j:" + Entities.Labels.Journal + ")\n"
                     + "MATCH (j)-[:" + Entities.JournalRelationships.HAS_TRANSACTION + "]->(t:" + Entities.Labels.Transaction + ")\n"
                     + "MATCH (t)-[:" + Entities.TransactionRelationships.HAS_LINES + "]->(l:" + Entities.Labels.TransactionInfo + ")\n"
-                    + "MATCH (l)-[:" + Entities.LinesRelationships.HAS_CREDIT_LINE + "]->(c:" + Entities.Labels.CreditLine + ")\n"
-                    + "MATCH (l)-[:" + Entities.LinesRelationships.HAS_DEBIT_LINE + "]->(d:" + Entities.Labels.DebitLine + ")\n"
-                    + "MATCH (c)-[:" + Entities.CreditLineRelationships.HAS_CREDIT_AMOUNT + "]->(ca:" + Entities.Labels.CreditLine + ")\n"
-                    + "MATCH (d)-[:" + Entities.DebitLineRelationships.HAS_DEBIT_AMOUNT + "]->(da:" + Entities.Labels.DebitLine + ")\n"
+                    + "OPTIONAL MATCH (l)-[:" + Entities.LinesRelationships.HAS_CREDIT_LINE + "]->(c:" + Entities.Labels.CreditLine + ")\n"
+                    + "OPTIONAL MATCH (c)-[:" + Entities.CreditLineRelationships.HAS_CREDIT_AMOUNT + "]->(ca:" + Entities.Labels.CreditLine + ")\n"
+                    + "OPTIONAL MATCH (l)-[:" + Entities.LinesRelationships.HAS_DEBIT_LINE + "]->(d:" + Entities.Labels.DebitLine + ")\n"
+                    + "OPTIONAL MATCH (d)-[:" + Entities.DebitLineRelationships.HAS_DEBIT_AMOUNT + "]->(da:" + Entities.Labels.DebitLine + ")\n"
                     + "WHERE ca.CreditAmount < 0 OR da.DebitAmount < 0\n"
-                    + "WITH c, f, j, t, c, d, collect(ca) AS CreditAmounts, collect(da) AS DebitAmounts\n"
-            ));
-
-            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(transaction)-[:TYPE_OF]->(b:Transaction), "
-                    + "(transaction)-[:HAS_LINES]->(lines), "
-                    + "(lines)-[:HAS_CREDIT_LINE]->(creditLine), "
-                    + "(creditLine)-[:HAS_CREDIT_AMOUNT]->(creditAmount)"
-                    + " "
-                    + "WHERE "
-                    + "creditAmount.CreditAmount < 0"
-                    + " "
-                    + "RETURN "
-                    + "transaction.TransactionID AS Transaction, "
-                    + "creditLine.RecordID AS RecordID ,"
-                    + "creditAmount.CreditAmount AS CreditAmount"
-                    + " "
-                    + "ORDER BY transaction.TransactionID"
+                    + "WITH c, f, j, t, l, collect({ RecordID: c.RecordID, CreditAmount: ca.CreditAmount }) AS CreditLines, collect({ RecordID: d.RecordID, DebitAmount: da.DebitAmount }) AS DebitLines\n"
+                    + "WITH c, f, j, collect({ TransactionID: t.TransactionID, CreditLines: CreditLines, DebitLines: DebitLines }) AS Transactions\n"
+                    + "WITH c, f, collect({ JournalID: j.JournalID, Transactions: Transactions }) AS Journals\n"
+                    + "WITH c, collect({ FileName: f.FileName, NegativeAmountsInGeneralLedger: Journals }) AS Files\n"
+                    + "RETURN DISTINCT(c.CompanyName) AS Company, Files\n"
             ).list());
 
-            List<Record> queryResults2 = session.writeTransaction(tx -> tx.run(""
-                    + "MATCH "
-                    + "(transaction)-[:TYPE_OF]->(b:Transaction), "
-                    + "(transaction)-[:HAS_LINES]->(lines), "
-                    + "(lines)-[:HAS_DEBIT_LINE]->(debitLine), "
-                    + "(debitLine)-[:HAS_DEBIT_AMOUNT]->(debitAmount)"
-                    + " "
-                    + "WHERE "
-                    + "debitAmount.DebitAmount < 0"
-                    + " "
-                    + "RETURN "
-                    + "transaction.TransactionID AS Transaction, "
-                    + "debitLine.RecordID AS RecordID, "
-                    + "debitAmount.DebitAmount AS DebitAmount"
-                    + " "
-                    + "ORDER BY transaction.TransactionID"
-            ).list());
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
 
         }
-
-        return results;
     }
 
     /**

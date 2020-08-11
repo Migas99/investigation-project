@@ -52,12 +52,16 @@ public class QueryController {
                         .dataFetcher("pageRank", this.dataFetcher.pageRank())
                         .dataFetcher("nodeSimilarity", this.dataFetcher.nodeSimilarity())
 
-                        //Querys relativas as vistas e restrições
+                        //Querys relativas as vistas e restrições, segundo a OCDE
                         .dataFetcher("getListOfInvoicesNotAssociatedWithCustomers", this.dataFetcher.getListOfInvoicesNotAssociatedWithCustomers())
                         .dataFetcher("getListOfNegativeAmountsInGeneralLedger", this.dataFetcher.getListOfNegativeAmountsInGeneralLedger())
                         .dataFetcher("getListOfDaysWithoutSales", this.dataFetcher.getListOfDaysWithoutSales())
                         .dataFetcher("getListOfNetTotalAndTaxPayableByTaxCode", this.dataFetcher.getListOfNetTotalAndTaxPayableByTaxCode())
                         .dataFetcher("getListOfSalesByPeriod", this.dataFetcher.getListOfSalesByPeriod())
+
+                        //Vistas normais
+                        .dataFetcher("getListOfFilesByCompany", this.dataFetcher.getListOfFilesByCompany())
+                        .dataFetcher("getFileByName", this.dataFetcher.getFileByName())
                 )
 
                 .build();

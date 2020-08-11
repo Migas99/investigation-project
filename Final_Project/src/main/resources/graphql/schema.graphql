@@ -9,6 +9,9 @@ type Query {
     getListOfDaysWithoutSales: [ListOfDaysWithoutSales]
     getListOfNetTotalAndTaxPayableByTaxCode: [NetTotalAndTaxPayableByTaxCode]
     getListOfSalesByPeriod: [SalesByPeriod]
+
+    getListOfFilesByCompany: [FilesByCompany]
+    getFileByName(fileName: String): AuditFile
 }
 
 type Louvain {
@@ -53,12 +56,12 @@ type NegativeAmountsInGeneralLedger2 {
 }
 
 type NegativeAmountsInGeneralLedger3 {
-    Journal: String
+    JournalID: String
     Transactions: [NegativeAmountsInGeneralLedger4]
 }
 
 type NegativeAmountsInGeneralLedger4 {
-    Transaction: String
+    TransactionID: String
     CreditLines: [NegativeAmountsInGeneralLedger5]
     DebitLines: [NegativeAmountsInGeneralLedger6]
 }
@@ -118,4 +121,22 @@ type SalesByPeriod3 {
     Period: Int
     TotalSalesWithoutTax: Float
     TotalSalesWithTax: Float
+}
+
+type FilesByCompany {
+    Company: String
+    Files: [FilesByCompany2]
+}
+
+type FilesByCompany2 {
+    FileName: String
+    FiscalYear: Int
+}
+
+type AuditFile {
+    Header: Header
+}
+
+type Header {
+
 }
