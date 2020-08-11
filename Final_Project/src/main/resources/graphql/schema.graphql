@@ -1,7 +1,8 @@
 type Query {
-    detectCommunitiesWithLouvain: [Louvain]
-    detectCommunitiesWithLocalClustering: [LocalClustering]
+    louvain: [Louvain]
+    localClustering: [LocalClustering]
     pageRank: [PageRank]
+    betweennessCentrality: [BetweennessCentrality]
     nodeSimilarity: [NodeSimilarity]
 
     getListOfInvoicesNotAssociatedWithCustomers: [ListOfInvoicesNotAssociatedWithCustomers]
@@ -25,6 +26,11 @@ type LocalClustering {
 }
 
 type PageRank {
+    Company: String
+    Score: Float
+}
+
+type BetweennessCentrality {
     Company: String
     Score: Float
 }
@@ -135,8 +141,153 @@ type FilesByCompany2 {
 
 type AuditFile {
     Header: Header
+    MasterFiles: MasterFiles
 }
 
 type Header {
+    AuditFileVersion: String
+    CompanyID: String
+    TaxRegistrationNumber: Int
+    TaxAccountingBasis: String
+    CompanyName: String
+    BusinessName: String
+    CompanyAddress: CompanyAddress
+    FiscalYear: Int
+    StartDate: String
+    EndDate: String
+    CurrencyCode: String
+    DateCreated: String
+    TaxEntity: String
+    ProductCompanyTaxID: String
+    SoftwareCertificateNumber: String
+    ProductID: String
+    ProductVersion: String
+    HeaderComment: String
+    Telephone: String
+    Fax: String
+    Email: String
+    Website: String
+}
 
+type CompanyAddress {
+    BuildingNumber: String
+    StreetName: String
+    AddressDetail: String
+    City: String
+    PostalCode: String
+    Region: String
+    Country: String
+}
+
+type MasterFiles {
+    GeneralLedgerAccounts: GeneralLedgerAccounts
+    Customers: [Customer]
+    Suppliers: [Supplier]
+    Products: [Product]
+    TaxTable: [TaxTable]
+}
+
+type GeneralLedgerAccounts {
+    TaxonomyReference: String
+    Accounts: [Account]
+}
+
+type Account {
+    AccountID: String
+    AccountDescription: String
+    OpeningDebitBalance: Float
+    OpeningCreditBalance: Float
+    ClosingDebitBalance: Float
+    ClosingCreditBalance: Float
+    GroupingCategory: String
+    GroupingCode: String
+    TaxonomyCode: Int
+}
+
+type Customer {
+    CustomerID: String
+    AccountID: String
+    CustomerTaxID: String
+    CompanyName: String
+    Contact: String
+    BillingAddress: BillingAddress
+    ShipToAddress: [ShipToAddress]
+    Telephone: String
+    Fax: String
+    Email: String
+    Website: String
+    SelfBillingIndicator: Int
+}
+
+type Supplier {
+    SupplierID: String
+    AccountID: String
+    SupplierTaxID: String
+    CompanyName: String
+    Contact: String
+    BillingAddress: BillingAddress
+    ShipFromAddress: [ShipFromAddress]
+    Telephone: String
+    Fax: String
+    Email: String
+    Website: String
+    SelfBillingIndicator: Int
+}
+
+type Product {
+    ProductType: String
+    ProductCode: String
+    ProductGroup: String
+    ProductDescription: String
+    ProductNumberCode: String
+    CustomsDetails: [CustomsDetails]
+}
+
+type CustomsDetails {
+    CNCode: String
+    UNNumber: String
+}
+
+type TaxTable {
+    TaxTableEntries: [TaxTableEntry]
+}
+
+type TaxTableEntry {
+    TaxType: String
+    TaxCountryRegion: String
+    TaxCode: String
+    Description: String
+    TaxExpirationDate: String
+    TaxPercentage: Float
+    TaxAmount: Float
+}
+
+type BillingAddress {
+    BuildingNumber: String
+    StreetName: String
+    AddressDetail: String
+    City: String
+    PostalCode: String
+    Region: String
+    Country: String
+}
+
+type ShipToAddress {
+    BuildingNumber: String
+    StreetName: String
+    AddressDetail: String
+    City: String
+    PostalCode: String
+    Region: String
+    Country: String
+}
+
+type ShipFromAddress {
+    BuildingNumber: String
+    StreetName: String
+    AddressDetail: String
+    City: String
+    PostalCode: String
+    Region: String
+    Country: String
 }

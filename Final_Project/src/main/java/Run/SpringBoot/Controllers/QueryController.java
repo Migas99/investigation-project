@@ -47,9 +47,10 @@ public class QueryController {
                 .type(newTypeWiring("Query")
 
                         //Querys relativas aos algoritmos
-                        .dataFetcher("detectCommunitiesWithLouvain", this.dataFetcher.louvain())
-                        .dataFetcher("detectCommunitiesWithLocalClustering", this.dataFetcher.localClustering())
+                        .dataFetcher("louvain", this.dataFetcher.louvain())
+                        .dataFetcher("localClustering", this.dataFetcher.localClustering())
                         .dataFetcher("pageRank", this.dataFetcher.pageRank())
+                        .dataFetcher("betweennessCentrality", this.dataFetcher.betweennessCentrality())
                         .dataFetcher("nodeSimilarity", this.dataFetcher.nodeSimilarity())
 
                         //Querys relativas as vistas e restrições, segundo a OCDE

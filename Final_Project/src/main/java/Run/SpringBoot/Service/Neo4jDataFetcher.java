@@ -37,6 +37,10 @@ public class Neo4jDataFetcher {
         return dataFetchingEnvironment -> CypherAlgorithms.pageRankAlgorithm(this.driver);
     }
 
+    public DataFetcher betweennessCentrality() {
+        return dataFetchingEnvironment -> CypherAlgorithms.betweennessCentralityAlgorithm(this.driver);
+    }
+
     public DataFetcher nodeSimilarity() {
         return dataFetchingEnvironment -> CypherAlgorithms.nodeSimilarityAlgorithm(this.driver);
     }

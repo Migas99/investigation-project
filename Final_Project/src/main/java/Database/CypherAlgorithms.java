@@ -47,11 +47,13 @@ public class CypherAlgorithms {
     }
 
     /**
-     * Método responsável por correr o algoritmo local clustering. Este algoritmo é capaz de atribuir um coeficiente
+     * Método responsável por correr o algoritmo local clustering. Este algoritmo é capaz de atribuir um coeficiente,
+     * que representa a probabilidade dos vizinhos de um dado nó se conhecerem entre si.
+     * O grafo no qual este incide, é um grafo no qual apenas existem nós que representam empresas e as
+     * relações entre estas.
      *
-     *
-     * @param driver
-     * @return
+     * @param driver instância do driver para comunicar com a base de dados
+     * @return retorna uma lista que contêm o coeficiente, por empresa
      */
     public static LinkedList<Map<String, Object>> localClusteringAlgorithm(Driver driver) {
         try (Session session = driver.session()) {
@@ -109,6 +111,38 @@ public class CypherAlgorithms {
     }
 
     /**
+     * Método responsável por correr o algoritmo Betweenness Centrality. Este algoritmo é capaz de atribuir uma
+     * pontuação a cada nó, e esta pontuação indica-nos o número de vezes que este é usado no cálculo
+     * do shortest-path entre os diferentes nós.
+     *
+     * @param driver instância do driver para comunicar com a base de dados
+     * @return lista que contêm a empresa e a pontuação dada a esta
+     */
+    public static LinkedList<Map<String, Object>> betweennessCentralityAlgorithm(Driver driver) {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "CALL gds.betweenness.stream(" + getAnonymousGraphProjectionWithCompaniesRelatedToOthers() + ")\n"
+                    + "YIELD nodeId, score\n"
+                    + "MATCH (c:" + Entities.Labels.Company + ")\n"
+                    + "WHERE ID(c) = nodeId\n"
+                    + "RETURN c.CompanyName AS Company, score AS Score\n"
+                    + "ORDER BY Score DESC\n"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
+        }
+    }
+
+    /**
+     * INCOMPLETO - O algoritmo em si, não apresenta qualquer utilidade, penso.
+     * <p>
      * Método responsável por correr o algoritmo node similarity. Este algoritmo atribuí uma pontuação
      * entre 0 e 1, que indica o quão semelhantes dois nós são.
      * O grafo no qual este algoritmo corre, é um grafo constituído apenas pelas empresas e as informações

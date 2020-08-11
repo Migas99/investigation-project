@@ -55,16 +55,30 @@ public class CypherQueries {
                     + "MATCH (gle)-[:" + Entities.GeneralLedgerEntriesRelationships.HAS_JOURNAL + "]->(j:" + Entities.Labels.Journal + ")\n"
                     + "MATCH (j)-[:" + Entities.JournalRelationships.HAS_TRANSACTION + "]->(t:" + Entities.Labels.Transaction + ")\n"
                     + "MATCH (t)-[:" + Entities.TransactionRelationships.HAS_LINES + "]->(l:" + Entities.Labels.TransactionInfo + ")\n"
-                    + "OPTIONAL MATCH (l)-[:" + Entities.LinesRelationships.HAS_CREDIT_LINE + "]->(c:" + Entities.Labels.CreditLine + ")\n"
-                    + "OPTIONAL MATCH (c)-[:" + Entities.CreditLineRelationships.HAS_CREDIT_AMOUNT + "]->(ca:" + Entities.Labels.CreditLine + ")\n"
-                    + "OPTIONAL MATCH (l)-[:" + Entities.LinesRelationships.HAS_DEBIT_LINE + "]->(d:" + Entities.Labels.DebitLine + ")\n"
-                    + "OPTIONAL MATCH (d)-[:" + Entities.DebitLineRelationships.HAS_DEBIT_AMOUNT + "]->(da:" + Entities.Labels.DebitLine + ")\n"
-                    + "WHERE ca.CreditAmount < 0 OR da.DebitAmount < 0\n"
-                    + "WITH c, f, j, t, l, collect({ RecordID: c.RecordID, CreditAmount: ca.CreditAmount }) AS CreditLines, collect({ RecordID: d.RecordID, DebitAmount: da.DebitAmount }) AS DebitLines\n"
+                    + "WITH c, f, j, t, l\n"
+
+                    + "CALL {\n"
+                    + "MATCH (l)-[:" + Entities.LinesRelationships.HAS_CREDIT_LINE + "]->(cl:" + Entities.Labels.CreditLine + ")\n"
+                    + "MATCH (cl)-[:" + Entities.CreditLineRelationships.HAS_CREDIT_AMOUNT + "]->(ca:" + Entities.Labels.CreditLine + ")\n"
+                    + "WHERE ca.CreditAmount < 0\n"
+                    + "RETURN collect({ RecordID: cl.RecordID, CreditAmount: ca.CreditAmount }) AS CreditLines\n"
+                    + "}\n"
+
+                    + "WITH c, f, j, t, l, CreditLines\n"
+
+                    + "CALL {\n"
+                    + "MATCH (l)-[:" + Entities.LinesRelationships.HAS_DEBIT_LINE + "]->(dl:" + Entities.Labels.DebitLine + ")\n"
+                    + "MATCH (dl)-[:" + Entities.DebitLineRelationships.HAS_DEBIT_AMOUNT + "]->(da:" + Entities.Labels.DebitLine + ")\n"
+                    + "WHERE  da.DebitAmount < 0\n"
+                    + "RETURN collect({ RecordID: dl.RecordID, DebitAmount: da.DebitAmount }) AS DebitLines\n"
+                    + "}\n"
+
+                    + "WITH c, f, j, t, CreditLines, DebitLines\n"
+
                     + "WITH c, f, j, collect({ TransactionID: t.TransactionID, CreditLines: CreditLines, DebitLines: DebitLines }) AS Transactions\n"
                     + "WITH c, f, collect({ JournalID: j.JournalID, Transactions: Transactions }) AS Journals\n"
                     + "WITH c, collect({ FileName: f.FileName, NegativeAmountsInGeneralLedger: Journals }) AS Files\n"
-                    + "RETURN DISTINCT(c.CompanyName) AS Company, Files\n"
+                    + "RETURN c.CompanyName AS Company, Files\n"
             ).list());
 
             Iterator<Record> queryIterator = queryResults.iterator();
