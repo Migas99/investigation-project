@@ -48,7 +48,7 @@ public class CypherViews {
      * Método responsável por retornar o ficheiro, dado o seu nome.
      * Este método retorna as informações que constam no ficheiro, seguindo uma estrutura
      * semelhante à versão XML deste.
-     *
+     * <p>
      * EM CONSTRUÇÃO E DEBUG
      *
      * @param driver   instância do driver para comunicar com a base de dados
@@ -91,6 +91,7 @@ public class CypherViews {
                     + "OPTIONAL MATCH (c)-[:" + Entities.CompanyRelationships.HAS_FAX + "]->(cf:" + Entities.Labels.CompanyContact + ")\n"
                     + "OPTIONAL MATCH (c)-[:" + Entities.CompanyRelationships.HAS_EMAIL + "]->(ce:" + Entities.Labels.CompanyContact + ")\n"
                     + "OPTIONAL MATCH (c)-[:" + Entities.CompanyRelationships.HAS_WEBSITE + "]->(cw:" + Entities.Labels.CompanyContact + ")\n"
+
                     + "WITH f, "
                     + "{"
                     + "AuditFileVersion: fi.AuditFileVersion,"
@@ -140,6 +141,7 @@ public class CypherViews {
                     + "MATCH (ac)-[:" + Entities.AccountRelationships.HAS_GROUPING_CATEGORY + "]->(gc:" + Entities.Labels.AccountInfo + ")\n"
                     + "OPTIONAL MATCH (ac)-[:" + Entities.AccountRelationships.HAS_GROUPING_CODE + "]->(gcode:" + Entities.Labels.AccountInfo + ")\n"
                     + "OPTIONAL MATCH (ac)-[:" + Entities.AccountRelationships.HAS_TAXONOMY_CODE + "]->(tc:" + Entities.Labels.AccountInfo + ")\n"
+
                     + "WITH f, Header, gla, collect("
                     + "{"
                     + "AccountID: ac.AccountID,"
@@ -153,6 +155,7 @@ public class CypherViews {
                     + "TaxonomyCode: tc.TaxonomyCode"
                     + "}"
                     + ") AS Accounts\n"
+
                     + "WITH f, Header, "
                     + "{"
                     + "TaxonomyReference: gla.TaxonomyReference,"
@@ -189,6 +192,7 @@ public class CypherViews {
                     + "OPTIONAL MATCH (c)-[:" + Entities.CustomerRelationships.HAS_EMAIL + "]->(email:" + Entities.Labels.Contact + ")\n"
                     + "OPTIONAL MATCH (c)-[:" + Entities.CustomerRelationships.HAS_WEBSITE + "]->(website:" + Entities.Labels.Contact + ")\n"
                     + "MATCH (c)-[:" + Entities.CustomerRelationships.HAS_SELF_BILLING_INDICATOR + "]->(sbi:" + Entities.Labels.CustomerInfo + ")\n"
+
                     + "WITH f, Header, GeneralLedgerAccounts, c, ac, ctid, company, contact, ba, babn, basn, bac, bapc, bar, bacountry, "
                     + "collect("
                     + "{"
@@ -201,6 +205,7 @@ public class CypherViews {
                     + "Country: sacountry.Country "
                     + "}"
                     + ") AS ShipToAddress, t, fax, email, website, sbi\n"
+
                     + "WITH f, Header, GeneralLedgerAccounts, collect("
                     + "{"
                     + "CustomerID: c.CustomerID,"
@@ -255,6 +260,7 @@ public class CypherViews {
                     + "OPTIONAL MATCH (s)-[:" + Entities.SupplierRelationships.HAS_EMAIL + "]->(email:" + Entities.Labels.Contact + ")\n"
                     + "OPTIONAL MATCH (s)-[:" + Entities.SupplierRelationships.HAS_WEBSITE + "]->(website:" + Entities.Labels.Contact + ")\n"
                     + "MATCH (s)-[:" + Entities.SupplierRelationships.HAS_SELF_BILLING_INDICATOR + "]->(sbi:" + Entities.Labels.SupplierInfo + ")\n"
+
                     + "WITH f, Header, GeneralLedgerAccounts, Customers, s, ac, stid, company, contact, ba, babn, basn, bac, bapc, bar, bacountry, "
                     + "collect("
                     + "{"
@@ -267,6 +273,7 @@ public class CypherViews {
                     + "Country: sacountry.Country "
                     + "}"
                     + ") AS ShipFromAddress, t, fax, email, website, sbi\n"
+
                     + "WITH f, Header, GeneralLedgerAccounts, Customers, collect("
                     + "{"
                     + "SupplierID: s.SupplierID,"
@@ -300,6 +307,7 @@ public class CypherViews {
 
                     //CustomsDetails
                     + "OPTIONAL MATCH (p)-[:" + Entities.ProductRelationships.HAS_CUSTOMS_DETAILS + "]->(cd:" + Entities.Labels.ProductInfo + ")\n"
+
                     + "WITH f, Header, GeneralLedgerAccounts, Customers, Suppliers, p, pt, pg, pd, pnc, "
                     + "collect("
                     + "{"
@@ -307,6 +315,7 @@ public class CypherViews {
                     + "UNNumber: cd.UNNumber"
                     + "}"
                     + ") AS CustomsDetails\n"
+
                     + "WITH f, Header, GeneralLedgerAccounts, Customers, Suppliers, "
                     + "collect("
                     + "{"
@@ -327,6 +336,7 @@ public class CypherViews {
                     + "OPTIONAL MATCH (tb)-[:" + Entities.TaxTableRelationships.HAS_TAX_EXPIRATION_DATE + "]->(ted:" + Entities.Labels.TaxTable + ")\n"
                     + "OPTIONAL MATCH (tb)-[:" + Entities.TaxTableRelationships.HAS_TAX_PERCENTAGE + "]->(tp:" + Entities.Labels.TaxTable + ")\n"
                     + "OPTIONAL MATCH (tb)-[:" + Entities.TaxTableRelationships.HAS_TAX_AMOUNT + "]->(ta:" + Entities.Labels.TaxTable + ")\n"
+
                     + "WITH f, Header, GeneralLedgerAccounts, Customers, Suppliers, Products, "
                     + "collect("
                     + "{"
@@ -339,8 +349,10 @@ public class CypherViews {
                     + "TaxAmount: ta.TaxAmount"
                     + "}"
                     + ") AS TaxTablesEntries\n"
+
                     + "WITH f, Header, GeneralLedgerAccounts, Customers, Suppliers, Products, "
                     + "{ TaxTableEntries: TaxTablesEntries } AS TaxTable\n"
+
                     + "WITH f, Header, "
                     + "{"
                     + "GeneralLedgerAccounts: GeneralLedgerAccounts,"
@@ -350,7 +362,113 @@ public class CypherViews {
                     + "TaxTable: TaxTable"
                     + "} AS MasterFiles\n"
 
-                    + "RETURN Header, MasterFiles\n"
+                    //GeneralLedgerEntries
+                    + "MATCH (f)-[:" + Entities.FileRelationships.HAS_GENERAL_LEDGER_ENTRIES + "]->(gle:" + Entities.Labels.GeneralLedgerEntries + ")\n"
+                    + "MATCH (gle)-[:" + Entities.GeneralLedgerEntriesRelationships.HAS_TOTAL_DEBIT + "]->(gtd:" + Entities.Labels.GeneralLedgerEntries + ")\n"
+                    + "MATCH (gle)-[:" + Entities.GeneralLedgerEntriesRelationships.HAS_TOTAL_CREDIT + "]->(gtc:" + Entities.Labels.GeneralLedgerEntries + ")\n"
+
+                    //Journal
+                    + "MATCH (gle)-[:" + Entities.GeneralLedgerEntriesRelationships.HAS_JOURNAL + "]->(j:" + Entities.Labels.Journal + ")\n"
+                    + "MATCH (j)-[:" + Entities.JournalRelationships.HAS_DESCRIPTION + "]->(jd:" + Entities.Labels.JournalInfo + ")\n"
+
+                    //Transaction
+                    + "MATCH (j)-[:" + Entities.JournalRelationships.HAS_TRANSACTION + "]->(t:" + Entities.Labels.Transaction + ")\n"
+                    + "MATCH (t)-[:" + Entities.TransactionRelationships.HAS_PERIOD + "]->(tp:" + Entities.Labels.TransactionInfo + ")\n"
+                    + "MATCH (t)-[:" + Entities.TransactionRelationships.HAS_TRANSACTION_DATE + "]->(ttd:" + Entities.Labels.TransactionInfo + ")\n"
+                    + "MATCH (t)-[:" + Entities.TransactionRelationships.HAS_SOURCE_ID + "]->(tsid:" + Entities.Labels.TransactionInfo + ")\n"
+                    + "MATCH (t)-[:" + Entities.TransactionRelationships.HAS_DESCRIPTION + "]->(td:" + Entities.Labels.TransactionInfo + ")\n"
+                    + "MATCH (t)-[:" + Entities.TransactionRelationships.HAS_DOC_ARCHIVAL_NUMBER + "]->(tdan:" + Entities.Labels.TransactionInfo + ")\n"
+                    + "MATCH (t)-[:" + Entities.TransactionRelationships.HAS_TRANSACTION_TYPE + "]->(ttt:" + Entities.Labels.TransactionInfo + ")\n"
+                    + "MATCH (t)-[:" + Entities.TransactionRelationships.HAS_GL_POSTING_DATE + "]->(tglpd:" + Entities.Labels.TransactionInfo + ")\n"
+                    + "OPTIONAL MATCH (t)-[:" + Entities.OtherRelationships.HAS_CUSTOMER + "]->(tc:" + Entities.Labels.Customer + ")\n"
+                    + "OPTIONAL MATCH (t)-[:" + Entities.OtherRelationships.HAS_SUPPLIER + "]->(ts:" + Entities.Labels.Supplier + ")\n"
+
+                    //Lines
+                    + "MATCH (t)-[:" + Entities.TransactionRelationships.HAS_LINES + "]->(tl:" + Entities.Labels.TransactionInfo + ")\n"
+
+                    //DebitLine
+                    + "MATCH (tl)-[:" + Entities.LinesRelationships.HAS_DEBIT_LINE + "]->(dl:" + Entities.Labels.DebitLine + ")\n"
+                    + "MATCH (dl)-[:" + Entities.OtherRelationships.HAS_ACCOUNT + "]->(acc:" + Entities.Labels.Account + ")\n"
+                    + "MATCH (dl)-[:" + Entities.DebitLineRelationships.HAS_SOURCE_DOCUMENT + "]->(sd)\n"
+                    + "MATCH (dl)-[:" + Entities.DebitLineRelationships.HAS_SYSTEM_ENTRY_DATE + "]->(sed:" + Entities.Labels.DebitLine + ")\n"
+                    + "MATCH (dl)-[:" + Entities.DebitLineRelationships.HAS_DESCRIPTION + "]->(dld:" + Entities.Labels.DebitLine + ")\n"
+                    + "MATCH (dl)-[:" + Entities.DebitLineRelationships.HAS_DEBIT_AMOUNT + "]->(da:" + Entities.Labels.DebitLine + ")\n"
+
+                    + "WITH f, Header, MasterFiles, gle, gtd, gtc, j, jd, t, tp, ttd, tsid, td, tdan, ttt, tglpd, tc, ts, tl, "
+                    + "collect("
+                    + "{"
+                    + "RecordID: dl.RecordID,"
+                    + "AccountID: acc.AccountID,"
+                    + "SourceDocumentID: sd.SourceDocumentID,"
+                    + "SystemEntryDate: sed.SystemEntryDate,"
+                    + "Description: dld.Description,"
+                    + "DebitAmount: da.DebitAmount"
+                    + "}"
+                    + ") AS DebitLines\n"
+
+                    //CreditLine
+                    + "MATCH (tl)-[:" + Entities.LinesRelationships.HAS_CREDIT_LINE + "]->(cl:" + Entities.Labels.CreditLine + ")\n"
+                    + "MATCH (cl)-[:" + Entities.OtherRelationships.HAS_ACCOUNT + "]->(acc:" + Entities.Labels.Account + ")\n"
+                    + "MATCH (cl)-[:" + Entities.CreditLineRelationships.HAS_SOURCE_DOCUMENT + "]->(sd)\n"
+                    + "MATCH (cl)-[:" + Entities.CreditLineRelationships.HAS_SYSTEM_ENTRY_DATE + "]->(sed:" + Entities.Labels.CreditLine + ")\n"
+                    + "MATCH (cl)-[:" + Entities.CreditLineRelationships.HAS_DESCRIPTION + "]->(cld:" + Entities.Labels.CreditLine + ")\n"
+                    + "MATCH (cl)-[:" + Entities.CreditLineRelationships.HAS_CREDIT_AMOUNT + "]->(ca:" + Entities.Labels.CreditLine + ")\n"
+
+                    + "WITH f, Header, MasterFiles, gle, gtd, gtc, j, jd, t, tp, ttd, tsid, td, tdan, ttt, tglpd, tc, ts, tl, DebitLines, "
+                    + "collect("
+                    + "{"
+                    + "RecordID: cl.RecordID,"
+                    + "AccountID: acc.AccountID,"
+                    + "SourceDocumentID: sd.SourceDocumentID,"
+                    + "SystemEntryDate: sed.SystemEntryDate,"
+                    + "Description: cld.Description,"
+                    + "CreditAmount: ca.CreditAmount"
+                    + "}"
+                    + ") AS CreditLines\n"
+
+                    + "WITH f, Header, MasterFiles, gle, gtd, gtc, j, jd, t, tp, ttd, tsid, td, tdan, ttt, tglpd, tc, ts, "
+                    + "{"
+                    + "DebitLines: DebitLines,"
+                    + "CreditLines: CreditLines"
+                    + "} AS Lines\n"
+
+                    + "WITH f, Header, MasterFiles, gle, gtd, gtc, j, jd, "
+                    + "collect("
+                    + "{"
+                    + "TransactionID: t.TransactionID,"
+                    + "Period: tp.Period,"
+                    + "TransactionDate: ttd.TransactionDate,"
+                    + "SourceID: tsid.SourceID,"
+                    + "Description: td.Description, "
+                    + "DocArchivalNumber: tdan.DocArchivalNumber,"
+                    + "TransactionType: ttt.TransactionType,"
+                    + "GLPostingDate: tglpd.GLPostingDate,"
+                    + "CustomerID: tc.CustomerID,"
+                    + "SupplierID: ts.SupplierID,"
+                    + "Lines: Lines"
+                    + "}"
+                    + ") AS Transactions\n"
+
+                    + "WITH f, Header, MasterFiles, gle, gtd, gtc, "
+                    + "collect("
+                    + "{"
+                    + "JournalID: j.JournalID,"
+                    + "Description: jd.Description,"
+                    + "Transactions: Transactions"
+                    + "}"
+                    + ") AS Journals\n"
+
+                    + "WITH f, Header, MasterFiles, "
+                    + "{"
+                    + "NumberOfEntries: gle.NumberOfEntries,"
+                    + "TotalDebit: gtd.TotalDebit,"
+                    + "TotalCredit: gtc.TotalCredit,"
+                    + "Journals: Journals"
+                    + "} AS GeneralLedgerEntries\n"
+
+                    //SalesInvoices
+
+                    + "RETURN Header, MasterFiles, GeneralLedgerEntries\n"
             ).single());
 
             return queryResult.asMap();

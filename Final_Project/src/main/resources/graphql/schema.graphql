@@ -294,5 +294,206 @@ type TaxTableEntry {
 }
 
 type GeneralLedgerEntries {
-
+    NumberOfEntries: Int
+    TotalDebit: Float
+    TotalCredit: Float
+    Journals: [Journal]
 }
+
+type Journal {
+    JournalID: String
+    Description: String
+    Transactions: [Transaction]
+}
+
+type Transaction {
+    TransactionID: String
+    Period: Int
+    TransactionDate: String
+    SourceID: String
+    Description: String
+    DocArchivalNumber: String
+    TransactionType: String
+    GLPostingDate: String
+    CustomerID: String
+    SupplierID: String
+    Lines: Lines
+}
+
+type Lines {
+    DebitLines: [DebitLine]
+    CreditLines: [CreditLine]
+}
+
+type DebitLine {
+    RecordID: String
+    AccountID: String
+    SourceDocumentID: String
+    SystemEntryDate: String
+    Description: String
+    DebitAmount: Float
+}
+
+type CreditLine {
+    RecordID: String
+    AccountID: String
+    SourceDocumentID: String
+    SystemEntryDate: String
+    Description: String
+    CreditAmount: Float
+}
+
+type SalesInvoices {
+    NumberOfEntries: Int
+    TotalDebit: Float
+    TotalCredit: Float
+    Invoices: [Invoice]
+}
+
+type Invoice {
+    InvoiceNo: String
+    ATCUD: String
+    DocumentStatus: DocumentStatus
+    Hash: String
+    HashControl: String
+    Period: Int
+    InvoiceDate: String
+    InvoiceType: String
+    SpecialRegimes: SpecialRegimes
+    SourceID: String
+    EACCode: String
+    SystemEntryDate: String
+    TransactionID: String
+    CustomerID: String
+    ShipTo: ShipTo
+    ShipFrom: ShipFrom
+    MovementEndTime: String
+    MovementStartTime: String
+    Lines: [Line]
+    DocumentTotals: DocumentTotals
+    WithholdingTaxs: [WithholdingTax]
+}
+
+type DocumentStatus {
+    InvoiceStatus: String
+    InvoiceStatusDate: String
+    Reason: String
+    SourceID: String
+    SourceBilling: String
+}
+
+type SpecialRegimes {
+    SelfBillingIndicator: Int
+    CashVATSchemeIndicator: Int
+    ThirdPartiesBillingIndicator: Int
+}
+
+type ShipTo {
+    DeliveryID: String
+    DeliveryDate: String
+    WarehouseID: String
+    LocationID: String
+    Address: Address
+}
+
+type ShipFrom {
+    DeliveryID: String
+    DeliveryDate: String
+    WarehouseID: String
+    LocationID: String
+    Address: Address
+}
+
+type Address {
+    BuildingNumber: String
+    StreetName: String
+    AddressDetail: String
+    City: String
+    PostalCode: String
+    Region: String
+    Country: String
+}
+
+type Line {
+    LineNumber: Int
+    OrderReferences: [OrderReferences]
+    ProductCode: String
+    ProductDescription: String
+    Quantity: Float
+    UnitOfMeasure: String
+    UnitPrice: Float
+    TaxBase: Float
+    TaxPointDate: String
+    References: [References]
+    Description: String
+    ProductSerialNumbers: [ProductSerialNumber]
+    DebitAmount: Float
+    CreditAmount: Float
+    Taxs: [Tax]
+    TaxExemptionReason: String
+    TaxExemptionCode: String
+    SettlementAmount: Float
+    CustomsInformation: CustomsInformation
+}
+
+type OrderReferences {
+    OriginatingON: String
+    OrderDate: String
+}
+
+type References {
+    Reference: String
+    Reason: String
+}
+
+type ProductSerialNumber {
+    SerialNumber: String
+}
+
+type Tax {
+    TaxType: String
+    TaxCountryRegion: String
+    TaxCode: String
+    TaxPercentage: Float
+    TaxAmount: Float
+}
+
+type CustomsInformation {
+    ARCNo: String
+    IECAmount: Float
+}
+
+type DocumentTotals {
+    TaxPayable: Float
+    NetTotal: Float
+    GrossTotal: Float
+    Currency: Currency
+    Settlements: [Settlement]
+    Payments: [Payment]
+}
+
+type Currency {
+    CurrencyCode: String
+    CurrencyAmount: Float
+    ExchangeRate: Float
+}
+
+type Settlement {
+    SettlementDiscount: String
+    SettlementAmount: Float
+    SettlementDate: String
+    PaymentTerms: String
+}
+
+type Payment {
+    PaymentMechanism: String
+    PaymentAmount: Float
+    PaymentDate: String
+}
+
+type WithholdingTax {
+    WithholdingTaxType: String
+    WithholdingTaxDescription: String
+    WithholdingTaxAmount: Float
+}
+
