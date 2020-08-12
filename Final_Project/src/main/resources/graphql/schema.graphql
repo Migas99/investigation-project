@@ -143,6 +143,7 @@ type AuditFile {
     Header: Header
     MasterFiles: MasterFiles
     GeneralLedgerEntries: GeneralLedgerEntries
+    SalesInvoices: SalesInvoices
 }
 
 type Header {

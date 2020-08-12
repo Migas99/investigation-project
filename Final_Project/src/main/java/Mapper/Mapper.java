@@ -2596,7 +2596,6 @@ public class Mapper {
 
                         this.processWithholdingTaxChildren(
                                 Elements.Invoice.WithholdingTax,
-                                Entities.Labels.InvoiceInfo,
                                 element,
                                 value
                         );
@@ -3734,7 +3733,6 @@ public class Mapper {
 
                         this.processWithholdingTaxChildren(
                                 Elements.Payment.WithholdingTax,
-                                Entities.Labels.PaymentInfo,
                                 element,
                                 value
                         );
@@ -4620,21 +4618,11 @@ public class Mapper {
 
     }
 
-    private void processWithholdingTaxChildren(String withholding, String label, String element, String value) throws MapException {
+    private void processWithholdingTaxChildren(String withholding, String element, String value) throws MapException {
 
         switch (element) {
 
             case Elements.WithholdingTax.WithholdingTaxType:
-
-                this.constructor.CREATE_AND_RELATE_TO_RIGHT(
-                        this.container.get(withholding),
-                        label,
-                        element,
-                        value,
-                        Entities.WithholdingTaxRelationships.HAS_WITHHOLDING_TAX_TYPE
-                );
-
-                break;
 
             case Elements.WithholdingTax.WithholdingTaxDescription:
 
@@ -4648,12 +4636,10 @@ public class Mapper {
 
             case Elements.WithholdingTax.WithholdingTaxAmount:
 
-                this.constructor.CREATE_AND_RELATE_TO_RIGHT(
+                this.constructor.SET_PROPERTY(
                         this.container.get(withholding),
-                        label,
                         element,
-                        Double.parseDouble(value),
-                        Entities.WithholdingTaxRelationships.HAS_WITHHOLDING_TAX_AMOUNT
+                        Double.parseDouble(value)
                 );
 
                 break;
