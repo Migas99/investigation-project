@@ -66,7 +66,7 @@ public class CypherViews {
                     + "MATCH (f)-[:" + Entities.FileRelationships.HAS_ADDITIONAL_INFORMATION + "]->(fi:" + Entities.Labels.FileInfo + ")\n"
                     + "MATCH (f)-[:" + Entities.FileRelationships.RELATED_TO_COMPANY + "]->(c:" + Entities.Labels.Company + ")\n"
                     + "MATCH (c)-[:" + Entities.CompanyRelationships.HAS_COMPANY_ID + "]->(cid:" + Entities.Labels.CompanyInfo + ")\n"
-                    /*+ "MATCH (c)-[:" + Entities.CompanyRelationships.HAS_TAX_REGISTRATION_NUMBER + "]->(ctr:" + Entities.Labels.CompanyInfo + ")\n"
+                    + "MATCH (c)-[:" + Entities.CompanyRelationships.HAS_TAX_REGISTRATION_NUMBER + "]->(ctr:" + Entities.Labels.CompanyInfo + ")\n"
                     + "MATCH (fi)-[:" + Entities.FileInformationRelationships.HAS_TAX_ACCOUNTING_BASIS + "]->(ftab:" + Entities.Labels.FileInfo + ")\n"
                     + "OPTIONAL MATCH (c)-[:" + Entities.CompanyRelationships.HAS_BUSINESS_NAME + "]->(cbn:" + Entities.Labels.CompanyInfo + ")\n"
 
@@ -91,11 +91,11 @@ public class CypherViews {
                     + "OPTIONAL MATCH (c)-[:" + Entities.CompanyRelationships.HAS_FAX + "]->(cf:" + Entities.Labels.CompanyContact + ")\n"
                     + "OPTIONAL MATCH (c)-[:" + Entities.CompanyRelationships.HAS_EMAIL + "]->(ce:" + Entities.Labels.CompanyContact + ")\n"
                     + "OPTIONAL MATCH (c)-[:" + Entities.CompanyRelationships.HAS_WEBSITE + "]->(cw:" + Entities.Labels.CompanyContact + ")\n"
-                   */ + "WITH f, "
+                    + "WITH f, "
                     + "{"
                     + "AuditFileVersion: fi.AuditFileVersion,"
-                    + "CompanyID: cid.CompanyID"
-                    /*+ "TaxRegistrationNumber: ctr.TaxRegistrationNumber,"
+                    + "CompanyID: cid.CompanyID,"
+                    + "TaxRegistrationNumber: ctr.TaxRegistrationNumber,"
                     + "TaxAccountingBasis: ftab.TaxAccountingBasis,"
                     + "CompanyName: c.CompanyName,"
                     + "BusinessName: cbn.BusinessName,"
@@ -122,13 +122,13 @@ public class CypherViews {
                     + "Telephone: ct.Telephone,"
                     + "Fax: cf.Fax,"
                     + "Email: ce.Email,"
-                    + "Website: cw.Website"*/
+                    + "Website: cw.Website"
                     + "} AS Header\n"
 
                     //Reconstrução dos MasterFiles
 
                     //GeneralLedgerAccounts
-                  /*  + "MATCH (f)-[:" + Entities.FileRelationships.HAS_GENERAL_LEDGER_ACCOUNTS + "]->(gla:" + Entities.Labels.GeneralLedgerAccounts + ")\n"
+                    + "MATCH (f)-[:" + Entities.FileRelationships.HAS_GENERAL_LEDGER_ACCOUNTS + "]->(gla:" + Entities.Labels.GeneralLedgerAccounts + ")\n"
 
                     //Accounts
                     + "MATCH (gla)-[:" + Entities.GeneralLedgerAccountsRelationships.HAS_ACCOUNT + "]->(ac:" + Entities.Labels.Account + ")\n"
@@ -229,8 +229,8 @@ public class CypherViews {
                     + "MATCH (f)-[:" + Entities.FileRelationships.HAS_SUPPLIER + "]->(s:" + Entities.Labels.Supplier + ")\n"
                     + "MATCH (s)-[:" + Entities.OtherRelationships.HAS_ACCOUNT + "]->(ac:" + Entities.Labels.Account + ")\n"
                     + "MATCH (s)-[:" + Entities.SupplierRelationships.HAS_SUPPLIER_TAX_ID + "]->(stid:" + Entities.Labels.SupplierInfo + ")\n"
-                    + "MATCH (c)-[:" + Entities.SupplierRelationships.REPRESENTS_AS_SUPPLIER + "]->(company:" + Entities.Labels.Company + ")\n"
-                    + "OPTIONAL MATCH (c)-[:" + Entities.SupplierRelationships.HAS_CONTACT + "]->(contact:" + Entities.Labels.SupplierInfo + ")\n"
+                    + "MATCH (s)-[:" + Entities.SupplierRelationships.REPRESENTS_AS_SUPPLIER + "]->(company:" + Entities.Labels.Company + ")\n"
+                    + "OPTIONAL MATCH (s)-[:" + Entities.SupplierRelationships.HAS_CONTACT + "]->(contact:" + Entities.Labels.SupplierInfo + ")\n"
 
                     //BillingAddress
                     + "MATCH (s)-[:" + Entities.SupplierRelationships.HAS_BILLING_ADDRESS + "]->(ba:" + Entities.Labels.Address + ")\n"
@@ -348,9 +348,9 @@ public class CypherViews {
                     + "Suppliers: Suppliers,"
                     + "Products: Products,"
                     + "TaxTable: TaxTable"
-                    + "} AS MasterFiles\n"*/
+                    + "} AS MasterFiles\n"
 
-                    + "RETURN { Header: Header" /*,  MasterFiles: MasterFiles*/ + " } AS AuditFile\n"
+                    + "RETURN Header, MasterFiles\n"
             ).single());
 
             return queryResult.asMap();

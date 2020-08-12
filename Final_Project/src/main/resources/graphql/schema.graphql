@@ -142,6 +142,7 @@ type FilesByCompany2 {
 type AuditFile {
     Header: Header
     MasterFiles: MasterFiles
+    GeneralLedgerEntries: GeneralLedgerEntries
 }
 
 type Header {
@@ -184,7 +185,7 @@ type MasterFiles {
     Customers: [Customer]
     Suppliers: [Supplier]
     Products: [Product]
-    TaxTable: [TaxTable]
+    TaxTable: TaxTable
 }
 
 type GeneralLedgerAccounts {
@@ -234,34 +235,6 @@ type Supplier {
     SelfBillingIndicator: Int
 }
 
-type Product {
-    ProductType: String
-    ProductCode: String
-    ProductGroup: String
-    ProductDescription: String
-    ProductNumberCode: String
-    CustomsDetails: [CustomsDetails]
-}
-
-type CustomsDetails {
-    CNCode: String
-    UNNumber: String
-}
-
-type TaxTable {
-    TaxTableEntries: [TaxTableEntry]
-}
-
-type TaxTableEntry {
-    TaxType: String
-    TaxCountryRegion: String
-    TaxCode: String
-    Description: String
-    TaxExpirationDate: String
-    TaxPercentage: Float
-    TaxAmount: Float
-}
-
 type BillingAddress {
     BuildingNumber: String
     StreetName: String
@@ -290,4 +263,36 @@ type ShipFromAddress {
     PostalCode: String
     Region: String
     Country: String
+}
+
+type Product {
+    ProductType: String
+    ProductCode: String
+    ProductGroup: String
+    ProductDescription: String
+    ProductNumberCode: String
+    CustomsDetails: [CustomsDetails]
+}
+
+type CustomsDetails {
+    CNCode: String
+    UNNumber: String
+}
+
+type TaxTable {
+    TaxTableEntries: [TaxTableEntry]
+}
+
+type TaxTableEntry {
+    TaxType: String
+    TaxCountryRegion: String
+    TaxCode: String
+    Description: String
+    TaxExpirationDate: String
+    TaxPercentage: Float
+    TaxAmount: Float
+}
+
+type GeneralLedgerEntries {
+
 }

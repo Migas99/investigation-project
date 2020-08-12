@@ -889,12 +889,6 @@ public class Mapper {
 
                         identifier = this.companies.get(value);
 
-                        this.constructor.CREATE_RELATIONSHIP(
-                                customer,
-                                identifier,
-                                Entities.CustomerRelationships.REPRESENTS_AS_CUSTOMER
-                        );
-
                     } else {
 
                         identifier = this.constructor.CREATE(Entities.Labels.Company, element, value);
@@ -902,15 +896,15 @@ public class Mapper {
                         this.constructor.CREATE_RELATIONSHIP(this.rootCompany, identifier, Entities.CompanyRelationships.IS_SUPPLIER_OF);
                         this.constructor.CREATE_RELATIONSHIP(identifier, this.rootCompany, Entities.CompanyRelationships.IS_CUSTOMER_OF);
 
-                        this.constructor.CREATE_RELATIONSHIP(
-                                customer,
-                                identifier,
-                                Entities.CustomerRelationships.REPRESENTS_AS_CUSTOMER
-                        );
-
                         this.companies.put(value, identifier);
 
                     }
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            customer,
+                            identifier,
+                            Entities.CustomerRelationships.REPRESENTS_AS_CUSTOMER
+                    );
 
                     this.represents.put(customer, identifier);
 
@@ -1109,12 +1103,6 @@ public class Mapper {
 
                         identifier = this.companies.get(value);
 
-                        this.constructor.CREATE_RELATIONSHIP(
-                                supplier,
-                                identifier,
-                                Entities.SupplierRelationships.REPRESENTS_AS_SUPPLIER
-                        );
-
                     } else {
 
                         identifier = this.constructor.CREATE(Entities.Labels.Company, element, value);
@@ -1122,15 +1110,15 @@ public class Mapper {
                         this.constructor.CREATE_RELATIONSHIP(this.rootCompany, identifier, Entities.CompanyRelationships.IS_CUSTOMER_OF);
                         this.constructor.CREATE_RELATIONSHIP(identifier, this.rootCompany, Entities.CompanyRelationships.IS_SUPPLIER_OF);
 
-                        this.constructor.CREATE_RELATIONSHIP(
-                                supplier,
-                                identifier,
-                                Entities.OtherRelationships.HAS_COMPANY
-                        );
-
                         this.companies.put(value, identifier);
 
                     }
+
+                    this.constructor.CREATE_RELATIONSHIP(
+                            supplier,
+                            identifier,
+                            Entities.SupplierRelationships.REPRESENTS_AS_SUPPLIER
+                    );
 
                     this.represents.put(supplier, identifier);
 
