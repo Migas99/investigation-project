@@ -519,7 +519,8 @@ public class CypherViews {
                     + "OPTIONAL MATCH (istad)-[:" + Entities.AddressRelationships.HAS_REGION + "]->(str:" + Entities.Labels.Address + ")\n"
                     + "OPTIONAL MATCH (istad)-[:" + Entities.AddressRelationships.HAS_COUNTRY + "]->(stcountry:" + Entities.Labels.Address + ")\n"
 
-                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit, SpecialRegimes, isid, ieac, ised, it, ic, "
+                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit,"
+                    + "SpecialRegimes, isid, ieac, ised, it, ic, "
                     + "{"
                     + "DeliveryID: ist.DeliveryID,"
                     + "DeliveryDate: ist.DeliveryDate,"
@@ -546,7 +547,8 @@ public class CypherViews {
                     + "OPTIONAL MATCH (isfad)-[:" + Entities.AddressRelationships.HAS_REGION + "]->(sfr:" + Entities.Labels.Address + ")\n"
                     + "OPTIONAL MATCH (isfad)-[:" + Entities.AddressRelationships.HAS_COUNTRY + "]->(sfcountry:" + Entities.Labels.Address + ")\n"
 
-                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit, SpecialRegimes, isid, ieac, ised, it, ic, ShipTo, "
+                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit,"
+                    + "SpecialRegimes, isid, ieac, ised, it, ic, ShipTo,"
                     + "{"
                     + "DeliveryID: isf.DeliveryID,"
                     + "DeliveryDate: isf.DeliveryDate,"
@@ -590,7 +592,7 @@ public class CypherViews {
                     + "MATCH (il)-[:" + Entities.LineRelationships.HAS_TAX_POINT_DATE + "]->(iltpd:" + Entities.Labels.InvoiceInfo + ")\n"
 
                     //References
-                    + "MATCH (il)-[:" + Entities.LineRelationships.HAS_REFERENCES + "]->(ilr:" + Entities.Labels.InvoiceInfo + ")\n"
+                    + "OPTIONAL MATCH (il)-[:" + Entities.LineRelationships.HAS_REFERENCES + "]->(ilr:" + Entities.Labels.InvoiceInfo + ")\n"
 
                     + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit,"
                     + "SpecialRegimes, isid, ieac, ised, it, ic, ShipTo, ShipFrom, imet, imst, il, OrderReferences, p, pd, ilq,"
@@ -605,7 +607,7 @@ public class CypherViews {
                     + "MATCH (il)-[:" + Entities.LineRelationships.HAS_DESCRIPTION + "]->(ild:" + Entities.Labels.InvoiceInfo + ")\n"
 
                     //ProductSerialNumber
-                    + "MATCH (il)-[:" + Entities.LineRelationships.HAS_PRODUCT_SERIAL_NUMBER + "]->(ilpsn:" + Entities.Labels.InvoiceInfo + ")\n"
+                    + "OPTIONAL MATCH (il)-[:" + Entities.LineRelationships.HAS_PRODUCT_SERIAL_NUMBER + "]->(ilpsn:" + Entities.Labels.InvoiceInfo + ")\n"
 
                     + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit,"
                     + "SpecialRegimes, isid, ieac, ised, it, ic, ShipTo, ShipFrom, imet, imst, il, OrderReferences, p, pd, ilq,"
@@ -621,14 +623,14 @@ public class CypherViews {
 
                     //Tax
                     + "MATCH (il)-[:" + Entities.LineRelationships.HAS_TAX_TABLE + "]->(tb:" + Entities.Labels.InvoiceInfo + ")\n"
-                    + "MATCH (tb)-[:" + Entities.LineTaxRelationships.HAS_TAX_TYPE + "]->(tt:" + Entities.Labels.TaxTable + ")\n"
-                    + "MATCH (tb)-[:" + Entities.LineTaxRelationships.HAS_TAX_COUNTRY_REGION + "]->(tcr:" + Entities.Labels.TaxTable + ")\n"
-                    + "OPTIONAL MATCH (tb)-[:" + Entities.LineTaxRelationships.HAS_TAX_PERCENTAGE + "]->(tp:" + Entities.Labels.TaxTable + ")\n"
-                    + "OPTIONAL MATCH (tb)-[:" + Entities.LineTaxRelationships.HAS_TAX_AMOUNT + "]->(ta:" + Entities.Labels.TaxTable + ")\n"
+                    + "MATCH (tb)-[:" + Entities.LineTaxRelationships.HAS_TAX_TYPE + "]->(tt:" + Entities.Labels.InvoiceInfo + ")\n"
+                    + "MATCH (tb)-[:" + Entities.LineTaxRelationships.HAS_TAX_COUNTRY_REGION + "]->(tcr:" + Entities.Labels.InvoiceInfo + ")\n"
+                    + "OPTIONAL MATCH (tb)-[:" + Entities.LineTaxRelationships.HAS_TAX_PERCENTAGE + "]->(tp:" + Entities.Labels.InvoiceInfo + ")\n"
+                    + "OPTIONAL MATCH (tb)-[:" + Entities.LineTaxRelationships.HAS_TAX_AMOUNT + "]->(ta:" + Entities.Labels.InvoiceInfo + ")\n"
 
                     + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit,"
                     + "SpecialRegimes, isid, ieac, ised, it, ic, ShipTo, ShipFrom, imet, imst, il, OrderReferences, p, pd, ilq,"
-                    + "ilum, ilup, iltb, iltpd, References, ild, ilda, ilca, ProductSerialNumbers, "
+                    + "ilum, ilup, iltb, iltpd, References, ild, ProductSerialNumbers, ilda, ilca,"
                     + "collect("
                     + "{"
                     + "TaxType: tt.TaxType,"
@@ -646,16 +648,16 @@ public class CypherViews {
                     //CustomsInformation
                     + "OPTIONAL MATCH (il)-[:" + Entities.LineRelationships.HAS_CUSTOMS_INFORMATION + "]->(ilci:" + Entities.Labels.InvoiceInfo + ")\n"
 
-                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit, SpecialRegimes, isid, ieac, ised,"
-                    + "it, ic, ShipTo, ShipFrom, imet, imst, il, OrderReferences, p, pd, ilq, ilum, ilup, iltb, iltpd, References,"
-                    + "ild, ilda, ilca, ProductSerialNumbers, Taxs, ilter, iltec, ilsa, "
+                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit,"
+                    + "SpecialRegimes, isid, ieac, ised, it, ic, ShipTo, ShipFrom, imet, imst, il, OrderReferences, p, pd, ilq,"
+                    + " ilum, ilup, iltb, iltpd, References,ild, ProductSerialNumbers, ilda, ilca, Taxs, ilter, iltec, ilsa,"
                     + "{"
                     + "ARCNo: ilci.ARCNo,"
                     + "IECAmount: ilci.IECAmount"
                     + "} AS CustomsInformation\n"
 
-                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit, SpecialRegimes, isid, ieac, ised,"
-                    + "it, ic, ShipTo, ShipFrom, imet, imst,"
+                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit,"
+                    + "SpecialRegimes, isid, ieac, ised, it, ic, ShipTo, ShipFrom, imet, imst,"
                     + "collect("
                     + "{"
                     + "LineNumber: il.LineNumber,"
@@ -681,13 +683,13 @@ public class CypherViews {
                     + ") AS Lines\n"
 
                     //DocumentTotals
-                    + "MATCH (il)-[:" + Entities.InvoiceRelationships.HAS_DOCUMENT_TOTALS + "]->(idt:" + Entities.Labels.InvoiceInfo + ")\n"
+                    + "MATCH (i)-[:" + Entities.InvoiceRelationships.HAS_DOCUMENT_TOTALS + "]->(idt:" + Entities.Labels.InvoiceInfo + ")\n"
 
                     //Currency
                     + "OPTIONAL MATCH (idt)-[:" + Entities.DocumentTotalsRelationships.HAS_CURRENCY + "]->(idtc:" + Entities.Labels.InvoiceInfo + ")\n"
 
-                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit, SpecialRegimes, isid, ieac, ised,"
-                    + "it, ic, ShipTo, ShipFrom, imet, imst, Lines, idt, "
+                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit,"
+                    + "SpecialRegimes, isid, ieac, ised, it, ic, ShipTo, ShipFrom, imet, imst, Lines, idt, "
                     + "{"
                     + "CurrencyCode: idtc.CurrencyCode,"
                     + "CurrencyAmount: idtc.CurrencyAmount,"
@@ -697,8 +699,8 @@ public class CypherViews {
                     //Settlement
                     + "OPTIONAL MATCH (idt)-[:" + Entities.DocumentTotalsRelationships.HAS_SETTLEMENT + "]->(idts:" + Entities.Labels.InvoiceInfo + ")\n"
 
-                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit, SpecialRegimes, isid, ieac, ised,"
-                    + "it, ic, ShipTo, ShipFrom, imet, imst, Lines, idt, Currency, "
+                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit,"
+                    + "SpecialRegimes, isid, ieac, ised, it, ic, ShipTo, ShipFrom, imet, imst, Lines, idt, Currency,"
                     + "collect("
                     + "{"
                     + "SettlementDiscount: idts.SettlementDiscount,"
@@ -711,8 +713,8 @@ public class CypherViews {
                     //Payment
                     + "OPTIONAL MATCH (idt)-[:" + Entities.DocumentTotalsRelationships.HAS_PAYMENT + "]->(idtp:" + Entities.Labels.InvoiceInfo + ")\n"
 
-                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit, SpecialRegimes, isid, ieac, ised,"
-                    + "it, ic, ShipTo, ShipFrom, imet, imst, Lines, idt, Currency, Settlements, "
+                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit,"
+                    + "SpecialRegimes, isid, ieac, ised, it, ic, ShipTo, ShipFrom, imet, imst, Lines, idt, Currency, Settlements,"
                     + "collect("
                     + "{"
                     + "PaymentMechanism: idtp.PaymentMechanism,"
@@ -721,8 +723,8 @@ public class CypherViews {
                     + "}"
                     + ") AS Payments\n"
 
-                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit, SpecialRegimes, isid, ieac, ised,"
-                    + "it, ic, ShipTo, ShipFrom, imet, imst, Lines, idt, Currency, Settlements, Payments, "
+                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit,"
+                    + "SpecialRegimes, isid, ieac, ised, it, ic, ShipTo, ShipFrom, imet, imst, Lines,"
                     + "{"
                     + "TaxPayable: idt.TaxPayable,"
                     + "NetTotal: idt.NetTotal,"
@@ -735,9 +737,8 @@ public class CypherViews {
                     //WithholdingTax
                     + "OPTIONAL MATCH (i)-[:" + Entities.InvoiceRelationships.HAS_WITHHOLDING_TAX + "]->(iwt:" + Entities.Labels.InvoiceInfo + ")\n"
 
-                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus,"
-                    + "ih, ihc, ip, iid, iit, SpecialRegimes, isid, ieac, ised,"
-                    + "it, ic, ShipTo, ShipFrom, imet, imst, Lines, DocumentTotals, "
+                    + "WITH f, Header, MasterFiles, GeneralLedgerEntries, si, sitd, sitc, i, atcud, DocumentStatus, ih, ihc, ip, iid, iit,"
+                    + "SpecialRegimes, isid, ieac, ised, it, ic, ShipTo, ShipFrom, imet, imst, Lines, DocumentTotals,"
                     + "collect("
                     + "{"
                     + "WithholdingTaxType: iwt.WithholdingTaxType,"
