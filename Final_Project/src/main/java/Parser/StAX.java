@@ -17,10 +17,15 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.*;
 
 /**
- * @author José Miguel Ribeiro Cunha
+ * Classe que contêm um método responsável pela leitura e processamento do ficheiro.
  */
 public class StAX {
 
+    /**
+     * Método responsável por realizar a leitura do ficheiro XML e interpretar como o processar.
+     *
+     * @param XMLFile ficheiro XML
+     */
     public static void processXMLToNeo4j(File XMLFile) {
 
         try {
@@ -84,6 +89,15 @@ public class StAX {
         }
     }
 
+    /**
+     * Método que verifica se uma dada lista contêm um dado elemento.
+     * Este método teve de ser criado devido a alguns problemas com o método
+     * contais() do Java Util.
+     *
+     * @param list    lista de elementos
+     * @param element elemento
+     * @return se a lista contêm ou não o elemento
+     */
     private static boolean isSequenceElement(LinkedList<String> list, String element) {
         Iterator<String> iterator = list.iterator();
         while (iterator.hasNext()) {

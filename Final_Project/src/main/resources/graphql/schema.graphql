@@ -143,7 +143,7 @@ type AuditFile {
     Header: Header
     MasterFiles: MasterFiles
     GeneralLedgerEntries: GeneralLedgerEntries
-    SalesInvoices: SalesInvoices
+    SourceDocuments: SourceDocuments
 }
 
 type Header {
@@ -342,6 +342,13 @@ type CreditLine {
     SystemEntryDate: String
     Description: String
     CreditAmount: Float
+}
+
+type SourceDocuments {
+    SalesInvoices: SalesInvoices
+    MovementOfGoods: Boolean
+    WorkingDocuments: Boolean
+    Payments: Boolean
 }
 
 type SalesInvoices {

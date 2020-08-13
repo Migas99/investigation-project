@@ -2,6 +2,10 @@ package Enumerations;
 
 import java.util.LinkedList;
 
+/**
+ * Classe que contêm enumerações que representam a constituição de elementos de sequência
+ * do ficheiro XML
+ */
 public class Elements {
 
     public enum RootElement {

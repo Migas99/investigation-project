@@ -1,5 +1,9 @@
 package Enumerations;
 
+/**
+ * Classe que contêm uma lista de enumerações que contêm as tipologias de nós
+ * e relações entre os mesmos
+ */
 public class Entities {
 
     public enum Labels {

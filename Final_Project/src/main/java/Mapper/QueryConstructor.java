@@ -1,5 +1,8 @@
 package Mapper;
 
+/**
+ * Classe que contêm métodos que possibilitam a construção de um query de upload
+ */
 public class QueryConstructor {
 
     private final StringBuilder uploadQuery;

@@ -40,6 +40,12 @@ public class UploadController {
         Neo4jConnector.initializeDatabase(this.driver);
     }
 
+    /**
+     * Valida e processa o ficheiro recebido.
+     *
+     * @param file o ficheiro enviado pelo utilizador
+     * @return resposta se o upload do ficheiro foi ou não bem sucedido
+     */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public Map<String, String> upload(@RequestParam("file") MultipartFile file) {
         Map<String, String> map = new HashMap<>();

@@ -9,6 +9,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+/**
+ * Classe responsável por processar cada elemento e mapear o mesmo para o seu
+ * grafo equivalente
+ */
 public class Mapper {
 
     private final QueryConstructor constructor;
