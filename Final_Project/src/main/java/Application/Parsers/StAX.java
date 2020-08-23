@@ -1,10 +1,8 @@
-package Parser;
+package Application.Parsers;
 
-import Enumerations.Elements;
-import Mapper.Mapper;
-import org.neo4j.driver.Driver;
-import org.neo4j.driver.Session;
-import org.neo4j.driver.Transaction;
+import Application.Enumerations.Elements;
+import Application.Mappers.Mapper;
+import Application.Mappers.QueryConstructor;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,13 +24,14 @@ public class StAX {
      *
      * @param XMLFile ficheiro XML
      */
-    public static void processXMLToNeo4j(File XMLFile) {
+    public static QueryConstructor processXMLToNeo4j(File XMLFile) {
+
+        Mapper mapper = new Mapper(XMLFile.getName());
 
         try {
 
             XMLInputFactory factory = XMLInputFactory.newInstance();
             XMLEventReader reader = factory.createXMLEventReader(new FileInputStream(XMLFile.getAbsolutePath()));
-            Mapper mapper = new Mapper(XMLFile.getName());
 
             XMLEvent nextEvent;
             String current = null;
@@ -81,12 +80,11 @@ public class StAX {
 
             }
 
-            System.out.println("[SERVER] Importing to database the file " + XMLFile.getName() + " ... ");
-            mapper.uploadToDatabase();
-
         } catch (FileNotFoundException | XMLStreamException e) {
             e.printStackTrace();
         }
+
+        return mapper.getMap();
     }
 
     /**

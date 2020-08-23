@@ -1,6 +1,6 @@
-package Database;
+package Application.Repository;
 
-import Enumerations.Entities;
+import Application.Enumerations.Entities;
 import org.neo4j.driver.*;
 
 import java.time.LocalDate;
@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * Classe que contêm as Queries de pesquisa e restrição, segundo as sugestões da OCDE
  */
-public class CypherQueries {
+public class Queries {
 
     /**
      * Pesquisa por faturas que não estejam associadas a um cliente

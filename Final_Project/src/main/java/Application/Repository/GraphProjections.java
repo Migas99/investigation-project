@@ -1,13 +1,13 @@
-package Database;
+package Application.Repository;
 
-import Enumerations.Entities;
+import Application.Enumerations.Entities;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.Session;
 
 /**
  * Classe que contêm métodos que possibilitam a construção de subgrafos
  */
-public class CypherProjections {
+public class GraphProjections {
 
     /**
      * Método que permite adicionar um grafo ao catálogo

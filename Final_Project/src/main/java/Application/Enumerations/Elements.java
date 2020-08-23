@@ -1,4 +1,4 @@
-package Enumerations;
+package Application.Enumerations;
 
 import java.util.LinkedList;
 

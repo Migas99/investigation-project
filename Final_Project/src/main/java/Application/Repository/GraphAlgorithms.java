@@ -1,18 +1,18 @@
-package Database;
+package Application.Repository;
 
-import Enumerations.Entities;
+import Application.Enumerations.Entities;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Session;
 
 import java.util.*;
 
-import static Database.CypherProjections.*;
+import static Application.Repository.GraphProjections.*;
 
 /**
  * Classe que contêm as métodos que utilizam algoritmos de grafos
  */
-public class CypherAlgorithms {
+public class GraphAlgorithms {
 
     /**
      * Método responsável por correr o algoritmo de Louvain que irá nos permitir identificar comunidades

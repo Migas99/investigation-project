@@ -1,6 +1,6 @@
-package Database;
+package Application.Repository;
 
-import Enumerations.Entities;
+import Application.Enumerations.Entities;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Session;
@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * Classe que contêm métodos que retornam vistas da base de dados
  */
-public class CypherViews {
+public class Views {
 
     /**
      * Este método retorna, por empresa, os ficheiros SAFT associados a esta, guardados

@@ -1,8 +1,9 @@
-package Run.SpringBoot.Controllers;
+package Application.Controllers;
 
-import Database.CypherQueries;
-import Database.Neo4jConnector;
-import Parser.StAX;
+import Application.Mappers.QueryConstructor;
+import Application.Parsers.StAX;
+import Application.Repository.Constraints;
+import Application.Repository.Upload;
 import org.neo4j.driver.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -32,12 +33,12 @@ public class UploadController {
 
     @Autowired
     private Environment env;
+    @Autowired
     private Driver driver;
 
     @PostConstruct
     public void init() {
-        this.driver = Neo4jConnector.getDriver();
-        Neo4jConnector.initializeDatabase(this.driver);
+        Constraints.initializeDatabase(this.driver);
     }
 
     /**
@@ -52,30 +53,32 @@ public class UploadController {
 
         System.out.println("[SERVER] Received a new file: " + file.getOriginalFilename());
 
-        File saftp = new File("database/XML/" + file.getOriginalFilename());
+        File fileCopy = new File("database/XML/" + file.getOriginalFilename());
         FileInputStream inputStream = null;
         XMLStreamReader reader = null;
 
         try {
             /*Reescrevemos a informação para um novo ficheiro*/
-            FileOutputStream outputStream = new FileOutputStream(saftp, false);
+            FileOutputStream outputStream = new FileOutputStream(fileCopy, false);
             outputStream.write(file.getBytes());
             outputStream.close();
 
             /*Validamos o ficheiro vs o XSD*/
-            inputStream = new FileInputStream(saftp.getAbsolutePath());
+            inputStream = new FileInputStream(fileCopy.getAbsolutePath());
             reader = XMLInputFactory.newInstance().createXMLStreamReader(inputStream);
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = factory.newSchema(new File(Objects.requireNonNull(env.getProperty("SAFTP_XSD"))));
+            Schema schema = factory.newSchema(new File(Objects.requireNonNull(env.getProperty("XSD"))));
 
             Validator validator = schema.newValidator();
             validator.validate(new StAXSource(reader));
 
-            if (Neo4jConnector.isFileNameUnique(this.driver, saftp.getName())) {
+            if (Constraints.isFileNameUnique(this.driver, fileCopy.getName())) {
                 System.out.println("[SERVER] Starting to map the file: " + file.getOriginalFilename());
-                StAX.processXMLToNeo4j(saftp);
+                QueryConstructor query = StAX.processXMLToNeo4j(fileCopy);
+                System.out.println("[SERVER] Importing to database the file " + fileCopy.getName() + " ... ");
+                Upload.uploadToDatabase(this.driver, query.getUploadQuery(), query.getParameters());
                 System.out.println("[SERVER] Done mapping the file: " + file.getOriginalFilename());
-                map.put("Message", "The file " + saftp.getName() + " was uploaded and mapped into the database with success.");
+                map.put("Message", "The file " + fileCopy.getName() + " was uploaded and mapped into the database with success.");
             } else {
                 map.put("Message", "This file or another one with the same name has already been uploaded.");
             }
@@ -97,10 +100,10 @@ public class UploadController {
                 }
             }
 
-            if (saftp.delete()) {
-                System.out.println("[SERVER] The file " + saftp.getName() + " was deleted from the XML folder.");
+            if (fileCopy.delete()) {
+                System.out.println("[SERVER] The file " + fileCopy.getName() + " was deleted from the XML folder.");
             } else {
-                System.out.println("[SERVER] Could not delete the file " + saftp.getName() + " from XML folder.");
+                System.out.println("[SERVER] Could not delete the file " + fileCopy.getName() + " from XML folder.");
             }
 
         }

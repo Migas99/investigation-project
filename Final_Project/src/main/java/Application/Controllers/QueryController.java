@@ -1,6 +1,6 @@
-package Run.SpringBoot.Controllers;
+package Application.Controllers;
 
-import Run.SpringBoot.Service.Neo4jDataFetcher;
+import Application.Services.Neo4jDataFetcher;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import graphql.GraphQL;
@@ -9,6 +9,7 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
+import org.neo4j.driver.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,8 @@ import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 @RestController
 public class QueryController {
 
+    @Autowired
+    private Driver driver;
     @Autowired
     private Neo4jDataFetcher dataFetcher;
 
@@ -47,22 +50,22 @@ public class QueryController {
                 .type(newTypeWiring("Query")
 
                         //Querys relativas aos algoritmos
-                        .dataFetcher("louvain", this.dataFetcher.louvain())
-                        .dataFetcher("localClustering", this.dataFetcher.localClustering())
-                        .dataFetcher("pageRank", this.dataFetcher.pageRank())
-                        .dataFetcher("betweennessCentrality", this.dataFetcher.betweennessCentrality())
-                        .dataFetcher("nodeSimilarity", this.dataFetcher.nodeSimilarity())
+                        .dataFetcher("louvain", this.dataFetcher.louvain(this.driver))
+                        .dataFetcher("localClustering", this.dataFetcher.localClustering(this.driver))
+                        .dataFetcher("pageRank", this.dataFetcher.pageRank(this.driver))
+                        .dataFetcher("betweennessCentrality", this.dataFetcher.betweennessCentrality(this.driver))
+                        .dataFetcher("nodeSimilarity", this.dataFetcher.nodeSimilarity(this.driver))
 
                         //Querys relativas as vistas e restrições, segundo a OCDE
-                        .dataFetcher("getListOfInvoicesNotAssociatedWithCustomers", this.dataFetcher.getListOfInvoicesNotAssociatedWithCustomers())
-                        .dataFetcher("getListOfNegativeAmountsInGeneralLedger", this.dataFetcher.getListOfNegativeAmountsInGeneralLedger())
-                        .dataFetcher("getListOfDaysWithoutSales", this.dataFetcher.getListOfDaysWithoutSales())
-                        .dataFetcher("getListOfNetTotalAndTaxPayableByTaxCode", this.dataFetcher.getListOfNetTotalAndTaxPayableByTaxCode())
-                        .dataFetcher("getListOfSalesByPeriod", this.dataFetcher.getListOfSalesByPeriod())
+                        .dataFetcher("getListOfInvoicesNotAssociatedWithCustomers", this.dataFetcher.getListOfInvoicesNotAssociatedWithCustomers(this.driver))
+                        .dataFetcher("getListOfNegativeAmountsInGeneralLedger", this.dataFetcher.getListOfNegativeAmountsInGeneralLedger(this.driver))
+                        .dataFetcher("getListOfDaysWithoutSales", this.dataFetcher.getListOfDaysWithoutSales(this.driver))
+                        .dataFetcher("getListOfNetTotalAndTaxPayableByTaxCode", this.dataFetcher.getListOfNetTotalAndTaxPayableByTaxCode(this.driver))
+                        .dataFetcher("getListOfSalesByPeriod", this.dataFetcher.getListOfSalesByPeriod(this.driver))
 
                         //Vistas normais
-                        .dataFetcher("getListOfFilesByCompany", this.dataFetcher.getListOfFilesByCompany())
-                        .dataFetcher("getFileByName", this.dataFetcher.getFileByName())
+                        .dataFetcher("getListOfFilesByCompany", this.dataFetcher.getListOfFilesByCompany(this.driver))
+                        .dataFetcher("getFileByName", this.dataFetcher.getFileByName(this.driver))
                 )
 
                 .build();

@@ -1,9 +1,8 @@
-package Mapper;
+package Application.Mappers;
 
-import Database.Neo4jConnector;
-import Enumerations.Elements;
-import Enumerations.Entities;
-import Exceptions.MapException;
+import Application.Exceptions.MapException;
+import Application.Enumerations.Elements;
+import Application.Enumerations.Entities;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -51,8 +50,8 @@ public class Mapper {
         this.documents = new HashMap<>();
     }
 
-    public void uploadToDatabase() {
-        Neo4jConnector.uploadToDatabase(this.constructor.getUploadQuery());
+    public QueryConstructor getMap() {
+        return this.constructor;
     }
 
     public void processStartSequence(String element) {

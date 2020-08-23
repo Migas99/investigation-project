@@ -1,4 +1,4 @@
-package Enumerations;
+package Application.Enumerations;
 
 /**
  * Classe que contêm uma lista de enumerações que contêm as tipologias de nós

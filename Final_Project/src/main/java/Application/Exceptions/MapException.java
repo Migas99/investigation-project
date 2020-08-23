@@ -1,4 +1,4 @@
-package Exceptions;
+package Application.Exceptions;
 
 public class MapException extends Throwable {
 
