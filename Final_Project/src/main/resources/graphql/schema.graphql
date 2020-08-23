@@ -4,6 +4,7 @@ type Query {
     pageRank: [PageRank]
     betweennessCentrality: [BetweennessCentrality]
     nodeSimilarity: [NodeSimilarity]
+    commonNeighbors: [CommonNeighbors]
 
     getListOfInvoicesNotAssociatedWithCustomers: [ListOfInvoicesNotAssociatedWithCustomers]
     getListOfNegativeAmountsInGeneralLedger: [NegativeAmountsInGeneralLedger]
@@ -12,6 +13,7 @@ type Query {
     getListOfSalesByPeriod: [SalesByPeriod]
 
     getListOfFilesByCompany: [FilesByCompany]
+    getListOfCompanyRepresentants(companyName: String): RepresentantsByCompany
     getFileByName(fileName: String): AuditFile
 }
 
@@ -39,6 +41,12 @@ type NodeSimilarity {
     CompanyOne: String
     CompanyTwo: String
     Similarity: Float
+}
+
+type CommonNeighbors {
+    CompanyOne: String
+    CompanyTwo: String
+    Score: Float
 }
 
 type ListOfInvoicesNotAssociatedWithCustomers {
@@ -137,6 +145,12 @@ type FilesByCompany {
 type FilesByCompany2 {
     FileName: String
     FiscalYear: Int
+}
+
+type RepresentantsByCompany {
+    Company: String
+    RepresentantsAsCustomer: [Customer]
+    RepresentantsAsSupplier: [Supplier]
 }
 
 type AuditFile {

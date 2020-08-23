@@ -30,6 +30,10 @@ public class Neo4jDataFetcher {
         return dataFetchingEnvironment -> GraphAlgorithms.nodeSimilarityAlgorithm(driver);
     }
 
+    public DataFetcher commonNeighbors(Driver driver){
+        return dataFetchingEnvironment -> GraphAlgorithms.commonNeighborsAlgorithm(driver);
+    }
+
     public DataFetcher getListOfInvoicesNotAssociatedWithCustomers(Driver driver) {
         return dataFetchingEnvironment -> Queries.obtainListOfInvoicesNotAssociatedWithCustomers(driver);
     }
@@ -52,6 +56,10 @@ public class Neo4jDataFetcher {
 
     public DataFetcher getListOfFilesByCompany(Driver driver) {
         return dataFetchingEnvironment -> Views.getListOfFilesByCompany(driver);
+    }
+
+    public DataFetcher getListOfCompanyRepresentants(Driver driver){
+        return dataFetchingEnvironment -> Views.getCompanyRepresentants(driver, dataFetchingEnvironment.getArgument("companyName"));
     }
 
     public DataFetcher getFileByName(Driver driver) {

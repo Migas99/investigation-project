@@ -55,6 +55,7 @@ public class QueryController {
                         .dataFetcher("pageRank", this.dataFetcher.pageRank(this.driver))
                         .dataFetcher("betweennessCentrality", this.dataFetcher.betweennessCentrality(this.driver))
                         .dataFetcher("nodeSimilarity", this.dataFetcher.nodeSimilarity(this.driver))
+                        .dataFetcher("commonNeighbors", this.dataFetcher.commonNeighbors(this.driver))
 
                         //Querys relativas as vistas e restrições, segundo a OCDE
                         .dataFetcher("getListOfInvoicesNotAssociatedWithCustomers", this.dataFetcher.getListOfInvoicesNotAssociatedWithCustomers(this.driver))
@@ -65,6 +66,7 @@ public class QueryController {
 
                         //Vistas normais
                         .dataFetcher("getListOfFilesByCompany", this.dataFetcher.getListOfFilesByCompany(this.driver))
+                        .dataFetcher("getListOfCompanyRepresentants", this.dataFetcher.getListOfCompanyRepresentants(this.driver))
                         .dataFetcher("getFileByName", this.dataFetcher.getFileByName(this.driver))
                 )
 

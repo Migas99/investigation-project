@@ -74,7 +74,7 @@ public class UploadController {
 
             if (Constraints.isFileNameUnique(this.driver, fileCopy.getName())) {
                 System.out.println("[SERVER] Starting to map the file: " + file.getOriginalFilename());
-                QueryConstructor query = StAX.processXMLToNeo4j(fileCopy);
+                QueryConstructor query = StAX.processXMLToGraph(fileCopy);
                 System.out.println("[SERVER] Importing to database the file " + fileCopy.getName() + " ... ");
                 Upload.uploadToDatabase(this.driver, query.getUploadQuery(), query.getParameters());
                 System.out.println("[SERVER] Done mapping the file: " + file.getOriginalFilename());

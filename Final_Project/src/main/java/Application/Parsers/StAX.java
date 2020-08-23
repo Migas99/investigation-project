@@ -24,7 +24,7 @@ public class StAX {
      *
      * @param XMLFile ficheiro XML
      */
-    public static QueryConstructor processXMLToNeo4j(File XMLFile) {
+    public static QueryConstructor processXMLToGraph(File XMLFile) {
 
         Mapper mapper = new Mapper(XMLFile.getName());
 

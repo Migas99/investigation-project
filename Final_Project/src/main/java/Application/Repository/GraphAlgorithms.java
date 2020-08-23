@@ -141,12 +141,12 @@ public class GraphAlgorithms {
     }
 
     /**
-     * INCOMPLETO - O algoritmo em si, não apresenta qualquer utilidade, penso.
-     * <p>
-     * Método responsável por correr o algoritmo node similarity. Este algoritmo atribuí uma pontuação
-     * entre 0 e 1, que indica o quão semelhantes dois nós são.
-     * O grafo no qual este algoritmo corre, é um grafo constituído apenas pelas empresas e as informações
-     * associadas a esta.
+     * ***************************
+     * **NÃO APRESENTA UTILIDADE**
+     * ***************************
+     * Devido à maneira como se encontra estruturada a informação no grafo (cada atributo divido em nós
+     * com relações entre si) este algoritmo não irá apresentar resultados satisfatórios. O algoritmo
+     * Common Neighbors irá então ser um bom substituto a este.
      *
      * @param driver instância do driver para comunicar com a base de dados
      * @return uma lista que irá conter o o grau de semelhança entre duas empresas
@@ -160,6 +160,35 @@ public class GraphAlgorithms {
                     + "WHERE ID(c1) = node1 AND ID(c2) = node2\n"
                     + "RETURN c1.CompanyName AS CompanyOne, c2.CompanyName AS CompanyTwo, similarity AS Similarity\n"
                     + "ORDER BY Similarity DESC\n"
+            ).list());
+
+            Iterator<Record> queryIterator = queryResults.iterator();
+            LinkedList<Map<String, Object>> results = new LinkedList<>();
+
+            while (queryIterator.hasNext()) {
+                results.add(queryIterator.next().asMap());
+            }
+
+            return results;
+        }
+    }
+
+    /**
+     * Método responsável por correr o algoritmo Common Neighbors.
+     * Este algoritmo irá calcular um score entre 0 e 1, que nos dirá o quão semelhante
+     * uma empresa é com outra, baseando-se nos atributos idênticos entre estas.
+     *
+     * @param driver instância do driver para comunicar com a base de dados
+     * @return uma lista que irá indicar a pontuação entre duas empresas
+     */
+    public static LinkedList<Map<String, Object>> commonNeighborsAlgorithm(Driver driver) {
+        try (Session session = driver.session()) {
+            List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
+                    + "MATCH (c1:" + Entities.Labels.Company + "),(c2:" + Entities.Labels.Company + ")\n"
+                    + "WHERE ID(c1) < ID(c2)\n"
+                    + "WITH c1, c2, gds.alpha.linkprediction.commonNeighbors(c1, c2) AS score\n"
+                    + "RETURN c1.CompanyName AS CompanyOne, c2.CompanyName AS CompanyTwo, score AS Score\n"
+                    + "ORDER BY Score DESC\n"
             ).list());
 
             Iterator<Record> queryIterator = queryResults.iterator();
