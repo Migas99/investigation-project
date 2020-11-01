@@ -26,7 +26,7 @@ public class GraphAlgorithms {
     public static LinkedList<Map<String, Object>> louvainAlgorithm(Driver driver) {
         try (Session session = driver.session()) {
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
-                    + "CALL gds.louvain.stream(" + getAnonymousGraphProjectionWithCompaniesRelatedToOthersAndTransactions() + ")\n"
+                    + "CALL gds.louvain.stream(" + getAnonymousGraphProjectionWithCompaniesAndInvoiceSales() + ")\n"
                     + "YIELD nodeId, communityId\n"
                     + "MATCH (c:" + Entities.Labels.Company + ")\n"
                     + "WHERE ID(c) = nodeId\n"
@@ -183,11 +183,17 @@ public class GraphAlgorithms {
      */
     public static LinkedList<Map<String, Object>> commonNeighborsAlgorithm(Driver driver) {
         try (Session session = driver.session()) {
+            String allRelations = "'HAS_BUILDING_NUMBER', 'HAS_STREET_NAME', 'HAS_ADDRESS_DETAIL', 'HAS_CITY', 'HAS_POSTAL_CODE', 'HAS_REGION', 'HAS_COUNTRY'," +
+                    " 'HAS_TELEPHONE', 'HAS_FAX', 'HAS_EMAIL', 'HAS_WEBSITE'";
+
             List<Record> queryResults = session.writeTransaction(tx -> tx.run(""
                     + "MATCH (c1:" + Entities.Labels.Company + "),(c2:" + Entities.Labels.Company + ")\n"
                     + "WHERE ID(c1) < ID(c2)\n"
-                    + "WITH c1, c2, gds.alpha.linkprediction.commonNeighbors(c1, c2) AS score\n"
-                    + "RETURN c1.CompanyName AS CompanyOne, c2.CompanyName AS CompanyTwo, score AS Score\n"
+                    + "WITH c1, c2\n"
+                    + "UNWIND [" + allRelations + "] AS relation\n"
+                    + "WITH c1, c2, gds.alpha.linkprediction.commonNeighbors(c1, c2, {relationshipQuery: relation}) AS score\n"
+                    + "WITH c1, c2, sum(score) AS scores\n"
+                    + "RETURN c1.CompanyName AS CompanyOne, c2.CompanyName AS CompanyTwo, scores / 11 AS Score\n"
                     + "ORDER BY Score DESC\n"
             ).list());
 

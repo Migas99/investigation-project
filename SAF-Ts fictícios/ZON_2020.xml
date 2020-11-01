@@ -1,0 +1,5038 @@
+<?xml version="1.0" encoding="Windows-1252" standalone="no"?>
+<AuditFile xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 ../schemas/SAF-T.xsd" xmlns:doc="urn:schemas-basda-org:schema-extensions:documentation">
+	<Header>
+		<AuditFileVersion>1.04_01</AuditFileVersion>
+		<CompanyID>507668839</CompanyID>
+		<TaxRegistrationNumber>507668839</TaxRegistrationNumber>
+		<TaxAccountingBasis>I</TaxAccountingBasis>
+		<CompanyName>ZON</CompanyName>
+		<CompanyAddress>
+			<BuildingNumber>50</BuildingNumber>
+			<StreetName>Rua António Ferreira Gomes</StreetName>
+			<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+			<City>Penafiel</City>
+			<PostalCode>4560-568</PostalCode>
+			<Region>Porto</Region>
+			<Country>PT</Country>
+		</CompanyAddress>
+		<FiscalYear>2020</FiscalYear>
+		<StartDate>2020-01-01</StartDate>
+		<EndDate>2020-12-31</EndDate>
+		<CurrencyCode>EUR</CurrencyCode>
+		<DateCreated>2020-06-06</DateCreated>
+		<TaxEntity>Sede</TaxEntity>
+		<ProductCompanyTaxID>503140600</ProductCompanyTaxID>
+		<SoftwareCertificateNumber>0030</SoftwareCertificateNumber>
+		<ProductID>ERP v750/PRIMAVERA Business Software Solutions</ProductID>
+		<ProductVersion>09.1507.1039</ProductVersion>
+	</Header>
+	<MasterFiles>
+		<GeneralLedgerAccounts>
+			<TaxonomyReference>S</TaxonomyReference>
+			<Account>
+				<AccountID>21</AccountID>
+				<AccountDescription>Clientes</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>32456.24</ClosingDebitBalance>
+				<ClosingCreditBalance>1200.00</ClosingCreditBalance>
+				<GroupingCategory>GR</GroupingCategory>
+			</Account>
+			<Account>
+				<AccountID>211</AccountID>
+				<AccountDescription>Clientes - c/c</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>32456.24</ClosingDebitBalance>
+				<ClosingCreditBalance>1200.00</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>21</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>2111</AccountID>
+				<AccountDescription>Clientes - c/c - M. Nacional</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>22370.24</ClosingDebitBalance>
+				<ClosingCreditBalance>1200.00</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>211</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>21111002</AccountID>
+				<AccountDescription>Sociedade Vidreira da Marinha, Lda.</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>735.08</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>2111</GroupingCode>
+				<TaxonomyCode>10</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>21111003</AccountID>
+				<AccountDescription>José Maria Fernandes &amp; Filhos, Lda.</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>4156.79</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>2111</GroupingCode>
+				<TaxonomyCode>10</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>21111004</AccountID>
+				<AccountDescription>Solução Z-Informática e Serv., Lda</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>4993.92</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>2111</GroupingCode>
+				<TaxonomyCode>10</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>21111006</AccountID>
+				<AccountDescription>NW-Eletrónica e Sistemas</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>5305.98</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>2111</GroupingCode>
+				<TaxonomyCode>10</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>21113001</AccountID>
+				<AccountDescription>Inforshow, Informática Comunicação</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>4797.60</ClosingDebitBalance>
+				<ClosingCreditBalance>1200.00</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>2111</GroupingCode>
+				<TaxonomyCode>10</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>21113002</AccountID>
+				<AccountDescription>MicroAvi, Inc.</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>2380.87</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>2111</GroupingCode>
+				<TaxonomyCode>10</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>2112</AccountID>
+				<AccountDescription>Clientes - c/c - M. Intrac.</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>10086.00</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>211</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>21122001</AccountID>
+				<AccountDescription>Soluciones Cad de Madrid, SA</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>5392.00</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>2112</GroupingCode>
+				<TaxonomyCode>11</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>21123004</AccountID>
+				<AccountDescription>Soluciones Cad de Madrid, SA</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>4694.00</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>2112</GroupingCode>
+				<TaxonomyCode>11</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>22</AccountID>
+				<AccountDescription>Fornecedores</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>0.00</ClosingDebitBalance>
+				<ClosingCreditBalance>9429.98</ClosingCreditBalance>
+				<GroupingCategory>GR</GroupingCategory>
+			</Account>
+			<Account>
+				<AccountID>221</AccountID>
+				<AccountDescription>Fornecedores - c/c</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>0.00</ClosingDebitBalance>
+				<ClosingCreditBalance>9429.98</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>22</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>2211</AccountID>
+				<AccountDescription>Fornecedores - c/c - M.Nacional</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>0.00</ClosingDebitBalance>
+				<ClosingCreditBalance>9429.98</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>221</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>22111001</AccountID>
+				<AccountDescription>Sociedade de Fornecimentos, Lda.</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>0.00</ClosingDebitBalance>
+				<ClosingCreditBalance>477.51</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>2211</GroupingCode>
+				<TaxonomyCode>37</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>22111003</AccountID>
+				<AccountDescription>Companhia de Hardware</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>0.00</ClosingDebitBalance>
+				<ClosingCreditBalance>2119.68</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>2211</GroupingCode>
+				<TaxonomyCode>37</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>22111004</AccountID>
+				<AccountDescription>Distribuição Informática</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>0.00</ClosingDebitBalance>
+				<ClosingCreditBalance>5724.72</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>2211</GroupingCode>
+				<TaxonomyCode>37</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>22111005</AccountID>
+				<AccountDescription>Distribuidora X, SA.</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>0.00</ClosingDebitBalance>
+				<ClosingCreditBalance>1108.07</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>2211</GroupingCode>
+				<TaxonomyCode>37</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>24</AccountID>
+				<AccountDescription>Estados e Outros Entes Públicos</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>1771.67</ClosingDebitBalance>
+				<ClosingCreditBalance>3728.37</ClosingCreditBalance>
+				<GroupingCategory>GR</GroupingCategory>
+			</Account>
+			<Account>
+				<AccountID>243</AccountID>
+				<AccountDescription>Imposto S/Valor Acrescentado - Iva</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>1771.67</ClosingDebitBalance>
+				<ClosingCreditBalance>3728.37</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>24</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>2432</AccountID>
+				<AccountDescription>Iva - Dedutível</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>1571.67</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>243</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>24321</AccountID>
+				<AccountDescription>Existências</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>1571.67</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>2432</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>243211</AccountID>
+				<AccountDescription>Existências Continente</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>1571.67</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>24321</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>2432113</AccountID>
+				<AccountDescription>Ex. - Taxa Normal</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>1571.67</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>243211</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>243211320</AccountID>
+				<AccountDescription>Ex. - Taxa Normal-Tx.20%</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>1571.67</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>2432113</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>2432113201</AccountID>
+				<AccountDescription>Ex. Tx. Nm. - Mercado Nacional</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>1571.67</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>243211320</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>24321132011</AccountID>
+				<AccountDescription>Ex. Tx. Nm..- MN-TT/Dedutível</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>1571.67</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>2432113201</GroupingCode>
+				<TaxonomyCode>74</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>2433</AccountID>
+				<AccountDescription>Iva - Liquidado</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>200.00</ClosingDebitBalance>
+				<ClosingCreditBalance>3728.37</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>243</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>24331</AccountID>
+				<AccountDescription>Operacoes Gerais</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>200.00</ClosingDebitBalance>
+				<ClosingCreditBalance>3728.37</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>2433</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>243311</AccountID>
+				<AccountDescription>Iva Liq. - Vendas</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>200.00</ClosingDebitBalance>
+				<ClosingCreditBalance>3728.37</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>24331</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>2433111</AccountID>
+				<AccountDescription>Iva Liq. - Vendas-Continente</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>200.00</ClosingDebitBalance>
+				<ClosingCreditBalance>3728.37</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>243311</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>24331113</AccountID>
+				<AccountDescription>Iva Liq. - Taxa Normal</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>200.00</ClosingDebitBalance>
+				<ClosingCreditBalance>3728.37</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>2433111</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>2433111320</AccountID>
+				<AccountDescription>Iva Liq. - Taxa Normal-Tx.20%</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>200.00</ClosingDebitBalance>
+				<ClosingCreditBalance>3728.37</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>24331113</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>24331113201</AccountID>
+				<AccountDescription>Iva Liq.- Tx. Nm.- Mercado Nacional</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>200.00</ClosingDebitBalance>
+				<ClosingCreditBalance>3728.37</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>2433111320</GroupingCode>
+				<TaxonomyCode>75</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>31</AccountID>
+				<AccountDescription>Compras</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>7858.31</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GR</GroupingCategory>
+			</Account>
+			<Account>
+				<AccountID>312</AccountID>
+				<AccountDescription>Compras-Mercadorias</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>7858.31</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>31</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>3121</AccountID>
+				<AccountDescription>Compras-Merc-Mercado Nacional</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>7858.31</ClosingDebitBalance>
+				<ClosingCreditBalance>0.00</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>312</GroupingCode>
+				<TaxonomyCode>157</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>71</AccountID>
+				<AccountDescription>Vendas</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>1000.00</ClosingDebitBalance>
+				<ClosingCreditBalance>28727.87</ClosingCreditBalance>
+				<GroupingCategory>GR</GroupingCategory>
+			</Account>
+			<Account>
+				<AccountID>711</AccountID>
+				<AccountDescription>Vendas-Mercadorias</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>1000.00</ClosingDebitBalance>
+				<ClosingCreditBalance>28727.87</ClosingCreditBalance>
+				<GroupingCategory>GA</GroupingCategory>
+				<GroupingCode>71</GroupingCode>
+			</Account>
+			<Account>
+				<AccountID>7111</AccountID>
+				<AccountDescription>Vendas-Merc.-Mercado Nacional</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>1000.00</ClosingDebitBalance>
+				<ClosingCreditBalance>18641.87</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>711</GroupingCode>
+				<TaxonomyCode>506</TaxonomyCode>
+			</Account>
+			<Account>
+				<AccountID>7112</AccountID>
+				<AccountDescription>Vendas-Merc.-Mercado Intrac.</AccountDescription>
+				<OpeningDebitBalance>0.00</OpeningDebitBalance>
+				<OpeningCreditBalance>0.00</OpeningCreditBalance>
+				<ClosingDebitBalance>0.00</ClosingDebitBalance>
+				<ClosingCreditBalance>10086.00</ClosingCreditBalance>
+				<GroupingCategory>GM</GroupingCategory>
+				<GroupingCode>711</GroupingCode>
+				<TaxonomyCode>506</TaxonomyCode>
+			</Account>
+		</GeneralLedgerAccounts>
+		<Customer>
+			<CustomerID>Consumidor final</CustomerID>
+			<AccountID>Desconhecido</AccountID>
+			<CustomerTaxID>999999990</CustomerTaxID>
+			<CompanyName>Consumidor final</CompanyName>
+			<BillingAddress>
+				<AddressDetail>Desconhecido</AddressDetail>
+				<City>Desconhecido</City>
+				<PostalCode>Desconhecido</PostalCode>
+				<Country>Desconhecido</Country>
+			</BillingAddress>
+			<ShipToAddress>
+				<AddressDetail>Desconhecido</AddressDetail>
+				<City>Desconhecido</City>
+				<PostalCode>Desconhecido</PostalCode>
+				<Country>Desconhecido</Country>
+			</ShipToAddress>
+			<SelfBillingIndicator>0</SelfBillingIndicator>
+		</Customer>
+		<Customer>
+			<CustomerID>ES989922456_C</CustomerID>
+			<AccountID>21123004</AccountID>
+			<CustomerTaxID>989922456</CustomerTaxID>
+			<CompanyName>Soluciones Cad de Madrid, SA</CompanyName>
+			<BillingAddress>
+				<AddressDetail>PASSEO DE PORTUGAL, 464646</AddressDetail>
+				<City>VILANUEVA DE ARRIBA</City>
+				<PostalCode>61001</PostalCode>
+				<Country>ES</Country>
+			</BillingAddress>
+			<ShipToAddress>
+				<AddressDetail>PASSEO DE PORTUGAL, 464646</AddressDetail>
+				<City>VILANUEVA DE ARRIBA</City>
+				<PostalCode>61001</PostalCode>
+				<Country>ES</Country>
+			</ShipToAddress>
+			<Telephone>00.034.1.474747447</Telephone>
+			<Fax>00.034.1.4374747474</Fax>
+			<Website>http://alcad.es</Website>
+			<SelfBillingIndicator>0</SelfBillingIndicator>
+		</Customer>
+		<Customer>
+			<CustomerID>AO823892388_C</CustomerID>
+			<AccountID>21113001</AccountID>
+			<CustomerTaxID>823892388</CustomerTaxID>
+			<CompanyName>Inforshow, Informática Comunicação</CompanyName>
+			<BillingAddress>
+				<AddressDetail>Av. dos Coqueiros, 464646</AddressDetail>
+				<City>Luanda</City>
+				<PostalCode>0000</PostalCode>
+				<Country>AO</Country>
+			</BillingAddress>
+			<ShipToAddress>
+				<AddressDetail>Av. dos Coqueiros, 464646</AddressDetail>
+				<City>Luanda</City>
+				<PostalCode>0000</PostalCode>
+				<Country>AO</Country>
+			</ShipToAddress>
+			<Telephone>00.66.9237293377</Telephone>
+			<Fax>00.66.464464646</Fax>
+			<SelfBillingIndicator>0</SelfBillingIndicator>
+		</Customer>
+		<Customer>
+			<CustomerID>PT505678900_C</CustomerID>
+			<AccountID>21111003</AccountID>
+			<CustomerTaxID>505678900</CustomerTaxID>
+			<CompanyName>José Maria Fernandes e Filhos, Lda.</CompanyName>
+			<BillingAddress>
+				<AddressDetail>Av. do Norte, 484848</AddressDetail>
+				<City>Porto</City>
+				<PostalCode>4100-002</PostalCode>
+				<Country>PT</Country>
+			</BillingAddress>
+			<ShipToAddress>
+				<AddressDetail>Av. do Norte, 484848</AddressDetail>
+				<City>Porto</City>
+				<PostalCode>4100-002</PostalCode>
+				<Country>PT</Country>
+			</ShipToAddress>
+			<Telephone>02.24949  49499</Telephone>
+			<Fax>2.2498448499</Fax>
+			<SelfBillingIndicator>0</SelfBillingIndicator>
+		</Customer>
+		<Customer>
+			<CustomerID>GB9393878719-A_C</CustomerID>
+			<AccountID>21113002</AccountID>
+			<CustomerTaxID>9393878719-A</CustomerTaxID>
+			<CompanyName>MicroAvi, Inc.</CompanyName>
+			<BillingAddress>
+				<AddressDetail>34, ROYAL AVENUE</AddressDetail>
+				<City>CHELSEA</City>
+				<PostalCode>87999</PostalCode>
+				<Country>GB</Country>
+			</BillingAddress>
+			<ShipToAddress>
+				<AddressDetail>34, ROYAL AVENUE</AddressDetail>
+				<City>CHELSEA</City>
+				<PostalCode>87999</PostalCode>
+				<Country>GB</Country>
+			</ShipToAddress>
+			<Telephone>00.78.3883383838</Telephone>
+			<Fax>00.78.383838112</Fax>
+			<SelfBillingIndicator>0</SelfBillingIndicator>
+		</Customer>
+		<Customer>
+			<CustomerID>PT503150002_C</CustomerID>
+			<AccountID>21111006</AccountID>
+			<CustomerTaxID>503150002</CustomerTaxID>
+			<CompanyName>NW-Electrónica e Sistemas</CompanyName>
+			<BillingAddress>
+				<AddressDetail>Av. Estados Unidos América, 44773</AddressDetail>
+				<City>Lisboa</City>
+				<PostalCode>1200-003</PostalCode>
+				<Country>PT</Country>
+			</BillingAddress>
+			<ShipToAddress>
+				<AddressDetail>Av. Estados Unidos América, 44773</AddressDetail>
+				<City>Lisboa</City>
+				<PostalCode>1200-003</PostalCode>
+				<Country>PT</Country>
+			</ShipToAddress>
+			<Telephone>01.383483382</Telephone>
+			<Fax>01.327347373</Fax>
+			<SelfBillingIndicator>0</SelfBillingIndicator>
+		</Customer>
+		<Customer>
+			<CustomerID>PT503191604_C</CustomerID>
+			<AccountID>21111002</AccountID>
+			<CustomerTaxID>503191604</CustomerTaxID>
+			<CompanyName>Sociedade Vidreira da Marinha, Lda.</CompanyName>
+			<BillingAddress>
+				<AddressDetail>Av. dos Vidros,546756</AddressDetail>
+				<City>S.João dos Vidros</City>
+				<PostalCode>3000-001</PostalCode>
+				<Country>PT</Country>
+			</BillingAddress>
+			<ShipToAddress>
+				<AddressDetail>Av. dos Vidros,546756</AddressDetail>
+				<City>S.João dos Vidros</City>
+				<PostalCode>3000-001</PostalCode>
+				<Country>PT</Country>
+			</ShipToAddress>
+			<Telephone>60012222</Telephone>
+			<Fax>600121212</Fax>
+			<SelfBillingIndicator>0</SelfBillingIndicator>
+		</Customer>
+		<Customer>
+			<CustomerID>PT503160300_C</CustomerID>
+			<AccountID>21111004</AccountID>
+			<CustomerTaxID>503160300</CustomerTaxID>
+			<CompanyName>Solução Z-Informática e Serv., Lda</CompanyName>
+			<BillingAddress>
+				<AddressDetail>AV. DA BOAVISTA, 373737</AddressDetail>
+				<City>Porto</City>
+				<PostalCode>4100-002</PostalCode>
+				<Country>PT</Country>
+			</BillingAddress>
+			<ShipToAddress>
+				<AddressDetail>AV. DA BOAVISTA, 373737</AddressDetail>
+				<City>Porto</City>
+				<PostalCode>4100-002</PostalCode>
+				<Country>PT</Country>
+			</ShipToAddress>
+			<Telephone>2.3843338</Telephone>
+			<Fax>2.39349339</Fax>
+			<SelfBillingIndicator>0</SelfBillingIndicator>
+		</Customer>
+		<Customer>
+			<CustomerID>ES376123933331_C</CustomerID>
+			<AccountID>21122001</AccountID>
+			<CustomerTaxID>376123933331</CustomerTaxID>
+			<CompanyName>Soluciones de Software de Espanã</CompanyName>
+			<BillingAddress>
+				<AddressDetail>C. DE COLOMBO, 4654646 7º E</AddressDetail>
+				<City>Barcelona</City>
+				<PostalCode>71000</PostalCode>
+				<Country>ES</Country>
+			</BillingAddress>
+			<ShipToAddress>
+				<AddressDetail>C. DE COLOMBO, 4654646 7º E</AddressDetail>
+				<City>Barcelona</City>
+				<PostalCode>71000</PostalCode>
+				<Country>ES</Country>
+			</ShipToAddress>
+			<Telephone>00.34.33.383833838</Telephone>
+			<Fax>00.34.33.383838331</Fax>
+			<SelfBillingIndicator>0</SelfBillingIndicator>
+		</Customer>
+		<Supplier>
+			<SupplierID>503144703_F</SupplierID>
+			<AccountID>22111001</AccountID>
+			<SupplierTaxID>503144703</SupplierTaxID>
+			<CompanyName>Sociedade de Fornecimentos, Lda.</CompanyName>
+			<BillingAddress>
+				<AddressDetail>Av. do Sul, 387383</AddressDetail>
+				<City>Lisboa</City>
+				<PostalCode>1000-001</PostalCode>
+				<Country>PT</Country>
+			</BillingAddress>
+			<ShipFromAddress>
+				<AddressDetail>Av. do Sul, 387383</AddressDetail>
+				<City>Lisboa</City>
+				<PostalCode>1000-001</PostalCode>
+				<Country>PT</Country>
+			</ShipFromAddress>
+			<Telephone>21383833838</Telephone>
+			<Fax>21383833838</Fax>
+			<Website>http://socfornecimento.pt</Website>
+			<SelfBillingIndicator>0</SelfBillingIndicator>
+		</Supplier>
+		<Product>
+			<ProductType>P</ProductType>
+			<ProductCode>A0001</ProductCode>
+			<ProductGroup>Computadores</ProductGroup>
+			<ProductDescription>Pentium D925 Dual Core</ProductDescription>
+			<ProductNumberCode>5601234901248</ProductNumberCode>
+		</Product>
+		<Product>
+			<ProductType>P</ProductType>
+			<ProductCode>A0002</ProductCode>
+			<ProductGroup>Computadores</ProductGroup>
+			<ProductDescription>Pentium 4 945+ Dual Core 3.4GHZ</ProductDescription>
+			<ProductNumberCode>5601234982637</ProductNumberCode>
+		</Product>
+		<Product>
+			<ProductType>P</ProductType>
+			<ProductCode>A0003</ProductCode>
+			<ProductGroup>Computadores</ProductGroup>
+			<ProductDescription>Processador INTEL CORE 2 DUO E6300 1.86GHZ</ProductDescription>
+			<ProductNumberCode>5601234875527</ProductNumberCode>
+		</Product>
+		<Product>
+			<ProductType>P</ProductType>
+			<ProductCode>A0004</ProductCode>
+			<ProductGroup>Computadores</ProductGroup>
+			<ProductDescription>Processador Intel D326 2.5GHz</ProductDescription>
+			<ProductNumberCode>A0004</ProductNumberCode>
+		</Product>
+		<Product>
+			<ProductType>P</ProductType>
+			<ProductCode>A0006</ProductCode>
+			<ProductGroup>Mobiliário</ProductGroup>
+			<ProductDescription>Secretária 1,50*0,70*0,70</ProductDescription>
+			<ProductNumberCode>A0006</ProductNumberCode>
+		</Product>
+		<Product>
+			<ProductType>P</ProductType>
+			<ProductCode>B0001</ProductCode>
+			<ProductGroup>Monitores</ProductGroup>
+			<ProductDescription>Monitor 17" TFT L1752S</ProductDescription>
+			<ProductNumberCode>B0001</ProductNumberCode>
+		</Product>
+		<Product>
+			<ProductType>P</ProductType>
+			<ProductCode>B0008</ProductCode>
+			<ProductGroup>Ratos</ProductGroup>
+			<ProductDescription>Rato R17C</ProductDescription>
+			<ProductNumberCode>B0008</ProductNumberCode>
+		</Product>
+		<Product>
+			<ProductType>P</ProductType>
+			<ProductCode>C0001</ProductCode>
+			<ProductGroup>Multimédia</ProductGroup>
+			<ProductDescription>VideoProjector EMP-S4</ProductDescription>
+			<ProductNumberCode>5601234106480</ProductNumberCode>
+		</Product>
+		<Product>
+			<ProductType>P</ProductType>
+			<ProductCode>D0001</ProductCode>
+			<ProductGroup>Teclados</ProductGroup>
+			<ProductDescription>Teclado Ergonómico PT-776</ProductDescription>
+			<ProductNumberCode>D0001</ProductNumberCode>
+		</Product>
+		<Product>
+			<ProductType>P</ProductType>
+			<ProductCode>D0002</ProductCode>
+			<ProductGroup>Microfones</ProductGroup>
+			<ProductDescription>Microfone MicroTec M1</ProductDescription>
+			<ProductNumberCode>D0002</ProductNumberCode>
+		</Product>
+		<Product>
+			<ProductType>O</ProductType>
+			<ProductCode>Especial</ProductCode>
+			<ProductGroup>Sem família</ProductGroup>
+			<ProductDescription>Linha especial</ProductDescription>
+			<ProductNumberCode>Especial</ProductNumberCode>
+		</Product>
+		<Product>
+			<ProductType>P</ProductType>
+			<ProductCode>TAPETE</ProductCode>
+			<ProductGroup>Acessórios</ProductGroup>
+			<ProductDescription>Tapete de Rato 2.ª Geração</ProductDescription>
+			<ProductNumberCode>TAPETE</ProductNumberCode>
+		</Product>
+		<TaxTable>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT</TaxCountryRegion>
+				<TaxCode>ISE</TaxCode>
+				<Description>Isenta</Description>
+				<TaxPercentage>0.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT</TaxCountryRegion>
+				<TaxCode>OUT</TaxCode>
+				<Description>Outras</Description>
+				<TaxPercentage>4.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT</TaxCountryRegion>
+				<TaxCode>RED</TaxCode>
+				<Description>Reduzida</Description>
+				<TaxPercentage>5.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT</TaxCountryRegion>
+				<TaxCode>OUT</TaxCode>
+				<Description>Outras</Description>
+				<TaxPercentage>8.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT</TaxCountryRegion>
+				<TaxCode>OUT</TaxCode>
+				<Description>Outras</Description>
+				<TaxPercentage>9.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT</TaxCountryRegion>
+				<TaxCode>INT</TaxCode>
+				<Description>Intermédia</Description>
+				<TaxPercentage>12.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT</TaxCountryRegion>
+				<TaxCode>OUT</TaxCode>
+				<Description>Outras</Description>
+				<TaxPercentage>14.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT</TaxCountryRegion>
+				<TaxCode>OUT</TaxCode>
+				<Description>Outras</Description>
+				<TaxPercentage>15.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT</TaxCountryRegion>
+				<TaxCode>NOR</TaxCode>
+				<Description>Normal</Description>
+				<TaxPercentage>20.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT</TaxCountryRegion>
+				<TaxCode>NOR</TaxCode>
+				<Description>Normal</Description>
+				<TaxPercentage>21.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT</TaxCountryRegion>
+				<TaxCode>NOR</TaxCode>
+				<Description>Normal</Description>
+				<TaxPercentage>23.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT</TaxCountryRegion>
+				<TaxCode>OUT</TaxCode>
+				<Description>Outras</Description>
+				<TaxPercentage>23.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT-AC</TaxCountryRegion>
+				<TaxCode>ISE</TaxCode>
+				<Description>Isenta</Description>
+				<TaxPercentage>0.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT-AC</TaxCountryRegion>
+				<TaxCode>OUT</TaxCode>
+				<Description>Outras</Description>
+				<TaxPercentage>4.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT-AC</TaxCountryRegion>
+				<TaxCode>OUT</TaxCode>
+				<Description>Outras</Description>
+				<TaxPercentage>9.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT-AC</TaxCountryRegion>
+				<TaxCode>OUT</TaxCode>
+				<Description>Outras</Description>
+				<TaxPercentage>16.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT-MA</TaxCountryRegion>
+				<TaxCode>ISE</TaxCode>
+				<Description>Isenta</Description>
+				<TaxPercentage>0.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT-MA</TaxCountryRegion>
+				<TaxCode>OUT</TaxCode>
+				<Description>Outras</Description>
+				<TaxPercentage>5.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT-MA</TaxCountryRegion>
+				<TaxCode>OUT</TaxCode>
+				<Description>Outras</Description>
+				<TaxPercentage>12.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IVA</TaxType>
+				<TaxCountryRegion>PT-MA</TaxCountryRegion>
+				<TaxCode>OUT</TaxCode>
+				<Description>Outras</Description>
+				<TaxPercentage>22.00</TaxPercentage>
+			</TaxTableEntry>
+			<TaxTableEntry>
+				<TaxType>IS</TaxType>
+				<TaxCountryRegion>PT</TaxCountryRegion>
+				<TaxCode>ISE</TaxCode>
+				<Description>Isento</Description>
+				<TaxPercentage>0.00</TaxPercentage>
+			</TaxTableEntry>
+		</TaxTable>
+	</MasterFiles>
+	<GeneralLedgerEntries>
+		<NumberOfEntries>52</NumberOfEntries>
+		<TotalDebit>43086.22</TotalDebit>
+		<TotalCredit>43086.22</TotalCredit>
+		<Journal>
+			<JournalID>00041</JournalID>
+			<Description>Compras - MN</Description>
+			<Transaction>
+				<TransactionID>2020-01-01 00041 10004</TransactionID>
+				<Period>1</Period>
+				<TransactionDate>2020-01-01</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 1/B</Description>
+				<DocArchivalNumber>10004</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-03</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111003</AccountID>
+						<SourceDocumentID>VFA B/1</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T15:43:32</SystemEntryDate>
+						<Description>VFA Nº 1/B</Description>
+						<CreditAmount>1150.08</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/1</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T15:43:32</SystemEntryDate>
+						<Description>VFA Nº 1/B</Description>
+						<DebitAmount>191.68</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/1</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T15:43:32</SystemEntryDate>
+						<Description>VFA Nº 1/B</Description>
+						<DebitAmount>958.40</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-01-02 00041 10001</TransactionID>
+				<Period>1</Period>
+				<TransactionDate>2020-01-02</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 2/B</Description>
+				<DocArchivalNumber>10001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-02</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111004</AccountID>
+						<SourceDocumentID>VFA B/2</SourceDocumentID>
+						<SystemEntryDate>2020-06-02T16:41:20</SystemEntryDate>
+						<Description>VFA Nº 2/B</Description>
+						<CreditAmount>546.00</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/2</SourceDocumentID>
+						<SystemEntryDate>2020-06-02T16:41:20</SystemEntryDate>
+						<Description>VFA Nº 2/B</Description>
+						<DebitAmount>91.00</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/2</SourceDocumentID>
+						<SystemEntryDate>2020-06-02T16:41:20</SystemEntryDate>
+						<Description>VFA Nº 2/B</Description>
+						<DebitAmount>455.00</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-01-10 00041 10002</TransactionID>
+				<Period>1</Period>
+				<TransactionDate>2020-01-10</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 3/B</Description>
+				<DocArchivalNumber>10002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-03</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111005</AccountID>
+						<SourceDocumentID>VFA B/3</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T14:51:45</SystemEntryDate>
+						<Description>VFA Nº 3/B</Description>
+						<CreditAmount>46.80</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/3</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T14:51:45</SystemEntryDate>
+						<Description>VFA Nº 3/B</Description>
+						<DebitAmount>7.80</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/3</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T14:51:45</SystemEntryDate>
+						<Description>VFA Nº 3/B</Description>
+						<DebitAmount>39.00</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-01-10 00041 10003</TransactionID>
+				<Period>1</Period>
+				<TransactionDate>2020-01-10</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 4/B</Description>
+				<DocArchivalNumber>10003</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-03</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111004</AccountID>
+						<SourceDocumentID>VFA B/4</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T15:41:05</SystemEntryDate>
+						<Description>VFA Nº 4/B</Description>
+						<CreditAmount>2184.00</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/4</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T15:41:05</SystemEntryDate>
+						<Description>VFA Nº 4/B</Description>
+						<DebitAmount>364.00</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/4</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T15:41:05</SystemEntryDate>
+						<Description>VFA Nº 4/B</Description>
+						<DebitAmount>1820.00</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-02-05 00041 20001</TransactionID>
+				<Period>2</Period>
+				<TransactionDate>2020-02-05</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 5/B</Description>
+				<DocArchivalNumber>20001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-04</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111004</AccountID>
+						<SourceDocumentID>VFA B/5</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:32:43</SystemEntryDate>
+						<Description>VFA Nº 5/B</Description>
+						<CreditAmount>718.32</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/5</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:32:43</SystemEntryDate>
+						<Description>VFA Nº 5/B</Description>
+						<DebitAmount>119.72</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/5</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:32:43</SystemEntryDate>
+						<Description>VFA Nº 5/B</Description>
+						<DebitAmount>598.60</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-03-01 00041 30001</TransactionID>
+				<Period>3</Period>
+				<TransactionDate>2020-03-01</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 6/B</Description>
+				<DocArchivalNumber>30001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-04</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111005</AccountID>
+						<SourceDocumentID>VFA B/6</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:41:11</SystemEntryDate>
+						<Description>VFA Nº 6/B</Description>
+						<CreditAmount>7.80</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/6</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:41:11</SystemEntryDate>
+						<Description>VFA Nº 6/B</Description>
+						<DebitAmount>1.30</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/6</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:41:11</SystemEntryDate>
+						<Description>VFA Nº 6/B</Description>
+						<DebitAmount>6.50</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-03-15 00041 30002</TransactionID>
+				<Period>3</Period>
+				<TransactionDate>2020-03-15</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 7/B</Description>
+				<DocArchivalNumber>30002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111004</AccountID>
+						<SourceDocumentID>VFA B/7</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:36:25</SystemEntryDate>
+						<Description>VFA Nº 7/B</Description>
+						<CreditAmount>1197.60</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/7</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:36:25</SystemEntryDate>
+						<Description>VFA Nº 7/B</Description>
+						<DebitAmount>199.60</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/7</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:36:25</SystemEntryDate>
+						<Description>VFA Nº 7/B</Description>
+						<DebitAmount>998.00</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-04-12 00041 40001</TransactionID>
+				<Period>4</Period>
+				<TransactionDate>2020-04-12</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 8/B</Description>
+				<DocArchivalNumber>40001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111005</AccountID>
+						<SourceDocumentID>VFA B/8</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:37:31</SystemEntryDate>
+						<Description>VFA Nº 8/B</Description>
+						<CreditAmount>354.90</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/8</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:37:31</SystemEntryDate>
+						<Description>VFA Nº 8/B</Description>
+						<DebitAmount>59.15</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/8</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:37:31</SystemEntryDate>
+						<Description>VFA Nº 8/B</Description>
+						<DebitAmount>295.75</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-04-24 00041 40002</TransactionID>
+				<Period>4</Period>
+				<TransactionDate>2020-04-24</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 9/B</Description>
+				<DocArchivalNumber>40002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111001</AccountID>
+						<SourceDocumentID>VFA B/9</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:38:23</SystemEntryDate>
+						<Description>VFA Nº 9/B</Description>
+						<CreditAmount>180.00</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/9</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:38:23</SystemEntryDate>
+						<Description>VFA Nº 9/B</Description>
+						<DebitAmount>30.00</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/9</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:38:23</SystemEntryDate>
+						<Description>VFA Nº 9/B</Description>
+						<DebitAmount>150.00</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-05-03 00041 50001</TransactionID>
+				<Period>5</Period>
+				<TransactionDate>2020-05-03</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 10/B</Description>
+				<DocArchivalNumber>50001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111004</AccountID>
+						<SourceDocumentID>VFA B/10</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:39:40</SystemEntryDate>
+						<Description>VFA Nº 10/B</Description>
+						<CreditAmount>28.80</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/10</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:39:40</SystemEntryDate>
+						<Description>VFA Nº 10/B</Description>
+						<DebitAmount>4.80</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/10</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:39:40</SystemEntryDate>
+						<Description>VFA Nº 10/B</Description>
+						<DebitAmount>24.00</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-05-18 00041 50002</TransactionID>
+				<Period>5</Period>
+				<TransactionDate>2020-05-18</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 11/B</Description>
+				<DocArchivalNumber>50002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111001</AccountID>
+						<SourceDocumentID>VFA B/11</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:40:47</SystemEntryDate>
+						<Description>VFA Nº 11/B</Description>
+						<CreditAmount>35.92</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/11</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:40:47</SystemEntryDate>
+						<Description>VFA Nº 11/B</Description>
+						<DebitAmount>5.99</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/11</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:40:47</SystemEntryDate>
+						<Description>VFA Nº 11/B</Description>
+						<DebitAmount>29.93</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-06-09 00041 60001</TransactionID>
+				<Period>6</Period>
+				<TransactionDate>2020-06-09</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 12/B</Description>
+				<DocArchivalNumber>60001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111003</AccountID>
+						<SourceDocumentID>VFA B/12</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:41:54</SystemEntryDate>
+						<Description>VFA Nº 12/B</Description>
+						<CreditAmount>479.04</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/12</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:41:54</SystemEntryDate>
+						<Description>VFA Nº 12/B</Description>
+						<DebitAmount>79.84</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/12</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:41:54</SystemEntryDate>
+						<Description>VFA Nº 12/B</Description>
+						<DebitAmount>399.20</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-06-22 00041 60002</TransactionID>
+				<Period>6</Period>
+				<TransactionDate>2020-06-22</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 13/B</Description>
+				<DocArchivalNumber>60002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111005</AccountID>
+						<SourceDocumentID>VFA B/13</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:43:06</SystemEntryDate>
+						<Description>VFA Nº 13/B</Description>
+						<CreditAmount>389.22</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/13</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:43:06</SystemEntryDate>
+						<Description>VFA Nº 13/B</Description>
+						<DebitAmount>64.87</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/13</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:43:06</SystemEntryDate>
+						<Description>VFA Nº 13/B</Description>
+						<DebitAmount>324.35</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-07-07 00041 70001</TransactionID>
+				<Period>7</Period>
+				<TransactionDate>2020-07-07</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 14/B</Description>
+				<DocArchivalNumber>70001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111004</AccountID>
+						<SourceDocumentID>VFA B/14</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:43:51</SystemEntryDate>
+						<Description>VFA Nº 14/B</Description>
+						<CreditAmount>475.20</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/14</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:43:51</SystemEntryDate>
+						<Description>VFA Nº 14/B</Description>
+						<DebitAmount>79.20</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/14</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:43:51</SystemEntryDate>
+						<Description>VFA Nº 14/B</Description>
+						<DebitAmount>396.00</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-07-20 00041 70002</TransactionID>
+				<Period>7</Period>
+				<TransactionDate>2020-07-20</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 15/B</Description>
+				<DocArchivalNumber>70002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111001</AccountID>
+						<SourceDocumentID>VFA B/15</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:44:32</SystemEntryDate>
+						<Description>VFA Nº 15/B</Description>
+						<CreditAmount>261.59</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/15</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:44:32</SystemEntryDate>
+						<Description>VFA Nº 15/B</Description>
+						<DebitAmount>43.60</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/15</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:44:32</SystemEntryDate>
+						<Description>VFA Nº 15/B</Description>
+						<DebitAmount>217.99</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-08-17 00041 80001</TransactionID>
+				<Period>8</Period>
+				<TransactionDate>2020-08-17</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 16/B</Description>
+				<DocArchivalNumber>80001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111005</AccountID>
+						<SourceDocumentID>VFA B/16</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:45:44</SystemEntryDate>
+						<Description>VFA Nº 16/B</Description>
+						<CreditAmount>154.44</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/16</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:45:44</SystemEntryDate>
+						<Description>VFA Nº 16/B</Description>
+						<DebitAmount>25.74</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/16</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:45:44</SystemEntryDate>
+						<Description>VFA Nº 16/B</Description>
+						<DebitAmount>128.70</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-09-12 00041 90001</TransactionID>
+				<Period>9</Period>
+				<TransactionDate>2020-09-12</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 17/B</Description>
+				<DocArchivalNumber>90001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111003</AccountID>
+						<SourceDocumentID>VFA B/17</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:46:33</SystemEntryDate>
+						<Description>VFA Nº 17/B</Description>
+						<CreditAmount>11.52</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/17</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:46:33</SystemEntryDate>
+						<Description>VFA Nº 17/B</Description>
+						<DebitAmount>1.92</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/17</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:46:33</SystemEntryDate>
+						<Description>VFA Nº 17/B</Description>
+						<DebitAmount>9.60</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-09-29 00041 90002</TransactionID>
+				<Period>9</Period>
+				<TransactionDate>2020-09-29</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 18/B</Description>
+				<DocArchivalNumber>90002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111005</AccountID>
+						<SourceDocumentID>VFA B/18</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:47:47</SystemEntryDate>
+						<Description>VFA Nº 18/B</Description>
+						<CreditAmount>0.47</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/18</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:47:47</SystemEntryDate>
+						<Description>VFA Nº 18/B</Description>
+						<DebitAmount>0.08</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/18</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:47:47</SystemEntryDate>
+						<Description>VFA Nº 18/B</Description>
+						<DebitAmount>0.39</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-10-18 00041 100001</TransactionID>
+				<Period>10</Period>
+				<TransactionDate>2020-10-18</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 19/B</Description>
+				<DocArchivalNumber>100001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111004</AccountID>
+						<SourceDocumentID>VFA B/19</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:48:50</SystemEntryDate>
+						<Description>VFA Nº 19/B</Description>
+						<CreditAmount>546.00</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/19</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:48:50</SystemEntryDate>
+						<Description>VFA Nº 19/B</Description>
+						<DebitAmount>91.00</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/19</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:48:50</SystemEntryDate>
+						<Description>VFA Nº 19/B</Description>
+						<DebitAmount>455.00</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-11-08 00041 110001</TransactionID>
+				<Period>11</Period>
+				<TransactionDate>2020-11-08</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 20/B</Description>
+				<DocArchivalNumber>110001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111003</AccountID>
+						<SourceDocumentID>VFA B/20</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:49:58</SystemEntryDate>
+						<Description>VFA Nº 20/B</Description>
+						<CreditAmount>479.04</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/20</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:49:58</SystemEntryDate>
+						<Description>VFA Nº 20/B</Description>
+						<DebitAmount>79.84</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/20</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:49:58</SystemEntryDate>
+						<Description>VFA Nº 20/B</Description>
+						<DebitAmount>399.20</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-11-26 00041 110002</TransactionID>
+				<Period>11</Period>
+				<TransactionDate>2020-11-26</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 21/B</Description>
+				<DocArchivalNumber>110002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111005</AccountID>
+						<SourceDocumentID>VFA B/21</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:51:07</SystemEntryDate>
+						<Description>VFA Nº 21/B</Description>
+						<CreditAmount>154.44</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/21</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:51:07</SystemEntryDate>
+						<Description>VFA Nº 21/B</Description>
+						<DebitAmount>25.74</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/21</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:51:07</SystemEntryDate>
+						<Description>VFA Nº 21/B</Description>
+						<DebitAmount>128.70</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-12-14 00041 120001</TransactionID>
+				<Period>12</Period>
+				<TransactionDate>2020-12-14</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>VFA Nº 22/B</Description>
+				<DocArchivalNumber>120001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<CreditLine>
+						<RecordID>1</RecordID>
+						<AccountID>22111004</AccountID>
+						<SourceDocumentID>VFA B/22</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:52:15</SystemEntryDate>
+						<Description>VFA Nº 22/B</Description>
+						<CreditAmount>28.80</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>2</RecordID>
+						<AccountID>24321132011</AccountID>
+						<SourceDocumentID>VFA B/22</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:52:15</SystemEntryDate>
+						<Description>VFA Nº 22/B</Description>
+						<DebitAmount>4.80</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>3</RecordID>
+						<AccountID>3121</AccountID>
+						<SourceDocumentID>VFA B/22</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:52:15</SystemEntryDate>
+						<Description>VFA Nº 22/B</Description>
+						<DebitAmount>24.00</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+		</Journal>
+		<Journal>
+			<JournalID>00051</JournalID>
+			<Description>Vendas - Crédito - MN</Description>
+			<Transaction>
+				<TransactionID>2020-01-01 00051 10001</TransactionID>
+				<Period>1</Period>
+				<TransactionDate>2020-01-01</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 1/B</Description>
+				<DocArchivalNumber>10001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-02</GLPostingDate>
+				<CustomerID>Consumidor final</CustomerID>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21113001</AccountID>
+						<SourceDocumentID>FA B/1</SourceDocumentID>
+						<SystemEntryDate>2020-06-02T15:32:02</SystemEntryDate>
+						<Description>FA Nº 1/B</Description>
+						<DebitAmount>1200.00</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/1</SourceDocumentID>
+						<SystemEntryDate>2020-06-02T15:32:02</SystemEntryDate>
+						<Description>FA Nº 1/B</Description>
+						<CreditAmount>200.00</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/1</SourceDocumentID>
+						<SystemEntryDate>2020-06-02T15:32:02</SystemEntryDate>
+						<Description>FA Nº 1/B</Description>
+						<CreditAmount>1000.00</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>4</RecordID>
+						<AccountID>21113001</AccountID>
+						<SourceDocumentID>FA B/1</SourceDocumentID>
+						<SystemEntryDate>2020-06-02T15:32:02</SystemEntryDate>
+						<Description>Estorno do documento  Anulação</Description>
+						<CreditAmount>1200.00</CreditAmount>
+					</CreditLine>
+					<DebitLine>
+						<RecordID>5</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/1</SourceDocumentID>
+						<SystemEntryDate>2020-06-02T15:32:02</SystemEntryDate>
+						<Description>Estorno do documento  Anulação</Description>
+						<DebitAmount>200.00</DebitAmount>
+					</DebitLine>
+					<DebitLine>
+						<RecordID>6</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/1</SourceDocumentID>
+						<SystemEntryDate>2020-06-02T15:32:02</SystemEntryDate>
+						<Description>Estorno do documento  Anulação</Description>
+						<DebitAmount>1000.00</DebitAmount>
+					</DebitLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-01-10 00051 10002</TransactionID>
+				<Period>1</Period>
+				<TransactionDate>2020-01-10</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 2/B</Description>
+				<DocArchivalNumber>10002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-03</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111006</AccountID>
+						<SourceDocumentID>FA B/2</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T12:55:18</SystemEntryDate>
+						<Description>FA Nº 2/B</Description>
+						<DebitAmount>3196.80</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/2</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T12:55:18</SystemEntryDate>
+						<Description>FA Nº 2/B</Description>
+						<CreditAmount>532.80</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/2</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T12:55:18</SystemEntryDate>
+						<Description>FA Nº 2/B</Description>
+						<CreditAmount>2664.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-01-24 00051 10003</TransactionID>
+				<Period>1</Period>
+				<TransactionDate>2020-01-24</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 3/B</Description>
+				<DocArchivalNumber>10003</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-03</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111004</AccountID>
+						<SourceDocumentID>FA B/3</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T12:56:22</SystemEntryDate>
+						<Description>FA Nº 3/B</Description>
+						<DebitAmount>1916.16</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/3</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T12:56:22</SystemEntryDate>
+						<Description>FA Nº 3/B</Description>
+						<CreditAmount>319.36</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/3</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T12:56:22</SystemEntryDate>
+						<Description>FA Nº 3/B</Description>
+						<CreditAmount>1596.80</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-02-05 00051 20001</TransactionID>
+				<Period>2</Period>
+				<TransactionDate>2020-02-05</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 4/B</Description>
+				<DocArchivalNumber>20001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-03</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111006</AccountID>
+						<SourceDocumentID>FA B/4</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T13:09:49</SystemEntryDate>
+						<Description>FA Nº 4/B</Description>
+						<DebitAmount>1080.00</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/4</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T13:09:49</SystemEntryDate>
+						<Description>FA Nº 4/B</Description>
+						<CreditAmount>180.00</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/4</SourceDocumentID>
+						<SystemEntryDate>2020-06-03T13:09:49</SystemEntryDate>
+						<Description>FA Nº 4/B</Description>
+						<CreditAmount>900.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-02-25 00051 20002</TransactionID>
+				<Period>2</Period>
+				<TransactionDate>2020-02-25</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 5/B</Description>
+				<DocArchivalNumber>20002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-04</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111003</AccountID>
+						<SourceDocumentID>FA B/5</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:23:52</SystemEntryDate>
+						<Description>FA Nº 5/B</Description>
+						<DebitAmount>2352.00</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/5</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:23:52</SystemEntryDate>
+						<Description>FA Nº 5/B</Description>
+						<CreditAmount>392.00</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/5</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:23:52</SystemEntryDate>
+						<Description>FA Nº 5/B</Description>
+						<CreditAmount>1960.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-03-07 00051 30001</TransactionID>
+				<Period>3</Period>
+				<TransactionDate>2020-03-07</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 6/B</Description>
+				<DocArchivalNumber>30001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-04</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111006</AccountID>
+						<SourceDocumentID>FA B/6</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:34:38</SystemEntryDate>
+						<Description>FA Nº 6/B</Description>
+						<DebitAmount>29.10</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/6</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:34:38</SystemEntryDate>
+						<Description>FA Nº 6/B</Description>
+						<CreditAmount>4.85</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/6</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:34:38</SystemEntryDate>
+						<Description>FA Nº 6/B</Description>
+						<CreditAmount>24.25</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-03-19 00051 30002</TransactionID>
+				<Period>3</Period>
+				<TransactionDate>2020-03-19</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 7/B</Description>
+				<DocArchivalNumber>30002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-04</GLPostingDate>
+				<CustomerID>Consumidor final</CustomerID>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21113001</AccountID>
+						<SourceDocumentID>FA B/7</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:36:33</SystemEntryDate>
+						<Description>FA Nº 7/B</Description>
+						<DebitAmount>1197.60</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/7</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:36:33</SystemEntryDate>
+						<Description>FA Nº 7/B</Description>
+						<CreditAmount>199.60</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/7</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:36:33</SystemEntryDate>
+						<Description>FA Nº 7/B</Description>
+						<CreditAmount>998.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-04-11 00051 40001</TransactionID>
+				<Period>4</Period>
+				<TransactionDate>2020-04-11</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 8/B</Description>
+				<DocArchivalNumber>40001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-04</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111004</AccountID>
+						<SourceDocumentID>FA B/8</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:44:07</SystemEntryDate>
+						<Description>FA Nº 8/B</Description>
+						<DebitAmount>9.60</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/8</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:44:07</SystemEntryDate>
+						<Description>FA Nº 8/B</Description>
+						<CreditAmount>1.60</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/8</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:44:07</SystemEntryDate>
+						<Description>FA Nº 8/B</Description>
+						<CreditAmount>8.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-04-19 00051 40002</TransactionID>
+				<Period>4</Period>
+				<TransactionDate>2020-04-19</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 9/B</Description>
+				<DocArchivalNumber>40002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-04</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111003</AccountID>
+						<SourceDocumentID>FA B/9</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:46:09</SystemEntryDate>
+						<Description>FA Nº 9/B</Description>
+						<DebitAmount>1200.00</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/9</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:46:09</SystemEntryDate>
+						<Description>FA Nº 9/B</Description>
+						<CreditAmount>200.00</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/9</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T15:46:09</SystemEntryDate>
+						<Description>FA Nº 9/B</Description>
+						<CreditAmount>1000.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-04-30 00051 40003</TransactionID>
+				<Period>4</Period>
+				<TransactionDate>2020-04-30</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 10/B</Description>
+				<DocArchivalNumber>40003</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-04</GLPostingDate>
+				<CustomerID>Consumidor final</CustomerID>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21123004</AccountID>
+						<SourceDocumentID>FA B/10</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T16:02:08</SystemEntryDate>
+						<Description>FA Nº 10/B</Description>
+						<DebitAmount>500.00</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>7112</AccountID>
+						<SourceDocumentID>FA B/10</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T16:02:08</SystemEntryDate>
+						<Description>FA Nº 10/B</Description>
+						<CreditAmount>500.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-05-10 00051 50001</TransactionID>
+				<Period>5</Period>
+				<TransactionDate>2020-05-10</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 11/B</Description>
+				<DocArchivalNumber>50001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-04</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111004</AccountID>
+						<SourceDocumentID>FA B/11</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T16:03:20</SystemEntryDate>
+						<Description>FA Nº 11/B</Description>
+						<DebitAmount>960.00</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/11</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T16:03:20</SystemEntryDate>
+						<Description>FA Nº 11/B</Description>
+						<CreditAmount>160.00</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/11</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T16:03:20</SystemEntryDate>
+						<Description>FA Nº 11/B</Description>
+						<CreditAmount>800.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-05-20 00051 50002</TransactionID>
+				<Period>5</Period>
+				<TransactionDate>2020-05-20</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 12/B</Description>
+				<DocArchivalNumber>50002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-04</GLPostingDate>
+				<CustomerID>Consumidor final</CustomerID>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21122001</AccountID>
+						<SourceDocumentID>FA B/12</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T16:04:17</SystemEntryDate>
+						<Description>FA Nº 12/B</Description>
+						<DebitAmount>1600.00</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>7112</AccountID>
+						<SourceDocumentID>FA B/12</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T16:04:17</SystemEntryDate>
+						<Description>FA Nº 12/B</Description>
+						<CreditAmount>1600.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-06-05 00051 60001</TransactionID>
+				<Period>6</Period>
+				<TransactionDate>2020-06-05</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 13/B</Description>
+				<DocArchivalNumber>60001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-04</GLPostingDate>
+				<CustomerID>Consumidor final</CustomerID>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21113002</AccountID>
+						<SourceDocumentID>FA B/13</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T16:05:48</SystemEntryDate>
+						<Description>FA Nº 13/B</Description>
+						<DebitAmount>844.80</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/13</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T16:05:48</SystemEntryDate>
+						<Description>FA Nº 13/B</Description>
+						<CreditAmount>140.80</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/13</SourceDocumentID>
+						<SystemEntryDate>2020-06-04T16:05:48</SystemEntryDate>
+						<Description>FA Nº 13/B</Description>
+						<CreditAmount>704.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-06-25 00051 60003</TransactionID>
+				<Period>6</Period>
+				<TransactionDate>2020-06-25</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 15/B</Description>
+				<DocArchivalNumber>60003</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<CustomerID>Consumidor final</CustomerID>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21122001</AccountID>
+						<SourceDocumentID>FA B/15</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:54:50</SystemEntryDate>
+						<Description>FA Nº 15/B</Description>
+						<DebitAmount>627.20</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>7112</AccountID>
+						<SourceDocumentID>FA B/15</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:54:50</SystemEntryDate>
+						<Description>FA Nº 15/B</Description>
+						<CreditAmount>627.20</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-07-11 00051 70001</TransactionID>
+				<Period>7</Period>
+				<TransactionDate>2020-07-11</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 16/B</Description>
+				<DocArchivalNumber>70001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111002</AccountID>
+						<SourceDocumentID>FA B/16</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:55:43</SystemEntryDate>
+						<Description>FA Nº 16/B</Description>
+						<DebitAmount>211.68</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/16</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:55:43</SystemEntryDate>
+						<Description>FA Nº 16/B</Description>
+						<CreditAmount>35.28</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/16</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:55:43</SystemEntryDate>
+						<Description>FA Nº 16/B</Description>
+						<CreditAmount>176.40</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-07-22 00051 70002</TransactionID>
+				<Period>7</Period>
+				<TransactionDate>2020-07-22</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 17/B</Description>
+				<DocArchivalNumber>70002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<CustomerID>Consumidor final</CustomerID>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21123004</AccountID>
+						<SourceDocumentID>FA B/17</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:56:37</SystemEntryDate>
+						<Description>FA Nº 17/B</Description>
+						<DebitAmount>1198.00</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>7112</AccountID>
+						<SourceDocumentID>FA B/17</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:56:37</SystemEntryDate>
+						<Description>FA Nº 17/B</Description>
+						<CreditAmount>1198.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-08-01 00051 80001</TransactionID>
+				<Period>8</Period>
+				<TransactionDate>2020-08-01</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 18/B</Description>
+				<DocArchivalNumber>80001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<CustomerID>Consumidor final</CustomerID>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21122001</AccountID>
+						<SourceDocumentID>FA B/18</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:57:40</SystemEntryDate>
+						<Description>FA Nº 18/B</Description>
+						<DebitAmount>1596.80</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>7112</AccountID>
+						<SourceDocumentID>FA B/18</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:57:40</SystemEntryDate>
+						<Description>FA Nº 18/B</Description>
+						<CreditAmount>1596.80</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-08-09 00051 80002</TransactionID>
+				<Period>8</Period>
+				<TransactionDate>2020-08-09</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 19/B</Description>
+				<DocArchivalNumber>80002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111002</AccountID>
+						<SourceDocumentID>FA B/19</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:58:45</SystemEntryDate>
+						<Description>FA Nº 19/B</Description>
+						<DebitAmount>481.68</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/19</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:58:45</SystemEntryDate>
+						<Description>FA Nº 19/B</Description>
+						<CreditAmount>80.28</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/19</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:58:45</SystemEntryDate>
+						<Description>FA Nº 19/B</Description>
+						<CreditAmount>401.40</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-08-17 00051 80003</TransactionID>
+				<Period>8</Period>
+				<TransactionDate>2020-08-17</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 20/B</Description>
+				<DocArchivalNumber>80003</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<CustomerID>Consumidor final</CustomerID>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21113002</AccountID>
+						<SourceDocumentID>FA B/20</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:59:54</SystemEntryDate>
+						<Description>FA Nº 20/B</Description>
+						<DebitAmount>937.27</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/20</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:59:54</SystemEntryDate>
+						<Description>FA Nº 20/B</Description>
+						<CreditAmount>156.21</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/20</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T17:59:54</SystemEntryDate>
+						<Description>FA Nº 20/B</Description>
+						<CreditAmount>781.06</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-08-29 00051 80004</TransactionID>
+				<Period>8</Period>
+				<TransactionDate>2020-08-29</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 21/B</Description>
+				<DocArchivalNumber>80004</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111002</AccountID>
+						<SourceDocumentID>FA B/21</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:01:04</SystemEntryDate>
+						<Description>FA Nº 21/B</Description>
+						<DebitAmount>32.00</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/21</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:01:04</SystemEntryDate>
+						<Description>FA Nº 21/B</Description>
+						<CreditAmount>5.33</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/21</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:01:04</SystemEntryDate>
+						<Description>FA Nº 21/B</Description>
+						<CreditAmount>26.67</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-09-15 00051 90001</TransactionID>
+				<Period>9</Period>
+				<TransactionDate>2020-09-15</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 22/B</Description>
+				<DocArchivalNumber>90001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111003</AccountID>
+						<SourceDocumentID>FA B/22</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:02:02</SystemEntryDate>
+						<Description>FA Nº 22/B</Description>
+						<DebitAmount>604.79</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/22</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:02:02</SystemEntryDate>
+						<Description>FA Nº 22/B</Description>
+						<CreditAmount>100.80</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/22</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:02:02</SystemEntryDate>
+						<Description>FA Nº 22/B</Description>
+						<CreditAmount>503.99</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-09-24 00051 90002</TransactionID>
+				<Period>9</Period>
+				<TransactionDate>2020-09-24</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 23/B</Description>
+				<DocArchivalNumber>90002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111004</AccountID>
+						<SourceDocumentID>FA B/23</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:02:54</SystemEntryDate>
+						<Description>FA Nº 23/B</Description>
+						<DebitAmount>188.16</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/23</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:02:54</SystemEntryDate>
+						<Description>FA Nº 23/B</Description>
+						<CreditAmount>31.36</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/23</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:02:54</SystemEntryDate>
+						<Description>FA Nº 23/B</Description>
+						<CreditAmount>156.80</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-10-04 00051 100001</TransactionID>
+				<Period>10</Period>
+				<TransactionDate>2020-10-04</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 24/B</Description>
+				<DocArchivalNumber>100001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111006</AccountID>
+						<SourceDocumentID>FA B/24</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:04:03</SystemEntryDate>
+						<Description>FA Nº 24/B</Description>
+						<DebitAmount>1000.08</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/24</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:04:03</SystemEntryDate>
+						<Description>FA Nº 24/B</Description>
+						<CreditAmount>166.68</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/24</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:04:03</SystemEntryDate>
+						<Description>FA Nº 24/B</Description>
+						<CreditAmount>833.40</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-10-15 00051 100002</TransactionID>
+				<Period>10</Period>
+				<TransactionDate>2020-10-15</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 25/B</Description>
+				<DocArchivalNumber>100002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<CustomerID>Consumidor final</CustomerID>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21113002</AccountID>
+						<SourceDocumentID>FA B/25</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:05:30</SystemEntryDate>
+						<Description>FA Nº 25/B</Description>
+						<DebitAmount>598.80</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/25</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:05:30</SystemEntryDate>
+						<Description>FA Nº 25/B</Description>
+						<CreditAmount>99.80</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/25</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:05:30</SystemEntryDate>
+						<Description>FA Nº 25/B</Description>
+						<CreditAmount>499.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-10-30 00051 100003</TransactionID>
+				<Period>10</Period>
+				<TransactionDate>2020-10-30</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 26/B</Description>
+				<DocArchivalNumber>100003</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<CustomerID>Consumidor final</CustomerID>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21123004</AccountID>
+						<SourceDocumentID>FA B/26</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:06:29</SystemEntryDate>
+						<Description>FA Nº 26/B</Description>
+						<DebitAmount>1000.00</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>7112</AccountID>
+						<SourceDocumentID>FA B/26</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:06:29</SystemEntryDate>
+						<Description>FA Nº 26/B</Description>
+						<CreditAmount>1000.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-11-11 00051 110001</TransactionID>
+				<Period>11</Period>
+				<TransactionDate>2020-11-11</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 27/B</Description>
+				<DocArchivalNumber>110001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<CustomerID>Consumidor final</CustomerID>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21122001</AccountID>
+						<SourceDocumentID>FA B/27</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:07:49</SystemEntryDate>
+						<Description>FA Nº 27/B</Description>
+						<DebitAmount>1568.00</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>7112</AccountID>
+						<SourceDocumentID>FA B/27</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:07:49</SystemEntryDate>
+						<Description>FA Nº 27/B</Description>
+						<CreditAmount>1568.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-11-23 00051 110002</TransactionID>
+				<Period>11</Period>
+				<TransactionDate>2020-11-23</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 28/B</Description>
+				<DocArchivalNumber>110002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111002</AccountID>
+						<SourceDocumentID>FA B/28</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:08:42</SystemEntryDate>
+						<Description>FA Nº 28/B</Description>
+						<DebitAmount>9.72</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/28</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:08:42</SystemEntryDate>
+						<Description>FA Nº 28/B</Description>
+						<CreditAmount>1.62</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/28</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:08:42</SystemEntryDate>
+						<Description>FA Nº 28/B</Description>
+						<CreditAmount>8.10</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-12-08 00051 120001</TransactionID>
+				<Period>12</Period>
+				<TransactionDate>2020-12-08</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 29/B</Description>
+				<DocArchivalNumber>120001</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21111004</AccountID>
+						<SourceDocumentID>FA B/29</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:09:46</SystemEntryDate>
+						<Description>FA Nº 29/B</Description>
+						<DebitAmount>1920.00</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/29</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:09:46</SystemEntryDate>
+						<Description>FA Nº 29/B</Description>
+						<CreditAmount>320.00</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/29</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:09:46</SystemEntryDate>
+						<Description>FA Nº 29/B</Description>
+						<CreditAmount>1600.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-12-19 00051 120002</TransactionID>
+				<Period>12</Period>
+				<TransactionDate>2020-12-19</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 30/B</Description>
+				<DocArchivalNumber>120002</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<CustomerID>Consumidor final</CustomerID>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21113001</AccountID>
+						<SourceDocumentID>FA B/30</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:10:46</SystemEntryDate>
+						<Description>FA Nº 30/B</Description>
+						<DebitAmount>2400.00</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>24331113201</AccountID>
+						<SourceDocumentID>FA B/30</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:10:46</SystemEntryDate>
+						<Description>FA Nº 30/B</Description>
+						<CreditAmount>400.00</CreditAmount>
+					</CreditLine>
+					<CreditLine>
+						<RecordID>3</RecordID>
+						<AccountID>7111</AccountID>
+						<SourceDocumentID>FA B/30</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:10:46</SystemEntryDate>
+						<Description>FA Nº 30/B</Description>
+						<CreditAmount>2000.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+			<Transaction>
+				<TransactionID>2020-12-22 00051 120003</TransactionID>
+				<Period>12</Period>
+				<TransactionDate>2020-12-22</TransactionDate>
+				<SourceID>estg</SourceID>
+				<Description>FA Nº 31/B</Description>
+				<DocArchivalNumber>120003</DocArchivalNumber>
+				<TransactionType>N</TransactionType>
+				<GLPostingDate>2020-06-06</GLPostingDate>
+				<CustomerID>Consumidor final</CustomerID>
+				<Lines>
+					<DebitLine>
+						<RecordID>1</RecordID>
+						<AccountID>21123004</AccountID>
+						<SourceDocumentID>FA B/31</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:12:14</SystemEntryDate>
+						<Description>FA Nº 31/B</Description>
+						<DebitAmount>1996.00</DebitAmount>
+					</DebitLine>
+					<CreditLine>
+						<RecordID>2</RecordID>
+						<AccountID>7112</AccountID>
+						<SourceDocumentID>FA B/31</SourceDocumentID>
+						<SystemEntryDate>2020-06-06T18:12:14</SystemEntryDate>
+						<Description>FA Nº 31/B</Description>
+						<CreditAmount>1996.00</CreditAmount>
+					</CreditLine>
+				</Lines>
+			</Transaction>
+		</Journal>
+	</GeneralLedgerEntries>
+	<SourceDocuments>
+		<SalesInvoices>
+			<NumberOfEntries>31</NumberOfEntries>
+			<TotalDebit>0.00</TotalDebit>
+			<TotalCredit>27735.97</TotalCredit>
+			<Invoice>
+				<InvoiceNo>FA B/1</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>A</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-04T00:00:00</InvoiceStatusDate>
+					<Reason>Erro na Entidade</Reason>
+					<SourceID>estg</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>Zi/kt6cPNwavup2/A2k5Cp4fiAnoxd+qx/SAxP7Fjpw2DTlUfj06aUSCJ5Xx3F6F7z/aNdn1iMUL/mUnZXUCoYZk1+xW9IBurv2Q0rn7IKUUEM8eV4AatKpYB5MYTrIlzNYyIN7thwl49AQCckwlkiSdjro34DReq89GPcZ7z3s=</Hash>
+				<HashControl>1</HashControl>
+				<Period>01</Period>
+				<InvoiceDate>2020-01-01</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-02T15:31:53</SystemEntryDate>
+				<TransactionID>2020-01-01 00051 10001</TransactionID>
+				<CustomerID>AO823892388_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-02</DeliveryDate>
+					<Address>
+						<AddressDetail>Av. dos Coqueiros, 464646</AddressDetail>
+						<City>Luanda</City>
+						<PostalCode>0000</PostalCode>
+						<Country>AO</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-02</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Desconhecido</City>
+						<PostalCode>4560</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-02T15:33:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0001</ProductCode>
+					<ProductDescription>Pentium D925 Dual Core</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>1000</UnitPrice>
+					<TaxPointDate>2020-01-01</TaxPointDate>
+					<Description>Pentium D925 Dual Core</Description>
+					<CreditAmount>1000.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>0.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>200.00</TaxPayable>
+					<NetTotal>1000.00</NetTotal>
+					<GrossTotal>1200.00</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/2</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-03T12:55:15</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>EPgkK17w9M5UFRQhDtKXyXKeyIA/2aFqfgfcuwcbT5xXpCvzarEO5sl5QpzQolk2MO7QpR/5N7PTCkixQs3gOdxNckr/N2UoaAEFfaxjYBR6JnkpuDwbfIQxjPjh0qVtHScwqfPUfmEtJ6W23QmHylTP2UA3dUl9HZ6Sewmnj8I=</Hash>
+				<HashControl>1</HashControl>
+				<Period>01</Period>
+				<InvoiceDate>2020-01-10</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-03T12:55:15</SystemEntryDate>
+				<TransactionID>2020-01-10 00051 10002</TransactionID>
+				<CustomerID>PT503150002_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-03</DeliveryDate>
+					<Address>
+						<AddressDetail>Av. Estados Unidos América, 44773</AddressDetail>
+						<City>Lisboa</City>
+						<PostalCode>1200-003</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-03</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-03T12:57:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>B0001</ProductCode>
+					<ProductDescription>Monitor 7JT-1024*1024</ProductDescription>
+					<Quantity>10</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>176.4</UnitPrice>
+					<TaxPointDate>2020-01-10</TaxPointDate>
+					<Description>Monitor 7JT-1024*1024</Description>
+					<CreditAmount>1764.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>236.00</SettlementAmount>
+				</Line>
+				<Line>
+					<LineNumber>2</LineNumber>
+					<ProductCode>A0001</ProductCode>
+					<ProductDescription>Pentium D925 Dual Core</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>900</UnitPrice>
+					<TaxPointDate>2020-01-10</TaxPointDate>
+					<Description>Pentium D925 Dual Core</Description>
+					<CreditAmount>900.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>100.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>532.80</TaxPayable>
+					<NetTotal>2664.00</NetTotal>
+					<GrossTotal>3196.80</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/3</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-03T12:56:21</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>XSI8Nxux3ph+vB2/PgSC644KlBaiFNQ9kHWCWdxxdu90fYIXGLVYhufTx2vcaissDrf7TzK8Pmu8/a7c3e80LYElcUKuyl3xrW8bW9Uedix6EE4obsYe4DggZs5upd5Mm/AptYsKmtLVtOgoFn3QtZyjtu5k29cBrq/X2kZG1uw=</Hash>
+				<HashControl>1</HashControl>
+				<Period>01</Period>
+				<InvoiceDate>2020-01-24</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-03T12:56:21</SystemEntryDate>
+				<TransactionID>2020-01-24 00051 10003</TransactionID>
+				<CustomerID>PT503160300_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-03</DeliveryDate>
+					<Address>
+						<AddressDetail>AV. DA BOAVISTA, 373737</AddressDetail>
+						<City>Porto</City>
+						<PostalCode>4100-002</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-03</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-03T12:58:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0004</ProductCode>
+					<ProductDescription>Processador Intel D326 2.5GHz</ProductDescription>
+					<Quantity>4</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>399.2</UnitPrice>
+					<TaxPointDate>2020-01-24</TaxPointDate>
+					<Description>Processador Intel D326 2.5GHz</Description>
+					<CreditAmount>1596.80</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>399.20</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>319.36</TaxPayable>
+					<NetTotal>1596.80</NetTotal>
+					<GrossTotal>1916.16</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/4</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-03T13:09:45</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>dZ0/bbyciC+ofKSu4njxPwiCUd5JkZisEht5qby68RlZLvd00IYeZizZTIkaym3pBghiP6x8kgXW48KVsm/rEuZUHwCA8jIH/9c9Oa5n6ggpwuN2NNHSelSV4iBjObaNX0WEYWvdcARdgc6cUnSC17zpe3vDSOefF5VdBgXlK54=</Hash>
+				<HashControl>1</HashControl>
+				<Period>02</Period>
+				<InvoiceDate>2020-02-05</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-03T13:09:45</SystemEntryDate>
+				<TransactionID>2020-02-05 00051 20001</TransactionID>
+				<CustomerID>PT503150002_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-03</DeliveryDate>
+					<Address>
+						<AddressDetail>Av. Estados Unidos América, 44773</AddressDetail>
+						<City>Lisboa</City>
+						<PostalCode>1200-003</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-03</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-03T13:11:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0001</ProductCode>
+					<ProductDescription>Pentium D925 Dual Core</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>900</UnitPrice>
+					<TaxPointDate>2020-02-05</TaxPointDate>
+					<Description>Pentium D925 Dual Core</Description>
+					<CreditAmount>900.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>100.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>180.00</TaxPayable>
+					<NetTotal>900.00</NetTotal>
+					<GrossTotal>1080.00</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/5</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-04T15:23:43</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>Oo0u0sezaPpMfNDkN0LhNmkP4QNrkrCkDimAckQ1dzAvTtHAgVvWZcLLzGvmAGRx0DM0NIl+KbzY0WrQk5hBdHDn5ayHxUWQ52Vf3DWpPCvrg97R14meOI0Wzs2K+AU86nTHEPI0AQUy79urywyV7eozFR7dc0iOvvoEr+lXSUw=</Hash>
+				<HashControl>1</HashControl>
+				<Period>02</Period>
+				<InvoiceDate>2020-02-25</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-04T15:23:43</SystemEntryDate>
+				<TransactionID>2020-02-25 00051 20002</TransactionID>
+				<CustomerID>PT505678900_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Av. do Norte, 484848</AddressDetail>
+						<City>Porto</City>
+						<PostalCode>4100-002</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-04T15:25:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>B0001</ProductCode>
+					<ProductDescription>Monitor 7JT-1024*1024</ProductDescription>
+					<Quantity>10</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>196</UnitPrice>
+					<TaxPointDate>2020-02-25</TaxPointDate>
+					<Description>Monitor 7JT-1024*1024</Description>
+					<CreditAmount>1960.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>40.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>392.00</TaxPayable>
+					<NetTotal>1960.00</NetTotal>
+					<GrossTotal>2352.00</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/6</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-04T15:34:32</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>Q3jTKDuyz4C1LEuHCVf2+W2iKBhQKx+7yIlsJSV9FDBlZN3r3ReFN+miDlpMg2yHSBlzdyx8SJHCK/M0cMoYS3jPMBDlhsA4zDs2E5szDRJ3nyFSPBNE7hg7QGr7KPo6VAzNtlvvLzQ8MxMcO1H3Gwr1fR6g3cE948tKs90ezR0=</Hash>
+				<HashControl>1</HashControl>
+				<Period>03</Period>
+				<InvoiceDate>2020-03-07</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-04T15:34:32</SystemEntryDate>
+				<TransactionID>2020-03-07 00051 30001</TransactionID>
+				<CustomerID>PT503150002_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Av. Estados Unidos América, 44773</AddressDetail>
+						<City>Lisboa</City>
+						<PostalCode>1200-003</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-04T15:36:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>D0001</ProductCode>
+					<ProductDescription>Teclado Ergonómico PT-776</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>24.25</UnitPrice>
+					<TaxPointDate>2020-03-07</TaxPointDate>
+					<Description>Teclado Ergonómico PT-776</Description>
+					<CreditAmount>24.25</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>5.68</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>4.85</TaxPayable>
+					<NetTotal>24.25</NetTotal>
+					<GrossTotal>29.10</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/7</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-04T15:36:30</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>G3tkvSlrwCeQJORM3KotMgA5m61Lu5zf1N9v81CT0utUZngM37pTQBl2RwnWEMivu64kQ/jh7tph74DOXYnFNe75CJFIxLudGVBdsn/379DysxM8c+PIX/CDwKmbKW5u64V0TyaxFR7ltJJ3oY4WPON8DVdxOWyeR3gon1BKVuM=</Hash>
+				<HashControl>1</HashControl>
+				<Period>03</Period>
+				<InvoiceDate>2020-03-19</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-04T15:36:30</SystemEntryDate>
+				<TransactionID>2020-03-19 00051 30002</TransactionID>
+				<CustomerID>AO823892388_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Av. dos Coqueiros, 464646</AddressDetail>
+						<City>Luanda</City>
+						<PostalCode>0000</PostalCode>
+						<Country>AO</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-04T15:38:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0004</ProductCode>
+					<ProductDescription>Processador Intel D326 2.5GHz</ProductDescription>
+					<Quantity>2</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>499</UnitPrice>
+					<TaxPointDate>2020-03-19</TaxPointDate>
+					<Description>Processador Intel D326 2.5GHz</Description>
+					<CreditAmount>998.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>0.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>199.60</TaxPayable>
+					<NetTotal>998.00</NetTotal>
+					<GrossTotal>1197.60</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/8</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-04T15:43:59</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>CtihSGdPrKb4Fv1df3Zxiy/57ShmYJckfx1B9tM9ITov49LxpXd4VLXusr797QD1R23M+gC6TFy5tGLPCvhjWUhDsmQOsVVsuHhoJ4RTurfkI2jwGURjgVKHHYN9I5lAb3W3BLsPsHqQq0Qib+odH2vmM5awq0p+0awkZqu6ULI=</Hash>
+				<HashControl>1</HashControl>
+				<Period>04</Period>
+				<InvoiceDate>2020-04-11</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-04T15:43:59</SystemEntryDate>
+				<TransactionID>2020-04-11 00051 40001</TransactionID>
+				<CustomerID>PT503160300_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>AV. DA BOAVISTA, 373737</AddressDetail>
+						<City>Porto</City>
+						<PostalCode>4100-002</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-04T15:45:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>TAPETE</ProductCode>
+					<ProductDescription>Tapete de Rato 2.ª Geração</ProductDescription>
+					<Quantity>2</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>0.4</UnitPrice>
+					<TaxPointDate>2020-04-11</TaxPointDate>
+					<Description>Tapete de Rato 2.ª Geração</Description>
+					<CreditAmount>0.80</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>0.20</SettlementAmount>
+				</Line>
+				<Line>
+					<LineNumber>2</LineNumber>
+					<ProductCode>B0008</ProductCode>
+					<ProductDescription>Rato R17C</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>7.2</UnitPrice>
+					<TaxPointDate>2020-04-11</TaxPointDate>
+					<Description>Rato R17C</Description>
+					<CreditAmount>7.20</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>1.80</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>1.60</TaxPayable>
+					<NetTotal>8.00</NetTotal>
+					<GrossTotal>9.60</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/9</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-04T15:46:05</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>cRuSYGD5UsSbiv/KFgoF3NAwbD/xKMRxWiDjd9Zwmmq/w+pq0AEihvgmHOYzurjSosG4sbD1CUE9RptzqLL3krVpdSG7DAKeri/uQL1sY8+no9J/K4ic0v0OLneDRB+kWU+OEedf6mX7pjwhsFTgAhq/Q+/RT1KHqlEE7laSz9c=</Hash>
+				<HashControl>1</HashControl>
+				<Period>04</Period>
+				<InvoiceDate>2020-04-19</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-04T15:46:05</SystemEntryDate>
+				<TransactionID>2020-04-19 00051 40002</TransactionID>
+				<CustomerID>PT505678900_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Av. do Norte, 484848</AddressDetail>
+						<City>Porto</City>
+						<PostalCode>4100-002</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-04T15:47:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0001</ProductCode>
+					<ProductDescription>Pentium D925 Dual Core</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>1000</UnitPrice>
+					<TaxPointDate>2020-04-19</TaxPointDate>
+					<Description>Pentium D925 Dual Core</Description>
+					<CreditAmount>1000.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>0.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>200.00</TaxPayable>
+					<NetTotal>1000.00</NetTotal>
+					<GrossTotal>1200.00</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/10</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-04T16:01:24</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>SyUCkD0cNN7/w2WEfaj/iFcVTlxwSsJQKk8pEXwaBCeF3e1QiAigREER7x8Oi6cApG2Vhsk3lUc6UBjKXTcqFdc/pW1m16VBxjIusyDkGB7cZ+K3nQLtoXfVYS604I4V+OfMi+JUc5Yx3cuMiiOjf1JeOKDRO9k5wyGNgbPWxrs=</Hash>
+				<HashControl>1</HashControl>
+				<Period>04</Period>
+				<InvoiceDate>2020-04-30</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-04T16:01:24</SystemEntryDate>
+				<TransactionID>2020-04-30 00051 40003</TransactionID>
+				<CustomerID>ES989922456_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>PASSEO DE PORTUGAL, 464646</AddressDetail>
+						<City>VILANUEVA DE ARRIBA</City>
+						<PostalCode>61001</PostalCode>
+						<Country>ES</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-04T16:02:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0006</ProductCode>
+					<ProductDescription>Secretária 1,50*0,70*0,70</ProductDescription>
+					<Quantity>2</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>250</UnitPrice>
+					<TaxPointDate>2020-04-30</TaxPointDate>
+					<Description>Secretária 1,50*0,70*0,70</Description>
+					<CreditAmount>500.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>ISE</TaxCode>
+						<TaxPercentage>0.00</TaxPercentage>
+					</Tax>
+					<TaxExemptionReason>Isento-TI.Art.14RITI</TaxExemptionReason>
+					<TaxExemptionCode>M99</TaxExemptionCode>
+					<SettlementAmount>0.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>0.00</TaxPayable>
+					<NetTotal>500.00</NetTotal>
+					<GrossTotal>500.00</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/11</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-04T16:03:18</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>BY6hYOi/k7t/vMdw/Gbo4Ev2HMIE9U0fu7/fUXJ2ZkNVHR/ib2mRbntA57HGpBzlQfkRGt+rL0P3bUcrEPb+kyAJIVVy6CImIgECTRW63+y209u/M0JOucLQq9P8wS8aTIoAyvZwrG8p6bACj0jK97EzLSMOqlj407IvOastwC4=</Hash>
+				<HashControl>1</HashControl>
+				<Period>05</Period>
+				<InvoiceDate>2020-05-10</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-04T16:03:18</SystemEntryDate>
+				<TransactionID>2020-05-10 00051 50001</TransactionID>
+				<CustomerID>PT503160300_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>AV. DA BOAVISTA, 373737</AddressDetail>
+						<City>Porto</City>
+						<PostalCode>4100-002</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-04T16:05:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0001</ProductCode>
+					<ProductDescription>Pentium D925 Dual Core</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>800</UnitPrice>
+					<TaxPointDate>2020-05-10</TaxPointDate>
+					<Description>Pentium D925 Dual Core</Description>
+					<CreditAmount>800.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>200.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>160.00</TaxPayable>
+					<NetTotal>800.00</NetTotal>
+					<GrossTotal>960.00</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/12</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-04T16:04:15</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>bXZef2xTVRARGqmwwSZFCjqHjhcL4Z4DbVCfjZ6gm11QpqgN1mbTKMCkNGkhig+7jKeKgCTGfSeoOCw9z3/WOfbDvkgu/0BX0bIrFt6fmp0pd7TTsYT0tBg39CTbZP7Y181DlHI5wnndWsf11jmve0f2KDrMhiJvRRk3idnQrQI=</Hash>
+				<HashControl>1</HashControl>
+				<Period>05</Period>
+				<InvoiceDate>2020-05-20</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-04T16:04:15</SystemEntryDate>
+				<TransactionID>2020-05-20 00051 50002</TransactionID>
+				<CustomerID>ES376123933331_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>C. DE COLOMBO, 4654646 7º E</AddressDetail>
+						<City>Barcelona</City>
+						<PostalCode>71000</PostalCode>
+						<Country>ES</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-04T16:06:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0001</ProductCode>
+					<ProductDescription>Pentium D925 Dual Core</ProductDescription>
+					<Quantity>2</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>800</UnitPrice>
+					<TaxPointDate>2020-05-20</TaxPointDate>
+					<Description>Pentium D925 Dual Core</Description>
+					<CreditAmount>1600.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>ISE</TaxCode>
+						<TaxPercentage>0.00</TaxPercentage>
+					</Tax>
+					<TaxExemptionReason>Isento-TI.Art.14RITI</TaxExemptionReason>
+					<TaxExemptionCode>M99</TaxExemptionCode>
+					<SettlementAmount>400.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>0.00</TaxPayable>
+					<NetTotal>1600.00</NetTotal>
+					<GrossTotal>1600.00</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/13</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-04T16:05:45</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>DEmBG7obtX/dAbN/ju46hf4RUhaWNNVkDoLSoj3eePu5RnuesSGn9eA1RZ4GbSzLcIhGecsIrIZBYU3l8FikAUy5wF9rdCD13TBZTpnjE9N1MILOUhta8hcFyu7QBvp1HUyvYrXJudXlC/JoDkZj7g2t0HdOhKtqVx1PcUFIsEQ=</Hash>
+				<HashControl>1</HashControl>
+				<Period>06</Period>
+				<InvoiceDate>2020-06-05</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-04T16:05:45</SystemEntryDate>
+				<TransactionID>2020-06-05 00051 60001</TransactionID>
+				<CustomerID>GB9393878719-A_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>34, ROYAL AVENUE</AddressDetail>
+						<City>CHELSEA</City>
+						<PostalCode>87999</PostalCode>
+						<Country>GB</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-04T16:07:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0004</ProductCode>
+					<ProductDescription>Processador Intel D326 2.5GHz</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>499</UnitPrice>
+					<TaxPointDate>2020-06-05</TaxPointDate>
+					<Description>Processador Intel D326 2.5GHz</Description>
+					<CreditAmount>499.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>0.00</SettlementAmount>
+				</Line>
+				<Line>
+					<LineNumber>2</LineNumber>
+					<ProductCode>B0001</ProductCode>
+					<ProductDescription>Monitor 17" TFT L1752S</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>196</UnitPrice>
+					<TaxPointDate>2020-06-05</TaxPointDate>
+					<Description>Monitor 17" TFT L1752S</Description>
+					<CreditAmount>196.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>4.00</SettlementAmount>
+				</Line>
+				<Line>
+					<LineNumber>3</LineNumber>
+					<ProductCode>B0008</ProductCode>
+					<ProductDescription>Rato R17C</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>9</UnitPrice>
+					<TaxPointDate>2020-06-05</TaxPointDate>
+					<Description>Rato R17C</Description>
+					<CreditAmount>9.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>0.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>140.80</TaxPayable>
+					<NetTotal>704.00</NetTotal>
+					<GrossTotal>844.80</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/14</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-04T16:08:30</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>F56dPkEgPsbfzM6YpTJzxBG6Pc9mO3ggUEKei9Joo4HmTb5PhRM/NmI1IaffqB8XknLXE95UgHy2zPglH8gyUWl+oXVXryGsMjku6+SMvFajnfYzVzWTDWgTThczEB8OVz88JXY5RgVwWf+2TXg+rriHpOP9fxih5db2CSJPBHM=</Hash>
+				<HashControl>1</HashControl>
+				<Period>06</Period>
+				<InvoiceDate>2020-06-19</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-04T16:08:30</SystemEntryDate>
+				<CustomerID>PT503150002_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Av. Estados Unidos América, 44773</AddressDetail>
+						<City>Lisboa</City>
+						<PostalCode>1200-003</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-04</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-04T16:10:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>B0008</ProductCode>
+					<ProductDescription>Rato R17C</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>8.1</UnitPrice>
+					<TaxPointDate>2020-06-19</TaxPointDate>
+					<Description>Rato R17C</Description>
+					<CreditAmount>8.10</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>0.90</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>1.62</TaxPayable>
+					<NetTotal>8.10</NetTotal>
+					<GrossTotal>9.72</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/15</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T17:54:44</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>JUaQRBXEdB0ktwE2edC0lm+Eo+B3QiHIR2ld/Mj0aSUqq3Ayy0ZJVLlUhA+E6ZpDvCdwj7b+TLbY7/Ai9bLhM9qZdkcOZlKAqWJv3gGi8UWY7rNOEdSUMfLnsosPhMvj4rXka9Jg7/D8Ip3RBFGNrQ/qzY0WFWzKZDt0HtHcKYY=</Hash>
+				<HashControl>1</HashControl>
+				<Period>06</Period>
+				<InvoiceDate>2020-06-25</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T17:54:44</SystemEntryDate>
+				<TransactionID>2020-06-25 00051 60003</TransactionID>
+				<CustomerID>ES376123933331_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>C. DE COLOMBO, 4654646 7º E</AddressDetail>
+						<City>Barcelona</City>
+						<PostalCode>71000</PostalCode>
+						<Country>ES</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T17:56:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>B0001</ProductCode>
+					<ProductDescription>Monitor 17" TFT L1752S</ProductDescription>
+					<Quantity>4</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>156.8</UnitPrice>
+					<TaxPointDate>2020-06-25</TaxPointDate>
+					<Description>Monitor 17" TFT L1752S</Description>
+					<CreditAmount>627.20</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>ISE</TaxCode>
+						<TaxPercentage>0.00</TaxPercentage>
+					</Tax>
+					<TaxExemptionReason>Isento-TI.Art.14RITI</TaxExemptionReason>
+					<TaxExemptionCode>M99</TaxExemptionCode>
+					<SettlementAmount>172.80</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>0.00</TaxPayable>
+					<NetTotal>627.20</NetTotal>
+					<GrossTotal>627.20</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/16</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T17:55:41</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>StjhqvjPiFPu6ajXdH7AU4yrnfzRUUzJHWCy1GiGqSEF9eimrMpGmI8dx/ryCTPiQqkXfcPSmIK36nHmlmsKCFWRodlEb71jLZXlncy7BSBE0ub3ZIs1kAKWoMUBt/OSjgvOVb8HU9PSS06KFUV7Yi2jMuqtb3QQZGhgFuqh/LY=</Hash>
+				<HashControl>1</HashControl>
+				<Period>07</Period>
+				<InvoiceDate>2020-07-11</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T17:55:41</SystemEntryDate>
+				<TransactionID>2020-07-11 00051 70001</TransactionID>
+				<CustomerID>PT503191604_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua Albano Lima Nº 562</AddressDetail>
+						<City>Porto</City>
+						<PostalCode>4000</PostalCode>
+						<Country>Desconhecido</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T17:57:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>B0001</ProductCode>
+					<ProductDescription>Monitor 7JT-1024*1024</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>176.4</UnitPrice>
+					<TaxPointDate>2020-07-11</TaxPointDate>
+					<Description>Monitor 7JT-1024*1024</Description>
+					<CreditAmount>176.40</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>23.60</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>35.28</TaxPayable>
+					<NetTotal>176.40</NetTotal>
+					<GrossTotal>211.68</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/17</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T17:56:35</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>NyiRVZsnomKJccRZqRI6ydyhJyufwcGY13pVmlMJUCF356+/SlsDQc14zP8f786ddDyt+Cd5W5X8WIc9YPqm0orBdJk3i4xnRXMAeBmvtu/zn3xhVHJR4+8Ex7kgZeEMLWyrqFaUgpscZ4XOBmw3Qym8ZC0hUBn1ZS/UuQRodOY=</Hash>
+				<HashControl>1</HashControl>
+				<Period>07</Period>
+				<InvoiceDate>2020-07-22</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T17:56:35</SystemEntryDate>
+				<TransactionID>2020-07-22 00051 70002</TransactionID>
+				<CustomerID>ES989922456_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>PASSEO DE PORTUGAL, 464646</AddressDetail>
+						<City>VILANUEVA DE ARRIBA</City>
+						<PostalCode>61001</PostalCode>
+						<Country>ES</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T17:58:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0003</ProductCode>
+					<ProductDescription>Processador INTEL CORE 2 DUO E6300 1.86GHZ</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>1198</UnitPrice>
+					<TaxPointDate>2020-07-22</TaxPointDate>
+					<Description>Processador INTEL CORE 2 DUO E6300 1.86GHZ</Description>
+					<CreditAmount>1198.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>ISE</TaxCode>
+						<TaxPercentage>0.00</TaxPercentage>
+					</Tax>
+					<TaxExemptionReason>Isento-TI.Art.14RITI</TaxExemptionReason>
+					<TaxExemptionCode>M99</TaxExemptionCode>
+					<SettlementAmount>0.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>0.00</TaxPayable>
+					<NetTotal>1198.00</NetTotal>
+					<GrossTotal>1198.00</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/18</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T17:57:38</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>IvfMwAyCuiYglkX64HQGaLmdxYRJO+v0rx9VC2IJZ3ihFL8yVNzE4LKvoqhp751hv/+pLUQs4dWpbQZHO1AB0tQU8dkBkGhVKAVlGO2beoK9od6+z1s4D0FUK6PLXKgsh+9MT/w+FQFKwmbUZx46Q4XuPeZqekrIvoti+fVpCtM=</Hash>
+				<HashControl>1</HashControl>
+				<Period>08</Period>
+				<InvoiceDate>2020-08-01</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T17:57:38</SystemEntryDate>
+				<TransactionID>2020-08-01 00051 80001</TransactionID>
+				<CustomerID>ES376123933331_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>C. DE COLOMBO, 4654646 7º E</AddressDetail>
+						<City>Barcelona</City>
+						<PostalCode>71000</PostalCode>
+						<Country>ES</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T17:59:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0004</ProductCode>
+					<ProductDescription>Processador Intel D326 2.5GHz</ProductDescription>
+					<Quantity>4</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>399.2</UnitPrice>
+					<TaxPointDate>2020-08-01</TaxPointDate>
+					<Description>Processador Intel D326 2.5GHz</Description>
+					<CreditAmount>1596.80</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>ISE</TaxCode>
+						<TaxPercentage>0.00</TaxPercentage>
+					</Tax>
+					<TaxExemptionReason>Isento-TI.Art.14RITI</TaxExemptionReason>
+					<TaxExemptionCode>M99</TaxExemptionCode>
+					<SettlementAmount>399.20</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>0.00</TaxPayable>
+					<NetTotal>1596.80</NetTotal>
+					<GrossTotal>1596.80</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/19</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T17:58:42</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>XHAvZPrnzyCfLGEIaL/9PTwuaCIG602E49K18BSqVX3hmmk9NibtBSWw/7ZECrpSHp3lgiZiBrvSIDqxyaQtJQ3ECn2GPATl51LhdyL0yb2ot5jDV3i9qJD51sEaV1jY3FNIp7UGZpOPqaVqSRgW1iD/9745FIaR9vDbwZLbfgA=</Hash>
+				<HashControl>1</HashControl>
+				<Period>08</Period>
+				<InvoiceDate>2020-08-09</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T17:58:42</SystemEntryDate>
+				<TransactionID>2020-08-09 00051 80002</TransactionID>
+				<CustomerID>PT503191604_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua Albano Lima Nº 562</AddressDetail>
+						<City>Porto</City>
+						<PostalCode>4000</PostalCode>
+						<Country>Desconhecido</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T18:00:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0006</ProductCode>
+					<ProductDescription>Secretária 1,50*0,70</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>225</UnitPrice>
+					<TaxPointDate>2020-08-09</TaxPointDate>
+					<Description>Secretária 1,50*0,70</Description>
+					<CreditAmount>225.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>25.00</SettlementAmount>
+				</Line>
+				<Line>
+					<LineNumber>2</LineNumber>
+					<ProductCode>B0001</ProductCode>
+					<ProductDescription>Monitor 7JT-1024*1024</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>176.4</UnitPrice>
+					<TaxPointDate>2020-08-09</TaxPointDate>
+					<Description>Monitor 7JT-1024*1024</Description>
+					<CreditAmount>176.40</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>23.60</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>80.28</TaxPayable>
+					<NetTotal>401.40</NetTotal>
+					<GrossTotal>481.68</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/20</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T17:59:52</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>NrAMrdAJBOhVaJuUJp3icBexEE2t58xMHynQ5aixiW016fVOZuGeBxE2s+0ROWU3ukOd8crmKGH+R6XgzjDyYrIQkOpX/lFzfz+Z/zqcggLGEbQbikmKjlKRvPa81YfefCZD+lasb+YE9Plvkm92zVPpr6rDIXBYVdzPVgBgHno=</Hash>
+				<HashControl>1</HashControl>
+				<Period>08</Period>
+				<InvoiceDate>2020-08-17</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T17:59:52</SystemEntryDate>
+				<TransactionID>2020-08-17 00051 80003</TransactionID>
+				<CustomerID>GB9393878719-A_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>34, ROYAL AVENUE</AddressDetail>
+						<City>CHELSEA</City>
+						<PostalCode>87999</PostalCode>
+						<Country>GB</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T18:01:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>C0001</ProductCode>
+					<ProductDescription>VideoProjector EMP-S4</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>781.06</UnitPrice>
+					<TaxPointDate>2020-08-17</TaxPointDate>
+					<Description>VideoProjector EMP-S4</Description>
+					<CreditAmount>781.06</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>15.94</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>156.21</TaxPayable>
+					<NetTotal>781.06</NetTotal>
+					<GrossTotal>937.27</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/21</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T18:01:02</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>Q9KNDqlYN8+DXBrfTmvfX8VYAkQov0f8haBEOU7sNil2pi7oYgcMcVU8Bo9csqo3YdnZASBAv/SBJuAcjfW2OhBux15RZmFwyf50hfTa8Wg5hCzodaM5oeMo4EeYv/oZl7jVCEKT5yCFZDV2tFmkwllkcBCKk22IeMbn84DpBGI=</Hash>
+				<HashControl>1</HashControl>
+				<Period>08</Period>
+				<InvoiceDate>2020-08-29</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T18:01:02</SystemEntryDate>
+				<TransactionID>2020-08-29 00051 80004</TransactionID>
+				<CustomerID>PT503191604_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua Albano Lima Nº 562</AddressDetail>
+						<City>Porto</City>
+						<PostalCode>4000</PostalCode>
+						<Country>Desconhecido</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T18:02:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>D0001</ProductCode>
+					<ProductDescription>Teclado Ergonómico PT-776</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>26.67</UnitPrice>
+					<TaxPointDate>2020-08-29</TaxPointDate>
+					<Description>Teclado Ergonómico PT-776</Description>
+					<CreditAmount>26.67</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>3.26</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>5.33</TaxPayable>
+					<NetTotal>26.67</NetTotal>
+					<GrossTotal>32.00</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/22</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T18:01:59</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>NTfi7ywTDDhK75MSOst04V7exv6WjptSEJD7BxCTmxcUw4+0wKapMOxu0sHfl9YkEyMOu4+9gqOXph7wWrNHJdiS6t41/SSUFnyVtAlFSHtkhdU/+t34/mJo4KErLWC1NLx13MHyK5eWLSgpvysQOZgNLAd1uvwfPOARfyV11Fs=</Hash>
+				<HashControl>1</HashControl>
+				<Period>09</Period>
+				<InvoiceDate>2020-09-15</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T18:01:59</SystemEntryDate>
+				<TransactionID>2020-09-15 00051 90001</TransactionID>
+				<CustomerID>PT505678900_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Av. do Norte, 484848</AddressDetail>
+						<City>Porto</City>
+						<PostalCode>4100-002</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T18:03:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>D0002</ProductCode>
+					<ProductDescription>Microfone MicroTec M1</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>4.99</UnitPrice>
+					<TaxPointDate>2020-09-15</TaxPointDate>
+					<Description>Microfone MicroTec M1</Description>
+					<CreditAmount>4.99</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>0.00</SettlementAmount>
+				</Line>
+				<Line>
+					<LineNumber>2</LineNumber>
+					<ProductCode>A0004</ProductCode>
+					<ProductDescription>Processador Intel D326 2.5GHz</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>499</UnitPrice>
+					<TaxPointDate>2020-09-15</TaxPointDate>
+					<Description>Processador Intel D326 2.5GHz</Description>
+					<CreditAmount>499.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>0.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>100.80</TaxPayable>
+					<NetTotal>503.99</NetTotal>
+					<GrossTotal>604.79</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/23</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T18:02:51</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>SYhGd/Rvijch7oo9TBhhkulogTCTBB1gxIekqYwYnsjDsHFC2GioARii400AK6rvwRUfQ1BpYS7j9Fre1FTxEbeRI4Y7KBps97r9bvZHUppZ36FQFbGAbI0WMuanRFsIPRkiCq6UNvKT9oE4x99rviJbRXyZDfE/O1HYc9w+kwc=</Hash>
+				<HashControl>1</HashControl>
+				<Period>09</Period>
+				<InvoiceDate>2020-09-24</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T18:02:51</SystemEntryDate>
+				<TransactionID>2020-09-24 00051 90002</TransactionID>
+				<CustomerID>PT503160300_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>AV. DA BOAVISTA, 373737</AddressDetail>
+						<City>Porto</City>
+						<PostalCode>4100-002</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T18:04:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>B0001</ProductCode>
+					<ProductDescription>Monitor 7JT-1024*1024</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>156.8</UnitPrice>
+					<TaxPointDate>2020-09-24</TaxPointDate>
+					<Description>Monitor 7JT-1024*1024</Description>
+					<CreditAmount>156.80</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>43.20</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>31.36</TaxPayable>
+					<NetTotal>156.80</NetTotal>
+					<GrossTotal>188.16</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/24</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T18:04:01</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>FkGoK8DxTti0sjynEALyn3Ybo58wuM6AWGP5BWLzDdEik8Z8oU/4GzOlecV+KV2L487dKKXu5B4wNvFLRDyopid+V9oQU5T/zTgVNu8ZoWEO6POux5ONip1MJtDe6TmS/jKm2RkxtqXc/U23M0oLK2zMOm+svGFVJ0H5Tx8RD20=</Hash>
+				<HashControl>1</HashControl>
+				<Period>10</Period>
+				<InvoiceDate>2020-10-04</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T18:04:01</SystemEntryDate>
+				<TransactionID>2020-10-04 00051 100001</TransactionID>
+				<CustomerID>PT503150002_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Av. Estados Unidos América, 44773</AddressDetail>
+						<City>Lisboa</City>
+						<PostalCode>1200-003</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T18:05:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0002</ProductCode>
+					<ProductDescription>Computador Pentium III 800MHz</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>833.4</UnitPrice>
+					<TaxPointDate>2020-10-04</TaxPointDate>
+					<Description>Computador Pentium III 800MHz</Description>
+					<CreditAmount>833.40</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>92.60</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>166.68</TaxPayable>
+					<NetTotal>833.40</NetTotal>
+					<GrossTotal>1000.08</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/25</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T18:05:28</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>N3tphijnHMnrQQZE8niwGDZl+GAJEDqwuww93T6CohZDO83jp9KsOI1fLXTP9OulA/FfPbG0VnyFxtW/N22jkAgy3YJxJOqBjmJya63T5+qgpJoqW/k/VeS9ym13sarD9stYaxfPO315GOyyE9Okorn2leM6B8veEPB14G8I++k=</Hash>
+				<HashControl>1</HashControl>
+				<Period>10</Period>
+				<InvoiceDate>2020-10-15</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T18:05:28</SystemEntryDate>
+				<TransactionID>2020-10-15 00051 100002</TransactionID>
+				<CustomerID>GB9393878719-A_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>34, ROYAL AVENUE</AddressDetail>
+						<City>CHELSEA</City>
+						<PostalCode>87999</PostalCode>
+						<Country>GB</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T18:07:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0004</ProductCode>
+					<ProductDescription>Processador Intel D326 2.5GHz</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>499</UnitPrice>
+					<TaxPointDate>2020-10-15</TaxPointDate>
+					<Description>Processador Intel D326 2.5GHz</Description>
+					<CreditAmount>499.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>0.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>99.80</TaxPayable>
+					<NetTotal>499.00</NetTotal>
+					<GrossTotal>598.80</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/26</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T18:06:27</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>HMAjRVusl9k2QfEfefUd5Tav5k/afJ5+dpirS3jdIw9jSPEvbNkAPnzfu91m44Rn8fzPAsn7TlnxdQum2HR0Ym4pO1tTdRm1JCl3+MK2ryrwfBfs6L9SVYZIKOAT3k2Q2YCmtUSDakBuUW0J1lkA6DWp88TEG1Xk6EWmlrEVOqA=</Hash>
+				<HashControl>1</HashControl>
+				<Period>10</Period>
+				<InvoiceDate>2020-10-30</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T18:06:27</SystemEntryDate>
+				<TransactionID>2020-10-30 00051 100003</TransactionID>
+				<CustomerID>ES989922456_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>PASSEO DE PORTUGAL, 464646</AddressDetail>
+						<City>VILANUEVA DE ARRIBA</City>
+						<PostalCode>61001</PostalCode>
+						<Country>ES</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T18:08:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0001</ProductCode>
+					<ProductDescription>Pentium D925 Dual Core</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>1000</UnitPrice>
+					<TaxPointDate>2020-10-30</TaxPointDate>
+					<Description>Pentium D925 Dual Core</Description>
+					<CreditAmount>1000.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>ISE</TaxCode>
+						<TaxPercentage>0.00</TaxPercentage>
+					</Tax>
+					<TaxExemptionReason>Isento-TI.Art.14RITI</TaxExemptionReason>
+					<TaxExemptionCode>M99</TaxExemptionCode>
+					<SettlementAmount>0.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>0.00</TaxPayable>
+					<NetTotal>1000.00</NetTotal>
+					<GrossTotal>1000.00</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/27</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T18:07:47</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>UgbTutgzahqXlPBuSArncZNgtAgIT7Mvl582QttBY7P78K7qxUulYdKW1KjDENmayMM5SGgY2KGl8oxDpCfP1iLh8Jm1VorRoBB7CzgoLjUkHxCn0oyR74zhqU4gVesuqciQ9fWfhQSi3kCVR83bIRzqSzuFg43uPGyB7Jx2bE8=</Hash>
+				<HashControl>1</HashControl>
+				<Period>11</Period>
+				<InvoiceDate>2020-11-11</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T18:07:47</SystemEntryDate>
+				<TransactionID>2020-11-11 00051 110001</TransactionID>
+				<CustomerID>ES376123933331_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>C. DE COLOMBO, 4654646 7º E</AddressDetail>
+						<City>Barcelona</City>
+						<PostalCode>71000</PostalCode>
+						<Country>ES</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T18:09:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>B0001</ProductCode>
+					<ProductDescription>Monitor 17" TFT L1752S</ProductDescription>
+					<Quantity>10</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>156.8</UnitPrice>
+					<TaxPointDate>2020-11-11</TaxPointDate>
+					<Description>Monitor 17" TFT L1752S</Description>
+					<CreditAmount>1568.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>ISE</TaxCode>
+						<TaxPercentage>0.00</TaxPercentage>
+					</Tax>
+					<TaxExemptionReason>Isento-TI.Art.14RITI</TaxExemptionReason>
+					<TaxExemptionCode>M99</TaxExemptionCode>
+					<SettlementAmount>432.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>0.00</TaxPayable>
+					<NetTotal>1568.00</NetTotal>
+					<GrossTotal>1568.00</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/28</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T18:08:40</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>KBAnNdi4dnBa/VeFhxrnY4S0TmtyIfKgzydZdHdFviZ+K/uVJCVRmh8tbhIcdb4m2xWCsqZBhnPtAxucqn2zyy8R1o+9F4DCcoQEu2DysPDw+QoO0SOsWSJBdMAJl9aG8vmHipCJMGh+Krl4HADcQgJxDJ6P1D8nlOCPCD7VQsY=</Hash>
+				<HashControl>1</HashControl>
+				<Period>11</Period>
+				<InvoiceDate>2020-11-23</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T18:08:40</SystemEntryDate>
+				<TransactionID>2020-11-23 00051 110002</TransactionID>
+				<CustomerID>PT503191604_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua Albano Lima Nº 562</AddressDetail>
+						<City>Porto</City>
+						<PostalCode>4000</PostalCode>
+						<Country>Desconhecido</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T18:10:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>B0008</ProductCode>
+					<ProductDescription>Rato R17C</ProductDescription>
+					<Quantity>1</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>8.1</UnitPrice>
+					<TaxPointDate>2020-11-23</TaxPointDate>
+					<Description>Rato R17C</Description>
+					<CreditAmount>8.10</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>0.90</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>1.62</TaxPayable>
+					<NetTotal>8.10</NetTotal>
+					<GrossTotal>9.72</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/29</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T18:09:44</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>b2r4An2RKIYguuOrrx1Qd5yXycF+6IHF53Rwj5zLQK/9oflwo+AIggpF8flQSBTnmC2ne0ktRMtd0qi3qZ4mCOJhNmXN14Pa2rJUFDNl7uNekK/W2q/GJ72eZPG7TS86O4PJFFUfuuN9fxWaAOurE/FEF/NAmfLLj4a9TVFziRE=</Hash>
+				<HashControl>1</HashControl>
+				<Period>12</Period>
+				<InvoiceDate>2020-12-08</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T18:09:44</SystemEntryDate>
+				<TransactionID>2020-12-08 00051 120001</TransactionID>
+				<CustomerID>PT503160300_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>AV. DA BOAVISTA, 373737</AddressDetail>
+						<City>Porto</City>
+						<PostalCode>4100-002</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T18:11:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0001</ProductCode>
+					<ProductDescription>Pentium D925 Dual Core</ProductDescription>
+					<Quantity>2</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>800</UnitPrice>
+					<TaxPointDate>2020-12-08</TaxPointDate>
+					<Description>Pentium D925 Dual Core</Description>
+					<CreditAmount>1600.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>400.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>320.00</TaxPayable>
+					<NetTotal>1600.00</NetTotal>
+					<GrossTotal>1920.00</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/30</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T18:10:44</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>KjBGRhoa/1YNnlYdT+NafsU8G0usq3aBuMGMjoKobGuoSXmtoJhHzVh4U2JIVW6cXyuYPQ64RfazJQihM50FCeApj88LR3HODJgGVS6Awty77tQKMNHJE9ILiKmZC9Av7BEqpsznlFox+/NjZ2+SHg7lRRNKrmy4gFXoOnn4ww4=</Hash>
+				<HashControl>1</HashControl>
+				<Period>12</Period>
+				<InvoiceDate>2020-12-19</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T18:10:44</SystemEntryDate>
+				<TransactionID>2020-12-19 00051 120002</TransactionID>
+				<CustomerID>AO823892388_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Av. dos Coqueiros, 464646</AddressDetail>
+						<City>Luanda</City>
+						<PostalCode>0000</PostalCode>
+						<Country>AO</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T18:12:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0001</ProductCode>
+					<ProductDescription>Pentium D925 Dual Core</ProductDescription>
+					<Quantity>2</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>1000</UnitPrice>
+					<TaxPointDate>2020-12-19</TaxPointDate>
+					<Description>Pentium D925 Dual Core</Description>
+					<CreditAmount>2000.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>NOR</TaxCode>
+						<TaxPercentage>20.00</TaxPercentage>
+					</Tax>
+					<SettlementAmount>0.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>400.00</TaxPayable>
+					<NetTotal>2000.00</NetTotal>
+					<GrossTotal>2400.00</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+			<Invoice>
+				<InvoiceNo>FA B/31</InvoiceNo>
+				<ATCUD>0</ATCUD>
+				<DocumentStatus>
+					<InvoiceStatus>N</InvoiceStatus>
+					<InvoiceStatusDate>2020-06-06T18:12:12</InvoiceStatusDate>
+					<SourceID>ESTG</SourceID>
+					<SourceBilling>P</SourceBilling>
+				</DocumentStatus>
+				<Hash>g9jzaYcLooDFDH8wX+cNzl2Wm9SPVBoe06Sz32V5LDnTUFmKNVy2qHcZwFv08mpy45FteAIOP7cBqGuQ7P8lNcBL2vxAny1IpL5rJSzvx93bsLXNsqjyxjsHuLo4J3Dvrjfp/1V4mUx8R0JmXhjCcdrViobQh+RDdSOL/TXRf38=</Hash>
+				<HashControl>1</HashControl>
+				<Period>12</Period>
+				<InvoiceDate>2020-12-22</InvoiceDate>
+				<InvoiceType>FT</InvoiceType>
+				<SpecialRegimes>
+					<SelfBillingIndicator>0</SelfBillingIndicator>
+					<CashVATSchemeIndicator>0</CashVATSchemeIndicator>
+					<ThirdPartiesBillingIndicator>0</ThirdPartiesBillingIndicator>
+				</SpecialRegimes>
+				<SourceID>ESTG</SourceID>
+				<SystemEntryDate>2020-06-06T18:12:12</SystemEntryDate>
+				<TransactionID>2020-12-22 00051 120003</TransactionID>
+				<CustomerID>ES989922456_C</CustomerID>
+				<ShipTo>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>PASSEO DE PORTUGAL, 464646</AddressDetail>
+						<City>VILANUEVA DE ARRIBA</City>
+						<PostalCode>61001</PostalCode>
+						<Country>ES</Country>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<DeliveryDate>2020-06-06</DeliveryDate>
+					<Address>
+						<AddressDetail>Rua António Ferreira Gomes, 50</AddressDetail>
+						<City>Penafiel</City>
+						<PostalCode>4560-568</PostalCode>
+						<Country>PT</Country>
+					</Address>
+				</ShipFrom>
+				<MovementStartTime>2020-06-06T18:14:00</MovementStartTime>
+				<Line>
+					<LineNumber>1</LineNumber>
+					<ProductCode>A0004</ProductCode>
+					<ProductDescription>Processador Intel D326 2.5GHz</ProductDescription>
+					<Quantity>4</Quantity>
+					<UnitOfMeasure>UN</UnitOfMeasure>
+					<UnitPrice>499</UnitPrice>
+					<TaxPointDate>2020-12-22</TaxPointDate>
+					<Description>Processador Intel D326 2.5GHz</Description>
+					<CreditAmount>1996.00</CreditAmount>
+					<Tax>
+						<TaxType>IVA</TaxType>
+						<TaxCountryRegion>PT</TaxCountryRegion>
+						<TaxCode>ISE</TaxCode>
+						<TaxPercentage>0.00</TaxPercentage>
+					</Tax>
+					<TaxExemptionReason>Isento-TI.Art.14RITI</TaxExemptionReason>
+					<TaxExemptionCode>M99</TaxExemptionCode>
+					<SettlementAmount>0.00</SettlementAmount>
+				</Line>
+				<DocumentTotals>
+					<TaxPayable>0.00</TaxPayable>
+					<NetTotal>1996.00</NetTotal>
+					<GrossTotal>1996.00</GrossTotal>
+				</DocumentTotals>
+				<WithholdingTax>
+					<WithholdingTaxAmount>0.00</WithholdingTaxAmount>
+				</WithholdingTax>
+			</Invoice>
+		</SalesInvoices>
+	</SourceDocuments>
+</AuditFile>
